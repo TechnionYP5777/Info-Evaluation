@@ -16,7 +16,6 @@ public class App
         Sentence sent = new Sentence("I am going to visit in Haifa tomorrow. I will visit the Technion.");
         List<String> nerTags = sent.nerTags(); 
         System.out.println(Arrays.toString(nerTags.toArray()));
-        String firstPOSTag = sent.posTag(0);
-        System.out.println(firstPOSTag);
+        System.out.println(sent.posTag(0));
     }
 }
