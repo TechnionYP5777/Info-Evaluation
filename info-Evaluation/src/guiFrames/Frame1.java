@@ -1,9 +1,8 @@
-package gui;
+package guiFrames;
 
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-
 
 public class Frame1 {
 
