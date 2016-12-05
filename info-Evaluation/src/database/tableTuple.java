@@ -34,6 +34,18 @@ public class tableTuple {
 
 	}
 
+	public tableTuple(String name, Date date, String reason) {
+		this.name = name;
+		this.regularDate = date;
+		this.reason = reason;
+		try {
+			this.date = (new SimpleDateFormat("dd/MM/yyyy")).format(date);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
 	public String getName() {
 		return this.name;
 	}
