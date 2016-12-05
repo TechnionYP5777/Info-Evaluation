@@ -125,7 +125,12 @@ tmp
 # Suffixes // vim: +,$!sort -u
 Backup*/
 /backups/
+[Bb]in/
+/bin
+bin/
 bld/
+/build
+build/
 /.cache
 ClientBin/
 Corpus/
@@ -133,9 +138,10 @@ csx/
 data/
 /doc/tags
 doc/tags
+.metadata/
 [Oo]bj/
 out/
-
+target/
 
 # User defined (add below this line) // vim: +,$!sort -u
 /types.CSV
