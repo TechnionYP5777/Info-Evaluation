@@ -13,9 +13,11 @@ public class App
     public static void main( String[] args )
     {
         System.out.println( "Hello World!" );
-        Sentence sent = new Sentence("I am going to visit in Haifa tomorrow. I will visit the Technion.");
+        Sentence sent = new Sentence("Justin Bieber is in the sky with diamonds.");
         List<String> nerTags = sent.nerTags(); 
         System.out.println(Arrays.toString(nerTags.toArray()));
         System.out.println(sent.posTag(0));
+        System.out.println(sent.word(0));
+
     }
 }

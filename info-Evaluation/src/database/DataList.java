@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * @author netanel
  * This class holds all the data to be shown in the table in the GUI
  */
-class DataList{
+public class DataList{
 	private ArrayList<tableTuple> list;
 	private int numOfTuples;
 	
