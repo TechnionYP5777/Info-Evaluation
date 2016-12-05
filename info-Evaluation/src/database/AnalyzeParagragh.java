@@ -14,7 +14,7 @@ public class AnalyzeParagragh {
 	
 	public AnalyzeParagragh(Sentence input){
 		if(input!=null)
-		this.input = new Sentence(input.toString());
+		this.input = new Sentence(input + "");
 	}
 	
 	//No May case cause it has no short version 
@@ -69,8 +69,7 @@ public class AnalyzeParagragh {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		tableTuple t= new tableTuple(name,date1,"b");
-		return t;
+		return new tableTuple(name, date1, "b");
 	}
 
 }
