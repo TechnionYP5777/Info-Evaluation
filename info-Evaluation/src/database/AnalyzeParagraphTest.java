@@ -8,9 +8,6 @@ import org.junit.Test;
 
 import edu.stanford.nlp.simple.Sentence;
 
-/**
- * [[SuppressWarningsSpartan]]
- */
 public class AnalyzeParagraphTest {
 	@Test
 	public void test1() {

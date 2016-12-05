@@ -9,6 +9,7 @@ import java.util.Date;
  *         shown to the user in the GUI
  *
  */
+
 public class tableTuple {
 
 	private String name;

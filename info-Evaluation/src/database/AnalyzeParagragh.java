@@ -9,9 +9,6 @@ import java.util.Locale;
 
 import edu.stanford.nlp.simple.*;
 
-/**
- * [[SuppressWarningsSpartan]]
- */
 public class AnalyzeParagragh {
 	private Sentence input;
 	
