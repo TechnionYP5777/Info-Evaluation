@@ -13,6 +13,7 @@ public class Frame1 {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					Frame1 window = new Frame1();
