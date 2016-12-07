@@ -28,6 +28,7 @@ public class Frame1 {
 	private JFrame frame;
 	 private JTextField searchTxt;
 	 private JTable table;
+	 private JButton btnSearch; 
 
 	/**
 	 * Launch the application.
@@ -39,6 +40,10 @@ public class Frame1 {
 				try {
 					Frame1 window = new Frame1();
 					window.frame.setVisible(true);
+					window.btnSearch.addActionListener(e -> {
+						if(!window.table.isVisible())
+							window.table.setVisible(true);
+				    });
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -82,8 +87,25 @@ public class Frame1 {
 
         JMenuItem mntmHelp = new JMenuItem("Help");
         mnHelp.add(mntmHelp);
+        /*
+         * 
+         *  initializing the table 
+         * 
+         */
+        table = new JTable();
+        table.setShowVerticalLines(false);
+        table.setCellSelectionEnabled(true);
+        table.setColumnSelectionAllowed(true);
+        table.setBorder(new LineBorder(null));
+        for (int count = 1; count <= 10; ++count)
+			table.setModel(new DefaultTableModel(new Object[][] { { "Name", "Date", "Reason" } },
+					new String[] { "name", "date", "Reason" }));
+        table.setBounds(30, 120, 330, 150);
+        frame.getContentPane().add(table);
+        table.setVisible(false);
         
-        JButton btnSearch = new JButton("Search");
+        
+        btnSearch = new JButton("Search");
         
         searchTxt = new JTextField();
         searchTxt.setText("Search");
@@ -111,22 +133,22 @@ public class Frame1 {
         					.addComponent(chckbxNewCheckBox)
         					.addContainerGap())
         				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-        					.addGroup(groupLayout.createSequentialGroup()
+        					.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
         						.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE)
         						.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         						.addComponent(btnSearch)
         						.addGap(74))
         					.addGroup(groupLayout.createSequentialGroup()
         						.addComponent(lblNewLabel)
-        						.addContainerGap(382, Short.MAX_VALUE)))))
+        						.addContainerGap(372, Short.MAX_VALUE)))))
         );
         groupLayout.setVerticalGroup(
         	groupLayout.createParallelGroup(Alignment.LEADING)
         		.addGroup(groupLayout.createSequentialGroup()
         			.addGap(20)
-        			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-        				.addComponent(searchTxt, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(btnSearch, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        			.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(btnSearch)
+        				.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addComponent(lblNewLabel)
         			.addPreferredGap(ComponentPlacement.UNRELATED)
@@ -134,20 +156,11 @@ public class Frame1 {
         				.addComponent(chckbxName)
         				.addComponent(chckbxReason)
         				.addComponent(chckbxNewCheckBox))
-        			.addContainerGap(182, Short.MAX_VALUE))
+        			.addContainerGap(152, Short.MAX_VALUE))
         );
         frame.getContentPane().setLayout(groupLayout);
 
-        table = new JTable();
-        table.setShowVerticalLines(false);
-        table.setCellSelectionEnabled(true);
-        table.setColumnSelectionAllowed(true);
-        table.setBorder(new LineBorder(null));
-        for (int count = 1; count <= 10; ++count)
-			table.setModel(new DefaultTableModel(new Object[][] { { "Name", "Date", "Reason" } },
-					new String[] { "name", "date", "Reason" }));
-        table.setBounds(30, 120, 330, 150);
-        frame.getContentPane().add(table);
+       
 	}
 }
 
