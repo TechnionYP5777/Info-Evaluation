@@ -8,7 +8,6 @@
 package guiFrames;
 
 import java.awt.EventQueue;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -21,6 +20,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JLabel;
+import javax.swing.JCheckBox;
 
 public class Frame1 {
 
@@ -64,15 +65,6 @@ public class Frame1 {
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		
-//		JButton searchBtn = new JButton("Search");
-//		frame.getContentPane().add(searchBtn, BorderLayout.NORTH);
-//		searchBtn.setBounds(146, 36, 89, 19);
-//		searchBtn.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent arg0) {
-//
-//            }
-//        });
 		
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -96,24 +88,53 @@ public class Frame1 {
         searchTxt = new JTextField();
         searchTxt.setText("Search");
         searchTxt.setColumns(10);
+        
+        JLabel lblNewLabel = new JLabel("Sort by:");
+        
+        JCheckBox chckbxName = new JCheckBox("Name");
+        
+        JCheckBox chckbxReason = new JCheckBox("Date");
+        
+        JCheckBox chckbxNewCheckBox = new JCheckBox("Reason");
         GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
         groupLayout.setHorizontalGroup(
-        	groupLayout.createParallelGroup(Alignment.TRAILING)
+        	groupLayout.createParallelGroup(Alignment.LEADING)
         		.addGroup(groupLayout.createSequentialGroup()
         			.addContainerGap()
-        			.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        			.addComponent(btnSearch)
-        			.addGap(74))
+        			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(groupLayout.createSequentialGroup()
+        					.addGap(12)
+        					.addComponent(chckbxName)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(chckbxReason)
+        					.addPreferredGap(ComponentPlacement.UNRELATED)
+        					.addComponent(chckbxNewCheckBox)
+        					.addContainerGap())
+        				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+        					.addGroup(groupLayout.createSequentialGroup()
+        						.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE)
+        						.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        						.addComponent(btnSearch)
+        						.addGap(74))
+        					.addGroup(groupLayout.createSequentialGroup()
+        						.addComponent(lblNewLabel)
+        						.addContainerGap(382, Short.MAX_VALUE)))))
         );
         groupLayout.setVerticalGroup(
         	groupLayout.createParallelGroup(Alignment.LEADING)
         		.addGroup(groupLayout.createSequentialGroup()
         			.addGap(20)
         			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-        				.addComponent(searchTxt, Alignment.TRAILING)
+        				.addComponent(searchTxt, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         				.addComponent(btnSearch, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        			.addContainerGap(234, Short.MAX_VALUE))
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(lblNewLabel)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(chckbxName)
+        				.addComponent(chckbxReason)
+        				.addComponent(chckbxNewCheckBox))
+        			.addContainerGap(182, Short.MAX_VALUE))
         );
         frame.getContentPane().setLayout(groupLayout);
 
@@ -125,7 +146,7 @@ public class Frame1 {
         for (int count = 1; count <= 10; ++count)
 			table.setModel(new DefaultTableModel(new Object[][] { { "Name", "Date", "Reason" } },
 					new String[] { "name", "date", "Reason" }));
-        table.setBounds(30, 80, 250, 180);
+        table.setBounds(30, 120, 330, 150);
         frame.getContentPane().add(table);
 	}
 }
