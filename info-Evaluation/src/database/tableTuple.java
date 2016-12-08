@@ -62,5 +62,22 @@ public class tableTuple {
 	public Date getRegularDate() {
 		return this.regularDate;
 	}
+	
+	public void setName(String name) {
+		 this.name=name;
+	}
+
+	public void setDate(String date) {
+		 this.date=date;
+		 try {
+				this.regularDate = (new SimpleDateFormat("dd/MM/yyyy")).parse(this.date);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	}
+
+	public void setReason(String reason) {
+		 this.reason=reason;
+	}
 
 }
