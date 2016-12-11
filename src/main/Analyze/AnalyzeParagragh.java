@@ -12,15 +12,15 @@ import edu.stanford.nlp.simple.*;
 
 public class AnalyzeParagragh {
 	private Sentence input;
-	
-	public AnalyzeParagragh(Sentence input){
-		if(input!=null)
-		this.input = new Sentence(input + "");
+
+	public AnalyzeParagragh(Sentence input) {
+		if (input != null)
+			this.input = new Sentence(input + "");
 	}
-	
-	//No May case cause it has no short version 
+
+	// No May case cause it has no short version
 	private String covertMonth(String month) {
-		switch(month) {
+		switch (month) {
 		case "Jan.":
 			return "January";
 		case "Feb.":
@@ -43,24 +43,24 @@ public class AnalyzeParagragh {
 			return "November";
 		case "Dec.":
 			return "December";
-		
+
 		}
 		return month;
 	}
-	
-	public TableTuple Analyze (){
-		
-		List<String> nerTags = this.input.nerTags(); 
+
+	public TableTuple Analyze() {
+
+		List<String> nerTags = this.input.nerTags();
 		String name = "";
-		int i=0;
-		String date="";
-		for (String elem : nerTags){
-			if("PERSON".equals(elem))
+		int i = 0;
+		String date = "";
+		for (String elem : nerTags) {
+			if ("PERSON".equals(elem))
 				name += this.input.word(i) + " ";
-			if("DATE".equals(elem))
+			if ("DATE".equals(elem))
 				date += covertMonth(this.input.word(i)) + " ";
 			++i;
-			
+
 		}
 		DateFormat format = new SimpleDateFormat("MMMM d", Locale.ENGLISH);
 		Date date1 = null;
