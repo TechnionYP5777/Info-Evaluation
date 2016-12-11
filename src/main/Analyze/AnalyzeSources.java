@@ -33,11 +33,13 @@ public class AnalyzeSources{
 	public void addSource(String src){
 		this.sources.add(src);
 		++this.numOfSources;
-		//add next line after the details are actually being updated in AnalyzePage
-		//this.data.merge((new AnalyzePage(src)).getDetails());
+		this.data.merge((new AnalyzePage(src)).getDetails());
 	}
 	public int getNumOfSources(){
 		return this.numOfSources;
+	}
+	public DataList getData(){
+		return this.data;
 	}
 	
 }
