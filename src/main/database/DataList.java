@@ -1,5 +1,4 @@
 package main.database;
-
 import java.util.ArrayList;
 
 /**
