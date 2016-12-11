@@ -1,5 +1,4 @@
 package main.database;
-
 import java.util.ArrayList;
 
 /**
@@ -13,7 +12,10 @@ public class DataList {
 
 	public DataList() {
 		this.list = new ArrayList<>();
-		this.numOfTuples = 0;
+	}
+	public DataList(DataList dl){
+		this.list = new ArrayList<>();
+		this.merge(dl);
 	}
 
 	public void insert(String name, String date, String reason) {
@@ -32,6 +34,11 @@ public class DataList {
 
 	public ArrayList<TableTuple> getList() {
 		return this.list;
+	}
+	public void merge(DataList lst){
+		for(TableTuple i:lst.getList())
+			this.list.add(i);
+		this.numOfTuples+=lst.getNumOfTuples();
 	}
 	// if needed, we can implement here sorts, refines etc.
 }
