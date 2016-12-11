@@ -23,8 +23,8 @@ public class AnalyzePage {
 
 	private List<String> createParagraphs() {
 		Properties props = new Properties();
-		props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner");
-		props.setProperty("ssplit.newlineIsSentenceBreak", "two");
+		props.setProperty("annotators", "tokenize, ssplit");
+		props.setProperty("ssplit.eolonly", "true");
 		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 		Annotation document1 = new Annotation(originalText);
 		pipeline.annotate(document1);
@@ -39,7 +39,7 @@ public class AnalyzePage {
 		return paragraphs;
 	}
 
-	public List<TableTuple> detectDetails() {
+	private List<TableTuple> detectDetails() {
 		return null;
 	}
 
