@@ -30,7 +30,7 @@ public class TableTuple {
 		try {
 			this.regularDate = (new SimpleDateFormat("dd/MM/yyyy")).parse(this.date);
 		} catch (Exception e) {
-			e.printStackTrace();
+			this.regularDate=null;
 		}
 
 	}
