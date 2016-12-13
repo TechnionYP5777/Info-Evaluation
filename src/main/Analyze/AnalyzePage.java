@@ -7,6 +7,7 @@ import java.util.Properties;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.simple.Sentence;
 import edu.stanford.nlp.util.CoreMap;
 
 
@@ -19,7 +20,8 @@ public class AnalyzePage {
 	public AnalyzePage(String text) {
 		originalText = text;
 		paragraphs = createParagraphs();
-		details=detectDetails();
+		details=new DataList();
+		detectDetails();
 	}
 
 	private List<String> createParagraphs() {
@@ -39,9 +41,17 @@ public class AnalyzePage {
 	public List<String> getParagraphs() {
 		return paragraphs;
 	}
+	
+	public List<Sentence> getSentenceParagraphs() {
+		List<Sentence> $=new ArrayList<>();
+		for(String ¢: paragraphs)
+			$.add((new Sentence(¢)));
+		return $;
+	}
 
-	private DataList detectDetails() {
-		return null;
+	private void detectDetails() {
+		for(Sentence ¢: getSentenceParagraphs())
+			details.insert((new AnalyzeParagragh(¢)).Analyze());
 	}
 
 	public DataList getDetails() {
