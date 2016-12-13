@@ -1,5 +1,5 @@
 package main.Analyze;
-
+import main.database.DataList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -8,12 +8,13 @@ import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
-import main.database.TableTuple;
+
 
 public class AnalyzePage {
 	private String originalText;
 	private List<String> paragraphs;
-	private List<TableTuple> details;
+	private DataList details;
+	//GENIA: I changed the details to be from type DataList (Netanel)
 
 	public AnalyzePage(String text) {
 		originalText = text;
@@ -39,11 +40,11 @@ public class AnalyzePage {
 		return paragraphs;
 	}
 
-	private List<TableTuple> detectDetails() {
+	private DataList detectDetails() {
 		return null;
 	}
 
-	public List<TableTuple> getDetails() {
+	public DataList getDetails() {
 		return details;
 	}
 }
