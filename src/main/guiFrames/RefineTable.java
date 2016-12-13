@@ -15,16 +15,16 @@ import java.util.ArrayList;
 public class RefineTable {
 	private ArrayList<String> fields;
 
-	public ArrayList<String> getFeilds() {
+	public ArrayList<String> getFields() {
 		return fields;
 	}
 
-	public void addFeild(String name) {
+	public void addField(String name) {
 		if (name != null && !"".equals(name))
 			fields.add(name);
 	}
 
-	public void removeFeild(String name) {
+	public void removeField(String name) {
 		if (fieldExist(name))
 			fields.remove(name);
 	}
@@ -79,6 +79,7 @@ public class RefineTable {
 
 	}
 
+	
 	public RefineTable() {
 		fields = new ArrayList<String>();
 	}
