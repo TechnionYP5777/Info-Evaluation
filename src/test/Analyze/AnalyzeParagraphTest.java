@@ -8,8 +8,13 @@ import org.junit.Test;
 import main.Analyze.AnalyzeParagragh;
 import main.database.TableTuple;
 import edu.stanford.nlp.simple.Sentence;
+/**
+ * 
+ * @author MosheEliasof 
+ *
+ */
 
-public class AnalyzeParagraphTest {
+public class AnalyzeParagraphTest { 
 	@Test
 	public void test1() {
         Sentence sent = new Sentence("Justin Bieber is in the sky with diamonds on Jan. 26");
@@ -23,12 +28,12 @@ public class AnalyzeParagraphTest {
 	
 	@Test
 	public void test2(){		
-		Sentence sent = new Sentence("Justin Bieber was arrested for drunk driving on February 22 2015");
+		Sentence sent = new Sentence("Justin Bieber was arrested for drunk driving on February 22, 2015");
         AnalyzeParagragh anal = new AnalyzeParagragh(sent);
         TableTuple tt = anal.Analyze();
-        assertEquals("Bieber Justin ",tt.getName());
+        assertEquals("Justin Bieber",tt.getName());
         assertEquals("drunk driving",tt.getReason());
-        assertEquals("February 22 2015 ",tt.getDate());
+        assertEquals("22/02/2015",tt.getDate());
         
 	}
 	
