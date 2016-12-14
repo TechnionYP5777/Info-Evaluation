@@ -36,6 +36,13 @@ public class AnalyzePageTest {
 		ArrayList<TableTuple> details = detailsTable.getList();
 		assertTrue("Rihanna".equals(details.get(0).getName()));
 		assertTrue("murder".equals(details.get(0).getReason()));
+		
+		text+="\n\nDanny Din was arrested on 09/17/2003 because he did crack.";
+		p = new AnalyzePage(text);
+		detailsTable = p.getDetails();
+		assertEquals(detailsTable.getNumOfTuples(), 2);
+		details = detailsTable.getList();
+		assertTrue("Danny Din".equals(details.get(1).getName()));
 	}
 
 }
