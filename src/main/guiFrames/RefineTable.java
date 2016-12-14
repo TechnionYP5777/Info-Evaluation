@@ -35,7 +35,7 @@ public class RefineTable {
 
 	/**
 	 *
-	 * accepts a JTable and list of events as a SQL query result and fills them
+	 * accepts a DefaultTableModel and list of events as a SQL query result and fills them
 	 * in table
 	 * 
 	 * @throws SQLException
@@ -54,18 +54,16 @@ public class RefineTable {
 	}
 
 	/**
-	 * accepts a JTable and sorts the content of the table according to the
-	 * given field name
+	 * sorts the content of the events table according to the given field name
 	 */
 	public void sortBy(DefaultTableModel m, String fieldName) {
 		if (m == null || !fieldExist(fieldName))
 			return;
-		@SuppressWarnings("unused")
-		ArrayList<String> events;
 		switch (fieldName) {
 		case "Date":
 			// TODO: call fillTable with
-			// the result of runQuery("SELECT * FROM events ORDER BY UNIX_TIMESTAMP(date) DESC")
+			// the result of runQuery("SELECT * FROM events ORDER BY
+			// UNIX_TIMESTAMP(date) DESC")
 			break;
 		case "Name":
 			// TODO: call fillTable with
@@ -79,7 +77,30 @@ public class RefineTable {
 
 	}
 
-	
+	/**
+	 * filters the content of the events table according to the given field name
+	 * and value
+	 */
+	public void filterBy(DefaultTableModel m, String fieldName, String fieldValue) {
+		if (m == null || !fieldExist(fieldName) || fieldValue == null)
+			return;
+		switch (fieldName) {
+		case "Date":
+			// TODO: call fillTable with
+			// the result of runQuery("SELECT * FROM events WHERE DATE(date) = " + fieldValue + " ")
+			break;
+		case "Name":
+			// TODO: call fillTable with
+			// the result of runQuery("SELECT * FROM events WHERE name = " + fieldValue + " ")
+			break;
+		case "Reason":
+			// TODO: call fillTable with
+			// the result of runQuery("SELECT * FROM events WHERE name LIKE \"%" + fieldValue + "%\"")
+			break;
+		}
+
+	}
+
 	public RefineTable() {
 		fields = new ArrayList<String>();
 	}

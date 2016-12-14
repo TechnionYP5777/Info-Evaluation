@@ -73,7 +73,7 @@ public class RefineTableTest {
 		t.removeField("Reason");
 		assertFalse(t.fieldExist("Name"));
 		assertFalse(t.fieldExist("Reason"));
-		
+
 		assertTrue(t.fieldExist("Date"));
 	}
 }
