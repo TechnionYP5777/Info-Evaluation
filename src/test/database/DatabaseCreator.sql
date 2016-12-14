@@ -1,10 +1,10 @@
 CREATE database celebsArrests;
 use celebsArrests;
 
-CREATE USER osherh IDENTIFIED BY 'mysqlpass';
+CREATE USER root IDENTIFIED BY 'mysqlpass';
 
-grant usage on *.* to osherh@localhost identified by 'mysqlpass';
-grant all privileges on celebsArrests.* to osherh@localhost;
+grant usage on *.* to root@localhost identified by 'mysqlpass';
+grant all privileges on celebsArrests.* to root@localhost;
 
 CREATE TABLE arrests (
                 NAME VARCHAR(30) NOT NULL,
