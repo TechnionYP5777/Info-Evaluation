@@ -1,45 +1,63 @@
 package test.database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Before;
+import org.junit.AfterClass;
+
+import main.database.DataList;
+import main.database.MySQLConnector;
 
 /*
- * @author Osher Hajaj
+ * @author osherh
  * @since 6/12/2016
  * */
-public class MySQLConnectorTest {
-	private Connection conn;
-	private Statement statement;
-	private ResultSet rs;
+public class MySQLConnectorTest{
+	private static MySQLConnector mySQLconnector;
+	
+	public MySQLConnectorTest() throws Exception{
+		mySQLconnector = new MySQLConnector();			
+	}
+	
+	@AfterClass
+	public static void closeDatabase() throws Exception {
+		mySQLconnector.closeConnection();
+	}
+	 	
+	@Before
+	public static void initializeDatabase() throws Exception {
+		mySQLconnector.updateDB("DELETE FROM celebs_arrests;");	
+		mySQLconnector.updateDB("INSERT INTO celebs_arrests values('Justin Bieber','2014-01-23','suspicion of driving under the influence and driving with an expired license');");
+		mySQLconnector.updateDB("INSERT INTO celebs_arrests values('Flavor Flav','2014-01-09','speeding while driving');");
+		mySQLconnector.updateDB("INSERT INTO celebs_arrests values('Soulja Boy','2014-01-22','possession of a loaded gun');");
+		mySQLconnector.updateDB("INSERT INTO celebs_arrests values('Chris Kattan','2015-02-10','suspicion of drunk driving');");
+	
+		DataList list = new DataList();
+		list.insert("Suge Knight","29/01/2015","involved in a fatal hit run");		
+		list.insert("Emile Hirsch","12/02/2015","assualt charges");
+		list.insert("Austin Chumlee Russell","9/03/2016","sexual assault");
+		list.insert("Track Palin","18/01/2016","charges of fourth-degree assault and interfering with the report of a domestic violence crime");
+		list.insert("Don McLean","17/01/2015","misdemeanor domestic violence charges");
+		mySQLconnector.insertListToDB(list);
+	}
 	
 	@Test
-	public void readDatabase() throws Exception {
-		try{
-
-			Class.forName("com.mysql.jdbc.Driver");
-			String url = "jdbc:mysql://localhost/celebsArrests";
-			String user = "root";
-			String pass = "mysqlpass";
-			conn = DriverManager.getConnection(url,user,pass);
-			statement = conn.createStatement();
-			rs = statement.executeQuery("use celebsArrests");
-			rs = statement.executeQuery("SELECT * FROM arrests");
+	public static void manipulateDatabase() throws Exception {
+		try(ResultSet rs = mySQLconnector.runQuery("SELECT * FROM celebs_arrests");){
 			writeMetadata(rs);
 			writeResultSet(rs);
-			int affected = statement.executeUpdate("DELETE FROM arrests WHERE name = 'Soulja Boy'");
-			Assert.assertEquals(0, affected);			
-			rs = statement.executeQuery("SELECT COUNT(*) AS count FROM arrests WHERE name = 'Justin Bieber'");
+		}catch(SQLException e){
+			throw e;
+		}
+		int affectedLines = mySQLconnector.updateDB("DELETE FROM celebs_arrests WHERE name = 'Emile Hirsch'");
+		Assert.assertEquals(1, affectedLines);			
+		try(ResultSet rs = mySQLconnector.runQuery("SELECT COUNT(*) AS count FROM celebs_arrests WHERE name = 'Justin Bieber'");){
 			if (rs.next()) Assert.assertEquals(1,rs.getInt("count"));
 		}catch(Exception e){
 			throw e;
-		}finally{
-			close();
-		}
+		}	
 	}
 	
 	private static void writeMetadata(ResultSet s) throws SQLException{
@@ -57,14 +75,6 @@ public class MySQLConnectorTest {
 			System.out.println("Date: " + date);
 			System.out.println("Reason: " + reason);		
 		}
-	}
-
-	private void close(){
-		try{
-			if(conn!=null) conn.close();
-			if(statement!=null) statement.close();
-			if(rs!=null) rs.close();
-		}catch(Exception e){}
 	}
 }
 

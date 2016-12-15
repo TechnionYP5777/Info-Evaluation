@@ -5,6 +5,8 @@ import java.sql.SQLException;
 
 import javax.swing.table.DefaultTableModel;
 
+import main.database.MySQLConnector;
+
 import java.util.ArrayList;
 
 /**
@@ -53,20 +55,37 @@ public class RefineTable {
 		}
 	}
 
-	/**
-	 * sorts the content of the events table according to the given field name
+	 /* accepts a JTable and sorts the content of the table according to the
+	 * given field name
+	 * @throws SQLException
 	 */
-	public void sortBy(DefaultTableModel m, String fieldName) {
-		if (m != null && fieldExist(fieldName))
+	public void sortBy(MySQLConnector c, DefaultTableModel m, String fieldName) throws SQLException {
+		if (m == null || !fieldExist(fieldName))
+			return;
+		@SuppressWarnings("unused")
+		ArrayList<String> events;
+		try{
+			ResultSet r;
 			switch (fieldName) {
-			case "Date":
-				break;
-			case "Name":
-				break;
-			case "Reason":
-				break;
+				case "Date":
+					r = c.runQuery("SELECT * FROM celebsArrests ORDER BY UNIX_TIMESTAMP(date) DESC");
+					fillEventsTable(m,r); 
+					r.close();
+					break;
+				case "Name":
+					r = c.runQuery("SELECT * FROM celebsArrests ORDER BY name DESC");
+					fillEventsTable(m,r); 					
+					r.close();					
+					break;
+				case "Reason":
+					r = c.runQuery("SELECT * FROM celebsArrests ORDER BY reason");
+					fillEventsTable(m,r); 					
+					r.close();
+					break;	
 			}
-
+		}catch(SQLException e){
+			throw e;
+		}
 	}
 
 	/**
