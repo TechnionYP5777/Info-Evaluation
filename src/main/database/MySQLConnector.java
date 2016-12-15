@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 /*
+ * set up the connection to MySQL DB and provide a function to run a query  
  * @author Osher Hajaj
  * @since 6/12/2016
  * */
@@ -22,20 +23,19 @@ public class MySQLConnector {
         }
     }
     
-    public void runQuery(String query) throws SQLException{
-    	try(
-			Statement statement = conn.createStatement();
-			ResultSet rs = statement.executeQuery(query);){
-			rs.close();
-			statement.close();
-		}catch(SQLException e){
-    		throw e;
-    	}
+    public int updateDB(String query) throws SQLException{
+    	return conn.createStatement().executeUpdate(query);
+    }    
+    
+    public ResultSet runQuery(String query) throws SQLException{
+    	return conn.createStatement().executeQuery(query);
     }
     
     public void closeConnection(){
     	try{
     		if(conn!=null) conn.close();
-    	}catch(SQLException e){}
+    	}catch(SQLException e){
+    		e.printStackTrace();
+    	}
     }
 }
