@@ -1,5 +1,6 @@
 package main.Analyze;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,7 +39,13 @@ public class AnalyzeDate {
 	}
 
 	public Date getDateObj() {
-		// TODO: implement function
+		if(format==null)
+			return null;
+		try {
+			return (new SimpleDateFormat(format)).parse(this.date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
