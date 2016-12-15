@@ -15,16 +15,16 @@ import java.util.ArrayList;
 public class RefineTable {
 	private ArrayList<String> fields;
 
-	public ArrayList<String> getFeilds() {
+	public ArrayList<String> getFields() {
 		return fields;
 	}
 
-	public void addFeild(String name) {
+	public void addField(String name) {
 		if (name != null && !"".equals(name))
 			fields.add(name);
 	}
 
-	public void removeFeild(String name) {
+	public void removeField(String name) {
 		if (fieldExist(name))
 			fields.remove(name);
 	}
@@ -35,7 +35,7 @@ public class RefineTable {
 
 	/**
 	 *
-	 * accepts a JTable and list of events as a SQL query result and fills them
+	 * accepts a DefaultTableModel and list of events as a SQL query result and fills them
 	 * in table
 	 * 
 	 * @throws SQLException
@@ -54,28 +54,35 @@ public class RefineTable {
 	}
 
 	/**
-	 * accepts a JTable and sorts the content of the table according to the
-	 * given field name
+	 * sorts the content of the events table according to the given field name
 	 */
 	public void sortBy(DefaultTableModel m, String fieldName) {
-		if (m == null || !fieldExist(fieldName))
-			return;
-		@SuppressWarnings("unused")
-		ArrayList<String> events;
-		switch (fieldName) {
-		case "Date":
-			// TODO: call fillTable with
-			// the result of runQuery("SELECT * FROM events ORDER BY UNIX_TIMESTAMP(date) DESC")
-			break;
-		case "Name":
-			// TODO: call fillTable with
-			// the result of runQuery("SELECT * FROM events ORDER BY name DESC")
-			break;
-		case "Reason":
-			// TODO: call fillTable with
-			// the result of runQuery("SELECT * FROM events ORDER BY reason")
-			break;
-		}
+		if (m != null && fieldExist(fieldName))
+			switch (fieldName) {
+			case "Date":
+				break;
+			case "Name":
+				break;
+			case "Reason":
+				break;
+			}
+
+	}
+
+	/**
+	 * filters the content of the events table according to the given field name
+	 * and value
+	 */
+	public void filterBy(DefaultTableModel m, String fieldName, String fieldValue) {
+		if (m != null && fieldExist(fieldName) && fieldValue != null)
+			switch (fieldName) {
+			case "Date":
+				break;
+			case "Name":
+				break;
+			case "Reason":
+				break;
+			}
 
 	}
 
