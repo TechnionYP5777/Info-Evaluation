@@ -1,7 +1,9 @@
 package main.Analyze;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,61 +11,26 @@ import java.util.regex.Pattern;
 public class AnalyzeDate {
 	String date;
 	String format;
+	List<String> popularFormats;
 
 	public AnalyzeDate(String d) {
 		date = d;
-		format=findFormat();
+		
+		popularFormats=new ArrayList<>();
+		popularFormats.add("MM/dd/yyyy");
+		popularFormats.add("MMM. dd, yyyy");
+		popularFormats.add("MMM dd, yyyy");
+		popularFormats.add("MMMM dd'" + getDayOfMonthSuffix(getDay(date)) + "', yyyy");
+		format = findFormat();
 	}
 
 	private String findFormat() {
-		// TODO: implement function
-		boolean success=true;
-		
-		Date regularDate = null;
-		
-		//first format
-		try {
-			regularDate = (new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH)).parse(date);
-		} catch (Exception e) {
-			success=false;
+		for(String ¢:popularFormats) {
+			String $ = whatFormat(¢);
+			if($!=null)
+				return $;
 		}
-		if(success)
-			return "MM/dd/yyyy";
-		success=true;
-		
-		//second format
-		try {
-			regularDate = (new SimpleDateFormat("MMM. dd, yyyy", Locale.ENGLISH)).parse(date);
-		} catch (Exception e) {
-			success=false;
-		}
-		if(success)
-			return "MMM. dd, yyyy";
-		success=true;
-		
-		// third format
-		try {
-			regularDate = (new SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH)).parse(date);
-		} catch (Exception e) {
-			success=false;
-		}
-		if(success)
-			return "MMM dd, yyyy";
-		success=true;
-		
-		// forth format
-		try {
-			regularDate = (new SimpleDateFormat(("MMMM dd'" + getDayOfMonthSuffix(getDay(date)) + "', yyyy"),
-					Locale.ENGLISH)).parse(date);
-		} catch (Exception e) {
-			success=false;
-		}
-		if(success)
-			return "MMMM dd'"+getDayOfMonthSuffix(getDay(date))+"', yyyy";
-		success=true;
-		
-		
-		return null; //none of the formats we work with
+		return null; // none of the formats we work with
 	}
 
 	public String getFormat() {
@@ -75,12 +42,21 @@ public class AnalyzeDate {
 		return null;
 	}
 
+	private String whatFormat(String s) {
+		try {
+			(new SimpleDateFormat(s, Locale.ENGLISH)).parse(date);
+		} catch (Exception e) {
+			return null;
+		}
+		return s;
+	}
+
 	private int getDay(String s) {
 		Pattern pattern = Pattern.compile("\\s([A-Za-z]+)");
 		Matcher matcher = pattern.matcher(s);
 		return !matcher.find() ? -1 : Integer.parseInt(matcher.group(1));
 	}
-	
+
 	private String getDayOfMonthSuffix(int day) {
 		switch (day) {
 		case 1:
