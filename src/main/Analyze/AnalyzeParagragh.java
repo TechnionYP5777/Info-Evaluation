@@ -150,23 +150,31 @@ public class AnalyzeParagragh {
 		String name=getName();
 		Date input_date = getDate();
 		String reason="";
-		
+		String details=""; // more details about the reason. e.g - where it happened.
 		
 		for (CoreMap sentence : document.get(SentencesAnnotation.class)) {		
 		SemanticGraph dependencies = sentence.get(CollapsedDependenciesAnnotation.class);
 		for (IndexedWord root : dependencies.getRoots())
 			for (SemanticGraphEdge edge : dependencies.getOutEdgesSorted(root)) {
 				IndexedWord dep = edge.getDependent();
-				if ("arrested".equals(edge.getGovernor().word()) && "nmod:for".equals((edge.getRelation() + ""))
-						&& "nmod:for".equals((edge.getRelation() + ""))) {
-					for (SemanticGraphEdge keshet : dependencies.getOutEdgesSorted(dep))
+				
+				if (!"arrested".equals(edge.getGovernor().word()) || !"nmod:for".equals((edge.getRelation() + ""))) {
+					if ("arrested".equals(edge.getGovernor().word()) && "nmod:in".equals(edge.getRelation() + ""))
+						details += "in" + " " + dep.word() + " ";
+				} else {
+					for (SemanticGraphEdge keshet : dependencies.getOutEdgesSorted(dep)) {
 						if ("amod".equals((keshet.getRelation() + "")))
 							reason += keshet.getDependent().word() + " ";
+						if ("nmod:in".equals(keshet.getRelation() + ""))
+							details += "in" + " " + keshet.getDependent().word() + " ";
+					}
 					reason += dep.word();
 				}
+				}
+			
+		
 			}
-	}
-		return new TableTuple(name,input_date,reason);
+		return new TableTuple(name,input_date,(reason+" "+details).trim());
    } 
 	
 	//EOF

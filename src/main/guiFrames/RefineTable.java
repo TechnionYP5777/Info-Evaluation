@@ -57,23 +57,15 @@ public class RefineTable {
 	 * sorts the content of the events table according to the given field name
 	 */
 	public void sortBy(DefaultTableModel m, String fieldName) {
-		if (m == null || !fieldExist(fieldName))
-			return;
-		switch (fieldName) {
-		case "Date":
-			// TODO: call fillTable with
-			// the result of runQuery("SELECT * FROM events ORDER BY
-			// UNIX_TIMESTAMP(date) DESC")
-			break;
-		case "Name":
-			// TODO: call fillTable with
-			// the result of runQuery("SELECT * FROM events ORDER BY name DESC")
-			break;
-		case "Reason":
-			// TODO: call fillTable with
-			// the result of runQuery("SELECT * FROM events ORDER BY reason")
-			break;
-		}
+		if (m != null && fieldExist(fieldName))
+			switch (fieldName) {
+			case "Date":
+				break;
+			case "Name":
+				break;
+			case "Reason":
+				break;
+			}
 
 	}
 
@@ -82,22 +74,15 @@ public class RefineTable {
 	 * and value
 	 */
 	public void filterBy(DefaultTableModel m, String fieldName, String fieldValue) {
-		if (m == null || !fieldExist(fieldName) || fieldValue == null)
-			return;
-		switch (fieldName) {
-		case "Date":
-			// TODO: call fillTable with
-			// the result of runQuery("SELECT * FROM events WHERE DATE(date) = " + fieldValue + " ")
-			break;
-		case "Name":
-			// TODO: call fillTable with
-			// the result of runQuery("SELECT * FROM events WHERE name = " + fieldValue + " ")
-			break;
-		case "Reason":
-			// TODO: call fillTable with
-			// the result of runQuery("SELECT * FROM events WHERE name LIKE \"%" + fieldValue + "%\"")
-			break;
-		}
+		if (m != null && fieldExist(fieldName) && fieldValue != null)
+			switch (fieldName) {
+			case "Date":
+				break;
+			case "Name":
+				break;
+			case "Reason":
+				break;
+			}
 
 	}
 

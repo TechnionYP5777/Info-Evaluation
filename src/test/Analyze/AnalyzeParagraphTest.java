@@ -28,12 +28,23 @@ public class AnalyzeParagraphTest {
 	
 	@Test
 	public void test2(){		
-		Sentence sent = new Sentence("Justin Bieber was arrested for drunk driving on February 22, 2015");
+		Sentence sent = new Sentence("Justin Bieber was arrested for drunk driving in Georgia on February 22, 2015 .");
         AnalyzeParagragh anal = new AnalyzeParagragh(sent);
         TableTuple tt = anal.Analyze();
         assertEquals("Justin Bieber",tt.getName());
-        assertEquals("drunk driving",tt.getReason());
+        assertEquals("drunk driving in Georgia",tt.getReason());
         assertEquals("22/02/2015",tt.getDate());
+        
+	}
+	
+	@Test
+	public void test3(){		
+		Sentence sent = new Sentence("Vin Diesel was arrested for furious driving on August 14, 2002 in California");
+        AnalyzeParagragh anal = new AnalyzeParagragh(sent);
+        TableTuple tt = anal.Analyze();
+        assertEquals("Vin Diesel",tt.getName());
+        assertEquals("driving furious in California",tt.getReason());
+        assertEquals("14/08/2002",tt.getDate());
         
 	}
 	
