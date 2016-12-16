@@ -33,7 +33,7 @@ public class AnalyzeParagraphTest {
         TableTuple tt = anal.Analyze();
         assertEquals("Justin Bieber",tt.getName());
         assertEquals("drunk driving in Georgia",tt.getReason());
-        assertEquals("22/02/2015",tt.getDate());
+        assertEquals("02/22/2015",tt.getDate());
         
 	}
 	
@@ -44,8 +44,19 @@ public class AnalyzeParagraphTest {
         TableTuple tt = anal.Analyze();
         assertEquals("Vin Diesel",tt.getName());
         assertEquals("driving furious in California",tt.getReason());
-        assertEquals("14/08/2002",tt.getDate());
+        assertEquals("08/14/2002",tt.getDate());
         
+	}
+	
+	@Test
+	public void test4(){
+		Sentence sent = new Sentence("Axl Rose was arrested for consuming drugs on October 5th 2012 in NY during rock concert .");
+        AnalyzeParagragh anal = new AnalyzeParagragh(sent);
+        TableTuple tt = anal.Analyze();
+        assertEquals("Axl Rose",tt.getName());
+        assertEquals("drugs consuming during concert",tt.getReason());
+        assertEquals("10/05/2012",tt.getDate());
+		
 	}
 	
 	

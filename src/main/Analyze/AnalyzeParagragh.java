@@ -1,6 +1,7 @@
 package main.Analyze;
 
 import main.database.*;
+import main.Analyze.AnalyzeDate;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -88,25 +89,17 @@ public class AnalyzeParagragh {
 		return new TableTuple(name, date1, "b");
 	}
 	
-	private Date getDate(){	
+	private String getDate(){	
 		List<String> nerTags = this.input.nerTags(); 
 		int i=0;
 		String date="";
 		for (String elem : nerTags){
 			if("DATE".equals(elem))
-				date += covertMonth(this.input.word(i)) + " ";
+				date += this.input.word(i) + " ";
 			++i;
 			
 		}
-		DateFormat format = new SimpleDateFormat("MMMM dd , yyyy", Locale.ENGLISH);
-		Date $ = null;
-		try {
-			$ = format.parse(date);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block @Genia
-			e.printStackTrace();
-		}
-		return $;
+		return ((new SimpleDateFormat("MM/dd/yyyy")).format((new AnalyzeDate(date.trim())).getDateObj()));
 	}
 	
 	private String getName(){
@@ -148,7 +141,7 @@ public class AnalyzeParagragh {
 		// Finally we use the pipeline to annotate the document we created
 		pipeLine.annotate( document );
 		String name=getName();
-		Date input_date = getDate();
+		String input_date = getDate();
 		String reason="";
 		String details=""; // more details about the reason. e.g - where it happened.
 		
@@ -157,23 +150,37 @@ public class AnalyzeParagragh {
 		for (IndexedWord root : dependencies.getRoots())
 			for (SemanticGraphEdge edge : dependencies.getOutEdgesSorted(root)) {
 				IndexedWord dep = edge.getDependent();
-				
-				if (!"arrested".equals(edge.getGovernor().word()) || !"nmod:for".equals((edge.getRelation() + ""))) {
-					if ("arrested".equals(edge.getGovernor().word()) && "nmod:in".equals(edge.getRelation() + ""))
+				String rel = edge.getRelation() + "";
+				if (!"arrested".equals(edge.getGovernor().word()))
+					switch (rel) {
+					case "nmod:in":
 						details += "in" + " " + dep.word() + " ";
-				} else {
+						break;
+					case "nmod:during":
+						details += "during" + " " + dep.word() + " ";
+						break;
+					}
+				else if ("advcl".equals(rel) || "nmod:for".equals(rel)) {
 					for (SemanticGraphEdge keshet : dependencies.getOutEdgesSorted(dep)) {
-						if ("amod".equals((keshet.getRelation() + "")))
-							reason += keshet.getDependent().word() + " ";
-						if ("nmod:in".equals(keshet.getRelation() + ""))
-							details += "in" + " " + keshet.getDependent().word() + " ";
+						String rel2 = keshet.getRelation() + "";
+						IndexedWord dep2 = keshet.getDependent();
+						if ("amod".equals(rel2) || "dobj".equals(rel2))
+							reason += dep2.word() + " ";
+						switch (rel2) {
+						case "nmod:in":
+							details += "in" + " " + dep2.word() + " ";
+							break;
+						case "nmod:during":
+							details += "during" + " " + dep2.word() + " ";
+							break;
+						}
 					}
 					reason += dep.word();
 				}
 				}
+			}
 			
 		
-			}
 		return new TableTuple(name,input_date,(reason+" "+details).trim());
    } 
 	
