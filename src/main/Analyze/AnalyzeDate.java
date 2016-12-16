@@ -22,6 +22,8 @@ public class AnalyzeDate {
 		popularFormats.add("MMM. dd, yyyy");
 		popularFormats.add("MMM dd, yyyy");
 		popularFormats.add("MMMM dd'" + getDayOfMonthSuffix(getDay(date)) + "', yyyy");
+		popularFormats.add("MMMM dd'" + getDayOfMonthSuffix(getDay(date)) + "' yyyy");
+		popularFormats.add("MMMM dd , yyyy");
 		format = findFormat();
 	}
 
