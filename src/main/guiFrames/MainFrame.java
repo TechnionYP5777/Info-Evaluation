@@ -69,7 +69,7 @@ public class MainFrame {
 										+ "the data,formats it,\nthen analyzes according to the query "
 										+ "and returns a structured list of info and interactively suggests"
 										+ " new\nqueries in order to achieve the most exact results. "
-										+ "\n\n\n\n\nBy: Vivian Shehadeh\nGenia Shandalov\nOsher Hajaj"
+										+ "\n\n\n\n\nBy: \nVivian Shehadeh\nGenia Shandalov\nOsher Hajaj"
 										+ "\nWard Mattar\nMoshiko Elisof\nNetanel Felcher\n"),
 								"About", JOptionPane.INFORMATION_MESSAGE);
 						
