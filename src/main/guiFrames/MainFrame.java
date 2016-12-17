@@ -46,8 +46,10 @@ public class MainFrame {
 				try {
 					MainFrame window = new MainFrame();
 					window.frame.setVisible(true);
+					window.onClickCheckBox(window.chckbxDate, window.chckbxName, window.chckbxReason);
+					window.onClickCheckBox(window.chckbxName, window.chckbxDate, window.chckbxReason);
+					window.onClickCheckBox(window.chckbxReason, window.chckbxName, window.chckbxDate);
 					window.btnSearch.addActionListener(e -> {
-						if (!window.table.isVisible()){
 							DefaultTableModel model = (DefaultTableModel) window.table.getModel();
 							if(window.selected_chckbx()!= "none")
 							try{
@@ -56,9 +58,7 @@ public class MainFrame {
 							catch (SQLException exc) {
 								JOptionPane.showMessageDialog(null, "problem with sql connector","Error", JOptionPane.INFORMATION_MESSAGE);
 							}
-							window.table.setVisible(true);
-						}
-						
+							window.table.setVisible(true);	
 					});
 					
 				} catch (Exception e) {
@@ -93,7 +93,7 @@ public class MainFrame {
 		connector = new MySQLConnector();
 		}
 		catch (Exception e){
-			JOptionPane.showMessageDialog(null, "problem with sql connector","Error", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "problem2 with sql connector","Error", JOptionPane.INFORMATION_MESSAGE);
 		}
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
@@ -170,6 +170,15 @@ public class MainFrame {
 
 	}
 	
+	public void onClickCheckBox(JCheckBox chckbx,JCheckBox clearbx1,JCheckBox clearbx2){
+		chckbx.addActionListener(l->{
+			if(chckbx.isSelected()){
+				clearbx1.setSelected(false);
+				clearbx2.setSelected(false);
+			}
+			
+		});
+	}
 	public String selected_chckbx(){
 		return chckbxName.isSelected() ? "name"
 				: chckbxDate.isSelected() ? "date" : !chckbxReason.isSelected() ? "none" : "reason";
