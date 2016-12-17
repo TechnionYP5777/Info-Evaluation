@@ -1,5 +1,6 @@
 package main.guiFrames;
 
+
 import java.awt.EventQueue;
 import java.sql.SQLException;
 import javax.swing.JButton;
@@ -35,6 +36,8 @@ public class MainFrame {
 	private JCheckBox chckbxName;
 	private JCheckBox chckbxDate;
 	private JCheckBox chckbxReason;
+	private JMenuItem mntmAbout;
+	private JMenu mnHelp;
 	private  static MySQLConnector connector;
 	/**
 	 * Launch the application.
@@ -60,6 +63,17 @@ public class MainFrame {
 							}
 							window.table.setVisible(true);	
 					});
+					window.mntmAbout.addActionListener(m->{
+						JOptionPane.showMessageDialog(null,
+								("Info Evaluation is a program that reads query results from google search and parses "
+										+ "the data,formats it,\nthen analyzes according to the query "
+										+ "and returns a structured list of info and interactively suggests"
+										+ " new\nqueries in order to achieve the most exact results. "
+										+ "\n\n\n\n\nBy: Vivian Shehadeh\nGenia Shandalov\nOsher Hajaj"
+										+ "\nWard Mattar\nMoshiko Elisof\nNetanel Felcher\n"),
+								"About", JOptionPane.INFORMATION_MESSAGE);
+						
+					});
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -70,6 +84,7 @@ public class MainFrame {
 				
 			}
 		});
+		
 	}
 
 	/**
@@ -104,11 +119,11 @@ public class MainFrame {
 		JMenu mnEdit = new JMenu("Edit");
 		menuBar.add(mnEdit);
 
-		JMenu mnHelp = new JMenu("Help");
+		mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
 
-		JMenuItem mntmHelp = new JMenuItem("Help");
-		mnHelp.add(mntmHelp);
+		mntmAbout = new JMenuItem("About");
+		mnHelp.add(mntmAbout);
 		/*
 		 * 
 		 * initializing the table
