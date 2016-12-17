@@ -35,7 +35,7 @@ public class MainFrame {
 	private JCheckBox chckbxName;
 	private JCheckBox chckbxDate;
 	private JCheckBox chckbxReason;
-	private MySQLConnector connector;
+	private  static MySQLConnector connector;
 	/**
 	 * Launch the application.
 	 */
@@ -51,7 +51,7 @@ public class MainFrame {
 							DefaultTableModel model = (DefaultTableModel) window.table.getModel();
 							if(window.selected_chckbx()!= "none")
 							try{
-							window.inputList.sortBy(window.connector, model, window.selected_chckbx());
+							window.inputList.sortBy(connector, model, window.selected_chckbx());
 							}
 							catch (SQLException exc) {
 								JOptionPane.showMessageDialog(null, "problem with sql connector","Error", JOptionPane.INFORMATION_MESSAGE);
@@ -60,9 +60,14 @@ public class MainFrame {
 						}
 						
 					});
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				finally{
+					connector.closeConnection();
+				}
+				
 			}
 		});
 	}
@@ -83,7 +88,13 @@ public class MainFrame {
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		
+		try{
+		connector = new MySQLConnector();
+		}
+		catch (Exception e){
+			JOptionPane.showMessageDialog(null, "problem with sql connector","Error", JOptionPane.INFORMATION_MESSAGE);
+		}
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
 
