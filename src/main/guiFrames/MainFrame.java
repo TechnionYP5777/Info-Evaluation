@@ -1,11 +1,13 @@
 package main.guiFrames;
 
 import java.awt.EventQueue;
+import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
@@ -15,18 +17,25 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JLabel;
 import javax.swing.JCheckBox;
+import main.database.MySQLConnector;
+
 
 /**
  * This class implements the main windows of the GUI
  * @author viviansh
  */
+ 
 public class MainFrame {
 
 	private JFrame frame;
 	private JTextField searchTxt;
 	private JTable table;
 	private JButton btnSearch;
-
+	private RefineTable inputList;
+	private JCheckBox chckbxName;
+	private JCheckBox chckbxDate;
+	private JCheckBox chckbxReason;
+	private MySQLConnector connector;
 	/**
 	 * Launch the application.
 	 */
@@ -38,8 +47,18 @@ public class MainFrame {
 					MainFrame window = new MainFrame();
 					window.frame.setVisible(true);
 					window.btnSearch.addActionListener(e -> {
-						if (!window.table.isVisible())
+						if (!window.table.isVisible()){
+							DefaultTableModel model = (DefaultTableModel) window.table.getModel();
+							if(window.selected_chckbx()!= "none")
+							try{
+							window.inputList.sortBy(window.connector, model, window.selected_chckbx());
+							}
+							catch (SQLException exc) {
+								JOptionPane.showMessageDialog(null, "problem with sql connector","Error", JOptionPane.INFORMATION_MESSAGE);
+							}
 							window.table.setVisible(true);
+						}
+						
 					});
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -104,18 +123,19 @@ public class MainFrame {
 
 		JLabel lblNewLabel = new JLabel("Sort by:");
 
-		JCheckBox chckbxName = new JCheckBox("Name");
+		 chckbxName = new JCheckBox("Name");
 
-		JCheckBox chckbxReason = new JCheckBox("Date");
+		 chckbxDate = new JCheckBox("Date");
 
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Reason");
+		 chckbxReason= new JCheckBox("Reason");
+		
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup().addContainerGap()
 						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addGroup(groupLayout.createSequentialGroup().addGap(12).addComponent(chckbxName)
-										.addPreferredGap(ComponentPlacement.RELATED).addComponent(chckbxReason)
-										.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(chckbxNewCheckBox)
+										.addPreferredGap(ComponentPlacement.RELATED).addComponent(chckbxDate)
+										.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(chckbxReason)
 										.addContainerGap())
 								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 										.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
@@ -133,9 +153,14 @@ public class MainFrame {
 				.addPreferredGap(ComponentPlacement.RELATED).addComponent(lblNewLabel)
 				.addPreferredGap(ComponentPlacement.UNRELATED)
 				.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(chckbxName)
-						.addComponent(chckbxReason).addComponent(chckbxNewCheckBox))
+						.addComponent(chckbxDate).addComponent(chckbxReason))
 				.addContainerGap(152, Short.MAX_VALUE)));
 		frame.getContentPane().setLayout(groupLayout);
 
+	}
+	
+	public String selected_chckbx(){
+		return chckbxName.isSelected() ? "name"
+				: chckbxDate.isSelected() ? "date" : !chckbxReason.isSelected() ? "none" : "reason";
 	}
 }
