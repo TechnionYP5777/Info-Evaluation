@@ -19,6 +19,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JLabel;
 import javax.swing.JCheckBox;
 import main.database.MySQLConnector;
+import javax.swing.JComboBox;
 
 
 /**
@@ -38,7 +39,10 @@ public class MainFrame {
 	private JCheckBox chckbxReason;
 	private JMenuItem mntmAbout;
 	private JMenu mnHelp;
+	private JCheckBox chckbxSortby;
+	private JCheckBox chckbxFilterBy;
 	private  static MySQLConnector connector;
+	private JComboBox <String> comboBox;
 	/**
 	 * Launch the application.
 	 */
@@ -52,14 +56,49 @@ public class MainFrame {
 					window.onClickCheckBox(window.chckbxDate, window.chckbxName, window.chckbxReason);
 					window.onClickCheckBox(window.chckbxName, window.chckbxDate, window.chckbxReason);
 					window.onClickCheckBox(window.chckbxReason, window.chckbxName, window.chckbxDate);
+					
+					window.chckbxSortby.addActionListener(l->{
+						window.removeSelected();
+						window.comboBox.setVisible(false);
+						window.chckbxFilterBy.setSelected(false);
+						window.chckbxDate.setText("Date");
+						if(window.chckbxSortby.isSelected()){
+						window.setVisabilty(true);
+						}
+						else{
+							window.setVisabilty(false);
+						}
+						
+					});
+					
+					window.chckbxFilterBy.addActionListener(l->{
+						window.removeSelected();
+						window.comboBox.setVisible(false);
+						window.chckbxSortby.setSelected(false);
+						window.chckbxDate.setText("Year");
+						if(window.chckbxFilterBy.isSelected()){
+							window.setVisabilty(true);
+							}
+						else
+							window.setVisabilty(false);
+					});
+					
 					window.btnSearch.addActionListener(e -> {
 							DefaultTableModel model = (DefaultTableModel) window.table.getModel();
-							if(window.selected_chckbx()!= "none")
+							if(window.chckbxSortby.isSelected())	
 							try{
 							window.inputList.sortBy(connector, model, window.selected_chckbx());
 							}
 							catch (SQLException exc) {
 								JOptionPane.showMessageDialog(null, "problem with sql connector","Error", JOptionPane.INFORMATION_MESSAGE);
+							}
+							if(window.chckbxFilterBy.isSelected()){
+								try {
+									window.inputList.filterBy(connector, (DefaultTableModel)window.table.getModel(), window.selected_chckbx(), (String)window.comboBox.getSelectedItem());
+								} catch (SQLException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
 							}
 							window.table.setVisible(true);	
 					});
@@ -84,6 +123,19 @@ public class MainFrame {
 				
 			}
 		});
+		
+	}
+
+	protected void removeSelected() {
+		this.chckbxName.setSelected(false);
+		this.chckbxReason.setSelected(false);
+		this.chckbxDate.setSelected(false);
+		
+	}
+	protected void setVisabilty(boolean flag) {
+		this.chckbxName.setVisible(flag);
+		this.chckbxReason.setVisible(flag);
+		this.chckbxDate.setVisible(flag);
 		
 	}
 
@@ -147,40 +199,73 @@ public class MainFrame {
 		searchTxt.setText("Search");
 		searchTxt.setColumns(10);
 
-		JLabel lblNewLabel = new JLabel("Sort by:");
-
 		 chckbxName = new JCheckBox("Name");
+//		 chckbxName.setName("Name");
+		 chckbxName.setVisible(false);
 
 		 chckbxDate = new JCheckBox("Date");
-
+		 chckbxDate.setVisible(false);
+		 
 		 chckbxReason= new JCheckBox("Reason");
+		 chckbxReason.setVisible(false);
+//		 chckbxReason.setName("Reason");
+		 
+		 chckbxSortby = new JCheckBox("Sort by");
+		
+		 chckbxFilterBy = new JCheckBox("Filter by");
+		
+		comboBox = new JComboBox();
+		comboBox.setVisible(false);
 		
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
-		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup().addContainerGap()
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup().addGap(12).addComponent(chckbxName)
-										.addPreferredGap(ComponentPlacement.RELATED).addComponent(chckbxDate)
-										.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(chckbxReason)
-										.addContainerGap())
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-												.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, 281,
-														GroupLayout.PREFERRED_SIZE)
-												.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE,
-														Short.MAX_VALUE)
-												.addComponent(btnSearch).addGap(74))
-										.addGroup(groupLayout.createSequentialGroup().addComponent(lblNewLabel)
-												.addContainerGap(372, Short.MAX_VALUE))))));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
-				.createSequentialGroup().addGap(20)
-				.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(btnSearch).addComponent(
-						searchTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-				.addPreferredGap(ComponentPlacement.RELATED).addComponent(lblNewLabel)
-				.addPreferredGap(ComponentPlacement.UNRELATED)
-				.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(chckbxName)
-						.addComponent(chckbxDate).addComponent(chckbxReason))
-				.addContainerGap(152, Short.MAX_VALUE)));
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(12)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(chckbxSortby)
+								.addComponent(chckbxName))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(chckbxDate)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(chckbxReason))
+								.addComponent(chckbxFilterBy))))
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnSearch))
+					.addGap(68))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(20)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnSearch)
+						.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(4)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(chckbxSortby)
+								.addComponent(chckbxFilterBy))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(chckbxName)
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+									.addComponent(chckbxDate)
+									.addComponent(chckbxReason))))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(18)
+							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(180, Short.MAX_VALUE))
+		);
 		frame.getContentPane().setLayout(groupLayout);
 
 	}
@@ -190,6 +275,16 @@ public class MainFrame {
 			if(chckbx.isSelected()){
 				clearbx1.setSelected(false);
 				clearbx2.setSelected(false);
+			}
+			if(this.chckbxFilterBy.isSelected()){
+				try {
+					this.inputList.getCategory(connector, this.comboBox, chckbx.getName());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				this.comboBox.setVisible(true);
+
 			}
 			
 		});
