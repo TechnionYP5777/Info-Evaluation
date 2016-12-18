@@ -11,38 +11,30 @@ import main.database.DataList;
 import main.database.TableTuple;
 
 public class AnalyzePageTest {
-	
-	@Test
-	public void testCreateParagraphs() {
-		String text = "Moshiko likes Justin Biber so he writes tests with his name";
-		AnalyzePage p = new AnalyzePage(text);
-		List<String> paragraphs = p.getParagraphs();
-		assertTrue(text.equals(paragraphs.get(0)));
-		text = "Rihanna was arrested for murder on December 2nd 2016. But she was released 2 days later. \n\nKanye West hates dogs. He spet on a dog and therefore was arrested and put to jail.";
-		p = new AnalyzePage(text);
-		paragraphs = p.getParagraphs();
-		assertEquals(paragraphs.size(), 2);
-		assertFalse(text.equals(paragraphs.get(0)));
-		assertTrue("Kanye West hates dogs. He spet on a dog and therefore was arrested and put to jail."
-				.equals(paragraphs.get(1)));
-	}
 
 	@Test
-	public void testDetectDetails() {
-		String text = "Rihanna was arrested for murder on December 2nd 2016. But she was released 2 days later.";
+	public void testBigParagraph() {
+		String text= "Tito Ortiz was arrested for driving under the influence after he drove his Porsche Panamera into the concrete median on Jan 6 on the 405 freeway in L.A. at 4am.\n"+
+					"\n"+
+					"David Cassidy was arrested for driving under the influence on Jan 10 after he allegedly took a breathalyzer test and was found to be over twice the legal limit.\n"+
+					"\n"+
+					"Soulja Boy was arrested for possession of a loaded gun in Los Angeles on Jan 22.\n";
 		AnalyzePage p = new AnalyzePage(text);
 		DataList detailsTable = p.getDetails();
-		assertEquals(detailsTable.getNumOfTuples(), 1);
+		assertEquals(detailsTable.getNumOfTuples(), 3);
 		ArrayList<TableTuple> details = detailsTable.getList();
-		assertTrue("Rihanna".equals(details.get(0).getName()));
-		assertTrue("murder".equals(details.get(0).getReason()));
+		assertTrue("Tito Ortiz".equals(details.get(0).getName()));
+		assertTrue("driving under influence".equals(details.get(0).getReason()));
+		assertTrue("01/06/2015".equals(details.get(0).getDate()));
 		
-		text+="\n\nDanny Din was arrested on 09/17/2003 because he did crack.";
-		p = new AnalyzePage(text);
-		detailsTable = p.getDetails();
-		assertEquals(detailsTable.getNumOfTuples(), 2);
-		details = detailsTable.getList();
-		assertTrue("Danny Din".equals(details.get(1).getName()));
+		assertTrue("David Cassidy".equals(details.get(1).getName()));
+		assertTrue("driving under influence".equals(details.get(1).getReason()));
+		assertTrue("01/10/2015".equals(details.get(1).getDate()));
+		
+		assertTrue("Soulja Boy".equals(details.get(2).getName()));
+		assertTrue("possession of gun".equals(details.get(2).getReason()));
+		assertTrue("01/22/2015".equals(details.get(2).getDate()));
+		
 	}
 
 }

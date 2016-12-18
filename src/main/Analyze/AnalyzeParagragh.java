@@ -154,7 +154,7 @@ public class AnalyzeParagragh {
 		String reason = "";
 		String details = ""; // more details about the reason. e.g - where it
 								// happened.
-		String aux="";
+		String aux = "";
 		for (CoreMap sentence : document.get(SentencesAnnotation.class)) {
 			SemanticGraph dependencies = sentence.get(CollapsedDependenciesAnnotation.class);
 			for (IndexedWord root : dependencies.getRoots())
@@ -173,23 +173,22 @@ public class AnalyzeParagragh {
 							details += "at" + " " + dep.word() + " ";
 							break;
 						}
-					
 					else if ("advcl".equals(rel) || "advcl:for".equals(rel)  || "nmod:for".equals(rel)) {
 						for (SemanticGraphEdge keshet : dependencies.getOutEdgesSorted(dep)) {
 							String rel2 = keshet.getRelation() + "";
 							IndexedWord dep2 = keshet.getDependent();
 							if ("amod".equals(rel2) || "dobj".equals(rel2))
 								reason += dep2.word() + " ";
-							if("xcomp".equals(rel2))
-								aux +=" "+ dep2.word();
+							if ("xcomp".equals(rel2))
+								aux += " " + dep2.word();
 							switch (rel2) {
 							case "nmod:in":
-								String longLocation=dep2.word();
+								String longLocation = dep2.word();
 								details += "in ";
-								for(SemanticGraphEdge keshet2 : dependencies.getOutEdgesSorted(dep2))
-									if ("compound".equals(keshet2.getRelation()+""))
+								for (SemanticGraphEdge keshet2 : dependencies.getOutEdgesSorted(dep2))
+									if ("compound".equals(keshet2.getRelation() + ""))
 										details += keshet2.getDependent().word() + " ";
-								details+=longLocation;
+								details += longLocation;
 								break;
 							case "nmod:during":
 								details += "during" + " " + dep2.word() + " ";
@@ -197,17 +196,19 @@ public class AnalyzeParagragh {
 							case "nmod:under":
 								details += "under " + dep2.word() + " ";
 								break;
+							case "nmod:of":
+								details += "of "+dep2.word();
+								break;
 							case "nmod:at":
 								details += "at" + " " + dep2.word() + " ";
 								break;
-							
 							}
 
 							if ("suspicion".equals(keshet.getSource().word()) && "acl:of".equals(rel2))
 								details += dep2.word();
 						}
 						reason += dep.word();
-						reason+=aux;
+						reason += aux;
 					}
 
 				}
