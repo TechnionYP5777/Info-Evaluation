@@ -51,9 +51,9 @@ public class RefineTable {
 		for (int ¢ = 0; ¢ < m.getRowCount(); ++¢)
 			m.removeRow(¢);
 		for (Object tempEvent[] = new Object[3]; s.next();) {
-			tempEvent[0] = s.getObject("name");
-			tempEvent[1] = s.getObject("arrest_date");
-			tempEvent[2] = s.getObject("reason");
+			tempEvent[0] = s.getString("name");
+			tempEvent[1] = s.getString("arrest_date");
+			tempEvent[2] = s.getString("reason");
 			m.addRow(tempEvent);
 		}
 	}
