@@ -187,5 +187,4 @@ public class RefineTable {
 				throw e;
 			}
 	}
-
 }
