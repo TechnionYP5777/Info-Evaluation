@@ -56,7 +56,7 @@ public class MainFrame {
 							DefaultTableModel model = (DefaultTableModel) window.table.getModel();
 							if(window.selected_chckbx()!= "none")
 							try{
-							window.inputList.sortBy(model, window.selected_chckbx());
+							window.inputList.sortBy(connector, model, window.selected_chckbx());
 							}
 							catch (SQLException exc) {
 								JOptionPane.showMessageDialog(null, "problem with sql connector","Error", JOptionPane.INFORMATION_MESSAGE);
@@ -79,7 +79,7 @@ public class MainFrame {
 					e.printStackTrace();
 				}
 				finally{
-					MySQLConnector.closeConnection();
+					connector.closeConnection();
 				}
 				
 			}

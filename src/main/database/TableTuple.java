@@ -40,7 +40,7 @@ public class TableTuple {
 		this.regularDate = date;
 		this.reason = reason;
 		try {
-			this.date = (new SimpleDateFormat("MM/dd/yyyy")).format(date);
+			this.date = (new SimpleDateFormat("dd/MM/yyyy")).format(date);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
