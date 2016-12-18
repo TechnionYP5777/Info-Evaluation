@@ -7,7 +7,7 @@ import java.util.Date;
  * 
  * @author netanel This class represents a tuple in the final table that is
  *         shown to the user in the GUI
- *
+ * @author osherh
  */
 
 public class TableTuple {
@@ -40,7 +40,7 @@ public class TableTuple {
 		this.regularDate = date;
 		this.reason = reason;
 		try {
-			this.date = (new SimpleDateFormat("dd/MM/yyyy")).format(date);
+			this.date = (new SimpleDateFormat("MM/dd/yyyy")).format(date);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
