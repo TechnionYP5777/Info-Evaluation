@@ -154,7 +154,7 @@ public class AnalyzeParagragh {
 		String reason = "";
 		String details = ""; // more details about the reason. e.g - where it
 								// happened.
-
+		String aux="";
 		for (CoreMap sentence : document.get(SentencesAnnotation.class)) {
 			SemanticGraph dependencies = sentence.get(CollapsedDependenciesAnnotation.class);
 			for (IndexedWord root : dependencies.getRoots())
@@ -170,12 +170,15 @@ public class AnalyzeParagragh {
 							details += "during" + " " + dep.word() + " ";
 							break;
 						}
+					
 					else if ("advcl".equals(rel) || "nmod:for".equals(rel)) {
 						for (SemanticGraphEdge keshet : dependencies.getOutEdgesSorted(dep)) {
 							String rel2 = keshet.getRelation() + "";
 							IndexedWord dep2 = keshet.getDependent();
 							if ("amod".equals(rel2) || "dobj".equals(rel2))
 								reason += dep2.word() + " ";
+							if("xcomp".equals(rel2))
+								aux +=" "+ dep2.word();
 							switch (rel2) {
 							case "nmod:in":
 								String longLocation=dep2.word();
@@ -196,6 +199,7 @@ public class AnalyzeParagragh {
 								details += dep2.word();
 						}
 						reason += dep.word();
+						reason+=aux;
 					}
 
 				}

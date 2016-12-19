@@ -65,7 +65,7 @@ public class AnalyzeParagraphTest {
         AnalyzeParagragh anal = new AnalyzeParagragh(sent);
         TableTuple tt = anal.Analyze();
         assertEquals("Axl Rose",tt.getName());
-        assertEquals("driving in New Zeland",tt.getReason());
+        assertEquals("driving drunk in New Zeland",tt.getReason());
         assertEquals("03/01/2015",tt.getDate());
 		
 	}
