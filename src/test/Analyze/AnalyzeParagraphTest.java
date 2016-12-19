@@ -61,11 +61,11 @@ public class AnalyzeParagraphTest {
 	
 	@Test
 	public void test5(){
-		Sentence sent = new Sentence("Axl Rose was arrested for driving under the influence in New Zealand on March 1.");
+		Sentence sent = new Sentence("Axl Rose was arrested after driving drunk in New Zeland on March 1.");
         AnalyzeParagragh anal = new AnalyzeParagragh(sent);
         TableTuple tt = anal.Analyze();
         assertEquals("Axl Rose",tt.getName());
-        assertEquals("driving under influence",tt.getReason());
+        assertEquals("driving in New Zeland",tt.getReason());
         assertEquals("03/01/2015",tt.getDate());
 		
 	}

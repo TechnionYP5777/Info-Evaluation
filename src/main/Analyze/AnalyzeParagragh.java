@@ -92,7 +92,7 @@ public class AnalyzeParagragh {
 
 	private String getDate(String year) {
 		List<String> nerTags = this.input.nerTags();
-		int i = 0, j=0;
+		int i = 0, j = 0;
 		String date = "";
 		for (String elem : nerTags) {
 			if ("DATE".equals(elem)) {
@@ -102,7 +102,7 @@ public class AnalyzeParagragh {
 			++i;
 
 		}
-		if(j==2)
+		if (j == 2)
 			date += year + " ";
 		return ((new SimpleDateFormat("MM/dd/yyyy")).format((new AnalyzeDate(date)).getDateObj()));
 	}
@@ -145,7 +145,7 @@ public class AnalyzeParagragh {
 		// inputText will be the text to evaluate in this example
 		String inputText = this.input + "";
 		Annotation document = new Annotation(inputText);
-		String year="2015";
+		String year = "2015";
 
 		// Finally we use the pipeline to annotate the document we created
 		pipeLine.annotate(document);
@@ -178,7 +178,12 @@ public class AnalyzeParagragh {
 								reason += dep2.word() + " ";
 							switch (rel2) {
 							case "nmod:in":
-								details += "in" + " " + dep2.word() + " ";
+								String longLocation=dep2.word();
+								details += "in ";
+								for(SemanticGraphEdge keshet2 : dependencies.getOutEdgesSorted(dep2))
+									if ("compound".equals(keshet2.getRelation()+""))
+										details += keshet2.getDependent().word() + " ";
+								details+=longLocation;
 								break;
 							case "nmod:during":
 								details += "during" + " " + dep2.word() + " ";
@@ -186,11 +191,15 @@ public class AnalyzeParagragh {
 							case "nmod:under":
 								details += "under " + dep2.word() + " ";
 							}
+
+							if ("suspicion".equals(keshet.getSource().word()) && "acl:of".equals(rel2))
+								details += dep2.word();
 						}
 						reason += dep.word();
-					} 
-					
+					}
+
 				}
+
 		}
 
 		return new TableTuple(name, input_date, (reason + " " + details).trim());
