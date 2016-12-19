@@ -22,21 +22,21 @@ import edu.stanford.nlp.util.CoreMap;
 
 /**
  * 
- * @author MosheEliasof 
+ * @author MosheEliasof
  *
  */
 
 public class AnalyzeParagragh {
 	private Sentence input;
-	
-	public AnalyzeParagragh(Sentence input){
-		if(input!=null)
-		this.input = new Sentence(input + "");
+
+	public AnalyzeParagragh(Sentence input) {
+		if (input != null)
+			this.input = new Sentence(input + "");
 	}
-	
-	//No May case cause it has no short version 
+
+	// No May case cause it has no short version
 	private String covertMonth(String month) {
-		switch(month) {
+		switch (month) {
 		case "Jan.":
 			return "January";
 		case "Feb.":
@@ -59,24 +59,24 @@ public class AnalyzeParagragh {
 			return "November";
 		case "Dec.":
 			return "December";
-		
+
 		}
 		return month;
 	}
-	
-	public TableTuple AnalyzeSimple (){
-		
-		List<String> nerTags = this.input.nerTags(); 
+
+	public TableTuple AnalyzeSimple() {
+
+		List<String> nerTags = this.input.nerTags();
 		String name = "";
-		int i=0;
-		String date="";
-		for (String elem : nerTags){
-			if("PERSON".equals(elem))
+		int i = 0;
+		String date = "";
+		for (String elem : nerTags) {
+			if ("PERSON".equals(elem))
 				name += this.input.word(i) + " ";
-			if("DATE".equals(elem))
+			if ("DATE".equals(elem))
 				date += covertMonth(this.input.word(i)) + " ";
 			++i;
-			
+
 		}
 		DateFormat format = new SimpleDateFormat("MMMM d", Locale.ENGLISH);
 		Date date1 = null;
@@ -88,102 +88,107 @@ public class AnalyzeParagragh {
 		}
 		return new TableTuple(name, date1, "b");
 	}
-	
-	private String getDate(){	
-		List<String> nerTags = this.input.nerTags(); 
-		int i=0;
-		String date="";
-		for (String elem : nerTags){
-			if("DATE".equals(elem))
+
+	private String getDate() {
+		List<String> nerTags = this.input.nerTags();
+		int i = 0;
+		String date = "";
+		for (String elem : nerTags) {
+			if ("DATE".equals(elem))
 				date += this.input.word(i) + " ";
 			++i;
-			
+
 		}
-		return ((new SimpleDateFormat("MM/dd/yyyy")).format((new AnalyzeDate(date.trim())).getDateObj()));
+		return ((new SimpleDateFormat("MM/dd/yyyy")).format((new AnalyzeDate(date)).getDateObj()));
 	}
-	
-	private String getName(){
-		List<String> nerTags = this.input.nerTags(); 
+
+	private String getName() {
+		List<String> nerTags = this.input.nerTags();
 		String name = "";
-		int i=0;
-		
-		for (String elem : nerTags){
-			if("PERSON".equals(elem))
+		int i = 0;
+
+		for (String elem : nerTags) {
+			if ("PERSON".equals(elem))
 				name += this.input.word(i) + " ";
-			++i;	
+			++i;
 		}
-		
-	
+
 		return name.trim();
 	}
-	
-	public TableTuple Analyze(){
-		/* First step is initiating the Stanford CoreNLP pipeline 
-		   (the pipeline will be later used to evaluate the text and annotate it)
-		   Pipeline is initiated using a Properties object which is used for setting all needed entities, 
-		   annotations, training data and so on, in order to customized the pipeline initialization to 
-		   contains only the models you need */
+
+	public TableTuple Analyze() {
+		/*
+		 * First step is initiating the Stanford CoreNLP pipeline (the pipeline
+		 * will be later used to evaluate the text and annotate it) Pipeline is
+		 * initiated using a Properties object which is used for setting all
+		 * needed entities, annotations, training data and so on, in order to
+		 * customized the pipeline initialization to contains only the models
+		 * you need
+		 */
 		Properties props = new Properties();
 
-		/* The "annotators" property key tells the pipeline which entities should be initiated with our
-		     pipeline object, See http://nlp.stanford.edu/software/corenlp.shtml for a complete reference 
-		     to the "annotators" values you can set here and what they will contribute to the analyzing process  */
-		props.put( "annotators", "tokenize,ssplit, pos, regexner, parse" );
-		StanfordCoreNLP pipeLine = new StanfordCoreNLP( props );
-		
-		
-	
+		/*
+		 * The "annotators" property key tells the pipeline which entities
+		 * should be initiated with our pipeline object, See
+		 * http://nlp.stanford.edu/software/corenlp.shtml for a complete
+		 * reference to the "annotators" values you can set here and what they
+		 * will contribute to the analyzing process
+		 */
+		props.put("annotators", "tokenize,ssplit, pos, regexner, parse");
+		StanfordCoreNLP pipeLine = new StanfordCoreNLP(props);
+
 		// inputText will be the text to evaluate in this example
 		String inputText = this.input + "";
-		Annotation document = new Annotation( inputText );
-		
+		Annotation document = new Annotation(inputText);
 
 		// Finally we use the pipeline to annotate the document we created
-		pipeLine.annotate( document );
-		String name=getName();
+		pipeLine.annotate(document);
+		String name = getName();
 		String input_date = getDate();
-		String reason="";
-		String details=""; // more details about the reason. e.g - where it happened.
-		
-		for (CoreMap sentence : document.get(SentencesAnnotation.class)) {		
-		SemanticGraph dependencies = sentence.get(CollapsedDependenciesAnnotation.class);
-		for (IndexedWord root : dependencies.getRoots())
-			for (SemanticGraphEdge edge : dependencies.getOutEdgesSorted(root)) {
-				IndexedWord dep = edge.getDependent();
-				String rel = edge.getRelation() + "";
-				if (!"arrested".equals(edge.getGovernor().word()))
-					switch (rel) {
-					case "nmod:in":
-						details += "in" + " " + dep.word() + " ";
-						break;
-					case "nmod:during":
-						details += "during" + " " + dep.word() + " ";
-						break;
-					}
-				else if ("advcl".equals(rel) || "nmod:for".equals(rel)) {
-					for (SemanticGraphEdge keshet : dependencies.getOutEdgesSorted(dep)) {
-						String rel2 = keshet.getRelation() + "";
-						IndexedWord dep2 = keshet.getDependent();
-						if ("amod".equals(rel2) || "dobj".equals(rel2))
-							reason += dep2.word() + " ";
-						switch (rel2) {
+		String reason = "";
+		String details = ""; // more details about the reason. e.g - where it
+								// happened.
+
+		for (CoreMap sentence : document.get(SentencesAnnotation.class)) {
+			SemanticGraph dependencies = sentence.get(CollapsedDependenciesAnnotation.class);
+			for (IndexedWord root : dependencies.getRoots())
+				for (SemanticGraphEdge edge : dependencies.getOutEdgesSorted(root)) {
+					IndexedWord dep = edge.getDependent();
+					String rel = edge.getRelation() + "";
+					if (!"arrested".equals(edge.getGovernor().word()))
+						switch (rel) {
 						case "nmod:in":
-							details += "in" + " " + dep2.word() + " ";
+							details += "in" + " " + dep.word() + " ";
 							break;
 						case "nmod:during":
-							details += "during" + " " + dep2.word() + " ";
+							details += "during" + " " + dep.word() + " ";
 							break;
 						}
-					}
-					reason += dep.word();
+					else if ("advcl".equals(rel) || "nmod:for".equals(rel)) {
+						for (SemanticGraphEdge keshet : dependencies.getOutEdgesSorted(dep)) {
+							String rel2 = keshet.getRelation() + "";
+							IndexedWord dep2 = keshet.getDependent();
+							if ("amod".equals(rel2) || "dobj".equals(rel2))
+								reason += dep2.word() + " ";
+							switch (rel2) {
+							case "nmod:in":
+								details += "in" + " " + dep2.word() + " ";
+								break;
+							case "nmod:during":
+								details += "during" + " " + dep2.word() + " ";
+								break;
+							case "nmod:under":
+								details += "under " + dep2.word() + " ";
+							}
+						}
+						reason += dep.word();
+					} 
+					
 				}
-				}
-			}
-			
-		
-		return new TableTuple(name,input_date,(reason+" "+details).trim());
-   } 
-	
-	//EOF
-}
+		}
 
+		return new TableTuple(name, input_date, (reason + " " + details).trim());
+	}
+
+	// EOF
+}
