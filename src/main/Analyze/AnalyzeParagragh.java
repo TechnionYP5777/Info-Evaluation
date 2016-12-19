@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
+import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.ling.IndexedWord;
 import edu.stanford.nlp.pipeline.Annotation;
@@ -89,16 +90,20 @@ public class AnalyzeParagragh {
 		return new TableTuple(name, date1, "b");
 	}
 
-	private String getDate() {
+	private String getDate(String year) {
 		List<String> nerTags = this.input.nerTags();
-		int i = 0;
+		int i = 0, j=0;
 		String date = "";
 		for (String elem : nerTags) {
-			if ("DATE".equals(elem))
+			if ("DATE".equals(elem)) {
 				date += this.input.word(i) + " ";
+				++j;
+			}
 			++i;
 
 		}
+		if(j==2)
+			date += year + " ";
 		return ((new SimpleDateFormat("MM/dd/yyyy")).format((new AnalyzeDate(date)).getDateObj()));
 	}
 
@@ -140,11 +145,12 @@ public class AnalyzeParagragh {
 		// inputText will be the text to evaluate in this example
 		String inputText = this.input + "";
 		Annotation document = new Annotation(inputText);
+		String year="2015";
 
 		// Finally we use the pipeline to annotate the document we created
 		pipeLine.annotate(document);
 		String name = getName();
-		String input_date = getDate();
+		String input_date = getDate(year);
 		String reason = "";
 		String details = ""; // more details about the reason. e.g - where it
 								// happened.
