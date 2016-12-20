@@ -47,5 +47,13 @@ public class DataList implements Iterable<TableTuple>{
 			this.list.add(i);
 		this.numOfTuples+=lst.getNumOfTuples();
 	}
+	public void printList(){
+		for(TableTuple t:this.getList()){
+			System.out.println(t.getName());
+			System.out.println(t.getDate());
+			System.out.println(t.getReason());
+			System.out.println();
+		}
+	}
 	// if needed, we can implement here sorts, refines etc.
 }
