@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
-import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.ling.IndexedWord;
 import edu.stanford.nlp.pipeline.Annotation;
@@ -29,10 +28,14 @@ import edu.stanford.nlp.util.CoreMap;
 
 public class AnalyzeParagragh {
 	private Sentence input;
+	private String year;
 
-	public AnalyzeParagragh(Sentence input) {
+	public AnalyzeParagragh(Sentence input,String year) {
 		if (input != null)
 			this.input = new Sentence(input + "");
+		if(!year.isEmpty()){
+			this.year = year;
+		}
 	}
 
 	// No May case cause it has no short version
@@ -103,7 +106,7 @@ public class AnalyzeParagragh {
 
 		}
 		if (j == 2)
-			date += year + " ";
+			date += this.year + " ";
 		return ((new SimpleDateFormat("MM/dd/yyyy")).format((new AnalyzeDate(date)).getDateObj()));
 	}
 
@@ -145,7 +148,6 @@ public class AnalyzeParagragh {
 		// inputText will be the text to evaluate in this example
 		String inputText = this.input + "";
 		Annotation document = new Annotation(inputText);
-		String year = "2015";
 
 		// Finally we use the pipeline to annotate the document we created
 		pipeLine.annotate(document);
