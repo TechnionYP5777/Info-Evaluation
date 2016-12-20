@@ -2,18 +2,17 @@ package main.guiFrames;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
-
-import main.database.MySQLConnector;
-
-import java.util.ArrayList;
+import static main.database.MySQLConnector.*;
 
 /**
  * This class implements list refinements on the GUI event table
  * 
  * @author Ward Mattar
+ * @author osherh
  */
 public class RefineTable {
 	public RefineTable() {
@@ -47,48 +46,59 @@ public class RefineTable {
 	 * 
 	 * @throws SQLException
 	 */
-	public void fillEventsTable(DefaultTableModel m, ResultSet s) throws SQLException {
+	private void fillEventsTable(DefaultTableModel m, ResultSet s) throws SQLException {
 		if (m == null || s == null)
 			return;
-		for (int ¢ = 0; ¢ < m.getRowCount(); ++¢)
-			m.removeRow(¢);
+		while (m.getRowCount() != 0)
+			m.removeRow(0);
 		for (Object tempEvent[] = new Object[3]; s.next();) {
-			tempEvent[0] = s.getString("name");
-			tempEvent[1] = s.getString("arrest_date");
-			tempEvent[2] = s.getString("reason");
+			tempEvent[0] = s.getString("Name");
+			tempEvent[1] = s.getString("Arrest_Date");
+			tempEvent[2] = s.getString("Reason");
 			m.addRow(tempEvent);
 		}
 	}
 
-	/*
+	/**
 	 * accepts a JTable and sorts the content of the table according to the
 	 * given field name
 	 * 
 	 * @throws SQLException
 	 */
-	public void sortBy(MySQLConnector c, DefaultTableModel m, String fieldName) throws SQLException {
-		if (m != null && fieldExist(fieldName))
-			try {
-				ResultSet r;
-				switch (fieldName) {
-				case "Date":
-					r = c.runQuery("SELECT * FROM celebs_arrests ORDER BY UNIX_TIMESTAMP(arrest_date) DESC");
-					fillEventsTable(m, r);
-					r.close();
-					break;
-				case "Name":
-					r = c.runQuery("SELECT * FROM celebs_arrests ORDER BY name");
-					fillEventsTable(m, r);
-					r.close();
-					break;
-				case "Reason":
-					r = c.runQuery("SELECT * FROM celebs_arrests ORDER BY reason");
-					fillEventsTable(m, r);
-					r.close();
-					break;
+	public void sortBy(DefaultTableModel m, String fieldName) throws SQLException {
+		if (m != null)
+			if ("none".equals(fieldName)) {
+				ResultSet r = runQuery("SELECT * FROM celebs_arrests");
+				fillEventsTable(m, r);
+				r.close();
+			} else {
+				if (m == null || !fieldExist(fieldName))
+					return;
+				try {
+					ResultSet r;
+					switch (fieldName) {
+					case "Date":
+						r = runQuery(
+								"SELECT * FROM celebs_arrests ORDER BY UNIX_TIMESTAMP(arrest_date) DESC,reason,name");
+						fillEventsTable(m, r);
+						r.close();
+						break;
+					case "Name":
+						r = runQuery(
+								"SELECT * FROM celebs_arrests ORDER BY name,UNIX_TIMESTAMP(arrest_date) DESC,reason");
+						fillEventsTable(m, r);
+						r.close();
+						break;
+					case "Reason":
+						r = runQuery(
+								"SELECT * FROM celebs_arrests ORDER BY reason,name,UNIX_TIMESTAMP(arrest_date) DESC");
+						fillEventsTable(m, r);
+						r.close();
+						break;
+					}
+				} catch (SQLException ¢) {
+					throw ¢;
 				}
-			} catch (SQLException e) {
-				throw e;
 			}
 	}
 
@@ -98,33 +108,31 @@ public class RefineTable {
 	 * 
 	 * @throws SQLException
 	 */
-	public void filterBy(MySQLConnector c, DefaultTableModel m, String fieldName, String fieldValue)
-			throws SQLException {
+	public void filterBy(DefaultTableModel m, String fieldName, String fieldValue) throws SQLException {
 		if (m != null && fieldExist(fieldName) && fieldValue != null)
 			try {
 				ResultSet r;
 				switch (fieldName) {
 				case "Date":
-					r = c.runQuery("SELECT * FROM celebs_arrests WHERE (YEAR(arrest_date) = " + fieldValue
+					r = runQuery("SELECT * FROM celebs_arrests WHERE (YEAR(arrest_date) = " + fieldValue
 							+ " ) ORDER BY arrest_date DESC");
 					fillEventsTable(m, r);
 					r.close();
 					break;
 				case "Name":
-					r = c.runQuery(
-							"SELECT * FROM celebs_arrests WHERE name LIKE \"%" + fieldValue + "%\" ORDER BY name");
+					r = runQuery("SELECT * FROM celebs_arrests WHERE name LIKE \"%" + fieldValue + "%\" ORDER BY name");
 					fillEventsTable(m, r);
 					r.close();
 					break;
 				case "Reason":
-					r = c.runQuery(
+					r = runQuery(
 							"SELECT * FROM celebs_arrests WHERE reason LIKE \"%" + fieldValue + "%\" ORDER BY reason");
 					fillEventsTable(m, r);
 					r.close();
 					break;
 				}
-			} catch (SQLException e) {
-				throw e;
+			} catch (SQLException ¢) {
+				throw ¢;
 			}
 	}
 
@@ -135,7 +143,7 @@ public class RefineTable {
 	 * 
 	 * @throws SQLException
 	 */
-	public void fillMenu(JComboBox<String> s, String categoryName, ResultSet r) throws SQLException {
+	private void fillMenu(JComboBox<String> s, String categoryName, ResultSet r) throws SQLException {
 		if (s == null || r == null)
 			return;
 		s.removeAllItems();
@@ -160,30 +168,30 @@ public class RefineTable {
 	 * 
 	 * @throws SQLException
 	 */
-	public void getCategory(MySQLConnector c, JComboBox<String> s, String categoryName) throws SQLException {
+	public void getCategory(JComboBox<String> s, String categoryName) throws SQLException {
 		if (s != null && fieldExist(categoryName))
 			try {
 				ResultSet r;
 				switch (categoryName) {
 				case "Date":
-					r = c.runQuery(
-							"SELECT YEAR(arrest_date) FROM celebs_arrests ORDER BY arrest_date DESC, name, reason");
+					r = runQuery(
+							"SELECT DISTINCT YEAR(arrest_date) FROM celebs_arrests ORDER BY arrest_date DESC, name, reason");
 					fillMenu(s, categoryName, r);
 					r.close();
 					break;
 				case "Name":
-					r = c.runQuery("SELECT name FROM celebs_arrests ORDER BY name, arrest_date DESC, reason");
+					r = runQuery("SELECT DISTINCT name FROM celebs_arrests ORDER BY name, arrest_date DESC, reason");
 					fillMenu(s, categoryName, r);
 					r.close();
 					break;
 				case "Reason":
-					r = c.runQuery("SELECT reason FROM celebs_arrests ORDER BY reason, name, arrest_date DESC");
+					r = runQuery("SELECT DISTINCT reason FROM celebs_arrests ORDER BY reason, name, arrest_date DESC");
 					fillMenu(s, categoryName, r);
 					r.close();
 					break;
 				}
-			} catch (SQLException e) {
-				throw e;
+			} catch (SQLException ¢) {
+				throw ¢;
 			}
 	}
 }
