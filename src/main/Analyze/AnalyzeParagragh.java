@@ -33,9 +33,8 @@ public class AnalyzeParagragh {
 	public AnalyzeParagragh(Sentence input,String year) {
 		if (input != null)
 			this.input = new Sentence(input + "");
-		if(!year.isEmpty()){
+		if(!year.isEmpty())
 			this.year = year;
-		}
 	}
 
 	// No May case cause it has no short version

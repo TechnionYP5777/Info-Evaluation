@@ -47,15 +47,15 @@ public class RefineTable {
 	 * 
 	 * @throws SQLException
 	 */
-	public void fillEventsTable(DefaultTableModel m, ResultSet r) throws SQLException {
-		if (m == null || r == null)
+	public void fillEventsTable(DefaultTableModel m, ResultSet s) throws SQLException {
+		if (m == null || s == null)
 			return;
 		for (int ¢ = 0; ¢ < m.getRowCount(); ++¢)
 			m.removeRow(¢);
-		for (Object tempEvent[] = new Object[3]; r.next();) {
-			tempEvent[0] = r.getString("name");
-			tempEvent[1] = r.getString("arrest_date");
-			tempEvent[2] = r.getString("reason");
+		for (Object tempEvent[] = new Object[3]; s.next();) {
+			tempEvent[0] = s.getString("name");
+			tempEvent[1] = s.getString("arrest_date");
+			tempEvent[2] = s.getString("reason");
 			m.addRow(tempEvent);
 		}
 	}
@@ -67,30 +67,29 @@ public class RefineTable {
 	 * @throws SQLException
 	 */
 	public void sortBy(MySQLConnector c, DefaultTableModel m, String fieldName) throws SQLException {
-		if (m == null || !fieldExist(fieldName))
-			return;
-		try {
-			ResultSet r;
-			switch (fieldName) {
-			case "Date":
-				r = c.runQuery("SELECT * FROM celebs_arrests ORDER BY UNIX_TIMESTAMP(arrest_date) DESC");
-				fillEventsTable(m, r);
-				r.close();
-				break;
-			case "Name":
-				r = c.runQuery("SELECT * FROM celebs_arrests ORDER BY name");
-				fillEventsTable(m, r);
-				r.close();
-				break;
-			case "Reason":
-				r = c.runQuery("SELECT * FROM celebs_arrests ORDER BY reason");
-				fillEventsTable(m, r);
-				r.close();
-				break;
+		if (m != null && fieldExist(fieldName))
+			try {
+				ResultSet r;
+				switch (fieldName) {
+				case "Date":
+					r = c.runQuery("SELECT * FROM celebs_arrests ORDER BY UNIX_TIMESTAMP(arrest_date) DESC");
+					fillEventsTable(m, r);
+					r.close();
+					break;
+				case "Name":
+					r = c.runQuery("SELECT * FROM celebs_arrests ORDER BY name");
+					fillEventsTable(m, r);
+					r.close();
+					break;
+				case "Reason":
+					r = c.runQuery("SELECT * FROM celebs_arrests ORDER BY reason");
+					fillEventsTable(m, r);
+					r.close();
+					break;
+				}
+			} catch (SQLException e) {
+				throw e;
 			}
-		} catch (SQLException e) {
-			throw e;
-		}
 	}
 
 	/**
@@ -136,10 +135,10 @@ public class RefineTable {
 	 * 
 	 * @throws SQLException
 	 */
-	public void fillMenu(JComboBox<String> m, String categoryName, ResultSet r) throws SQLException {
-		if (m == null || r == null)
+	public void fillMenu(JComboBox<String> s, String categoryName, ResultSet r) throws SQLException {
+		if (s == null || r == null)
 			return;
-		m.removeAllItems();
+		s.removeAllItems();
 		for (String temp = "N/A"; r.next();) {
 			switch (categoryName) {
 			case "Date":
@@ -152,7 +151,7 @@ public class RefineTable {
 				temp = r.getString("reason");
 				break;
 			}
-			m.addItem(new String(temp));
+			s.addItem(String.valueOf(temp));
 		}
 	}
 
@@ -161,25 +160,25 @@ public class RefineTable {
 	 * 
 	 * @throws SQLException
 	 */
-	public void getCategory(MySQLConnector c, JComboBox<String> m, String categoryName) throws SQLException {
-		if (m != null && fieldExist(categoryName))
+	public void getCategory(MySQLConnector c, JComboBox<String> s, String categoryName) throws SQLException {
+		if (s != null && fieldExist(categoryName))
 			try {
 				ResultSet r;
 				switch (categoryName) {
 				case "Date":
 					r = c.runQuery(
 							"SELECT YEAR(arrest_date) FROM celebs_arrests ORDER BY arrest_date DESC, name, reason");
-					fillMenu(m, categoryName, r);
+					fillMenu(s, categoryName, r);
 					r.close();
 					break;
 				case "Name":
 					r = c.runQuery("SELECT name FROM celebs_arrests ORDER BY name, arrest_date DESC, reason");
-					fillMenu(m, categoryName, r);
+					fillMenu(s, categoryName, r);
 					r.close();
 					break;
 				case "Reason":
 					r = c.runQuery("SELECT reason FROM celebs_arrests ORDER BY reason, name, arrest_date DESC");
-					fillMenu(m, categoryName, r);
+					fillMenu(s, categoryName, r);
 					r.close();
 					break;
 				}
