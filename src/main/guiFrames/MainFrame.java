@@ -16,7 +16,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JLabel;
 import javax.swing.JCheckBox;
 import main.database.MySQLConnector;
 import javax.swing.JComboBox;
@@ -62,12 +61,7 @@ public class MainFrame {
 						window.comboBox.setVisible(false);
 						window.chckbxFilterBy.setSelected(false);
 						window.chckbxDate.setText("Date");
-						if(window.chckbxSortby.isSelected()){
-						window.setVisabilty(true);
-						}
-						else{
-							window.setVisabilty(false);
-						}
+window.setVisabilty(window.chckbxSortby.isSelected());
 						
 					});
 					
@@ -76,11 +70,7 @@ public class MainFrame {
 						window.comboBox.setVisible(false);
 						window.chckbxSortby.setSelected(false);
 						window.chckbxDate.setText("Year");
-						if(window.chckbxFilterBy.isSelected()){
-							window.setVisabilty(true);
-							}
-						else
-							window.setVisabilty(false);
+window.setVisabilty(window.chckbxFilterBy.isSelected());
 					});
 					
 					window.btnSearch.addActionListener(e -> {
@@ -92,14 +82,20 @@ public class MainFrame {
 							catch (SQLException exc) {
 								JOptionPane.showMessageDialog(null, "problem with sql connector","Error", JOptionPane.INFORMATION_MESSAGE);
 							}
-							if(window.chckbxFilterBy.isSelected()){
+							if (!window.chckbxFilterBy.isSelected())
 								try {
-									window.inputList.filterBy(connector, (DefaultTableModel)window.table.getModel(), window.selected_chckbx(), (String)window.comboBox.getSelectedItem());
+									window.inputList.sortBy(connector, model, "none");
 								} catch (SQLException e1) {
-									// TODO Auto-generated catch block
 									e1.printStackTrace();
 								}
-							}
+							else
+								try {
+									window.inputList.filterBy(connector, (DefaultTableModel) window.table.getModel(),
+											window.selected_chckbx(), (String) window.comboBox.getSelectedItem());
+								} catch (SQLException e1) {
+									e1.printStackTrace();
+								}
+								
 							window.table.setVisible(true);	
 					});
 					window.mntmAbout.addActionListener(m->{
@@ -192,6 +188,18 @@ public class MainFrame {
 		table.setBounds(30, 120, 330, 150);
 		frame.getContentPane().add(table);
 		table.setVisible(false);
+		
+		
+		/*
+		 * initializing the table
+		 * 
+		 */
+		 inputList = new RefineTable();
+		 inputList.addField("Date");
+		 inputList.addField("Name");
+		 inputList.addField("Reason");
+		
+		
 
 		btnSearch = new JButton("Search");
 
@@ -200,7 +208,6 @@ public class MainFrame {
 		searchTxt.setColumns(10);
 
 		 chckbxName = new JCheckBox("Name");
-//		 chckbxName.setName("Name");
 		 chckbxName.setVisible(false);
 
 		 chckbxDate = new JCheckBox("Date");
@@ -208,13 +215,13 @@ public class MainFrame {
 		 
 		 chckbxReason= new JCheckBox("Reason");
 		 chckbxReason.setVisible(false);
-//		 chckbxReason.setName("Reason");
+		 
 		 
 		 chckbxSortby = new JCheckBox("Sort by");
 		
 		 chckbxFilterBy = new JCheckBox("Filter by");
 		
-		comboBox = new JComboBox();
+		comboBox = new JComboBox<String>(new String[]{""});
 		comboBox.setVisible(false);
 		
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
@@ -276,15 +283,15 @@ public class MainFrame {
 				clearbx1.setSelected(false);
 				clearbx2.setSelected(false);
 			}
-			if(this.chckbxFilterBy.isSelected()){
+			if (!this.chckbxFilterBy.isSelected() || !chckbx.isSelected())
+				this.comboBox.setVisible(false);
+			else {
 				try {
 					this.inputList.getCategory(connector, this.comboBox, chckbx.getName());
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				this.comboBox.setVisible(true);
-
 			}
 			
 		});
