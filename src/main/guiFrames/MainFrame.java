@@ -84,20 +84,20 @@ window.setVisabilty(window.chckbxFilterBy.isSelected());
 							DefaultTableModel model = (DefaultTableModel) window.table.getModel();
 							if(window.chckbxSortby.isSelected())	
 							try{
-							window.inputList.sortBy(connector, model, window.selected_chckbx());
+							window.inputList.sortBy(model, window.selected_chckbx());
 							}
 							catch (SQLException exc) {
 								JOptionPane.showMessageDialog(null, "problem with sql connector","Error", JOptionPane.INFORMATION_MESSAGE);
 							}
 							if (!window.chckbxFilterBy.isSelected())
 								try {
-									window.inputList.sortBy(connector, model, "none");
+									window.inputList.sortBy(model, "none");
 								} catch (SQLException e1) {
 									e1.printStackTrace();
 								}
 							else
 								try {
-									window.inputList.filterBy(connector, (DefaultTableModel) window.table.getModel(),
+									window.inputList.filterBy((DefaultTableModel) window.table.getModel(),
 											window.selected_chckbx(), (String) window.comboBox.getSelectedItem());
 								} catch (SQLException e1) {
 									e1.printStackTrace();
@@ -164,7 +164,7 @@ window.setVisabilty(window.chckbxFilterBy.isSelected());
 		connector = new MySQLConnector();
 		}
 		catch (Exception e){
-			JOptionPane.showMessageDialog(null, "problem2 with sql connector","Error", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "problem with sql connector","Error", JOptionPane.INFORMATION_MESSAGE);
 		}
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
@@ -302,7 +302,7 @@ window.setVisabilty(window.chckbxFilterBy.isSelected());
 			}
 			else {
 				try {
-					this.inputList.getCategory(connector, this.comboBox, chckbx.getName());
+					this.inputList.getCategory(this.comboBox, chckbx.getName());
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
