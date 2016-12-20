@@ -15,6 +15,8 @@ public class AnalyzePage {
 	private String originalText;
 	private List<String> paragraphs;
 	private DataList details;
+	String year="2015";
+
 	//GENIA: I changed the details to be from type DataList (Netanel)
 
 	public AnalyzePage(String text) {
@@ -51,7 +53,7 @@ public class AnalyzePage {
 
 	private void detectDetails() {
 		for(Sentence ¢: getSentenceParagraphs())
-			details.insert((new AnalyzeParagragh(¢)).Analyze());
+			details.insert((new AnalyzeParagragh(¢,this.year)).Analyze());
 	}
 
 	public DataList getDetails() {

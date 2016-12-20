@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import org.junit.Test;
 import main.guiFrames.RefineTable;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
 import main.database.MySQLConnector;
@@ -14,7 +13,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 
 import junit.framework.Assert;
-import main.guiFrames.RefineTable;
 
 /**
  * Tests for main.guiFrames.RefineTable
