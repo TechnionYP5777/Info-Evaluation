@@ -70,5 +70,34 @@ public class AnalyzeParagraphTest {
 		
 	}
 	
+	@Test
+	public void test6() {
+		Sentence sent = new Sentence("Tito Ortiz was arrested for driving under the influence after he drove his Porsche Panamera into the concrete median on Jan 6 on the 405 freeway in L.A. at 4am.\n");
+		AnalyzeParagragh anal = new AnalyzeParagragh(sent);
+        TableTuple tt = anal.Analyze();
+        assertEquals("Tito Ortiz",tt.getName());
+        assertEquals("driving under influence",tt.getReason());
+        assertEquals("01/06/2015",tt.getDate());
+	}
+	
+	@Test
+	public void test8() {
+		Sentence sent = new Sentence("David Cassidy was arrested for driving under the influence on Jan 10 after he allegedly took a breathalyzer test and was found to be over twice the legal limit.\n");
+		AnalyzeParagragh anal = new AnalyzeParagragh(sent);
+        TableTuple tt = anal.Analyze();
+        assertEquals("David Cassidy",tt.getName());
+        assertEquals("driving under influence",tt.getReason());
+        assertEquals("01/10/2015",tt.getDate());
+	}
+	
+	@Test
+	public void test9() {
+		Sentence sent = new Sentence("Soulja Boy was arrested for possession of a loaded gun in Los Angeles on Jan 22.\n");
+		AnalyzeParagragh anal = new AnalyzeParagragh(sent);
+        TableTuple tt = anal.Analyze();
+        assertEquals("Soulja Boy",tt.getName());
+        assertEquals("possession of gun",tt.getReason());
+        assertEquals("01/22/2015",tt.getDate());
+	}
 	
 }
