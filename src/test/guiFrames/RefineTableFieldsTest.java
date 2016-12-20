@@ -1,22 +1,23 @@
 package test.guiFrames;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
+
 import org.junit.Test;
+
 import main.guiFrames.RefineTable;
 
 /**
  * Tests for main.guiFrames.RefineTable fields function
- * 
- *  @author ward
+ *
+ * @author ward
  */
 public class RefineTableFieldsTest {
 	/**
 	 * adds the field names of even table
 	 */
-	private static void addEventFieldNames(RefineTable ¢) {
+	private static void addEventFieldNames(final RefineTable ¢) {
 		¢.addField("Name");
 		¢.addField("Date");
 		¢.addField("Reason");
@@ -24,14 +25,14 @@ public class RefineTableFieldsTest {
 
 	@Test
 	public void testAddFieldNullSafe() {
-		(new RefineTable()).addField(null);
+		new RefineTable().addField(null);
 	}
 
 	@Test
 	public void testAddField() {
-		RefineTable t = new RefineTable();
+		final RefineTable t = new RefineTable();
 		addEventFieldNames(t);
-		ArrayList<String> f = new ArrayList<>();
+		final ArrayList<String> f = new ArrayList<>();
 		f.add("Name");
 		f.add("Date");
 		f.add("Reason");
@@ -40,12 +41,12 @@ public class RefineTableFieldsTest {
 
 	@Test
 	public void testRemoveFieldNullSafe() {
-		(new RefineTable()).removeField(null);
+		new RefineTable().removeField(null);
 	}
 
 	@Test
 	public void testRemoveField() {
-		RefineTable t = new RefineTable();
+		final RefineTable t = new RefineTable();
 		addEventFieldNames(t);
 		assertEquals(t.getFields().size(), 3);
 		t.removeField("Name");
@@ -56,22 +57,22 @@ public class RefineTableFieldsTest {
 
 	@Test
 	public void testFieldExistsNullSafe() {
-		assertFalse(new RefineTable().fieldExist(null));
+		assert !new RefineTable().fieldExist(null);
 	}
 
 	@Test
 	public void testFieldExists() {
-		RefineTable t = new RefineTable();
+		final RefineTable t = new RefineTable();
 		addEventFieldNames(t);
 		assertEquals(t.getFields().size(), 3);
-		assertTrue(t.fieldExist("Name"));
-		assertTrue(t.fieldExist("Reason"));
+		assert t.fieldExist("Name");
+		assert t.fieldExist("Reason");
 		t.removeField("Name");
 		t.removeField("Reason");
-		assertFalse(t.fieldExist("Name"));
-		assertFalse(t.fieldExist("Reason"));
+		assert !t.fieldExist("Name");
+		assert !t.fieldExist("Reason");
 
-		assertTrue(t.fieldExist("Date"));
+		assert t.fieldExist("Date");
 	}
 
 }

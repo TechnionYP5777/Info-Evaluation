@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * 
+ *
  * @author netanel This class represents a tuple in the final table that is
  *         shown to the user in the GUI
  * @author osherh
@@ -20,64 +20,64 @@ public class TableTuple {
 	// according to the date
 
 	public TableTuple() {
-		this.reason = this.date = this.name = this.date = null;
+		reason = date = name = date = null;
 	}
 
-	public TableTuple(String name, String date, String reason) {
+	public TableTuple(final String name, final String date, final String reason) {
 		this.name = name;
 		this.date = date;
 		this.reason = reason;
 		try {
-			this.regularDate = (new SimpleDateFormat("dd/MM/yyyy")).parse(this.date);
-		} catch (Exception e) {
-			this.regularDate=null;
+			regularDate = new SimpleDateFormat("dd/MM/yyyy").parse(this.date);
+		} catch (final Exception e) {
+			regularDate = null;
 		}
 
 	}
 
-	public TableTuple(String name, Date date, String reason) {
+	public TableTuple(final String name, final Date date, final String reason) {
 		this.name = name;
-		this.regularDate = date;
+		regularDate = date;
 		this.reason = reason;
 		try {
-			this.date = (new SimpleDateFormat("MM/dd/yyyy")).format(date);
-		} catch (Exception e) {
-			e.printStackTrace();
+			this.date = new SimpleDateFormat("MM/dd/yyyy").format(date);
+		} catch (final Exception ¢) {
+			¢.printStackTrace();
 		}
 
 	}
-	
+
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public String getDate() {
-		return this.date;
+		return date;
 	}
 
 	public String getReason() {
-		return this.reason;
+		return reason;
 	}
 
 	public Date getRegularDate() {
-		return this.regularDate;
-	}
-	
-	public void setName(String name) {
-		 this.name=name;
+		return regularDate;
 	}
 
-	public void setDate(String date) {
-		 this.date=date;
-		 try {
-				this.regularDate = (new SimpleDateFormat("dd/MM/yyyy")).parse(this.date);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+	public void setName(final String name) {
+		this.name = name;
 	}
 
-	public void setReason(String reason) {
-		 this.reason=reason;
+	public void setDate(final String date) {
+		this.date = date;
+		try {
+			regularDate = new SimpleDateFormat("dd/MM/yyyy").parse(this.date);
+		} catch (final Exception ¢) {
+			¢.printStackTrace();
+		}
+	}
+
+	public void setReason(final String reason) {
+		this.reason = reason;
 	}
 
 }

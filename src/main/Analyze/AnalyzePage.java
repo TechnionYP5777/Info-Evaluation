@@ -1,5 +1,5 @@
 package main.Analyze;
-import main.database.DataList;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -9,51 +9,51 @@ import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.simple.Sentence;
 import edu.stanford.nlp.util.CoreMap;
-
+import main.database.DataList;
 
 public class AnalyzePage {
-	private String originalText;
-	private List<String> paragraphs;
-	private DataList details;
-	String year="2015";
+	private final String originalText;
+	private final List<String> paragraphs;
+	private final DataList details;
+	String year = "2015";
 
-	//GENIA: I changed the details to be from type DataList (Netanel)
+	// GENIA: I changed the details to be from type DataList (Netanel)
 
-	public AnalyzePage(String text) {
+	public AnalyzePage(final String text) {
 		originalText = text;
 		paragraphs = createParagraphs();
-		details=new DataList();
+		details = new DataList();
 		detectDetails();
 	}
 
 	private List<String> createParagraphs() {
-		Properties props = new Properties();
+		final Properties props = new Properties();
 		props.setProperty("annotators", "tokenize, ssplit");
 		props.setProperty("ssplit.eolonly", "true");
-		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-		Annotation document1 = new Annotation(originalText);
+		final StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+		final Annotation document1 = new Annotation(originalText);
 		pipeline.annotate(document1);
-		List<CoreMap> sentences = document1.get(CoreAnnotations.SentencesAnnotation.class);
-		List<String> $ = new ArrayList<>();
-		for (CoreMap ¢ : sentences)
-			$.add((¢ + ""));
+		final List<CoreMap> sentences = document1.get(CoreAnnotations.SentencesAnnotation.class);
+		final List<String> $ = new ArrayList<>();
+		for (final CoreMap ¢ : sentences)
+			$.add(¢ + "");
 		return $;
 	}
-	
+
 	public List<String> getParagraphs() {
 		return paragraphs;
 	}
-	
+
 	public List<Sentence> getSentenceParagraphs() {
-		List<Sentence> $=new ArrayList<>();
-		for(String ¢: paragraphs)
-			$.add((new Sentence(¢)));
+		final List<Sentence> $ = new ArrayList<>();
+		for (final String ¢ : paragraphs)
+			$.add(new Sentence(¢));
 		return $;
 	}
 
 	private void detectDetails() {
-		for(Sentence ¢: getSentenceParagraphs())
-			details.insert((new AnalyzeParagragh(¢,this.year)).Analyze());
+		for (final Sentence ¢ : getSentenceParagraphs())
+			details.insert(new AnalyzeParagragh(¢, year).Analyze());
 	}
 
 	public DataList getDetails() {

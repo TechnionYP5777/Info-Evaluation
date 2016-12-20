@@ -1,41 +1,42 @@
 package main.guiFrames;
 
+import static main.database.MySQLConnector.runQuery;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
-import static main.database.MySQLConnector.*;
 
 /**
  * This class implements list refinements on the GUI event table
- * 
+ *
  * @author Ward Mattar
  * @author osherh
  */
 public class RefineTable {
 	public RefineTable() {
-		fields = new ArrayList<String>();
+		fields = new ArrayList<>();
 	}
 
-	private ArrayList<String> fields;
+	private final ArrayList<String> fields;
 
 	public ArrayList<String> getFields() {
 		return fields;
 	}
 
-	public void addField(String name) {
+	public void addField(final String name) {
 		if (name != null && !"".equals(name))
 			fields.add(name);
 	}
 
-	public void removeField(String name) {
+	public void removeField(final String name) {
 		if (fieldExist(name))
 			fields.remove(name);
 	}
 
-	public boolean fieldExist(String name) {
+	public boolean fieldExist(final String name) {
 		return name != null && !"".equals(name) && fields.contains(name);
 	}
 
@@ -43,15 +44,15 @@ public class RefineTable {
 	 *
 	 * accepts a DefaultTableModel and list of events as a SQL query result and
 	 * fills them in table
-	 * 
+	 *
 	 * @throws SQLException
 	 */
-	private void fillEventsTable(DefaultTableModel m, ResultSet s) throws SQLException {
+	private void fillEventsTable(final DefaultTableModel m, final ResultSet s) throws SQLException {
 		if (m == null || s == null)
 			return;
 		while (m.getRowCount() != 0)
 			m.removeRow(0);
-		for (Object tempEvent[] = new Object[3]; s.next();) {
+		for (final Object tempEvent[] = new Object[3]; s.next();) {
 			tempEvent[0] = s.getString("Name");
 			tempEvent[1] = s.getString("Arrest_Date");
 			tempEvent[2] = s.getString("Reason");
@@ -62,13 +63,13 @@ public class RefineTable {
 	/**
 	 * accepts a JTable and sorts the content of the table according to the
 	 * given field name
-	 * 
+	 *
 	 * @throws SQLException
 	 */
-	public void sortBy(DefaultTableModel m, String fieldName) throws SQLException {
+	public void sortBy(final DefaultTableModel m, final String fieldName) throws SQLException {
 		if (m != null)
 			if ("none".equals(fieldName)) {
-				ResultSet r = runQuery("SELECT * FROM celebs_arrests");
+				final ResultSet r = runQuery("SELECT * FROM celebs_arrests");
 				fillEventsTable(m, r);
 				r.close();
 			} else {
@@ -96,7 +97,7 @@ public class RefineTable {
 						r.close();
 						break;
 					}
-				} catch (SQLException ¢) {
+				} catch (final SQLException ¢) {
 					throw ¢;
 				}
 			}
@@ -105,10 +106,11 @@ public class RefineTable {
 	/**
 	 * filters the content of the events table according to the given field name
 	 * and value
-	 * 
+	 *
 	 * @throws SQLException
 	 */
-	public void filterBy(DefaultTableModel m, String fieldName, String fieldValue) throws SQLException {
+	public void filterBy(final DefaultTableModel m, final String fieldName, final String fieldValue)
+			throws SQLException {
 		if (m != null && fieldExist(fieldName) && fieldValue != null)
 			try {
 				ResultSet r;
@@ -131,7 +133,7 @@ public class RefineTable {
 					r.close();
 					break;
 				}
-			} catch (SQLException ¢) {
+			} catch (final SQLException ¢) {
 				throw ¢;
 			}
 	}
@@ -140,10 +142,10 @@ public class RefineTable {
 	 *
 	 * accepts a JComboBox <String> representing a drop menu and fills them with
 	 * the category option list according to the categoryName
-	 * 
+	 *
 	 * @throws SQLException
 	 */
-	private void fillMenu(JComboBox<String> s, String categoryName, ResultSet r) throws SQLException {
+	private void fillMenu(final JComboBox<String> s, final String categoryName, final ResultSet r) throws SQLException {
 		if (s == null || r == null)
 			return;
 		s.removeAllItems();
@@ -165,10 +167,10 @@ public class RefineTable {
 
 	/**
 	 * fills a drop down menu list with a specific category values
-	 * 
+	 *
 	 * @throws SQLException
 	 */
-	public void getCategory(JComboBox<String> s, String categoryName) throws SQLException {
+	public void getCategory(final JComboBox<String> s, final String categoryName) throws SQLException {
 		if (s != null && fieldExist(categoryName))
 			try {
 				ResultSet r;
@@ -190,7 +192,7 @@ public class RefineTable {
 					r.close();
 					break;
 				}
-			} catch (SQLException ¢) {
+			} catch (final SQLException ¢) {
 				throw ¢;
 			}
 	}

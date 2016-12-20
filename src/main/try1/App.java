@@ -1,20 +1,16 @@
 package main.try1;
+
 import java.util.Arrays;
-import java.util.List;
 
-import edu.stanford.nlp.simple.*;
+import edu.stanford.nlp.simple.Sentence;
 
-
-public class App 
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
-        Sentence sent = new Sentence("Justin Bieber is in the sky with diamonds.");
-        List<String> nerTags = sent.nerTags();  // [PERSON, O, O, O, O, O, O, O]
-        System.out.println(Arrays.toString(nerTags.toArray()));
-        String firstPOSTag = sent.posTag(0);   // NNP
-        System.out.println(sent.word(0));
-        System.out.println(firstPOSTag);
-    }
+public class App {
+	public static void main(final String[] args) {
+		System.out.println("Hello World!");
+		final Sentence sent = new Sentence("Justin Bieber is in the sky with diamonds.");
+		System.out.println(Arrays.toString(sent.nerTags().toArray()));
+		final String firstPOSTag = sent.posTag(0); // NNP
+		System.out.println(sent.word(0));
+		System.out.println(firstPOSTag);
+	}
 }

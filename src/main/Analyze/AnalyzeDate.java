@@ -14,10 +14,10 @@ public class AnalyzeDate {
 	String format;
 	List<String> popularFormats;
 
-	public AnalyzeDate(String d) {
+	public AnalyzeDate(final String d) {
 		date = d;
-		
-		popularFormats=new ArrayList<>();
+
+		popularFormats = new ArrayList<>();
 		popularFormats.add("MM/dd/yyyy");
 		popularFormats.add("MMM. dd, yyyy");
 		popularFormats.add("MMM. dd yyyy");
@@ -30,9 +30,9 @@ public class AnalyzeDate {
 	}
 
 	private String findFormat() {
-		for(String ¢:popularFormats) {
-			String $ = whatFormat(¢);
-			if($!=null)
+		for (final String ¢ : popularFormats) {
+			final String $ = whatFormat(¢);
+			if ($ != null)
 				return $;
 		}
 		return null; // none of the formats we work with
@@ -43,48 +43,47 @@ public class AnalyzeDate {
 	}
 
 	public Date getDateObj() {
-		if(format==null)
+		if (format == null)
 			return null;
 		try {
-			return (new SimpleDateFormat(format)).parse(this.date);
-		} catch (ParseException e) {
-			e.printStackTrace();
+			return new SimpleDateFormat(format).parse(date);
+		} catch (final ParseException ¢) {
+			¢.printStackTrace();
 		}
 		return null;
 	}
 
-	private String whatFormat(String s) {
+	private String whatFormat(final String $) {
 		try {
-			(new SimpleDateFormat(s, Locale.ENGLISH)).parse(date);
-		} catch (Exception e) {
+			new SimpleDateFormat($, Locale.ENGLISH).parse(date);
+		} catch (final Exception e) {
 			return null;
 		}
-		return s;
+		return $;
 	}
 
-	private int getDay(String s) {
-		Pattern pattern = Pattern.compile("\\s([A-Za-z]+)");
-		Matcher matcher = pattern.matcher(s);
-		return !matcher.find() ? -1 : Integer.parseInt(matcher.group(1));
+	private int getDay(final String ¢) {
+		final Matcher $ = Pattern.compile("\\s([A-Za-z]+)").matcher(¢);
+		return !$.find() ? -1 : Integer.parseInt($.group(1));
 	}
 
-	private String getDayOfMonthSuffix(int day) {
+	private String getDayOfMonthSuffix(final int day) {
 		switch (day) {
 		case 1:
 		case 21:
 		case 31:
-			return ("st");
+			return "st";
 
 		case 2:
 		case 22:
-			return ("nd");
+			return "nd";
 
 		case 3:
 		case 23:
-			return ("rd");
+			return "rd";
 
 		default:
-			return ("th");
+			return "th";
 		}
 	}
 

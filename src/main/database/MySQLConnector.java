@@ -2,15 +2,14 @@ package main.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.sql.ResultSet;
-import java.sql.PreparedStatement;
-import main.database.DataList;
 
 /**
  * set up the connection to MySQL DB and provide a function to run a query
- * 
+ *
  * @author osherh
  * @since 6/12/2016
  */
@@ -30,7 +29,7 @@ public class MySQLConnector {
 				createDatabase();
 			}
 			runQuery("use events;");
-		} catch (SQLException ¢) {
+		} catch (final SQLException ¢) {
 			throw ¢;
 		}
 	}
@@ -50,26 +49,26 @@ public class MySQLConnector {
 		return conn;
 	}
 
-	public static int updateDB(String query) throws SQLException {
+	public static int updateDB(final String query) throws SQLException {
 		return conn.createStatement().executeUpdate(query);
 	}
 
-	public static ResultSet runQuery(String query) throws SQLException {
+	public static ResultSet runQuery(final String query) throws SQLException {
 		return conn.createStatement().executeQuery(query);
 	}
 
-	private static java.sql.Date utilDateToSQLDateConvertor(java.util.Date utilDate) {
+	private static java.sql.Date utilDateToSQLDateConvertor(final java.util.Date utilDate) {
 		return java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(utilDate));
 	}
 
-	public static void addEvents(DataList lin) {
-		for (TableTuple tuple : lin)
+	public static void addEvents(final DataList lin) {
+		for (final TableTuple tuple : lin)
 			try (PreparedStatement ps = conn.prepareStatement("INSERT INTO celebs_arrests values (?,?,?);");) {
 				ps.setString(1, tuple.getName());
 				ps.setDate(2, utilDateToSQLDateConvertor(tuple.getRegularDate()));
 				ps.setString(3, tuple.getReason());
 				ps.executeUpdate();
-			} catch (SQLException ¢) {
+			} catch (final SQLException ¢) {
 				¢.printStackTrace();
 			}
 	}
@@ -78,7 +77,7 @@ public class MySQLConnector {
 		try {
 			if (conn != null)
 				conn.close();
-		} catch (SQLException ¢) {
+		} catch (final SQLException ¢) {
 			¢.printStackTrace();
 		}
 	}
