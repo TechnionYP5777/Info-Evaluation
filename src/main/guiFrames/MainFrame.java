@@ -1,7 +1,10 @@
 package main.guiFrames;
 
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Toolkit;
 import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,6 +22,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JCheckBox;
 import main.database.MySQLConnector;
 import javax.swing.JComboBox;
+import javax.swing.JTextPane;
 
 
 /**
@@ -42,6 +46,7 @@ public class MainFrame {
 	private JCheckBox chckbxFilterBy;
 	private  static MySQLConnector connector;
 	private JComboBox <String> comboBox;
+	private JTextPane txtpnChooseOneFrom;
 	/**
 	 * Launch the application.
 	 */
@@ -59,6 +64,7 @@ public class MainFrame {
 					window.chckbxSortby.addActionListener(l->{
 						window.removeSelected();
 						window.comboBox.setVisible(false);
+						window.txtpnChooseOneFrom.setVisible(false);
 						window.chckbxFilterBy.setSelected(false);
 						window.chckbxDate.setText("Date");
 window.setVisabilty(window.chckbxSortby.isSelected());
@@ -68,6 +74,7 @@ window.setVisabilty(window.chckbxSortby.isSelected());
 					window.chckbxFilterBy.addActionListener(l->{
 						window.removeSelected();
 						window.comboBox.setVisible(false);
+						window.txtpnChooseOneFrom.setVisible(false);
 						window.chckbxSortby.setSelected(false);
 						window.chckbxDate.setText("Year");
 window.setVisabilty(window.chckbxFilterBy.isSelected());
@@ -149,7 +156,8 @@ window.setVisabilty(window.chckbxFilterBy.isSelected());
 		frame = new JFrame();
 		frame.setTitle("Info Evaluation");
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 450, 300);
+		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+		frame.setBounds(0, 0,screen.width/2,screen.height/2);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		try{
@@ -161,11 +169,6 @@ window.setVisabilty(window.chckbxFilterBy.isSelected());
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
 
-		JMenu mnFile = new JMenu("File");
-		menuBar.add(mnFile);
-
-		JMenu mnEdit = new JMenu("Edit");
-		menuBar.add(mnEdit);
 
 		mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
@@ -185,7 +188,7 @@ window.setVisabilty(window.chckbxFilterBy.isSelected());
 		for (int count = 1; count <= 10; ++count)
 			table.setModel(new DefaultTableModel(new Object[][] { { "Name", "Date", "Reason" } },
 					new String[] { "name", "date", "Reason" }));
-		table.setBounds(30, 120, 330, 150);
+		table.setBounds(30, 120, 400, 200);
 		frame.getContentPane().add(table);
 		table.setVisible(false);
 		
@@ -221,18 +224,24 @@ window.setVisabilty(window.chckbxFilterBy.isSelected());
 		
 		 chckbxFilterBy = new JCheckBox("Filter by");
 		
-		comboBox = new JComboBox<String>(new String[]{""});
+		comboBox = new JComboBox<String>();
 		comboBox.setVisible(false);
+		
+		txtpnChooseOneFrom = new JTextPane();
+		txtpnChooseOneFrom.setText("Choose one from:");
+		txtpnChooseOneFrom.setBackground(new Color(0,0,0,0));
+		txtpnChooseOneFrom.setVisible(false);
 		
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(12)
+							.addContainerGap()
+							.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, 434, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(24)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(chckbxSortby)
 								.addComponent(chckbxName))
@@ -242,20 +251,22 @@ window.setVisabilty(window.chckbxFilterBy.isSelected());
 									.addComponent(chckbxDate)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(chckbxReason))
-								.addComponent(chckbxFilterBy))))
-					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnSearch))
-					.addGap(68))
+								.addComponent(chckbxFilterBy))
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(txtpnChooseOneFrom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addGap(18)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(comboBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnSearch, GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE))
+					.addGap(63))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(20)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnSearch)
-						.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnSearch, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE))
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(4)
@@ -270,8 +281,10 @@ window.setVisabilty(window.chckbxFilterBy.isSelected());
 									.addComponent(chckbxReason))))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(18)
-							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(180, Short.MAX_VALUE))
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(txtpnChooseOneFrom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+					.addContainerGap(246, Short.MAX_VALUE))
 		);
 		frame.getContentPane().setLayout(groupLayout);
 
@@ -283,8 +296,10 @@ window.setVisabilty(window.chckbxFilterBy.isSelected());
 				clearbx1.setSelected(false);
 				clearbx2.setSelected(false);
 			}
-			if (!this.chckbxFilterBy.isSelected() || !chckbx.isSelected())
+			if (!this.chckbxFilterBy.isSelected() || !chckbx.isSelected()){
 				this.comboBox.setVisible(false);
+				this.txtpnChooseOneFrom.setVisible(false);
+			}
 			else {
 				try {
 					this.inputList.getCategory(connector, this.comboBox, chckbx.getName());
@@ -292,12 +307,13 @@ window.setVisabilty(window.chckbxFilterBy.isSelected());
 					e.printStackTrace();
 				}
 				this.comboBox.setVisible(true);
+				this.txtpnChooseOneFrom.setVisible(true);
 			}
 			
 		});
 	}
 	public String selected_chckbx(){
-		return chckbxName.isSelected() ? "name"
-				: chckbxDate.isSelected() ? "date" : !chckbxReason.isSelected() ? "none" : "reason";
+		return chckbxName.isSelected() ? "Name"
+				: chckbxDate.isSelected() ? "Date" : !chckbxReason.isSelected() ? "None" : "Reason";
 	}
 }
