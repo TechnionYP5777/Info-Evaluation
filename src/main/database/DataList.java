@@ -48,10 +48,10 @@ public class DataList implements Iterable<TableTuple>{
 		this.numOfTuples+=lst.getNumOfTuples();
 	}
 	public void printList(){
-		for(TableTuple t:this.getList()){
-			System.out.println(t.getName());
-			System.out.println(t.getDate());
-			System.out.println(t.getReason());
+		for(TableTuple ¢:this.getList()){
+			System.out.println(¢.getName());
+			System.out.println(¢.getDate());
+			System.out.println(¢.getReason());
 			System.out.println();
 		}
 	}
