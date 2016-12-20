@@ -67,7 +67,16 @@ public class AnalyzeParagraphTest {
         assertEquals("Axl Rose",tt.getName());
         assertEquals("driving drunk in New Zeland",tt.getReason());
         assertEquals("03/01/2015",tt.getDate());
-		
+	}
+	
+	@Test
+	public void test6(){
+		Sentence sent = new Sentence("Joe Francis was arrested for attacking at a Nightclub on May 16.");
+        AnalyzeParagragh anal = new AnalyzeParagragh(sent,"2015");
+        TableTuple tt = anal.Analyze();
+        assertEquals("Joe Francis",tt.getName());
+        assertEquals("attacking at Nightclub",tt.getReason());
+        assertEquals("05/16/2015",tt.getDate());
 	}
 	
 	

@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
-
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.ling.IndexedWord;
 import edu.stanford.nlp.pipeline.Annotation;
@@ -170,9 +169,12 @@ public class AnalyzeParagragh {
 						case "nmod:during":
 							details += "during" + " " + dep.word() + " ";
 							break;
+						case "nmod:at":
+							details += "at" + " " + dep.word() + " ";
+							break;
 						}
 					
-					else if ("advcl".equals(rel) || "nmod:for".equals(rel)) {
+					else if ("advcl".equals(rel) || "advcl:for".equals(rel)  || "nmod:for".equals(rel)) {
 						for (SemanticGraphEdge keshet : dependencies.getOutEdgesSorted(dep)) {
 							String rel2 = keshet.getRelation() + "";
 							IndexedWord dep2 = keshet.getDependent();
@@ -194,6 +196,11 @@ public class AnalyzeParagragh {
 								break;
 							case "nmod:under":
 								details += "under " + dep2.word() + " ";
+								break;
+							case "nmod:at":
+								details += "at" + " " + dep2.word() + " ";
+								break;
+							
 							}
 
 							if ("suspicion".equals(keshet.getSource().word()) && "acl:of".equals(rel2))
