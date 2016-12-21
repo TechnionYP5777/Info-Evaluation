@@ -63,7 +63,7 @@ public class MySQLConnectorTest {
 		names[4] = "Don McLean";
 
 		for (int i = 0; i < 5; ++i) {
-			ResultSet rs = runSafeQuery("SELECT Arrest_Date FROM celebs_arrests WHERE Name=?",names[i]);
+			ResultSet rs = runSafeQuery("SELECT Arrest_Date FROM celebs_arrests WHERE Name=?", names[i]);
 			if (rs.next() && rs.next())
 				assert rs.getString("Arrest_Date").equals(expectedDates[i]);
 		}

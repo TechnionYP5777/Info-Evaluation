@@ -18,9 +18,9 @@ public class MySQLConnector {
 	private boolean dbExists;
 
 	public MySQLConnector() throws Exception {
-		try{
+		try {
 			connectToServer();
-		}catch(Exception ¢){
+		} catch (Exception ¢) {
 			throw ¢;
 		}
 		try (ResultSet r = runQuery("SHOW DATABASES;");) {
@@ -36,7 +36,7 @@ public class MySQLConnector {
 			throw ¢;
 		}
 	}
-	
+
 	private void connectToServer() throws Exception {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -60,7 +60,7 @@ public class MySQLConnector {
 		updateDB("CREATE USER root IDENTIFIED BY 'mysqlpass';");
 		runQuery("grant all privileges on *.* to root@localhost;");
 	}
-	
+
 	public static int updateDB(final String query) throws SQLException {
 		return conn.createStatement().executeUpdate(query);
 	}
@@ -68,20 +68,20 @@ public class MySQLConnector {
 	public static ResultSet runQuery(final String query) throws SQLException {
 		return conn.createStatement().executeQuery(query);
 	}
-	
-	public static ResultSet runSafeQuery(final String query, final Object[] inputs) throws SQLException{
+
+	public static ResultSet runSafeQuery(final String query, final Object[] inputs) throws SQLException {
 		PreparedStatement $ = conn.prepareStatement(query);
-		for(int ¢=1; ¢<= inputs.length; ++¢)
+		for (int ¢ = 1; ¢ <= inputs.length; ++¢)
 			$.setObject(¢, inputs[¢]);
 		return $.executeQuery();
 	}
 
-	public static ResultSet runSafeQuery(final String query, final Object input) throws SQLException{
+	public static ResultSet runSafeQuery(final String query, final Object input) throws SQLException {
 		PreparedStatement $ = conn.prepareStatement(query);
 		$.setObject(1, input);
 		return $.executeQuery();
 	}
-	
+
 	private static java.sql.Date utilDateToSQLDateConvertor(final java.util.Date utilDate) {
 		return java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(utilDate));
 	}
