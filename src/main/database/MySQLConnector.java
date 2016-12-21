@@ -18,8 +18,11 @@ public class MySQLConnector {
 	private boolean dbExists;
 
 	public MySQLConnector() throws Exception {
-		Class.forName("com.mysql.jdbc.Driver");
-		conn = DriverManager.getConnection("jdbc:mysql://localhost/", "root", "mysqlpass");
+		try{
+			connectToServer();
+		}catch(Exception ¢){
+			throw ¢;
+		}
 		try (ResultSet r = runQuery("SHOW DATABASES;");) {
 			while (r.next())
 				if ("events".equals(r.getString(1)))
@@ -30,6 +33,19 @@ public class MySQLConnector {
 			}
 			runQuery("use events;");
 		} catch (final SQLException ¢) {
+			throw ¢;
+		}
+	}
+	
+	private void connectToServer() throws Exception {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException ¢) {
+			throw ¢;
+		}
+		try {
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/", "root", "mysqlpass");
+		} catch (SQLException ¢) {
 			throw ¢;
 		}
 	}
@@ -44,11 +60,7 @@ public class MySQLConnector {
 		updateDB("CREATE USER root IDENTIFIED BY 'mysqlpass';");
 		runQuery("grant all privileges on *.* to root@localhost;");
 	}
-
-	public static Connection getConnection() {
-		return conn;
-	}
-
+	
 	public static int updateDB(final String query) throws SQLException {
 		return conn.createStatement().executeUpdate(query);
 	}
@@ -56,7 +68,20 @@ public class MySQLConnector {
 	public static ResultSet runQuery(final String query) throws SQLException {
 		return conn.createStatement().executeQuery(query);
 	}
+	
+	public static ResultSet runSafeQuery(final String query, final Object[] inputs) throws SQLException{
+		PreparedStatement $ = conn.prepareStatement(query);
+		for(int ¢=1; ¢<= inputs.length; ++¢)
+			$.setObject(¢, inputs[¢]);
+		return $.executeQuery();
+	}
 
+	public static ResultSet runSafeQuery(final String query, final Object input) throws SQLException{
+		PreparedStatement $ = conn.prepareStatement(query);
+		$.setObject(1, input);
+		return $.executeQuery();
+	}
+	
 	private static java.sql.Date utilDateToSQLDateConvertor(final java.util.Date utilDate) {
 		return java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(utilDate));
 	}

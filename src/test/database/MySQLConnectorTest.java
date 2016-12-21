@@ -1,13 +1,7 @@
 package test.database;
 
-import static main.database.MySQLConnector.addEvents;
-import static main.database.MySQLConnector.closeConnection;
-import static main.database.MySQLConnector.getConnection;
-import static main.database.MySQLConnector.runQuery;
-import static main.database.MySQLConnector.updateDB;
 import static org.junit.Assert.assertEquals;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -17,6 +11,7 @@ import org.junit.Test;
 
 import main.database.DataList;
 import main.database.MySQLConnector;
+import static main.database.MySQLConnector.*;
 
 /*
  * @author osherh
@@ -68,12 +63,9 @@ public class MySQLConnectorTest {
 		names[4] = "Don McLean";
 
 		for (int i = 0; i < 5; ++i) {
-			final PreparedStatement ps = getConnection()
-					.prepareStatement("SELECT Arrest_Date FROM celebs_arrests WHERE Name=?");
-			ps.setString(1, names[i]);
-			final ResultSet rs = ps.executeQuery();
-			if (rs.next())
-				assertEquals(rs.getDate("Arrest_Date") + "", expectedDates[i]);
+			ResultSet rs = runSafeQuery("SELECT Arrest_Date FROM celebs_arrests WHERE Name=?",names[i]);
+			if (rs.next() && rs.next())
+				assert rs.getString("Arrest_Date").equals(expectedDates[i]);
 		}
 	}
 
