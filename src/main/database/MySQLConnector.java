@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * set up the connection to MySQL DB and provide a function to run a query
@@ -14,12 +16,15 @@ import java.text.SimpleDateFormat;
  * @since 6/12/2016
  */
 public class MySQLConnector {
+	private static final Logger logger = Logger.getLogger("MySQLConnector".getClass().getName());
 	private static Connection conn;
 	private boolean dbExists;
 
 	public MySQLConnector() throws Exception {
 		try {
 			connectToServer();
+			logger.log(Level.INFO, "connected to server");
+			runQuery("use sys");
 		} catch (Exception ¢) {
 			throw ¢;
 		}
@@ -30,6 +35,8 @@ public class MySQLConnector {
 			if (!dbExists) {
 				givePermissions();
 				createDatabase();
+				logger.log(Level.INFO, "database created succesfully");
+
 			}
 			runQuery("use events;");
 		} catch (final SQLException ¢) {
@@ -52,12 +59,13 @@ public class MySQLConnector {
 
 	private void createDatabase() throws SQLException {
 		updateDB("CREATE database events");
-		updateDB("CREATE TABLE celebs_arrests(" + "NAME VARCHAR(30) NOT NULL," + "ARREST_DATE DATE NOT NULL,"
-				+ "REASON VARCHAR(150) NOT NULL," + "PRIMARY KEY (NAME,ARREST_DATE,REASON));");
+		logger.log(Level.INFO, "DB events created successfully");
+		runQuery("use events");		
+		updateDB("CREATE TABLE celebs_arrests (Name VARCHAR(30) NOT NULL,Arrest_Date DATE NOT NULL,Reason VARCHAR(150) NOT NULL,PRIMARY KEY (Name,Arrest_Date,Reason))");
+		logger.log(Level.INFO, "table celebs_arrests created successfully");
 	}
 
 	private void givePermissions() throws SQLException {
-		updateDB("CREATE USER root IDENTIFIED BY 'mysqlpass';");
 		runQuery("grant all privileges on *.* to root@localhost;");
 	}
 
