@@ -60,8 +60,9 @@ public class MySQLConnector {
 	private void createDatabase() throws SQLException {
 		updateDB("CREATE database events");
 		logger.log(Level.INFO, "DB events created successfully");
-		runQuery("use events");		
-		updateDB("CREATE TABLE celebs_arrests (Name VARCHAR(30) NOT NULL,Arrest_Date DATE NOT NULL,Reason VARCHAR(150) NOT NULL,PRIMARY KEY (Name,Arrest_Date,Reason))");
+		runQuery("use events");
+		updateDB(
+				"CREATE TABLE celebs_arrests (Name VARCHAR(30) NOT NULL,Arrest_Date DATE NOT NULL,Reason VARCHAR(150) NOT NULL,PRIMARY KEY (Name,Arrest_Date,Reason))");
 		logger.log(Level.INFO, "table celebs_arrests created successfully");
 	}
 
