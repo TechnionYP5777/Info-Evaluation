@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
 import javax.swing.GroupLayout;
@@ -45,6 +46,7 @@ public class MainFrame {
 	private JMenu mnHelp;
 	private JCheckBox chckbxSortby;
 	private JCheckBox chckbxFilterBy;
+	@SuppressWarnings("unused")
 	private static MySQLConnector connector;
 	private JComboBox<String> comboBox;
 	private JTextPane txtpnChooseOneFrom;
@@ -60,7 +62,6 @@ public class MainFrame {
 				window.onClickCheckBox(window.chckbxDate, window.chckbxName, window.chckbxReason);
 				window.onClickCheckBox(window.chckbxName, window.chckbxDate, window.chckbxReason);
 				window.onClickCheckBox(window.chckbxReason, window.chckbxName, window.chckbxDate);
-
 				window.chckbxSortby.addActionListener(l1 -> {
 					window.removeSelected();
 					window.comboBox.setVisible(false);
@@ -68,9 +69,7 @@ public class MainFrame {
 					window.chckbxFilterBy.setSelected(false);
 					window.chckbxDate.setText("Date");
 					window.setVisabilty(window.chckbxSortby.isSelected());
-
 				});
-
 				window.chckbxFilterBy.addActionListener(l2 -> {
 					window.removeSelected();
 					window.comboBox.setVisible(false);
@@ -79,7 +78,6 @@ public class MainFrame {
 					window.chckbxDate.setText("Year");
 					window.setVisabilty(window.chckbxFilterBy.isSelected());
 				});
-
 				window.btnSearch.addActionListener(e -> {
 					final DefaultTableModel model = (DefaultTableModel) window.table.getModel();
 					if (window.chckbxSortby.isSelected())
@@ -102,7 +100,6 @@ public class MainFrame {
 						} catch (final SQLException e12) {
 							e12.printStackTrace();
 						}
-
 					window.table.setVisible(true);
 				});
 				window.mntmAbout.addActionListener(m -> JOptionPane.showMessageDialog(null,
@@ -113,11 +110,8 @@ public class MainFrame {
 								+ "\n\n\n\n\nBy: \nVivian Shehadeh\nGenia Shandalov\nOsher Hajaj"
 								+ "\nWard Mattar\nMoshiko Elisof\nNetanel Felcher\n",
 						"About", JOptionPane.INFORMATION_MESSAGE));
-
 			} catch (final Exception ¢) {
 				¢.printStackTrace();
-			} finally {
-				MySQLConnector.closeConnection();
 			}
 
 		});
@@ -149,6 +143,7 @@ public class MainFrame {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+
 		frame = new JFrame();
 		frame.setTitle("Info Evaluation");
 		frame.setResizable(false);
@@ -161,6 +156,14 @@ public class MainFrame {
 		} catch (final Exception e) {
 			JOptionPane.showMessageDialog(null, "problem with sql connector", "Error", JOptionPane.INFORMATION_MESSAGE);
 		}
+
+		frame.addWindowListener(new java.awt.event.WindowAdapter() {
+			public void windowClosing(WindowEvent winEvt) {
+				MySQLConnector.closeConnection();
+				System.exit(0);
+			}
+		});
+
 		final JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
 
