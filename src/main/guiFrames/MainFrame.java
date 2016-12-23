@@ -195,6 +195,7 @@ public class MainFrame {
 		}
 
 		frame.addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent winEvt) {
 				MySQLConnector.closeConnection();
 				System.exit(0);
