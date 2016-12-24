@@ -1,6 +1,7 @@
 package main.guiFrames;
 
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
@@ -17,6 +18,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
@@ -51,6 +53,7 @@ public class MainFrame {
 	private static MySQLConnector connector;
 	private JComboBox<String> comboBox;
 	private JTextPane txtpnChooseOneFrom;
+	private JScrollPane js;
 
 	/**
 	 * sources to analyze
@@ -138,6 +141,7 @@ public class MainFrame {
 							e12.printStackTrace();
 						}
 					window.table.setVisible(true);
+					window.js.setVisible(true);
 				});
 				window.mntmAbout.addActionListener(m -> JOptionPane.showMessageDialog(null,
 						"Info Evaluation is a program that reads query results from google search and parses "
@@ -171,6 +175,7 @@ public class MainFrame {
 
 	/**
 	 * Create the application.
+	 * @wbp.parser.entryPoint
 	 */
 	public MainFrame() {
 		initialize();
@@ -229,9 +234,14 @@ public class MainFrame {
 		for (int count = 1; count <= 10; ++count)
 			table.setModel(new DefaultTableModel(new Object[][] { { "Name", "Date", "Reason" } },
 					new String[] { "name", "date", "Reason" }));
-		table.setBounds(30, 120, 400, 200);
-		frame.getContentPane().add(table);
+		table.setBounds(30, 120, 460, 220);
 		table.setVisible(false);
+		js = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		js.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+		js.setVisible(false);
+		js.setBounds(27, 120, 460, 220);
+		frame.getContentPane().add(js);
+		frame.getContentPane().add(js);
 
 		/*
 		 * initializing the table
