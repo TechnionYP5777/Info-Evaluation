@@ -58,10 +58,10 @@ public class MySQLConnector {
 	}
 
 	private void createDatabase() throws SQLException {
-		updateDB("CREATE database events");
+		runUpdate("CREATE database events");
 		logger.log(Level.INFO, "DB events created successfully");
 		runQuery("use events");
-		updateDB(
+		runUpdate(
 				"CREATE TABLE celebs_arrests (Name VARCHAR(30) NOT NULL,Arrest_Date DATE NOT NULL,Reason VARCHAR(150) NOT NULL,PRIMARY KEY (Name,Arrest_Date,Reason))");
 		logger.log(Level.INFO, "table celebs_arrests created successfully");
 	}
@@ -70,7 +70,7 @@ public class MySQLConnector {
 		runQuery("grant all privileges on *.* to root@localhost;");
 	}
 
-	public static int updateDB(final String query) throws SQLException {
+	public static int runUpdate(final String query) throws SQLException {
 		return conn.createStatement().executeUpdate(query);
 	}
 
@@ -81,7 +81,7 @@ public class MySQLConnector {
 	public static ResultSet runSafeQuery(final String query, final Object[] inputs) throws SQLException {
 		PreparedStatement $ = conn.prepareStatement(query);
 		for (int ¢ = 1; ¢ <= inputs.length; ++¢)
-			$.setObject(¢, inputs[¢]);
+			$.setObject(¢, inputs[¢ - 1]);
 		return $.executeQuery();
 	}
 
@@ -105,6 +105,10 @@ public class MySQLConnector {
 			} catch (final SQLException ¢) {
 				¢.printStackTrace();
 			}
+	}
+
+	public static void clearTable() throws SQLException {
+		runUpdate("DELETE FROM celebs_arrests");
 	}
 
 	public static void closeConnection() {

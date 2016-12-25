@@ -28,11 +28,14 @@ import javax.swing.table.DefaultTableModel;
 
 import main.Analyze.AnalyzeSources;
 import main.database.MySQLConnector;
+import static main.database.MySQLConnector.*;
 
 /**
  * This class implements the main windows of the GUI
  * 
  * @author viviansh
+ * @author ward-mattar
+ * @author osherh
  */
 
 public class MainFrame {
@@ -175,6 +178,7 @@ public class MainFrame {
 
 	/**
 	 * Create the application.
+	 * 
 	 * @wbp.parser.entryPoint
 	 */
 	public MainFrame() {
@@ -202,7 +206,13 @@ public class MainFrame {
 		frame.addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent winEvt) {
-				MySQLConnector.closeConnection();
+				try {
+					clearTable();
+				} catch (final SQLException e) {
+					JOptionPane.showMessageDialog(null, "problem with removing events from Database", "Error",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+				closeConnection();
 				System.exit(0);
 			}
 		});
@@ -236,7 +246,8 @@ public class MainFrame {
 					new String[] { "name", "date", "Reason" }));
 		table.setBounds(30, 120, 460, 220);
 		table.setVisible(false);
-		js = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		js = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		js.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		js.setVisible(false);
 		js.setBounds(27, 120, 460, 220);
@@ -251,6 +262,7 @@ public class MainFrame {
 		inputList.addField("Date");
 		inputList.addField("Name");
 		inputList.addField("Reason");
+		inputList.addField("Year");
 
 		btnSearch = new JButton("Search");
 
