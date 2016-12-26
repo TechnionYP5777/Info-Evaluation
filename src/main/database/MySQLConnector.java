@@ -11,8 +11,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * set up the ConnectionImpl to MySQL DB and provide a function to run a query
- *
+ * This class set up the connects to a MySQL Sever, creates a DB and a table 
+ * and give the user access permissions
+ * provides an API to run query with or without parameters, update the table
+ * and add events from a DataList to the DB
+ * 
  * @author osherh
  * @since 6/12/2016
  */
