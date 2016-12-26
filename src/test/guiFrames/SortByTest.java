@@ -102,9 +102,9 @@ public class SortByTest {
 	public void sortByDateTest() throws Exception {
 		initSortByDate();
 		final DefaultTableModel expectedTable = new DefaultTableModel(
-				new String[][] { { "Emile Hirsch", "2015-02-12", "assault charges" },
-						{ "Ben Stiller", "2015-02-12", "driving without a licesnce" },
+				new String[][] { { "Ben Stiller", "2015-02-12", "driving without a licesnce" },
 						{ "Ben Stiller", "2015-02-12", "sexual assault" },
+						{ "Emile Hirsch", "2015-02-12", "assault charges" },
 						{ "Chris Kattan", "2015-02-10", "suspicion of drunk driving" },
 						{ "Chris Kattan", "2014-01-23",
 								"suspicion of driving under the influence and driving with an expired license" },
