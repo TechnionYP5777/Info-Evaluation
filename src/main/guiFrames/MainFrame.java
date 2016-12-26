@@ -362,6 +362,6 @@ public class MainFrame {
 
 	public String selected_chckbx() {
 		return chckbxName.isSelected() ? "Name"
-				: chckbxDate.isSelected() ? "Date" : !chckbxReason.isSelected() ? "None" : "Reason";
+				: chckbxDate.isSelected() ? (chckbxFilterBy.isSelected()? "Year":"Date") : !chckbxReason.isSelected() ? "None" : "Reason";
 	}
 }
