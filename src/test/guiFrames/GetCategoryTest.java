@@ -37,7 +37,8 @@ public class GetCategoryTest {
 	}
 
 	@AfterClass
-	public static void disconnect() {
+	public static void disconnect() throws SQLException {
+		clearTable();
 		closeConnection();
 	}
 
