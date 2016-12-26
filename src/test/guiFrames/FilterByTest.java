@@ -42,7 +42,8 @@ public class FilterByTest {
 	}
 
 	@AfterClass
-	public static void disconnect() {
+	public static void disconnect() throws SQLException {
+		clearTable();
 		closeConnection();
 	}
 
@@ -69,7 +70,6 @@ public class FilterByTest {
 						{ "Ben Stiller", "2015-03-11", "driving without a licesnce" },
 						{ "Ben Stiller", "2014-01-09", "sexual assault" } },
 				new String[] { "Name", "Date", "Reason" });
-		final RefineTable rt = new RefineTable();
 		final DefaultTableModel outputTable = new DefaultTableModel(new Object[][] { { "" } },
 				new String[] { "Name", "Date", "Reason" });
 		rt.filterBy(outputTable, "Name", "Ben Stiller");
@@ -85,7 +85,6 @@ public class FilterByTest {
 				{ "Austin Chumlee Russell", "2014-01-09", "sexual assault" },
 				{ "Ben Stiller", "2014-01-09", "sexual assault" }, { "Hugh Jackman", "2014-01-09", "sexual assault" } },
 				new String[] { "Name", "Date", "Reason" });
-		final RefineTable rt = new RefineTable();
 		final DefaultTableModel outputTable = new DefaultTableModel(new Object[][] { { "" } },
 				new String[] { "Name", "Date", "Reason" });
 		rt.filterBy(outputTable, "Year", "2014");
@@ -103,7 +102,6 @@ public class FilterByTest {
 						{ "Hugh Jackman", "2014-01-09", "sexual assault" },
 						{ "Austin Chumlee Russell", "2013-03-09", "sexual assault charges" } },
 				new String[] { "Name", "Date", "Reason" });
-		final RefineTable rt = new RefineTable();
 		final DefaultTableModel outputTable = new DefaultTableModel(new Object[][] { { "" } },
 				new String[] { "Name", "Date", "Reason" });
 		rt.filterBy(outputTable, "Reason", "assault");
