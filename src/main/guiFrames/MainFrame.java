@@ -23,6 +23,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -246,8 +247,8 @@ public class MainFrame {
 					new String[] { "Name", "Date", "Reason" }));
 		table.setBounds(30, 120, 460, 220);
 		table.setVisible(false);
-		js = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		js = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		js.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		js.setVisible(false);
 		js.setBounds(27, 120, 460, 220);
