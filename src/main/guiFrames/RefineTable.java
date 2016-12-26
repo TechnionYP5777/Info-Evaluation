@@ -152,7 +152,7 @@ public class RefineTable {
 		if (s == null || r == null)
 			return;
 		s.removeAllItems();
-		for (String temp = "N/A"; r.next();)
+		while (r.next())
 			s.addItem(String.valueOf(r.getString(1)));
 	}
 
@@ -167,7 +167,8 @@ public class RefineTable {
 				ResultSet r;
 				switch (categoryName) {
 				case "Year":
-					r = runQuery("SELECT DISTINCT YEAR(Arrest_Date) FROM celebs_arrests ORDER BY YEAR(Arrest_Date) DESC");
+					r = runQuery(
+							"SELECT DISTINCT YEAR(Arrest_Date) FROM celebs_arrests ORDER BY YEAR(Arrest_Date) DESC");
 					fillMenu(s, categoryName, r);
 					r.close();
 					break;
