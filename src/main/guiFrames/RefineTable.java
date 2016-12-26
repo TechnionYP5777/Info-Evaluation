@@ -16,6 +16,21 @@ import javax.swing.table.DefaultTableModel;
  * @author osherh
  */
 public class RefineTable {
+	/**
+	 * SQL Queries used for refinement
+	 */
+	private static final String SELECT_ALL_EVENTS = "SELECT * FROM celebs_arrests ORDER BY Name,UNIX_TIMESTAMP(Arrest_Date) DESC,Reason";
+	private static final String SORT_BY_DATE = "SELECT * FROM celebs_arrests ORDER BY UNIX_TIMESTAMP(Arrest_Date) DESC,Name, Reason";
+	private static final String SORT_BY_NAME = "SELECT * FROM celebs_arrests ORDER BY Name,UNIX_TIMESTAMP(Arrest_Date) DESC,Reason";
+	private static final String SORT_BY_REASON = "SELECT * FROM celebs_arrests ORDER BY Reason,Name,UNIX_TIMESTAMP(Arrest_Date) DESC";
+	private static final String FILTER_BY_YEAR = "SELECT * FROM celebs_arrests WHERE YEAR(arrest_date) = ? ORDER BY UNIX_TIMESTAMP(Arrest_Date) DESC, Name, Reason";
+	private static final String FILTER_BY_NAME = "SELECT * FROM celebs_arrests WHERE name LIKE CONCAT('%',?,'%') ORDER BY Name, UNIX_TIMESTAMP(Arrest_Date) DESC, Reason";
+	private static final String FILTER_BY_REASON = "SELECT * FROM celebs_arrests WHERE reason LIKE CONCAT('%',?,'%') ORDER BY Reason, Name, UNIX_TIMESTAMP(Arrest_Date) DESC";
+	private static final String SELECT_REASONS = "SELECT DISTINCT Reason FROM celebs_arrests ORDER BY Reason";
+	private static final String SELECT_NAMES = "SELECT DISTINCT Name FROM celebs_arrests ORDER BY Name";
+	private static final String SELECT_YEARS = "SELECT DISTINCT YEAR(Arrest_Date) FROM celebs_arrests ORDER BY YEAR(Arrest_Date) DESC";
+	private static final String SELECT_MOST_COMMON = "SELECT ? FROM celebs_arrests GROUP BY ? ORDER BY COUNT(?) DESC LIMIT ?";
+
 	private final ArrayList<String> fields;
 
 	public RefineTable() {
@@ -68,8 +83,7 @@ public class RefineTable {
 	public void sortBy(final DefaultTableModel m, final String fieldName) throws SQLException {
 		if (m != null)
 			if ("none".equals(fieldName)) {
-				final ResultSet r = runQuery(
-						"SELECT * FROM celebs_arrests ORDER BY Name,UNIX_TIMESTAMP(Arrest_Date) DESC,Reason");
+				final ResultSet r = runQuery(SELECT_ALL_EVENTS);
 				fillEventsTable(m, r);
 				r.close();
 			} else {
@@ -79,20 +93,17 @@ public class RefineTable {
 					ResultSet r;
 					switch (fieldName) {
 					case "Date":
-						r = runQuery(
-								"SELECT * FROM celebs_arrests ORDER BY UNIX_TIMESTAMP(Arrest_Date) DESC,Name, Reason");
+						r = runQuery(SORT_BY_DATE);
 						fillEventsTable(m, r);
 						r.close();
 						break;
 					case "Name":
-						r = runQuery(
-								"SELECT * FROM celebs_arrests ORDER BY Name,UNIX_TIMESTAMP(Arrest_Date) DESC,Reason");
+						r = runQuery(SORT_BY_NAME);
 						fillEventsTable(m, r);
 						r.close();
 						break;
 					case "Reason":
-						r = runQuery(
-								"SELECT * FROM celebs_arrests ORDER BY Reason,Name,UNIX_TIMESTAMP(Arrest_Date) DESC");
+						r = runQuery(SORT_BY_REASON);
 						fillEventsTable(m, r);
 						r.close();
 						break;
@@ -116,23 +127,17 @@ public class RefineTable {
 				ResultSet r;
 				switch (fieldName) {
 				case "Name":
-					r = runSafeQuery(
-							"SELECT * FROM celebs_arrests WHERE name LIKE CONCAT('%',?,'%') ORDER BY Name, UNIX_TIMESTAMP(Arrest_Date) DESC, Reason",
-							fieldValue);
+					r = runSafeQuery(FILTER_BY_NAME, fieldValue);
 					fillEventsTable(m, r);
 					r.close();
 					break;
 				case "Year":
-					r = runSafeQuery(
-							"SELECT * FROM celebs_arrests WHERE YEAR(arrest_date) = ? ORDER BY UNIX_TIMESTAMP(Arrest_Date) DESC, Name, Reason",
-							fieldValue);
+					r = runSafeQuery(FILTER_BY_YEAR, fieldValue);
 					fillEventsTable(m, r);
 					r.close();
 					break;
 				case "Reason":
-					r = runSafeQuery(
-							"SELECT * FROM celebs_arrests WHERE reason LIKE CONCAT('%',?,'%') ORDER BY Reason, Name, UNIX_TIMESTAMP(Arrest_Date) DESC",
-							fieldValue);
+					r = runSafeQuery(FILTER_BY_REASON, fieldValue);
 					fillEventsTable(m, r);
 					r.close();
 					break;
@@ -168,18 +173,17 @@ public class RefineTable {
 				ResultSet r;
 				switch (categoryName) {
 				case "Year":
-					r = runQuery(
-							"SELECT DISTINCT YEAR(Arrest_Date) FROM celebs_arrests ORDER BY YEAR(Arrest_Date) DESC");
+					r = runQuery(SELECT_YEARS);
 					fillMenu(s, r);
 					r.close();
 					break;
 				case "Name":
-					r = runQuery("SELECT DISTINCT Name FROM celebs_arrests ORDER BY Name");
+					r = runQuery(SELECT_NAMES);
 					fillMenu(s, r);
 					r.close();
 					break;
 				case "Reason":
-					r = runQuery("SELECT DISTINCT Reason FROM celebs_arrests ORDER BY Reason");
+					r = runQuery(SELECT_REASONS);
 					fillMenu(s, r);
 					r.close();
 					break;
@@ -196,8 +200,7 @@ public class RefineTable {
 	 */
 	public void getMostCommon(final JComboBox<String> s, final String fieldName, int k) throws SQLException {
 		if (s != null && fieldExist(fieldName))
-			fillMenu(s, runSafeQuery("SELECT ? FROM celebs_arrests GROUP BY ? ORDER BY COUNT(?) DESC LIMIT ?",
-					(new Object[] { fieldName, fieldName, fieldName, k })));
+			fillMenu(s, runSafeQuery(SELECT_MOST_COMMON, (new Object[] { fieldName, fieldName, fieldName, k })));
 	}
 
 	public void removeAllEvents(DefaultTableModel ¢) {
