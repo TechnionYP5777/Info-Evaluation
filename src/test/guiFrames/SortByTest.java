@@ -13,7 +13,6 @@ import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
 
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -36,13 +35,9 @@ public class SortByTest {
 		rt.addField("Reason");
 	}
 
-	@Before
-	public void emptyTable() throws SQLException {
-		clearTable();
-	}
-
 	@AfterClass
-	public static void disconnect() {
+	public static void disconnect() throws SQLException {
+		clearTable();
 		closeConnection();
 	}
 
@@ -52,6 +47,7 @@ public class SortByTest {
 	}
 
 	public void initSortByName() throws Exception {
+		clearTable();
 		runUpdate("INSERT INTO celebs_arrests values('Ben Stiller','2015-02-12','drunk driving');");
 		runUpdate("INSERT INTO celebs_arrests values('Ben Stiller','2015-02-12','sexual assault');");
 		runUpdate("INSERT INTO celebs_arrests values('Ben Stiller','2015-02-12','driving without a licesnce');");
@@ -80,8 +76,6 @@ public class SortByTest {
 								"suspicion of driving under the influence and driving with an expired license" },
 						{ "Emile Hirsch", "2015-02-12", "assault charges" } },
 				new String[] { "Name", "Date", "Reason" });
-
-		final RefineTable rt = new RefineTable();
 		final DefaultTableModel outputTable = new DefaultTableModel(new Object[][] { { "" } },
 				new String[] { "Name", "Date", "Reason" });
 		rt.sortBy(outputTable, "Name");
@@ -91,6 +85,7 @@ public class SortByTest {
 	}
 
 	public void initSortByDate() throws Exception {
+		clearTable();
 		runUpdate(
 				"INSERT INTO celebs_arrests values('Chris Kattan','2014-01-23','suspicion of driving under the influence and driving with an expired license')");
 		runUpdate("INSERT INTO celebs_arrests values('Ben Stiller','2015-02-12','driving without a licesnce')");
@@ -118,7 +113,6 @@ public class SortByTest {
 						{ "Hugh Jackman", "2014-01-09", "sexual assault" },
 						{ "Austin Chumlee Russell", "2013-03-09", "sexual assault" } },
 				new String[] { "Name", "Date", "Reason" });
-		final RefineTable rt = new RefineTable();
 		final DefaultTableModel outputTable = new DefaultTableModel(new Object[][] { { "" } },
 				new String[] { "Name", "Date", "Reason" });
 		rt.sortBy(outputTable, "Date");
@@ -128,6 +122,7 @@ public class SortByTest {
 	}
 
 	public void initSortByReason() throws Exception {
+		clearTable();
 		runUpdate("INSERT INTO celebs_arrests values('Austin Chumlee Russell','2013-03-09','sexual assault')");
 		runUpdate("INSERT INTO celebs_arrests values('Ben Stiller','2015-03-11','driving without a licesnce')");
 		runUpdate("INSERT INTO celebs_arrests values('Austin Chumlee Russell','2014-01-09','sexual assault')");
@@ -152,11 +147,9 @@ public class SortByTest {
 				{ "Ben Stiller", "2016-02-12", "sexual assault" }, { "Ben Stiller", "2014-01-09", "sexual assault" },
 				{ "Hugh Jackman", "2014-01-09", "sexual assault" }, { "Chris Kattan", "2013-05-10", "theft" },
 				{ "Emile Hirsch", "2014-02-11", "theft" } }, new String[] { "Name", "Date", "Reason" });
-		final RefineTable rt = new RefineTable();
 		final DefaultTableModel outputTable = new DefaultTableModel(new Object[][] { { "" } },
 				new String[] { "Name", "Date", "Reason" });
 		rt.sortBy(outputTable, "Reason");
-		assertEquals(expectedTable.getValueAt(4, 2), outputTable.getValueAt(4, 2));
 		for (int i = 0; i < outputTable.getRowCount(); ++i)
 			for (int j = 0; j < outputTable.getColumnCount(); ++j)
 				assertEquals(expectedTable.getValueAt(i, j), outputTable.getValueAt(i, j));
