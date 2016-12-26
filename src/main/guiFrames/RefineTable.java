@@ -79,19 +79,19 @@ public class RefineTable {
 					switch (fieldName) {
 					case "Date":
 						r = runQuery(
-								"SELECT * FROM celebs_arrests ORDER BY UNIX_TIMESTAMP(arrest_date) DESC,reason,name");
+								"SELECT * FROM celebs_arrests ORDER BY UNIX_TIMESTAMP(Arrest_Date) DESC,Reason,Name");
 						fillEventsTable(m, r);
 						r.close();
 						break;
 					case "Name":
 						r = runQuery(
-								"SELECT * FROM celebs_arrests ORDER BY name,UNIX_TIMESTAMP(arrest_date) DESC,reason");
+								"SELECT * FROM celebs_arrests ORDER BY Name,UNIX_TIMESTAMP(Arrest_Date) DESC,Reason");
 						fillEventsTable(m, r);
 						r.close();
 						break;
 					case "Reason":
 						r = runQuery(
-								"SELECT * FROM celebs_arrests ORDER BY reason,name,UNIX_TIMESTAMP(arrest_date) DESC");
+								"SELECT * FROM celebs_arrests ORDER BY Reason,Name,UNIX_TIMESTAMP(Arrest_Date) DESC");
 						fillEventsTable(m, r);
 						r.close();
 						break;
@@ -116,21 +116,21 @@ public class RefineTable {
 				switch (fieldName) {
 				case "Name":
 					r = runSafeQuery(
-							"SELECT * FROM celebs_arrests WHERE name LIKE CONCAT('%',?,'%') ORDER BY name, UNIX_TIMESTAMP(Arrest_Date) DESC, reason",
+							"SELECT * FROM celebs_arrests WHERE name LIKE CONCAT('%',?,'%') ORDER BY Name, UNIX_TIMESTAMP(Arrest_Date) DESC, Reason",
 							fieldValue);
 					fillEventsTable(m, r);
 					r.close();
 					break;
 				case "Year":
 					r = runSafeQuery(
-							"SELECT * FROM celebs_arrests WHERE YEAR(arrest_date) = ? ORDER BY UNIX_TIMESTAMP(Arrest_Date) DESC, reason, name",
+							"SELECT * FROM celebs_arrests WHERE YEAR(arrest_date) = ? ORDER BY UNIX_TIMESTAMP(Arrest_Date) DESC, Reason, Name",
 							fieldValue);
 					fillEventsTable(m, r);
 					r.close();
 					break;
 				case "Reason":
 					r = runSafeQuery(
-							"SELECT * FROM celebs_arrests WHERE reason LIKE CONCAT('%',?,'%') ORDER BY reason, name, UNIX_TIMESTAMP(Arrest_Date) DESC",
+							"SELECT * FROM celebs_arrests WHERE reason LIKE CONCAT('%',?,'%') ORDER BY Reason, Name, UNIX_TIMESTAMP(Arrest_Date) DESC",
 							fieldValue);
 					fillEventsTable(m, r);
 					r.close();
@@ -152,20 +152,8 @@ public class RefineTable {
 		if (s == null || r == null)
 			return;
 		s.removeAllItems();
-		for (String temp = "N/A"; r.next();) {
-			switch (categoryName) {
-			case "Date":
-				temp = r.getString("arrest_date");
-				break;
-			case "Name":
-				temp = r.getString("name");
-				break;
-			case "Reason":
-				temp = r.getString("reason");
-				break;
-			}
-			s.addItem(String.valueOf(temp));
-		}
+		for (String temp = "N/A"; r.next();)
+			s.addItem(String.valueOf(r.getString(1)));
 	}
 
 	/**
@@ -179,18 +167,17 @@ public class RefineTable {
 				ResultSet r;
 				switch (categoryName) {
 				case "Year":
-					r = runQuery(
-							"SELECT DISTINCT YEAR(arrest_date) FROM celebs_arrests ORDER BY YEAR(arrest_date) DESC");
+					r = runQuery("SELECT DISTINCT YEAR(Arrest_Date) FROM celebs_arrests ORDER BY YEAR(Arrest_Date) DESC");
 					fillMenu(s, categoryName, r);
 					r.close();
 					break;
 				case "Name":
-					r = runQuery("SELECT DISTINCT name FROM celebs_arrests");
+					r = runQuery("SELECT DISTINCT Name FROM celebs_arrests ORDER BY Name");
 					fillMenu(s, categoryName, r);
 					r.close();
 					break;
 				case "Reason":
-					r = runQuery("SELECT DISTINCT reason FROM celebs_arrests");
+					r = runQuery("SELECT DISTINCT Reason FROM celebs_arrests ORDER BY Reason");
 					fillMenu(s, categoryName, r);
 					r.close();
 					break;
