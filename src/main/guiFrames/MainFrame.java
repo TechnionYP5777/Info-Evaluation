@@ -130,7 +130,7 @@ public class MainFrame {
 							JOptionPane.showMessageDialog(null, "problem with sql connector", "Error",
 									JOptionPane.INFORMATION_MESSAGE);
 						}
-					if (!window.chckbxFilterBy.isSelected())
+					else if (!window.chckbxFilterBy.isSelected())
 						try {
 							window.inputList.sortBy(model, "none");
 						} catch (final SQLException e11) {
@@ -243,7 +243,7 @@ public class MainFrame {
 		table.setBorder(new LineBorder(null));
 		for (int count = 1; count <= 10; ++count)
 			table.setModel(new DefaultTableModel(new Object[][] { { "Name", "Date", "Reason" } },
-					new String[] { "name", "date", "Reason" }));
+					new String[] { "Name", "Date", "Reason" }));
 		table.setBounds(30, 120, 460, 220);
 		table.setVisible(false);
 		js = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -349,7 +349,7 @@ public class MainFrame {
 				txtpnChooseOneFrom.setVisible(false);
 			} else {
 				try {
-					inputList.getCategory(comboBox, chckbx.getName());
+					inputList.getCategory(comboBox, chckbx.getText());
 				} catch (final SQLException ¢) {
 					¢.printStackTrace();
 				}
@@ -362,6 +362,7 @@ public class MainFrame {
 
 	public String selected_chckbx() {
 		return chckbxName.isSelected() ? "Name"
-				: chckbxDate.isSelected() ? (chckbxFilterBy.isSelected()? "Year":"Date") : !chckbxReason.isSelected() ? "None" : "Reason";
+				: chckbxDate.isSelected() ? (chckbxFilterBy.isSelected() ? "Year" : "Date")
+						: !chckbxReason.isSelected() ? "None" : "Reason";
 	}
 }

@@ -68,18 +68,19 @@ public class RefineTable {
 	public void sortBy(final DefaultTableModel m, final String fieldName) throws SQLException {
 		if (m != null)
 			if ("none".equals(fieldName)) {
-				final ResultSet r = runQuery("SELECT * FROM celebs_arrests");
+				final ResultSet r = runQuery(
+						"SELECT * FROM celebs_arrests ORDER BY Name,UNIX_TIMESTAMP(Arrest_Date) DESC,Reason");
 				fillEventsTable(m, r);
 				r.close();
 			} else {
-				if (m == null || !fieldExist(fieldName))
+				if (!fieldExist(fieldName))
 					return;
 				try {
 					ResultSet r;
 					switch (fieldName) {
 					case "Date":
 						r = runQuery(
-								"SELECT * FROM celebs_arrests ORDER BY UNIX_TIMESTAMP(Arrest_Date) DESC,Reason,Name");
+								"SELECT * FROM celebs_arrests ORDER BY UNIX_TIMESTAMP(Arrest_Date) DESC,Name, Reason");
 						fillEventsTable(m, r);
 						r.close();
 						break;
@@ -123,7 +124,7 @@ public class RefineTable {
 					break;
 				case "Year":
 					r = runSafeQuery(
-							"SELECT * FROM celebs_arrests WHERE YEAR(arrest_date) = ? ORDER BY UNIX_TIMESTAMP(Arrest_Date) DESC, Reason, Name",
+							"SELECT * FROM celebs_arrests WHERE YEAR(arrest_date) = ? ORDER BY UNIX_TIMESTAMP(Arrest_Date) DESC, Name, Reason",
 							fieldValue);
 					fillEventsTable(m, r);
 					r.close();
@@ -148,7 +149,7 @@ public class RefineTable {
 	 *
 	 * @throws SQLException
 	 */
-	private void fillMenu(final JComboBox<String> s, final String categoryName, final ResultSet r) throws SQLException {
+	private void fillMenu(final JComboBox<String> s, final ResultSet r) throws SQLException {
 		if (s == null || r == null)
 			return;
 		s.removeAllItems();
@@ -169,17 +170,17 @@ public class RefineTable {
 				case "Year":
 					r = runQuery(
 							"SELECT DISTINCT YEAR(Arrest_Date) FROM celebs_arrests ORDER BY YEAR(Arrest_Date) DESC");
-					fillMenu(s, categoryName, r);
+					fillMenu(s, r);
 					r.close();
 					break;
 				case "Name":
 					r = runQuery("SELECT DISTINCT Name FROM celebs_arrests ORDER BY Name");
-					fillMenu(s, categoryName, r);
+					fillMenu(s, r);
 					r.close();
 					break;
 				case "Reason":
 					r = runQuery("SELECT DISTINCT Reason FROM celebs_arrests ORDER BY Reason");
-					fillMenu(s, categoryName, r);
+					fillMenu(s, r);
 					r.close();
 					break;
 				}
@@ -195,9 +196,8 @@ public class RefineTable {
 	 */
 	public void getMostCommon(final JComboBox<String> s, final String fieldName, int k) throws SQLException {
 		if (s != null && fieldExist(fieldName))
-			fillMenu(s, fieldName,
-					runSafeQuery("SELECT ? FROM celebs_arrests GROUP BY ? ORDER BY COUNT(?) DESC LIMIT ?",
-							(new Object[] { fieldName, fieldName, fieldName, k })));
+			fillMenu(s, runSafeQuery("SELECT ? FROM celebs_arrests GROUP BY ? ORDER BY COUNT(?) DESC LIMIT ?",
+					(new Object[] { fieldName, fieldName, fieldName, k })));
 	}
 
 	public void removeAllEvents(DefaultTableModel ¢) {
