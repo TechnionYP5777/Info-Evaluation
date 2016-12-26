@@ -23,18 +23,19 @@ public class MySQLConnectorTest {
 	}
 
 	@AfterClass
-	public static void disconnect() {
+	public static void disconnect() throws SQLException {
+		clearTable();
 		closeConnection();
 	}
 
 	@Before
 	public void initializeDatabase() throws SQLException {
-		updateDB("DELETE FROM celebs_arrests;");
-		updateDB(
+		runUpdate("DELETE FROM celebs_arrests;");
+		runUpdate(
 				"INSERT INTO celebs_arrests values('Justin Bieber','2014-01-23','suspicion of driving under the influence and driving with an expired license');");
-		updateDB("INSERT INTO celebs_arrests values('Flavor Flav','2014-01-09','speeding while driving');");
-		updateDB("INSERT INTO celebs_arrests values('Soulja Boy','2014-01-22','possession of a loaded gun');");
-		updateDB("INSERT INTO celebs_arrests values('Chris Kattan','2015-02-10','suspicion of drunk driving');");
+		runUpdate("INSERT INTO celebs_arrests values('Flavor Flav','2014-01-09','speeding while driving');");
+		runUpdate("INSERT INTO celebs_arrests values('Soulja Boy','2014-01-22','possession of a loaded gun');");
+		runUpdate("INSERT INTO celebs_arrests values('Chris Kattan','2015-02-10','suspicion of drunk driving');");
 
 		final DataList list = new DataList();
 		list.insert("Suge Knight", "01/29/2015", "involved in a fatal hit run");
@@ -77,11 +78,24 @@ public class MySQLConnectorTest {
 		} catch (final SQLException ¢) {
 			throw ¢;
 		}
-		assertEquals(1, updateDB("DELETE FROM celebs_arrests WHERE name = 'Emile Hirsch'"));
+		assertEquals(1, runUpdate("DELETE FROM celebs_arrests WHERE name = 'Emile Hirsch'"));
 		try (ResultSet rs = runQuery("SELECT COUNT(*) AS count FROM celebs_arrests WHERE name = 'Justin Bieber'");) {
 			if (rs.next())
 				assertEquals(1, rs.getInt("count"));
 		} catch (final Exception ¢) {
+			throw ¢;
+		}
+	}
+
+	@Test
+	public void multipleParamsQueryTest() throws SQLException {
+		try (ResultSet rs = runSafeQuery("SELECT Name From celebs_arrests WHERE Reason LIKE CONCAT('%',?,'%')"
+				+ "AND YEAR(Arrest_Date) = ? ORDER BY Name", new Object[] { "drunk driving", 2014 });) {
+			if (rs.next())
+				assertEquals("Flavor Flav", rs.getString(1));
+			if (rs.next())
+				assertEquals("Justin Bieber", rs.getString(1));
+		} catch (SQLException ¢) {
 			throw ¢;
 		}
 	}

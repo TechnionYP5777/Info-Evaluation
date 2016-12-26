@@ -5,12 +5,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * set up the connection to MySQL DB and provide a function to run a query
+ * set up the ConnectionImpl to MySQL DB and provide a function to run a query
  *
  * @author osherh
  * @since 6/12/2016
