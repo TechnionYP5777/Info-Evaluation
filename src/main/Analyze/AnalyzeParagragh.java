@@ -65,7 +65,8 @@ public class AnalyzeParagragh {
 		}
 		return month;
 	}
-
+	
+	
 	public TableTuple AnalyzeSimple() {
 
 		final List<String> nerTags = input.nerTags();
@@ -105,6 +106,7 @@ public class AnalyzeParagragh {
 		}
 		if (j == 2)
 			$ += this.year + " ";
+		
 		return new SimpleDateFormat("MM/dd/yyyy").format(new AnalyzeDate($).getDateObj());
 	}
 
@@ -155,6 +157,7 @@ public class AnalyzeParagragh {
 		String details = ""; // more details about the reason. e.g - where it
 								// happened.
 		String aux = "";
+		String accurate_name="";
 		for (final CoreMap sentence : document.get(SentencesAnnotation.class)) {
 			final SemanticGraph dependencies = sentence.get(CollapsedDependenciesAnnotation.class);
 			for (final IndexedWord root : dependencies.getRoots())
@@ -173,7 +176,21 @@ public class AnalyzeParagragh {
 							details += "at" + " " + dep.word() + " ";
 							break;
 						}
-					else if ("advcl".equals(rel) || "advcl:for".equals(rel) || "nmod:for".equals(rel)) {
+					else {
+						
+						//Finding the name in a more accurate manner:
+						if("nsubjpass".equals(rel)){	
+							for (final SemanticGraphEdge keshet : dependencies.getOutEdgesSorted(dep)){
+								final IndexedWord dep2 = keshet.getDependent();
+								final String rel2 = keshet.getRelation() + "";
+								if((dep2.ner()!=null &&"PERSON".equals(dep2.ner())) || "compound".equals(rel2) || "det".equals(rel2) )
+									accurate_name += dep2.word() + " ";
+							}
+							accurate_name+=dep.word();
+						}
+						
+						//Finding the reason in the paragraph
+						if ("advcl".equals(rel) || "advcl:for".equals(rel) || "nmod:for".equals(rel)) {
 						for (final SemanticGraphEdge keshet : dependencies.getOutEdgesSorted(dep)) {
 							final String rel2 = keshet.getRelation() + "";
 							final IndexedWord dep2 = keshet.getDependent();
@@ -210,12 +227,13 @@ public class AnalyzeParagragh {
 						reason += dep.word();
 						reason += aux;
 					}
-
+					
+				}
 				}
 
 		}
 
-		return new TableTuple($, input_date, (reason + " " + details).trim());
+		return new TableTuple(accurate_name.isEmpty()?$:accurate_name, input_date, (reason + " " + details).trim());
 	}
 
 	// EOF
