@@ -120,5 +120,15 @@ public class AnalyzeParagraphTest {
 		assertEquals("01/25/1992", tt.getDate());
 		assertEquals("cheating", tt.getReason());
 	}
+	
+	@Test
+	public void test11(){
+		final Sentence sent = new Sentence(
+				"Juan Diego Fernandez was arrested for cheating by Axl Rose on Jan 25 1992 .");
+		final TableTuple tt = new AnalyzeParagragh(sent, "1992").Analyze();
+		assertEquals("Juan Diego Fernandez", tt.getName());
+		assertEquals("01/25/1992", tt.getDate());
+		assertEquals("cheating", tt.getReason());
+	}
 
 }
