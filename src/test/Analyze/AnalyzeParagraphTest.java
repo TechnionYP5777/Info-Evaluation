@@ -130,5 +130,15 @@ public class AnalyzeParagraphTest {
 		assertEquals("01/25/1992", tt.getDate());
 		assertEquals("cheating", tt.getReason());
 	}
+	
+	@Test
+	public void test12(){
+		final Sentence sent = new Sentence(
+				"The Weeknd was arrested for punching a dancer in a night club on April 11 2015");
+		final TableTuple tt = new AnalyzeParagragh(sent, "2015").Analyze();
+		assertEquals("The Weeknd", tt.getName());
+		assertEquals("04/11/2015", tt.getDate());
+		assertEquals("dancer punching", tt.getReason());
+	}
 
 }
