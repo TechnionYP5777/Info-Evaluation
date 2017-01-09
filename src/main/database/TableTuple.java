@@ -88,5 +88,8 @@ public class TableTuple {
 	public void addKeyWord(String key) {
 		keyWords.add(key);
 	}
+	public List<String> getKeyWords(){
+		return this.keyWords;
+	}
 
 }

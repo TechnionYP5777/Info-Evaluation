@@ -5,8 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+import edu.stanford.nlp.util.StringUtils;
 import main.database.DataList;
+import main.database.TableTuple;
 
 /**
  *
@@ -29,17 +30,38 @@ public class AnalyzeSources {
 	public AnalyzeSources() {
 		sources = new ArrayList<>();
 		data = new DataList();
-		words=new HashMap<String, Integer>();
+		words = new HashMap<String, Integer>();
 		initialNonKey();
 	}
-	
+
 	private void initialNonKey() {
-		nonKeyWords=new ArrayList<>();
+		nonKeyWords = new ArrayList<>();
 		nonKeyWords.add("of");
 		nonKeyWords.add("on");
 		nonKeyWords.add("in");
 		nonKeyWords.add("at");
 		nonKeyWords.add("while");
+	}
+
+	private void findKeyWords() {
+		for (TableTuple i : this.data)
+			for (String str : StringUtils.split(i.getReason())) {
+				if (this.nonKeyWords.contains(str))
+					continue;
+				if (!this.words.containsKey(str))
+					this.words.put(str, 1);
+				else {
+					int value = this.words.get(str);
+					this.words.replace(str, ++value);
+				}
+			}
+		for (TableTuple i : this.data)
+			for (String ¢ : StringUtils.split(i.getReason())) {
+				if (this.nonKeyWords.contains(¢))
+					continue;
+				if (this.words.get(¢) >= 2)
+					i.addKeyWord(¢);
+			}
 	}
 
 	/**
@@ -52,6 +74,7 @@ public class AnalyzeSources {
 		sources.add(src);
 		++numOfSources;
 		data.merge(new AnalyzePage(src).getDetails());
+		findKeyWords();
 	}
 
 	public int getNumOfSources() {
@@ -61,7 +84,5 @@ public class AnalyzeSources {
 	public DataList getData() {
 		return data;
 	}
-	
-	
 
 }
