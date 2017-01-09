@@ -1,7 +1,10 @@
 package main.Analyze;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 import main.database.DataList;
 
@@ -20,10 +23,23 @@ public class AnalyzeSources {
 	private final List<String> sources;
 	private int numOfSources;
 	private final DataList data;
+	private Map<String, Integer> words;
+	private List<String> nonKeyWords;
 
 	public AnalyzeSources() {
 		sources = new ArrayList<>();
 		data = new DataList();
+		words=new HashMap<String, Integer>();
+		initialNonKey();
+	}
+	
+	private void initialNonKey() {
+		nonKeyWords=new ArrayList<>();
+		nonKeyWords.add("of");
+		nonKeyWords.add("on");
+		nonKeyWords.add("in");
+		nonKeyWords.add("at");
+		nonKeyWords.add("while");
 	}
 
 	/**
@@ -45,5 +61,7 @@ public class AnalyzeSources {
 	public DataList getData() {
 		return data;
 	}
+	
+	
 
 }

@@ -1,7 +1,9 @@
 package main.database;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -16,11 +18,13 @@ public class TableTuple {
 	private String date;
 	private String reason;
 	private Date regularDate;
+	private List<String> keyWords;
 	// we save in date format in order to be able to do manipulations on the DB
 	// according to the date
 
 	public TableTuple() {
 		reason = date = name = date = null;
+		keyWords=new ArrayList<>();
 	}
 
 	public TableTuple(final String name, final String date, final String reason) {
@@ -32,6 +36,7 @@ public class TableTuple {
 		} catch (final Exception e) {
 			regularDate = null;
 		}
+		keyWords=new ArrayList<>();
 
 	}
 
@@ -78,6 +83,10 @@ public class TableTuple {
 
 	public void setReason(final String reason) {
 		this.reason = reason;
+	}
+	
+	public void addKeyWord(String key) {
+		keyWords.add(key);
 	}
 
 }
