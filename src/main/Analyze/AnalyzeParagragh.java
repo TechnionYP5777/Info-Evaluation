@@ -4,12 +4,15 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.ling.IndexedWord;
+import edu.stanford.nlp.naturalli.NaturalLogicAnnotations;
+import edu.stanford.nlp.ie.util.RelationTriple;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.semgraph.SemanticGraph;
@@ -18,6 +21,7 @@ import edu.stanford.nlp.semgraph.SemanticGraphEdge;
 import edu.stanford.nlp.simple.Sentence;
 import edu.stanford.nlp.util.CoreMap;
 import main.database.TableTuple;
+import main.database.ReasonPair;
 
 /**
  *
@@ -123,6 +127,26 @@ public class AnalyzeParagragh {
 
 		return $.trim();
 	}
+	
+	//This function makes the analyze process interactive with the user - he gets 3 reason to choose from and chooses the most fitiing one.
+	public LinkedList<ReasonPair> InteractiveReasonFinding(){
+		LinkedList<ReasonPair> $  = new LinkedList<ReasonPair>();
+		final Properties props = new Properties();
+		props.put("annotators", "tokenize,ssplit, pos, regexner, parse,lemma,natlog,openie");
+		final StanfordCoreNLP pipeLine = new StanfordCoreNLP(props);
+
+		// inputText will be the text to evaluate in this example
+		final String inputText = input + "";
+		final Annotation document = new Annotation(inputText);
+
+		// Finally we use the pipeline to annotate the document we created
+		pipeLine.annotate(document);
+		
+		for (final CoreMap sentence : document.get(SentencesAnnotation.class))
+			for (RelationTriple ¢ : sentence.get(NaturalLogicAnnotations.RelationTriplesAnnotation.class))
+				$.add(new ReasonPair(¢.confidence, ¢.relationGloss() + " " + ¢.objectGloss()));
+	   return $;
+	}
 
 	public TableTuple Analyze() {
 		/*
@@ -142,7 +166,7 @@ public class AnalyzeParagragh {
 		 * reference to the "annotators" values you can set here and what they
 		 * will contribute to the analyzing process
 		 */
-		props.put("annotators", "tokenize,ssplit, pos, regexner, parse");
+		props.put("annotators", "tokenize,ssplit, pos, regexner, parse,lemma,natlog,openie");
 		final StanfordCoreNLP pipeLine = new StanfordCoreNLP(props);
 
 		// inputText will be the text to evaluate in this example
