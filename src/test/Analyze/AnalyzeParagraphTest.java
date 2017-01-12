@@ -140,5 +140,14 @@ public class AnalyzeParagraphTest {
 		assertEquals("04/11/2015", tt.getDate());
 		assertEquals("dancer punching", tt.getReason());
 	}
+	
+	@Test
+	public void test13() {
+		assertEquals("01/22/2016",
+				new AnalyzeParagragh(
+						new Sentence(
+								"Soulja Boy was arrested for possession of a loaded gun in Los Angeles on Jan 22.\n"),
+						"2016").Analyze().getDate());
+	}
 
 }
