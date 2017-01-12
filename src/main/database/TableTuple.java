@@ -32,7 +32,7 @@ public class TableTuple {
 		this.date = date;
 		this.reason = reason;
 		try {
-			regularDate = new SimpleDateFormat("dd/MM/yyyy").parse(this.date);
+			regularDate = new SimpleDateFormat("MM/dd/yyyy").parse(this.date);
 		} catch (final Exception e) {
 			regularDate = null;
 		}

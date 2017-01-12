@@ -49,7 +49,7 @@ public class AnalyzeSourcesTest {
 		for (TableTuple ¢ : as.getData())
 			if ("Mark Salling".equals(¢.getName())) {
 				assertTrue("12/29/2015".equals(¢.getDate()));
-				System.out.println((¢.getRegularDate() + ""));
+				assertTrue("Tue Dec 29 00:00:00 IST 2015".equals((¢.getRegularDate() + "")));
 			}
 	}
 	

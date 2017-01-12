@@ -149,5 +149,14 @@ public class AnalyzeParagraphTest {
 								"Soulja Boy was arrested for possession of a loaded gun in Los Angeles on Jan 22.\n"),
 						"2016").Analyze().getDate());
 	}
+	
+	@Test
+	public void test14(){
+		final Sentence sent = new Sentence(
+				"Mark Salling was arrested for felony possession of child pornography on Dec 29. His representative had no comment on the matter.");
+		final TableTuple tt = new AnalyzeParagragh(sent, "2015").Analyze();
+		assertEquals("12/29/2015", tt.getDate());
+		System.out.println((tt.getRegularDate() + ""));
+	}
 
 }
