@@ -17,7 +17,6 @@ public class AnalyzePage {
 	private final DataList details;
 	String year = "2015";
 
-	// GENIA: I changed the details to be from type DataList (Netanel)
 
 	public AnalyzePage(final String text) {
 		originalText = text;
