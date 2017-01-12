@@ -1,5 +1,7 @@
 package test.Analyze;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 import main.Analyze.AnalyzeSources;
@@ -39,52 +41,28 @@ public class AnalyzeSourcesTest {
 			+ "Kim Richards was arrested for shoplifting from a Target in Van Nuys, California on Aug 2.\n"
 			+ "Mark Salling was arrested for felony possession of child pornography on Dec 29. His representative had no comment on the matter.";
 
-
-	// @Test public void test1(){
-	// AnalyzeSources as= new AnalyzeSources();
-	// assertEquals(0, as.getNumOfSources());
-	// as.addSource(
-	// "Rihanna was arrested for murder on December 2nd 2016. But she was
-	// released 2 days later. \n\nKanye West hates dogs. He spet on a dog and
-	// therefore was arrested and put to jail.");
-	// assertEquals(1, as.getNumOfSources());
-	// }
-	// @Test public void test2(){
-	// AnalyzeSources as= new AnalyzeSources();
-	// assertEquals(0, as.getNumOfSources());
-	// as.addSource(
-	// "Rihanna was arrested for murder on December 2nd 2016. But she was
-	// released 2 days later. \n\nKanye West hates dogs. He spet on a dog and
-	// therefore was arrested and put to jail.");
-	// assertEquals(1, as.getNumOfSources());
-	// assertEquals(2, as.getData().getNumOfTuples());
-	// }
-	// @Test public void test3(){
-	// AnalyzeSources as= new AnalyzeSources();
-	// assertEquals(0, as.getNumOfSources());
-	// as.addSource(
-	// "Rihanna was arrested for murder on December 2nd 2016. But she was
-	// released 2 days later. \n\nKanye West hates dogs. He spet on a dog and
-	// therefore was arrested and put to jail.");
-	// as.addSource(
-	// "Lebron James was arrested for murder on December 2nd 2016. But she was
-	// released 2 days later. \n\nBritney Spears hates dogs. He spet on a dog
-	// and therefore was arrested and put to jail.");
-	//
-	// assertEquals(2, as.getNumOfSources());
-	// assertEquals(4, as.getData().getNumOfTuples());
-	// }
-
 	@Test
-	public void testPrint() {
+	public void checkMerge() {
 		final AnalyzeSources as = new AnalyzeSources();
-		as.addSource(src1);
+		//as.addSource(src1);
 		as.addSource(src2);
-//		 as.getData().printList();
-		for (TableTuple tt : as.getData()) {
-			for (String ¢ : tt.getKeyWords())
-				System.out.println(¢);
-			System.out.println();
-		}
+		for (TableTuple ¢ : as.getData())
+			if ("Mark Salling".equals(¢.getName())) {
+				assertTrue("12/29/2015".equals(¢.getDate()));
+				System.out.println((¢.getRegularDate() + ""));
+			}
 	}
+	
+//	@Test
+//	public void testPrint() {
+//		final AnalyzeSources as = new AnalyzeSources();
+//		as.addSource(src1);
+//		as.addSource(src2);
+////		 as.getData().printList();
+//		for (TableTuple tt : as.getData()) {
+//			for (String ¢ : tt.getKeyWords())
+//				System.out.println(¢);
+//			System.out.println();
+//		}
+//	}
 }
