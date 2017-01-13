@@ -76,6 +76,13 @@ public class AnalyzeSources {
 		data.merge(new AnalyzePage(src).getDetails());
 		findKeyWords();
 	}
+	
+	public void addSource(final String src, String year) {
+		sources.add(src);
+		++numOfSources;
+		data.merge(new AnalyzePage(src,year).getDetails());
+		findKeyWords();
+	}
 
 	public int getNumOfSources() {
 		return numOfSources;

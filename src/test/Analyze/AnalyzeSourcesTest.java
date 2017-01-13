@@ -53,16 +53,16 @@ public class AnalyzeSourcesTest {
 			}
 	}
 	
-//	@Test
-//	public void testPrint() {
-//		final AnalyzeSources as = new AnalyzeSources();
-//		as.addSource(src1);
-//		as.addSource(src2);
-////		 as.getData().printList();
+	@Test
+	public void testPrint() {
+		final AnalyzeSources as = new AnalyzeSources();
+		as.addSource(src1);
+		as.addSource(src2);
+		as.getData().printList();
 //		for (TableTuple tt : as.getData()) {
 //			for (String ¢ : tt.getKeyWords())
 //				System.out.println(¢);
 //			System.out.println();
 //		}
-//	}
+	}
 }

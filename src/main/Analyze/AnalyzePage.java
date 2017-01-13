@@ -1,6 +1,7 @@
 package main.Analyze;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
 
@@ -15,13 +16,22 @@ public class AnalyzePage {
 	private final String originalText;
 	private final List<String> paragraphs;
 	private final DataList details;
-	String year = "2015";
+	private String year;
 
 
+	public AnalyzePage(final String text, String year) {
+		originalText = text;
+		paragraphs = createParagraphs();
+		details = new DataList();
+		this.year=year;
+		detectDetails();
+	}
+	
 	public AnalyzePage(final String text) {
 		originalText = text;
 		paragraphs = createParagraphs();
 		details = new DataList();
+		this.year=Integer.toString(Calendar.getInstance().get(Calendar.YEAR)-1);
 		detectDetails();
 	}
 
