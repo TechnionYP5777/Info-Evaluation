@@ -1,6 +1,7 @@
 package main.guiFrames;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -26,6 +27,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 import main.Analyze.AnalyzeSources;
 import main.database.MySQLConnector;
@@ -189,13 +192,13 @@ public class MainFrame {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	@SuppressWarnings("serial")
 	private void initialize() {
 
 		frame = new JFrame();
 		frame.setTitle("Info Evaluation");
 		frame.setResizable(false);
-		final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		frame.setBounds(0, 0, screen.width / 2, screen.height / 2);
+		frame.setBounds(0, 0, 811, 473);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		try {
@@ -219,7 +222,7 @@ public class MainFrame {
 		});
 
 		final AnalyzeSources events = new AnalyzeSources();
-		events.addSource(src1);
+		//events.addSource(src1); 
 		events.addSource(src2);
 
 		MySQLConnector.addEvents(events.getData());
@@ -237,7 +240,16 @@ public class MainFrame {
 		 * initializing the table
 		 *
 		 */
-		table = new JTable();
+		table = new JTable(){
+			@Override
+		       public Component prepareRenderer(TableCellRenderer r, int row, int column) {
+		           Component $ = super.prepareRenderer(r, row, column);
+		           int rendererWidth = $.getPreferredSize().width;
+		           TableColumn tableColumn = getColumnModel().getColumn(column);
+		           tableColumn.setPreferredWidth(Math.max(rendererWidth + getIntercellSpacing().width, tableColumn.getPreferredWidth()));
+		           return $;
+		        }
+		};
 		table.setShowVerticalLines(false);
 		table.setCellSelectionEnabled(true);
 		table.setColumnSelectionAllowed(true);
@@ -245,15 +257,16 @@ public class MainFrame {
 		for (int count = 1; count <= 10; ++count)
 			table.setModel(new DefaultTableModel(new Object[][] { { "Name", "Date", "Reason" } },
 					new String[] { "Name", "Date", "Reason" }));
-		table.setBounds(30, 120, 460, 220);
+		table.setBounds(30, 120, 460, 270);
 		table.setVisible(false);
 		js = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		js.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		js.setVisible(false);
-		js.setBounds(27, 120, 460, 220);
+		js.setBounds(27, 120, 460, 270);
 		frame.getContentPane().add(js);
 		frame.getContentPane().add(js);
+		
 
 		/*
 		 * initializing the table
@@ -293,48 +306,60 @@ public class MainFrame {
 		txtpnChooseOneFrom.setVisible(false);
 
 		final GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
-		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
-				.createSequentialGroup()
-				.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-						.addGroup(
-								groupLayout.createSequentialGroup().addContainerGap().addComponent(searchTxt,
-										GroupLayout.PREFERRED_SIZE, 434, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup().addGap(24)
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(chckbxSortby)
-										.addComponent(chckbxName))
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addGroup(groupLayout.createSequentialGroup().addComponent(chckbxDate)
-												.addPreferredGap(ComponentPlacement.RELATED).addComponent(chckbxReason))
-										.addComponent(chckbxFilterBy))
-								.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(txtpnChooseOneFrom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)))
-				.addGap(18)
-				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(comboBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnSearch, GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE))
-				.addGap(63)));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
-				.createSequentialGroup().addGap(20)
-				.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(24)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(chckbxSortby)
+								.addComponent(chckbxName))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(chckbxDate)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(chckbxReason))
+								.addComponent(chckbxFilterBy))
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(txtpnChooseOneFrom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, 459, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(btnSearch, GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+							.addGap(113))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap())))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(20)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnSearch, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE))
-				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup().addGap(4)
-								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(chckbxSortby)
-										.addComponent(chckbxFilterBy))
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(chckbxName)
-										.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-												.addComponent(chckbxDate).addComponent(chckbxReason))))
-						.addGroup(groupLayout.createSequentialGroup().addGap(18)
-								.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-										.addComponent(txtpnChooseOneFrom, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE))))
-				.addContainerGap(246, Short.MAX_VALUE)));
+						.addComponent(btnSearch, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(4)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(chckbxSortby)
+								.addComponent(chckbxFilterBy))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(chckbxName)
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+									.addComponent(chckbxDate)
+									.addComponent(chckbxReason))))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(18)
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(txtpnChooseOneFrom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+					.addContainerGap(345, Short.MAX_VALUE))
+		);
 		frame.getContentPane().setLayout(groupLayout);
 
 	}
