@@ -45,12 +45,17 @@ public class AnalyzeSourcesTest {
 	public void checkMerge() {
 		final AnalyzeSources as = new AnalyzeSources();
 		as.addSource(src1);
-		as.addSource(src2);
-		for (TableTuple ¢ : as.getData())
+		as.addSource(src2,"2015");
+		for (TableTuple ¢ : as.getData()) {
 			if ("Mark Salling".equals(¢.getName())) {
 				assertTrue("12/29/2015".equals(¢.getDate()));
 				assertTrue("Tue Dec 29 00:00:00 IST 2015".equals((¢.getRegularDate() + "")));
 			}
+			if("Dustin Diamond".equals(¢.getName()))
+				assertTrue("12/26/2016".equals(¢.getDate()));
+		}
+			
+			
 	}
 	
 	@Test
