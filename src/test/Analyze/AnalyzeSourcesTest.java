@@ -18,7 +18,7 @@ public class AnalyzeSourcesTest {
 			+ "Chris Brown was arrested for violating his probation on Mar 14 after he was kicked out of rehab for failure to follow the rules of the program.\n"
 			+ "Columbus Short was arrested for physically attacking his wife on February 14 2014.\n"
 			+ "Columbus Short was arrested for allegedly punching a man in a bar fight on March 21 2014.\n"
-			+ "Judge Joe Brown was arrested for contempt of court in March 26 after an outburst he allegedly made while representing a woman during a child support hearing.\n"
+			+ "Judge Joe Brown was arrested for contempt of court on March 26 after an outburst he allegedly made while representing a woman during a child support hearing.\n"
 			+ "Joe Francis was arrested for allegedly attacking an employee at the Girls Gone Wild offices in L.A on May 16.\n"
 			+ "Ray J was arrested after allegedly groping a woman in the lobby on May 30 at the Beverly Wilshire Hotel. However, he reportedly refused to leave and allegedly began behaving belligerently towards police.\n"
 			+ "Hope Sollo was arrested after assaulting her half-sister and her nephew on June 21 .\n"
@@ -44,7 +44,7 @@ public class AnalyzeSourcesTest {
 	@Test
 	public void checkMerge() {
 		final AnalyzeSources as = new AnalyzeSources();
-		//as.addSource(src1);
+		as.addSource(src1);
 		as.addSource(src2);
 		for (TableTuple ¢ : as.getData())
 			if ("Mark Salling".equals(¢.getName())) {
