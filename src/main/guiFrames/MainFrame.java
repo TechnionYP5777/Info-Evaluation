@@ -5,7 +5,10 @@ import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
@@ -19,6 +22,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -53,6 +57,8 @@ public class MainFrame {
 	private JCheckBox chckbxDate;
 	private JCheckBox chckbxReason;
 	private JMenuItem mntmAbout;
+	private JPopupMenu popupMenu;
+	private JMenuItem mnfilter;
 	private JMenu mnHelp;
 	private JCheckBox chckbxSortby;
 	private JCheckBox chckbxFilterBy;
@@ -105,6 +111,31 @@ public class MainFrame {
 		EventQueue.invokeLater(() -> {
 			try {
 				final MainFrame window = new MainFrame();
+				
+				/*right click in table*/
+				window.table.addMouseListener(new MouseAdapter() {
+				    public void mousePressed(MouseEvent e)
+		            {
+				    	 Point point = e.getPoint();
+				         int currentRow = window.table.rowAtPoint(point);
+				         int currentcolumn = window.table.columnAtPoint(point);
+				         window.table.setRowSelectionInterval(currentRow, currentRow);
+				         window.table.setColumnSelectionInterval(currentcolumn, currentcolumn);
+		            }
+
+				});
+				
+				window.mnfilter.addActionListener(l->{
+					try {
+						window.inputList.filterBy((DefaultTableModel) window.table.getModel(),
+								(String) window.table.getColumnName(window.table.getSelectedColumn()), (String) window.table.getValueAt(window.table.getSelectedRow(), window.table.getSelectedColumn()));
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+				});
+				
 				window.frame.setVisible(true);
 				window.onClickCheckBox(window.chckbxDate, window.chckbxName, window.chckbxReason);
 				window.onClickCheckBox(window.chckbxName, window.chckbxDate, window.chckbxReason);
@@ -161,6 +192,7 @@ public class MainFrame {
 			} catch (final Exception ¢) {
 				¢.printStackTrace();
 			}
+	
 
 		});
 
@@ -236,21 +268,19 @@ public class MainFrame {
 
 		mntmAbout = new JMenuItem("About");
 		mnHelp.add(mntmAbout);
+		
+		popupMenu = new JPopupMenu();
+		mnfilter = new JMenuItem("Filter by");
+		popupMenu.add(mnfilter);
+		
+		
 		/*
 		 *
 		 * initializing the table
 		 *
 		 */
-		table = new JTable(){
-			@Override
-		       public Component prepareRenderer(TableCellRenderer r, int row, int column) {
-		           Component $ = super.prepareRenderer(r, row, column);
-		           int rendererWidth = $.getPreferredSize().width;
-		           TableColumn tableColumn = getColumnModel().getColumn(column);
-		           tableColumn.setPreferredWidth(Math.max(rendererWidth + getIntercellSpacing().width, tableColumn.getPreferredWidth()));
-		           return $;
-		        }
-		};
+		table = new JTable() ;//{
+		table.setComponentPopupMenu(popupMenu);
 		table.setShowVerticalLines(false);
 		table.setCellSelectionEnabled(true);
 		table.setColumnSelectionAllowed(true);
@@ -391,4 +421,16 @@ public class MainFrame {
 				: chckbxDate.isSelected() ? (chckbxFilterBy.isSelected() ? "Year" : "Date")
 						: !chckbxReason.isSelected() ? "None" : "Reason";
 	}
+	
+	/*
+	 * create popup  menu 
+	 */
+	public JPopupMenu createMyPopUp(){
+		final JPopupMenu $ = new JPopupMenu("RightClick");
+	    $.add(this.mnfilter);
+	    return $;
+		
+	}
 }
+
+
