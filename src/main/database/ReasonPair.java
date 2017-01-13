@@ -7,6 +7,7 @@ package main.database;
 * be the actual reason.
 *
 */
+// I wont check that the probability is between 0 to 1 here,since it is GUARANTEED that we use this class only with probabilities [0-1]
 public class ReasonPair {
 	private double probability;
 	private String reason;
