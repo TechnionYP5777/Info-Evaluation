@@ -198,7 +198,8 @@ public class MainFrame {
 		frame = new JFrame();
 		frame.setTitle("Info Evaluation");
 		frame.setResizable(false);
-		frame.setBounds(0, 0, 811, 473);
+		final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+		frame.setBounds(0, 0, screen.width, screen.height-1);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		try {
@@ -257,13 +258,13 @@ public class MainFrame {
 		for (int count = 1; count <= 10; ++count)
 			table.setModel(new DefaultTableModel(new Object[][] { { "Name", "Date", "Reason" } },
 					new String[] { "Name", "Date", "Reason" }));
-		table.setBounds(30, 120, 460, 270);
+		table.setBounds(30, 120, screen.width/2+100, screen.height/2);
 		table.setVisible(false);
 		js = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		js.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		js.setVisible(false);
-		js.setBounds(27, 120, 460, 270);
+		js.setBounds(30, 120, screen.width/2+100, screen.height/2);
 		frame.getContentPane().add(js);
 		frame.getContentPane().add(js);
 		
@@ -310,7 +311,7 @@ public class MainFrame {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(24)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(chckbxSortby)
@@ -322,17 +323,16 @@ public class MainFrame {
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(chckbxReason))
 								.addComponent(chckbxFilterBy))
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(txtpnChooseOneFrom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, 459, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+							.addPreferredGap(ComponentPlacement.RELATED, 436, Short.MAX_VALUE)
+							.addComponent(txtpnChooseOneFrom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(18))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(btnSearch, GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
-							.addGap(113))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())))
+							.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, 782, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)))
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(comboBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnSearch, GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE))
+					.addGap(230))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -358,7 +358,7 @@ public class MainFrame {
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(txtpnChooseOneFrom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap(345, Short.MAX_VALUE))
+					.addContainerGap(641, Short.MAX_VALUE))
 		);
 		frame.getContentPane().setLayout(groupLayout);
 
