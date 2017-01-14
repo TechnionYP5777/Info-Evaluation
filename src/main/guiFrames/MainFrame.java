@@ -68,6 +68,7 @@ public class MainFrame {
 	private JTextPane txtpnChooseOneFrom;
 	private JScrollPane js;
 	private InfoExtractor personalInfo;
+	private JButton btnLoadAnalyzeResults;
 
 	/**
 	 * sources to analyze
@@ -137,8 +138,8 @@ public class MainFrame {
 											window.table.getSelectedColumn()));
 						}
 					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "problem with sql connector", "Error",
+								JOptionPane.INFORMATION_MESSAGE);
 					}
 
 				});
@@ -180,6 +181,11 @@ public class MainFrame {
 					window.chckbxDate.setText("Year");
 					window.setVisabilty(window.chckbxFilterBy.isSelected());
 				});
+
+				/*
+				 * search button onclick
+				 * 
+				 */
 				window.btnSearch.addActionListener(e -> {
 					final DefaultTableModel model = (DefaultTableModel) window.table.getModel();
 					if (window.chckbxSortby.isSelected())
@@ -204,7 +210,23 @@ public class MainFrame {
 						}
 					window.table.setVisible(true);
 					window.js.setVisible(true);
+					window.btnLoadAnalyzeResults.setVisible(true);
 				});
+
+				/*
+				 * LoadAnalyzeResults button on click
+				 */
+				window.btnLoadAnalyzeResults.addActionListener(l -> {
+					DefaultTableModel model = (DefaultTableModel) window.table.getModel();
+					try {
+						window.inputList.sortBy(model, "none");
+					} catch (SQLException e1) {
+						JOptionPane.showMessageDialog(null, "problem with sql connector", "Error",
+								JOptionPane.INFORMATION_MESSAGE);
+					}
+
+				});
+
 				window.mntmAbout.addActionListener(m -> JOptionPane.showMessageDialog(null,
 						"Info Evaluation is a program that reads query results from google search and parses "
 								+ "the data,formats it,\nthen analyzes according to the query "
@@ -362,47 +384,68 @@ public class MainFrame {
 
 		personalInfo = new InfoExtractor();
 
+		btnLoadAnalyzeResults = new JButton("Refresh");
+		btnLoadAnalyzeResults.setVisible(false);
+
 		final GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
-		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
-				.createSequentialGroup().addGap(24)
-				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(chckbxSortby)
+							.addGap(24)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(chckbxSortby)
 										.addComponent(chckbxName))
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addGroup(groupLayout.createSequentialGroup().addComponent(chckbxDate)
-												.addPreferredGap(ComponentPlacement.RELATED).addComponent(chckbxReason))
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addGroup(groupLayout.createSequentialGroup()
+											.addComponent(chckbxDate)
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(chckbxReason))
 										.addComponent(chckbxFilterBy))
-								.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(txtpnChooseOneFrom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))
-						.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, 782, GroupLayout.PREFERRED_SIZE))
-				.addPreferredGap(ComponentPlacement.RELATED)
-				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(comboBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnSearch, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
-				.addGap(370)));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
-				.createSequentialGroup().addGap(20)
-				.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+									.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(txtpnChooseOneFrom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, 782, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(comboBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(btnSearch, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(36)
+							.addComponent(btnLoadAnalyzeResults)))
+					.addContainerGap(370, Short.MAX_VALUE))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(20)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnSearch, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
-				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup().addGap(4)
-								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(chckbxSortby)
-										.addComponent(chckbxFilterBy))
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(chckbxName)
-										.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-												.addComponent(chckbxDate).addComponent(chckbxReason))))
-						.addGroup(groupLayout.createSequentialGroup().addGap(21)
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(txtpnChooseOneFrom, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-				.addContainerGap(640, Short.MAX_VALUE)));
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(4)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(chckbxSortby)
+								.addComponent(chckbxFilterBy))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(chckbxName)
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+									.addComponent(chckbxDate)
+									.addComponent(chckbxReason))))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(21)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(txtpnChooseOneFrom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+					.addPreferredGap(ComponentPlacement.RELATED, 417, Short.MAX_VALUE)
+					.addComponent(btnLoadAnalyzeResults, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+					.addGap(189))
+		);
 		frame.getContentPane().setLayout(groupLayout);
 
 	}
