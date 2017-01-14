@@ -41,33 +41,33 @@ public class AnalyzeSourcesTest {
 			+ "Kim Richards was arrested for shoplifting from a Target in Van Nuys, California on Aug 2.\n"
 			+ "Mark Salling was arrested for felony possession of child pornography on Dec 29. His representative had no comment on the matter.";
 
-	@Test
-	public void checkMerge() {
-		final AnalyzeSources as = new AnalyzeSources();
-		as.addSource(src1);
-		as.addSource(src2,"2015");
-		for (TableTuple ¢ : as.getData()) {
-			if ("Mark Salling".equals(¢.getName())) {
-				assertTrue("12/29/2015".equals(¢.getDate()));
-				assertTrue("Tue Dec 29 00:00:00 IST 2015".equals((¢.getRegularDate() + "")));
-			}
-			if("Dustin Diamond".equals(¢.getName()))
-				assertTrue("12/26/2016".equals(¢.getDate()));
-		}
-			
-			
-	}
+//	@Test
+//	public void checkMerge() {
+//		final AnalyzeSources as = new AnalyzeSources();
+//		as.addSource(src1);
+//		as.addSource(src2,"2015");
+//		for (TableTuple ¢ : as.getData()) {
+//			if ("Mark Salling".equals(¢.getName())) {
+//				assertTrue("12/29/2015".equals(¢.getDate()));
+//				assertTrue("Tue Dec 29 00:00:00 IST 2015".equals((¢.getRegularDate() + "")));
+//			}
+//			if("Dustin Diamond".equals(¢.getName()))
+//				assertTrue("12/26/2016".equals(¢.getDate()));
+//		}
+//			
+//			
+//	}
 	
 	@Test
 	public void testPrint() {
 		final AnalyzeSources as = new AnalyzeSources();
 		as.addSource(src1);
 		as.addSource(src2);
-		as.getData().printList();
-//		for (TableTuple tt : as.getData()) {
-//			for (String ¢ : tt.getKeyWords())
-//				System.out.println(¢);
-//			System.out.println();
-//		}
+//		as.getData().printList();
+		for (TableTuple tt : as.getData()) {
+			for (String ¢ : tt.getKeyWords())
+				System.out.println(¢);
+			System.out.println();
+		}
 	}
 }

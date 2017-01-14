@@ -41,6 +41,7 @@ public class AnalyzeSources {
 		nonKeyWords.add("in");
 		nonKeyWords.add("at");
 		nonKeyWords.add("while");
+		nonKeyWords.add("under");
 	}
 
 	private void findKeyWords() {
@@ -55,11 +56,12 @@ public class AnalyzeSources {
 					this.words.replace(str, ++value);
 				}
 			}
+		
 		for (TableTuple i : this.data)
 			for (String ¢ : StringUtils.split(i.getReason())) {
 				if (this.nonKeyWords.contains(¢))
 					continue;
-				if (this.words.get(¢) >= 2)
+				if (this.words.get(¢) >= 2) 
 					i.addKeyWord(¢);
 			}
 	}
