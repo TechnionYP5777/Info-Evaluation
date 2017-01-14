@@ -11,6 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.table.DefaultTableModel;
+
 /**
  * This class extracts personal info regarding celebrities from their Wikipedia
  * page
@@ -21,7 +23,30 @@ public class InfoExtractor {
 	private static final int fieldMaxLength = 30;
 	private static final String wikipediaURL = "https://en.wikipedia.org/wiki/";
 	public Map<String, List<PersonalInfo>> celebsInfo;
-
+	
+	public void getCelebInfoTable(final String name, final DefaultTableModel m) {
+		if(m == null)
+			return;
+		while(m.getRowCount() > 0)
+			m.removeRow(0);
+		List<PersonalInfo> infoList = getCelebInfo(name);
+		final Object temp[] = new Object[2];
+		for (PersonalInfo ¢ : infoList){
+			temp[0] = ¢.getAttribute();
+			temp[1] = ¢.getInfo();
+			m.addRow(temp);
+		}
+	}
+	
+	
+	public String getCelebInfoString(final String name) {
+		String $ = "";
+		List<PersonalInfo> infoList = getCelebInfo(name);
+		for (PersonalInfo ¢ : infoList)
+			$ += ¢.getAttribute() + ¢.getInfo() + "\n";
+		return $.trim();
+	}
+	
 	public List<PersonalInfo> getCelebInfo(final String name) {
 		if (name == null)
 			return null;
