@@ -1,6 +1,7 @@
 package main.guiFrames;
 
 /**
+ * This class holds a personal attribute for a celeb
  * @author ward-mattar
  */
 public class PersonalInfo {
