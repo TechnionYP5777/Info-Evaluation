@@ -306,8 +306,8 @@ public class MainFrame {
 		MySQLConnector.addEvents(events.getData());
 		try {
 			addAllKeywords(events.getData());
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException ¢) {
+			¢.printStackTrace();
 		}
 
 		final JMenuBar menuBar = new JMenuBar();
