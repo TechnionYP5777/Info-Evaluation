@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.Properties;
 
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
+import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.IndexedWord;
 import edu.stanford.nlp.naturalli.NaturalLogicAnnotations;
 import edu.stanford.nlp.ie.util.RelationTriple;
@@ -128,7 +129,7 @@ public class AnalyzeParagragh {
 		return $.trim();
 	}
 	
-	//This function makes the analyze process interactive with the user - he gets 3 reason to choose from and chooses the most fitiing one.
+	//This function makes the analyze process interactive with the user - he gets reasons to choose from and chooses the most fitiing one.
 	public LinkedList<ReasonPair> InteractiveReasonFinding(){
 		LinkedList<ReasonPair> $  = new LinkedList<ReasonPair>();
 		final Properties props = new Properties();
@@ -147,6 +148,7 @@ public class AnalyzeParagragh {
 				$.add(new ReasonPair(¢.confidence, ¢.relationGloss() + " " + ¢.objectGloss()));
 	   return $;
 	}
+	
 
 	public TableTuple Analyze() {
 		/*
