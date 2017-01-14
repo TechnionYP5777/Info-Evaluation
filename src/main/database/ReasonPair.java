@@ -29,5 +29,11 @@ public class ReasonPair {
 	public String getReason(){
 		return this.reason;
 	}
+	public void  setProbability(double p){
+		this.probability=p;
+	}
+	public void setReason(String reason){
+		this.reason=reason;
+	}
 
 }
