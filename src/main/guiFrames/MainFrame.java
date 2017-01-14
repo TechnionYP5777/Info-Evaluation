@@ -135,7 +135,7 @@ public class MainFrame {
 								columnName = "Year";
 							window.inputList.filterBy((DefaultTableModel) window.table.getModel(), columnName,
 									(String) window.table.getValueAt(window.table.getSelectedRow(),
-											window.table.getSelectedColumn()));
+											window.table.getSelectedColumn()),FilterType.RIGHT_CLICK);
 						}
 					} catch (SQLException e1) {
 						JOptionPane.showMessageDialog(null, "problem with sql connector", "Error",
@@ -204,7 +204,7 @@ public class MainFrame {
 					else
 						try {
 							window.inputList.filterBy((DefaultTableModel) window.table.getModel(),
-									window.selected_chckbx(), (String) window.comboBox.getSelectedItem());
+									window.selected_chckbx(), (String) window.comboBox.getSelectedItem(),FilterType.CHOOSE_FROM_LIST);
 						} catch (final SQLException e12) {
 							e12.printStackTrace();
 						}
@@ -304,6 +304,11 @@ public class MainFrame {
 		events.addSource(src2, "2015");
 
 		MySQLConnector.addEvents(events.getData());
+		try {
+			addAllKeywords(events.getData());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 		final JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
