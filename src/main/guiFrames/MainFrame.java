@@ -1,27 +1,28 @@
 package main.guiFrames;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
-
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -31,8 +32,6 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
 
 import main.Analyze.AnalyzeSources;
 import main.database.MySQLConnector;
@@ -59,6 +58,7 @@ public class MainFrame {
 	private JMenuItem mntmAbout;
 	private JPopupMenu popupMenu;
 	private JMenuItem mnfilter;
+	private JMenuItem mnprofile;
 	private JMenu mnHelp;
 	private JCheckBox chckbxSortby;
 	private JCheckBox chckbxFilterBy;
@@ -67,6 +67,7 @@ public class MainFrame {
 	private JComboBox<String> comboBox;
 	private JTextPane txtpnChooseOneFrom;
 	private JScrollPane js;
+	private InfoExtractor personalInfo;
 
 	/**
 	 * sources to analyze
@@ -120,12 +121,14 @@ public class MainFrame {
 						int currentcolumn = window.table.columnAtPoint(point);
 						window.table.setRowSelectionInterval(currentRow, currentRow);
 						window.table.setColumnSelectionInterval(currentcolumn, currentcolumn);
+						window.mnprofile
+								.setVisible(window.table.getColumnName(window.table.getSelectedColumn()) == "Name");
 					}
 
 				});
 				window.mnfilter.addActionListener(l -> {
 					try {
-						if (window.table.getSelectedColumn() != -1 && window.table.getSelectedRow() != -1 ) {
+						if (window.table.getSelectedColumn() != -1 && window.table.getSelectedRow() != -1) {
 							String columnName = window.table.getColumnName(window.table.getSelectedColumn());
 							if (columnName == "Date")
 								columnName = "Year";
@@ -138,6 +141,23 @@ public class MainFrame {
 						e1.printStackTrace();
 					}
 
+				});
+
+				window.mnprofile.addActionListener(l -> {
+
+					JPanel pan = new JPanel();
+					pan.setLayout(new FlowLayout((FlowLayout.LEFT)));
+					JTextPane infoText = new JTextPane();
+					String name = (String) window.table.getValueAt(window.table.getSelectedRow(),
+							window.table.getSelectedColumn());
+					infoText.setText(window.personalInfo.getCelebInfoString(name));
+					infoText.setBackground(new Color(0, 0, 0, 0));
+					pan.add(infoText);
+					JDialog mydialog = new JDialog();
+					mydialog.setSize(new Dimension(480, 290));
+					mydialog.setTitle("Personal info of " + name);
+					mydialog.add(pan);
+					mydialog.setVisible(true);
 				});
 
 				window.frame.setVisible(true);
@@ -227,7 +247,6 @@ public class MainFrame {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	@SuppressWarnings("serial")
 	private void initialize() {
 
 		frame = new JFrame();
@@ -259,8 +278,8 @@ public class MainFrame {
 
 		final AnalyzeSources events = new AnalyzeSources();
 
-		events.addSource(src1); 
-		events.addSource(src2,"2015");
+		events.addSource(src1);
+		events.addSource(src2, "2015");
 
 		MySQLConnector.addEvents(events.getData());
 
@@ -275,8 +294,11 @@ public class MainFrame {
 
 		popupMenu = new JPopupMenu();
 		mnfilter = new JMenuItem("Filter by");
-		popupMenu.add(mnfilter);
+		mnprofile = new JMenuItem("View profile");
+		mnprofile.setVisible(false);
 
+		popupMenu.add(mnfilter);
+		popupMenu.add(mnprofile);
 		/*
 		 *
 		 * initializing the table
@@ -338,58 +360,49 @@ public class MainFrame {
 		txtpnChooseOneFrom.setBackground(new Color(0, 0, 0, 0));
 		txtpnChooseOneFrom.setVisible(false);
 
+		personalInfo = new InfoExtractor();
+
 		final GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(24)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
+				.createSequentialGroup().addGap(24)
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(chckbxSortby)
-								.addComponent(chckbxName))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(chckbxDate)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(chckbxReason))
-								.addComponent(chckbxFilterBy))
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(txtpnChooseOneFrom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(chckbxSortby)
+										.addComponent(chckbxName))
+								.addPreferredGap(ComponentPlacement.UNRELATED)
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addGroup(groupLayout.createSequentialGroup().addComponent(chckbxDate)
+												.addPreferredGap(ComponentPlacement.RELATED).addComponent(chckbxReason))
+										.addComponent(chckbxFilterBy))
+								.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(txtpnChooseOneFrom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE))
 						.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, 782, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+				.addPreferredGap(ComponentPlacement.RELATED)
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
 						.addComponent(comboBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(btnSearch, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
-					.addGap(370))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(20)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+				.addGap(370)));
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
+				.createSequentialGroup().addGap(20)
+				.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnSearch, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(4)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(chckbxSortby)
-								.addComponent(chckbxFilterBy))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(chckbxName)
-								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-									.addComponent(chckbxDate)
-									.addComponent(chckbxReason))))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(21)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(txtpnChooseOneFrom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap(640, Short.MAX_VALUE))
-		);
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup().addGap(4)
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(chckbxSortby)
+										.addComponent(chckbxFilterBy))
+								.addPreferredGap(ComponentPlacement.UNRELATED)
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(chckbxName)
+										.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+												.addComponent(chckbxDate).addComponent(chckbxReason))))
+						.addGroup(groupLayout.createSequentialGroup().addGap(21)
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE)
+										.addComponent(txtpnChooseOneFrom, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+				.addContainerGap(640, Short.MAX_VALUE)));
 		frame.getContentPane().setLayout(groupLayout);
 
 	}
