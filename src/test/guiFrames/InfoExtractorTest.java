@@ -12,7 +12,8 @@ import org.junit.Test;
 
 /**
  * This class tests the functions of InfoExtractor
- * @author ward-mattar 
+ * 
+ * @author ward-mattar
  */
 public class InfoExtractorTest {
 	@Test
@@ -52,5 +53,13 @@ public class InfoExtractorTest {
 		assertEquals(1, extractor.celebsInfo.size());
 		extractor.getCelebInfo("Hope Solo");
 		assertEquals(2, extractor.celebsInfo.size());
+	}
+
+	@Test
+	public void testCelebsInfo() {
+		InfoExtractor extractor = new InfoExtractor();
+		extractor.getCelebInfo("Chris Brown");
+		extractor.getCelebInfo("Hope Solo");
+		extractor.getCelebInfo("Justin Beiber");
 	}
 }
