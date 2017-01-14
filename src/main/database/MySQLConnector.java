@@ -117,7 +117,7 @@ public class MySQLConnector {
 				List<String> keywords = tuple.getKeyWords();
 				String keywordsStr = "";
 				for (String word : keywords)
-					keywordsStr.concat(word + " ");
+					keywordsStr += word + " ";
 				ps.setString(4, keywordsStr);
 				ps.executeUpdate();
 			} catch (final SQLException ¢) {
@@ -135,6 +135,7 @@ public class MySQLConnector {
 
 	public static void clearTable() throws SQLException {
 		runUpdate("DELETE FROM celebs_arrests");
+		runUpdate("DELETE FROM keywords_table");
 	}
 
 	public static void closeConnection() {
