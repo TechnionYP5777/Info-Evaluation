@@ -56,10 +56,37 @@ public class InfoExtractorTest {
 	}
 
 	@Test
-	public void testCelebsInfo() {
-		InfoExtractor extractor = new InfoExtractor();
-		extractor.getCelebInfo("Chris Brown");
-		extractor.getCelebInfo("Hope Solo");
-		extractor.getCelebInfo("Justin Beiber");
+	public void testCelebsInfoPrint() {
+		InfoExtractor e = new InfoExtractor();
+		System.out.println(e.getCelebInfoString("Chris Brown"));
+		System.out.println(e.getCelebInfoString("Hope Solo"));
+		System.out.println(e.getCelebInfoString("Justin Beiber"));
+		System.out.println(e.getCelebInfoString("Tito Ortiz"));
+		System.out.println(e.getCelebInfoString("David Cassidy"));
+		System.out.println(e.getCelebInfoString("Hayden"));
+		System.out.println(e.getCelebInfoString("Soulja Boy"));
+		System.out.println(e.getCelebInfoString("Chris Kattan"));
+		System.out.println(e.getCelebInfoString("Sam Worthington"));
+		System.out.println(e.getCelebInfoString("Chris Pine"));
+		System.out.println(e.getCelebInfoString("Columbus Short"));
+		System.out.println(e.getCelebInfoString("Judge Joe Brown"));
+		System.out.println(e.getCelebInfoString("Ray J"));
+		System.out.println(e.getCelebInfoString("Joe Francis"));
+		System.out.println(e.getCelebInfoString("Shia LaBeouf"));
+		System.out.println(e.getCelebInfoString("Rick Ross"));
+		System.out.println(e.getCelebInfoString("Keyshia Cole"));
+		System.out.println(e.getCelebInfoString("Amanda Bynes"));
+		System.out.println(e.getCelebInfoString("Michael Phelps"));
+		System.out.println(e.getCelebInfoString("Waka Flocka Flame"));
+		System.out.println(e.getCelebInfoString("Nicholas Brendon"));
+		System.out.println(e.getCelebInfoString("Suge Knight"));
+		System.out.println(e.getCelebInfoString("Andy Dick"));
+		System.out.println(e.getCelebInfoString("Buddy Valastro"));
+		System.out.println(e.getCelebInfoString("Dustin Diamond"));
+		System.out.println(e.getCelebInfoString("Ricardo Medina Jr."));
+		System.out.println(e.getCelebInfoString("John Stamos"));
+		System.out.println(e.getCelebInfoString("Kim Richards"));
+		System.out.println(e.getCelebInfoString("Mark Salling"));
+
 	}
 }

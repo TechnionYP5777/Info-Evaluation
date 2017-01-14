@@ -23,22 +23,21 @@ public class InfoExtractor {
 	private static final int fieldMaxLength = 30;
 	private static final String wikipediaURL = "https://en.wikipedia.org/wiki/";
 	public Map<String, List<PersonalInfo>> celebsInfo;
-	
+
 	public void getCelebInfoTable(final String name, final DefaultTableModel m) {
-		if(m == null)
+		if (m == null)
 			return;
-		while(m.getRowCount() > 0)
+		while (m.getRowCount() > 0)
 			m.removeRow(0);
 		List<PersonalInfo> infoList = getCelebInfo(name);
 		final Object temp[] = new Object[2];
-		for (PersonalInfo ¢ : infoList){
+		for (PersonalInfo ¢ : infoList) {
 			temp[0] = ¢.getAttribute();
 			temp[1] = ¢.getInfo();
 			m.addRow(temp);
 		}
 	}
-	
-	
+
 	public String getCelebInfoString(final String name) {
 		String $ = "";
 		List<PersonalInfo> infoList = getCelebInfo(name);
@@ -46,7 +45,7 @@ public class InfoExtractor {
 			$ += ¢.getAttribute() + ¢.getInfo() + "\n";
 		return $.trim();
 	}
-	
+
 	public List<PersonalInfo> getCelebInfo(final String name) {
 		if (name == null)
 			return null;
@@ -55,7 +54,18 @@ public class InfoExtractor {
 		List<PersonalInfo> $ = new LinkedList<>();
 		Document doc;
 		try {
-			doc = Jsoup.connect(getWikiURL(name)).timeout(3000).get();
+			String celebName;
+			switch (name) {
+			case "Hayden":
+				celebName = "Will Hayden";
+				break;
+			case "Judge Joe Brown":
+				celebName = "Joe Brown (judge)";
+				break;
+			default:
+				celebName = name;
+			}
+			doc = Jsoup.connect(getWikiURL(celebName)).timeout(3000).get();
 		} catch (IOException e) {
 			return new LinkedList<>($);
 		}
@@ -66,13 +76,11 @@ public class InfoExtractor {
 			for (Element el : trimmedInfo.select("tr")) {
 				Elements sons = el.children();
 				if (sons.size() == 2) {
-					if ("Hope Solo".equals(name) && !sons.get(0).select("span").isEmpty())
+					if ("Hope Solo".equals(name) && !sons.get(0).select("span").isEmpty()
+							|| "Tito Ortiz".equals(name) && sons.get(1).text().matches("^[0-9]+"))
 						continue;
-					String fieldName = wrapString(sons.get(0).text()) + ": ";
-					String fieldValue = wrapString(sons.get(1).text());
-					System.out.print(fieldName);
-					System.out.println(fieldValue);
-					$.add(new PersonalInfo(fieldName, fieldValue));
+					$.add(new PersonalInfo((wrapString(sons.get(0).text()) + ": "),
+							wrapString(sons.get(1).text().replaceAll("\\[[0-9]\\]", ""))));
 				}
 
 			}
@@ -80,7 +88,6 @@ public class InfoExtractor {
 		} catch (NullPointerException e) {
 			return new LinkedList<>($);
 		}
-		System.out.print("\n\n");
 		celebsInfo.put(name, $);
 		return new LinkedList<>($);
 	}
