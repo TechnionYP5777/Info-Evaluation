@@ -19,14 +19,19 @@ public class RefineTable {
 	/**
 	 * SQL Queries used for refinement
 	 */
-	private static final String SELECT_ALL_EVENTS = "SELECT * FROM celebs_arrests ORDER BY Name,UNIX_TIMESTAMP(Arrest_Date) DESC,Reason";
 	private static final String SORT_BY_DATE = "SELECT * FROM celebs_arrests ORDER BY UNIX_TIMESTAMP(Arrest_Date) DESC,Name, Reason";
 	private static final String SORT_BY_NAME = "SELECT * FROM celebs_arrests ORDER BY Name,UNIX_TIMESTAMP(Arrest_Date) DESC,Reason";
 	private static final String SORT_BY_REASON = "SELECT * FROM celebs_arrests ORDER BY Reason,Name,UNIX_TIMESTAMP(Arrest_Date) DESC";
+
 	private static final String FILTER_BY_YEAR = "SELECT * FROM celebs_arrests WHERE YEAR(arrest_date) = ? ORDER BY UNIX_TIMESTAMP(Arrest_Date) DESC, Name, Reason";
 	private static final String FILTER_BY_NAME = "SELECT * FROM celebs_arrests WHERE name LIKE CONCAT('%',?,'%') ORDER BY Name, UNIX_TIMESTAMP(Arrest_Date) DESC, Reason";
 	private static final String FILTER_BY_REASON = "SELECT * FROM celebs_arrests WHERE reason LIKE CONCAT('%',?,'%') ORDER BY Reason, Name, UNIX_TIMESTAMP(Arrest_Date) DESC";
-	private static final String SELECT_REASONS = "SELECT DISTINCT Reason FROM celebs_arrests ORDER BY Reason";
+	private static final String FILTER_NAME_BY_RIGHT_CLICK = "SELECT * FROM celebs_arrests WHERE name = ? ORDER BY Name, UNIX_TIMESTAMP(Arrest_Date) DESC, Reason";
+	private static final String FILTER_REASON_BY_RIGHT_CLICK = "SELECT * FROM celebs_arrests WHERE reason ? ORDER BY Reason, Name, UNIX_TIMESTAMP(Arrest_Date) DESC";
+	private static final String FILTER_BY_AUTOCOMPLETE = "SELECT * FROM celebs_arrests WHERE name LIKE CONCAT(?,'%') OR year(arrest_date) LIKE CONCAT(?,'%') OR reason LIKE CONCAT(?,'%') ORDER BY Name, UNIX_TIMESTAMP(Arrest_Date) DESC, Reason";
+
+	private static final String SELECT_ALL_EVENTS = "SELECT * FROM celebs_arrests ORDER BY Name,UNIX_TIMESTAMP(Arrest_Date) DESC,Reason";
+	private static final String SELECT_REASON_KEYWORDS = "SELECT DISTINCT keyword FROM keywords_table ORDER BY keyword";
 	private static final String SELECT_NAMES = "SELECT DISTINCT Name FROM celebs_arrests ORDER BY Name";
 	private static final String SELECT_YEARS = "SELECT DISTINCT YEAR(Arrest_Date) FROM celebs_arrests ORDER BY YEAR(Arrest_Date) DESC";
 	private static final String SELECT_MOST_COMMON = "SELECT ? FROM celebs_arrests GROUP BY ? ORDER BY COUNT(?) DESC LIMIT ?";
@@ -118,28 +123,40 @@ public class RefineTable {
 	 * filters the content of the events table according to the given field name
 	 * and value
 	 *
+	 * filter reason by right click - filters by the reason itself filter by
+	 * reason - filters by the reason keyword chosen filter reason by
+	 * autocomplete - filters by the reason keyword chosen
+	 *
 	 * @throws SQLException
 	 */
-	public void filterBy(final DefaultTableModel m, final String fieldName, final String fieldValue)
+	public void filterBy(final DefaultTableModel m, final String fieldName, final String fieldValue, FilterType t)
 			throws SQLException {
+		ResultSet r = null;
+		if (fieldName == null) {
+			r = runSafeQuery(FILTER_BY_AUTOCOMPLETE, fieldValue);
+			fillEventsTable(m, r);
+			r.close();
+		}
 		if (m != null && fieldExist(fieldName) && fieldValue != null)
 			try {
-				ResultSet r;
+				ResultSet rs=null;
 				switch (fieldName) {
 				case "Name":
-					r = runSafeQuery(FILTER_BY_NAME, fieldValue);
+					rs = runSafeQuery(t != FilterType.RIGHT_CLICK ? FILTER_BY_NAME : FILTER_NAME_BY_RIGHT_CLICK,
+							fieldValue);
 					fillEventsTable(m, r);
-					r.close();
+					rs.close();
 					break;
 				case "Year":
-					r = runSafeQuery(FILTER_BY_YEAR, fieldValue);
+					rs = runSafeQuery(FILTER_BY_YEAR, fieldValue);
 					fillEventsTable(m, r);
-					r.close();
+					rs.close();
 					break;
 				case "Reason":
-					r = runSafeQuery(FILTER_BY_REASON, fieldValue);
+					rs = runSafeQuery(t != FilterType.RIGHT_CLICK ? FILTER_BY_REASON : FILTER_REASON_BY_RIGHT_CLICK,
+							fieldValue);
 					fillEventsTable(m, r);
-					r.close();
+					rs.close();
 					break;
 				}
 			} catch (final SQLException ¢) {
@@ -183,7 +200,7 @@ public class RefineTable {
 					r.close();
 					break;
 				case "Reason":
-					r = runQuery(SELECT_REASONS);
+					r = runQuery(SELECT_REASON_KEYWORDS);
 					fillMenu(s, r);
 					r.close();
 					break;
