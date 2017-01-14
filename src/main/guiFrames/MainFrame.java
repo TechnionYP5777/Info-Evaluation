@@ -5,19 +5,27 @@ import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
+
+import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -69,6 +77,7 @@ public class MainFrame {
 	private JScrollPane js;
 	private InfoExtractor personalInfo;
 	private JButton btnLoadAnalyzeResults;
+	private JLabel lblImage;
 
 	/**
 	 * sources to analyze
@@ -391,10 +400,26 @@ public class MainFrame {
 
 		btnLoadAnalyzeResults = new JButton("Refresh");
 		btnLoadAnalyzeResults.setVisible(false);
+		
+		/*
+		 * add image
+		 */
+		
+		BufferedImage myPicture;
+		try {
+			myPicture = ImageIO.read(this.getClass().getResource("search.png"));
+			lblImage = new JLabel(new ImageIcon(myPicture.getScaledInstance(220, 220, Image.SCALE_DEFAULT)));
+		} catch (IOException ¢) {
+			¢.printStackTrace();
+		}
+		
+//		JLabel lblImage = new JLabel("Image");
+//		add(picLabel);
+		
 
 		final GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
@@ -420,8 +445,11 @@ public class MainFrame {
 								.addComponent(btnSearch, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(36)
-							.addComponent(btnLoadAnalyzeResults)))
-					.addContainerGap(370, Short.MAX_VALUE))
+							.addComponent(btnLoadAnalyzeResults))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(914)
+							.addComponent(lblImage, GroupLayout.PREFERRED_SIZE, 232, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(214, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -447,7 +475,9 @@ public class MainFrame {
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(txtpnChooseOneFrom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-					.addPreferredGap(ComponentPlacement.RELATED, 417, Short.MAX_VALUE)
+					.addGap(203)
+					.addComponent(lblImage, GroupLayout.PREFERRED_SIZE, 193, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
 					.addComponent(btnLoadAnalyzeResults, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
 					.addGap(189))
 		);
