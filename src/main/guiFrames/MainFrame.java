@@ -258,8 +258,9 @@ public class MainFrame {
 		});
 
 		final AnalyzeSources events = new AnalyzeSources();
-		events.addSource(src1);
-		events.addSource(src2);
+
+		events.addSource(src1); 
+		events.addSource(src2,"2015");
 
 		MySQLConnector.addEvents(events.getData());
 
