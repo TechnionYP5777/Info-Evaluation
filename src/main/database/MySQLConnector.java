@@ -7,14 +7,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.text.SimpleDateFormat;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This class set up the connects to a MySQL Sever, creates a DB and a table 
- * and give the user access permissions
- * provides an API to run query with or without parameters, update the table
- * and add events from a DataList to the DB
+ * This class set up the connects to a MySQL Sever, creates a DB and a table and
+ * give the user access permissions provides an API to run query with or without
+ * parameters, update the table and add events from a DataList to the DB
  * 
  * @author osherh
  * @since 6/12/2016
@@ -66,8 +68,9 @@ public class MySQLConnector {
 		logger.log(Level.INFO, "DB events created successfully");
 		runQuery("use events");
 		runUpdate(
-				"CREATE TABLE celebs_arrests (Name VARCHAR(30) NOT NULL,Arrest_Date DATE NOT NULL,Reason VARCHAR(150) NOT NULL,PRIMARY KEY (Name,Arrest_Date,Reason))");
-		logger.log(Level.INFO, "table celebs_arrests created successfully");
+				"CREATE TABLE celebs_arrests (Name VARCHAR(30) NOT NULL,Arrest_Date DATE NOT NULL,Reason VARCHAR(150) NOT NULL,keywords VARCHAR(50) NOT NULL,PRIMARY KEY (Name,Arrest_Date,Reason))");
+		runUpdate("CREATE TABLE keywords_table (Keyword VARCHAR(15))");
+		logger.log(Level.INFO, "tables celebs_arrests created successfully");
 	}
 
 	private void givePermissions() throws SQLException {
@@ -95,20 +98,39 @@ public class MySQLConnector {
 		return $.executeQuery();
 	}
 
+	public static int runSafeUpdate(final String query, final Object input) throws SQLException {
+		PreparedStatement $ = conn.prepareStatement(query);
+		$.setObject(1, input);
+		return $.executeUpdate();
+	}
+
 	private static java.sql.Date utilDateToSQLDateConvertor(final java.util.Date utilDate) {
 		return java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(utilDate));
 	}
 
 	public static void addEvents(final DataList lin) {
 		for (final TableTuple tuple : lin)
-			try (PreparedStatement ps = conn.prepareStatement("INSERT INTO celebs_arrests values (?,?,?);");) {
+			try (PreparedStatement ps = conn.prepareStatement("INSERT INTO celebs_arrests values (?,?,?,?);");) {
 				ps.setString(1, tuple.getName());
 				ps.setDate(2, utilDateToSQLDateConvertor(tuple.getRegularDate()));
 				ps.setString(3, tuple.getReason());
+				List<String> keywords = tuple.getKeyWords();
+				String keywordsStr = "";
+				for (String word : keywords)
+					keywordsStr.concat(word + " ");
+				ps.setString(4, keywordsStr);
 				ps.executeUpdate();
 			} catch (final SQLException ¢) {
 				¢.printStackTrace();
 			}
+	}
+
+	public static void addAllKeywords(DataList lin) throws SQLException {
+		Set<String> keywords = new HashSet<>();
+		for (final TableTuple ¢ : lin)
+			keywords.addAll(¢.getKeyWords());
+		for (String keyword : keywords)
+			runSafeUpdate("INSERT INTO keywords_table(?)", keyword);
 	}
 
 	public static void clearTable() throws SQLException {
