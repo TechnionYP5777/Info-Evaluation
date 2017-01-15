@@ -34,14 +34,14 @@ public class AnalyzePageTest {
 		assert "possession of gun".equals(details.get(2).getReason());
 		assert "01/22/2016".equals(details.get(2).getDate());
 		
-		assertTrue("12/29/2013".equals(details.get(3).getDate()));
+		assert "12/29/2013".equals(details.get(3).getDate());
 		
 		detailsTable = new AnalyzePage(text, "2014").getDetails();
 		details = detailsTable.getList();
 		assert "01/06/2014".equals(details.get(0).getDate());
 		assert "01/10/2014".equals(details.get(1).getDate());
 		assert "01/22/2014".equals(details.get(2).getDate());
-		assertTrue("12/29/2013".equals(details.get(3).getDate()));
+		assert "12/29/2013".equals(details.get(3).getDate());
 
 	}
 

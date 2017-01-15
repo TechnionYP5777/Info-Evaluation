@@ -19,15 +19,15 @@ public class InteractiveTableTupleTest{
 		assertNull(t.getDate());
 		assertNull(t.getName());
 		assertNull(t.getRegularDate());
-		assertTrue(t.getKeyWords().isEmpty());
-		assertTrue(t.getReasons().isEmpty());
+		assert t.getKeyWords().isEmpty();
+		assert t.getReasons().isEmpty();
 	}		
 	@Test public void test1(){
 		InteractiveTableTuple t=new InteractiveTableTuple("Justin Bieber", "12/02/2016", null);
 		assertEquals(t.getDate(), "12/02/2016");
 		assertEquals(t.getName(), "Justin Bieber");
 		assertEquals((t.getRegularDate() + ""), "Fri Dec 02 00:00:00 IST 2016");
-		assertTrue(t.getKeyWords().isEmpty());
+		assert t.getKeyWords().isEmpty();
 	}		
 	@Test public void test2(){
 		InteractiveTableTuple t=new InteractiveTableTuple();
@@ -36,7 +36,7 @@ public class InteractiveTableTupleTest{
 		assertEquals(t.getDate(), "12/02/2016");
 		assertEquals(t.getName(), "Justin Bieber");
 		assertEquals((t.getRegularDate() + ""), "Fri Dec 02 00:00:00 IST 2016");
-		assertTrue(t.getKeyWords().isEmpty());
+		assert t.getKeyWords().isEmpty();
 		ReasonPair rp=new ReasonPair();
 		rp.setProbability(0.4);
 		rp.setReason("stubbing");
@@ -56,7 +56,7 @@ public class InteractiveTableTupleTest{
 		assertEquals(t.getDate(), "12/02/2016");
 		assertEquals(t.getName(), "Justin Bieber");
 		assertEquals((t.getRegularDate() + ""), "Fri Dec 02 00:00:00 IST 2016");
-		assertTrue(t.getKeyWords().isEmpty());
+		assert t.getKeyWords().isEmpty();
 		assertEquals(t.getReasons().get(0).getProbability(), 0.4, 0);
 		assertEquals(t.getReasons().get(0).getReason(), "stubbing");
 		t.addKeyWord("stubbing");
