@@ -7,11 +7,13 @@ import java.util.Map;
 
 import edu.stanford.nlp.util.StringUtils;
 import main.database.DataList;
+import main.database.InteractiveTableTuple;
 import main.database.TableTuple;
 
 /**
  *
- * @author netanel this class contains all the sources to be analyzed. It uses
+ * @author netanel 
+ * 		   this class contains all the sources to be analyzed. It uses
  *         the AnalyzeParagraph class in order to analyze each source, and the
  *         merge all the lists of each source so we have one big list with all
  *         the information we were looking for ready to be delivered to the GUI
@@ -26,12 +28,14 @@ public class AnalyzeSources {
 	private final DataList data;
 	private Map<String, Integer> words;
 	private List<String> nonKeyWords;
+	private List<InteractiveTableTuple> interactiveData;
 
 	public AnalyzeSources() {
 		sources = new ArrayList<>();
 		data = new DataList();
 		words = new HashMap<String, Integer>();
 		initialNonKey();
+		interactiveData= new ArrayList<>();
 	}
 
 	private void initialNonKey() {
@@ -77,6 +81,7 @@ public class AnalyzeSources {
 		sources.add(src);
 		++numOfSources;
 		data.merge(new AnalyzePage(src).getDetails());
+		interactiveData.addAll(new AnalyzePage(src).getInteractiveDetails());
 		findKeyWords();
 	}
 	
@@ -84,6 +89,7 @@ public class AnalyzeSources {
 		sources.add(src);
 		++numOfSources;
 		data.merge(new AnalyzePage(src,year).getDetails());
+		interactiveData.addAll(new AnalyzePage(src).getInteractiveDetails());
 		findKeyWords();
 	}
 
@@ -98,5 +104,7 @@ public class AnalyzeSources {
 	public Map<String, Integer> getWords() {
 		return words;
 	}
-
+	public List<InteractiveTableTuple> getInteractiveData(){
+		return this.interactiveData;
+	}
 }
