@@ -11,28 +11,31 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.simple.Sentence;
 import edu.stanford.nlp.util.CoreMap;
 import main.database.DataList;
+import main.database.InteractiveTableTuple;
 
 public class AnalyzePage {
 	private final String originalText;
 	private final List<String> paragraphs;
+	List<InteractiveTableTuple> interactiveDetails;
 	private final DataList details;
 	private String year;
-
 
 	public AnalyzePage(final String text, String year) {
 		originalText = text;
 		paragraphs = createParagraphs();
 		details = new DataList();
-		this.year=year;
+		this.year = year;
 		detectDetails();
+		createInteractiveDetails();
 	}
-	
+
 	public AnalyzePage(final String text) {
 		originalText = text;
 		paragraphs = createParagraphs();
 		details = new DataList();
-		this.year=Integer.toString(Calendar.getInstance().get(Calendar.YEAR)-1);
+		this.year = Integer.toString(Calendar.getInstance().get(Calendar.YEAR) - 1);
 		detectDetails();
+		createInteractiveDetails();
 	}
 
 	private List<String> createParagraphs() {
@@ -67,5 +70,15 @@ public class AnalyzePage {
 
 	public DataList getDetails() {
 		return details;
+	}
+
+	public void createInteractiveDetails() {
+		interactiveDetails = new ArrayList<>();
+		for (String ¢ : paragraphs)
+			interactiveDetails.add((new AnalyzeParagragh(new Sentence(¢), year)).InteractiveAnalyze());
+	}
+	
+	public List<InteractiveTableTuple> getInteractiveDetails() {
+		return interactiveDetails;
 	}
 }
