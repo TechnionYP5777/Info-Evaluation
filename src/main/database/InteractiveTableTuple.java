@@ -25,7 +25,8 @@ public class InteractiveTableTuple {
 	private List<String> keyWords;
 	
 	public InteractiveTableTuple() {
-		date = name = date = null;
+		date = name = null;
+		regularDate=null;
 		reasons = new LinkedList<>();
 		keyWords=new ArrayList<>();
 	}
