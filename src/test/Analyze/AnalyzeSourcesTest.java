@@ -1,6 +1,10 @@
 package test.Analyze;
 
+import static org.junit.Assert.*;
 
+import java.util.Map;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import main.Analyze.AnalyzeSources;
@@ -40,33 +44,57 @@ public class AnalyzeSourcesTest {
 			+ "Kim Richards was arrested for shoplifting from a Target in Van Nuys, California on Aug 2.\n"
 			+ "Mark Salling was arrested for felony possession of child pornography on Dec 29. His representative had no comment on the matter.";
 
-//	@Test
-//	public void checkMerge() {
-//		final AnalyzeSources as = new AnalyzeSources();
-//		as.addSource(src1);
-//		as.addSource(src2,"2015");
-//		for (TableTuple ¢ : as.getData()) {
-//			if ("Mark Salling".equals(¢.getName())) {
-//				assertTrue("12/29/2015".equals(¢.getDate()));
-//				assertTrue("Tue Dec 29 00:00:00 IST 2015".equals((¢.getRegularDate() + "")));
-//			}
-//			if("Dustin Diamond".equals(¢.getName()))
-//				assertTrue("12/26/2016".equals(¢.getDate()));
-//		}
-//			
-//			
-//	}
-	
+	private String text, text2,text3;
+
+	@Before
+	public void startTest() {
+		text = "Tito Ortiz was arrested for driving under the influence after he drove his Porsche Panamera into the concrete median on Jan 6 on the 405 freeway in L.A. at 4am.\n";
+		text2= "David Cassidy was arrested for driving under the influence on Jan 10 after he allegedly took a breathalyzer test and was found to be over twice the legal limit.\n"
+				+ "Soulja Boy was arrested for possession of a loaded gun in Los Angeles on Jan 22.\n";
+		text3= "Mark Salling was arrested for felony possession of child pornography on Dec 29 2013. His representative had no comment on the matter.";
+	}
+
+	@Test
+	public void checkMerge() {
+		final AnalyzeSources as = new AnalyzeSources();
+		as.addSource(src1);
+		as.addSource(src2, "2015");
+		for (TableTuple ¢ : as.getData()) {
+			if ("Mark Salling".equals(¢.getName())) {
+				assertTrue("12/29/2015".equals(¢.getDate()));
+				assertTrue("Tue Dec 29 00:00:00 IST 2015".equals((¢.getRegularDate() + "")));
+			}
+			if ("Dustin Diamond".equals(¢.getName()))
+				assertTrue("12/26/2016".equals(¢.getDate()));
+		}
+
+	}
+
 	@Test
 	public void testPrint() {
 		final AnalyzeSources as = new AnalyzeSources();
 		as.addSource(src1);
 		as.addSource(src2);
-//		as.getData().printList();
+		// as.getData().printList();
 		for (TableTuple tt : as.getData()) {
 			for (String ¢ : tt.getKeyWords())
 				System.out.println(¢);
 			System.out.println();
 		}
+	}
+	
+	@Test
+	public void testKeyWords() {
+		final AnalyzeSources as = new AnalyzeSources();
+		as.addSource(text);
+		as.addSource(text2, "2015");
+		as.addSource(text3,"2013");
+		Map<String, Integer> wordsInSources=as.getWords();
+		assertTrue(wordsInSources.get("driving")== 2);
+		assertTrue(wordsInSources.get("possession")== 2);
+		assertTrue(wordsInSources.get("gun")== 1);
+		assertTrue(as.getData().getList().get(0).getKeyWords().contains("influence"));
+		assertTrue(as.getData().getList().get(3).getKeyWords().contains("possession"));
+		
 	}
 }

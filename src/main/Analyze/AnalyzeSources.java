@@ -45,6 +45,7 @@ public class AnalyzeSources {
 	}
 
 	private void findKeyWords() {
+		words = new HashMap<String, Integer>();
 		for (TableTuple i : this.data)
 			for (String str : StringUtils.split(i.getReason())) {
 				if (this.nonKeyWords.contains(str))
@@ -92,6 +93,10 @@ public class AnalyzeSources {
 
 	public DataList getData() {
 		return data;
+	}
+	
+	public Map<String, Integer> getWords() {
+		return words;
 	}
 
 }
