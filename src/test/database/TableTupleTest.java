@@ -23,22 +23,22 @@ public class TableTupleTest {
 
 	@Test
 	public void test1() {
-		final TableTuple tup = new TableTuple("Charlie Sheen", "02/12/2016", "arrest on domestic violence charges");
-		assert "02/12/2016".equals(tup.getDate());
+		final TableTuple tup = new TableTuple("Charlie Sheen", "12/02/2016", "arrest on domestic violence charges");
+		assert "12/02/2016".equals(tup.getDate());
 		assert "Charlie Sheen".equals(tup.getName());
 		assert "arrest on domestic violence charges".equals(tup.getReason());
-		assert "Fri Dec 02 00:00:00 PST 2016".equals(tup.getRegularDate() + "");
+		assert "Fri Dec 02 00:00:00 IST 2016".equals(tup.getRegularDate() + "");
 	}
 
 	@Test
 	public void test2() {
 		final TableTuple tup = new TableTuple();
 		tup.setName("Charlie Sheen");
-		tup.setDate("02/12/2016");
+		tup.setDate("12/02/2016");
 		tup.setReason("arrest on domestic violence charges");
-		assert "02/12/2016".equals(tup.getDate());
+		assert "12/02/2016".equals(tup.getDate());
 		assert "Charlie Sheen".equals(tup.getName());
 		assert "arrest on domestic violence charges".equals(tup.getReason());
-		assert "Fri Dec 02 00:00:00 PST 2016".equals(tup.getRegularDate() + "");
+		assert "Fri Dec 02 00:00:00 IST 2016".equals(tup.getRegularDate() + "");
 	}
 }
