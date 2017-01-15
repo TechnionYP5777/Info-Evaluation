@@ -78,7 +78,7 @@ public class InteractiveTableTuple {
 	public void setDate(final String date) {
 		this.date = date;
 		try {
-			regularDate = new SimpleDateFormat("dd/MM/yyyy").parse(this.date);
+			regularDate = new SimpleDateFormat("MM/dd/yyyy").parse(this.date);
 		} catch (final Exception ¢) {
 			¢.printStackTrace();
 		}
