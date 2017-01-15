@@ -22,6 +22,7 @@ import edu.stanford.nlp.simple.Sentence;
 import edu.stanford.nlp.util.CoreMap;
 import main.database.TableTuple;
 import main.database.ReasonPair;
+import main.database.InteractiveTableTuple;
 
 /**
  *
@@ -147,7 +148,44 @@ public class AnalyzeParagragh {
 				$.add(new ReasonPair(¢.confidence, ¢.relationGloss() + " " + ¢.objectGloss()));
 	   return $;
 	}
-	
+	public InteractiveTableTuple InteractiveAnalyze(){
+		final String $ = getName();
+		final String input_date = getDate(year);
+		String accurate_name="";
+		LinkedList<ReasonPair> reasons = InteractiveReasonFinding();
+		final Properties props = new Properties();
+
+		props.put("annotators", "tokenize,ssplit, pos, regexner, parse,lemma,natlog,openie");
+		final StanfordCoreNLP pipeLine = new StanfordCoreNLP(props);
+
+		final String inputText = input + "";
+		final Annotation document = new Annotation(inputText);
+
+		pipeLine.annotate(document);
+		
+		for (final CoreMap sentence : document.get(SentencesAnnotation.class)) {
+			final SemanticGraph dependencies = sentence.get(CollapsedDependenciesAnnotation.class);
+			for (final IndexedWord root : dependencies.getRoots())
+				for (final SemanticGraphEdge edge : dependencies.getOutEdgesSorted(root)) {
+					final IndexedWord dep = edge.getDependent();
+					if ("nsubjpass".equals((edge.getRelation() + ""))) {
+						for (final SemanticGraphEdge keshet : dependencies.getOutEdgesSorted(dep)) {
+							final IndexedWord dep2 = keshet.getDependent();
+							final String rel2 = keshet.getRelation() + "";
+							if ("arrested".equals(edge.getGovernor().word())
+									&& ((dep2.ner() != null && "PERSON".equals(dep2.ner())) || "compound".equals(rel2)
+											|| "det".equals(rel2)))
+								accurate_name += dep2.word() + " ";
+						}
+						accurate_name += dep.word();
+					}
+					
+				}
+		}
+		
+		return new InteractiveTableTuple(accurate_name.isEmpty()?$:accurate_name, input_date, reasons);
+		
+	}
 
 	public TableTuple Analyze() {
 		/*
