@@ -43,6 +43,8 @@ import javax.swing.table.DefaultTableModel;
 
 import main.Analyze.AnalyzeSources;
 import main.database.MySQLConnector;
+import main.database.TableTuple;
+
 import static main.database.MySQLConnector.*;
 
 /**
@@ -126,6 +128,7 @@ public class MainFrame {
 
 				/* right click in table */
 				window.table.addMouseListener(new MouseAdapter() {
+					@Override
 					public void mousePressed(MouseEvent e) {
 						Point point = e.getPoint();
 						int currentRow = window.table.rowAtPoint(point);
@@ -149,6 +152,7 @@ public class MainFrame {
 									FilterType.RIGHT_CLICK);
 						}
 					} catch (SQLException e1) {
+						e1.printStackTrace();
 						JOptionPane.showMessageDialog(null, "problem with sql connector", "Error",
 								JOptionPane.INFORMATION_MESSAGE);
 					}
@@ -423,15 +427,21 @@ public class MainFrame {
 		searchTxt.setColumns(10);
 		searchTxt.setEditable(false);
 
-		ArrayList<String> keywords = new ArrayList<String>(5);
-		keywords.add("attacking");
-		keywords.add("Amanda baynes");
-		keywords.add("Bieber");
-		keywords.add("justin Bieber");
-		keywords.add("Ray");
-		keywords.add("Ray j");
-		keywords.add("drunk driving");
-
+		ArrayList<String> keywords = new ArrayList<String>();
+		for (TableTuple t : events.getData()) {
+			String year = t.getDate().split("/")[2];
+			if (!keywords.contains(year))
+				keywords.add(year);
+			if (!keywords.contains(t.getName()))
+				keywords.add(t.getName());
+			for (String s : t.getKeyWords())
+				for (String key : s.split(" ")) {
+					if (keywords.contains(key))
+						continue;
+					keywords.add(key);
+				}
+		}
+		
 		AutoComplete.setupAutoComplete(searchTxt, keywords);
 
 		chckbxName = new JCheckBox("Name");
