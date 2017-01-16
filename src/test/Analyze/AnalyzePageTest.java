@@ -59,12 +59,12 @@ public class AnalyzePageTest {
 	public void testInteractiveParagraph() {
 		List<InteractiveTableTuple> detailsTable = new AnalyzePage(text).getInteractiveDetails();
 		assertEquals(detailsTable.size(), 4);
-		assertTrue("Soulja Boy".equals(detailsTable.get(2).getName()));
+		assert "Soulja Boy".equals(detailsTable.get(2).getName());
 		boolean realReason=false;
 		for(ReasonPair ¢: detailsTable.get(1).getReasons())
 			if ("driving under influence".equals(¢.getReason()))
 				realReason = true;
-		assertTrue(realReason);
+		assert realReason;
 		assert "12/29/2013".equals(detailsTable.get(3).getDate());
 		
 	}

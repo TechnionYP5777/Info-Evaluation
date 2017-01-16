@@ -1,6 +1,5 @@
 package test.Analyze;
 
-import static org.junit.Assert.*;
 
 import java.util.Map;
 
@@ -61,11 +60,11 @@ public class AnalyzeSourcesTest {
 		as.addSource(src2, "2015");
 		for (TableTuple ¢ : as.getData()) {
 			if ("Mark Salling".equals(¢.getName())) {
-				assertTrue("12/29/2015".equals(¢.getDate()));
-				assertTrue("Tue Dec 29 00:00:00 IST 2015".equals((¢.getRegularDate() + "")));
+				assert "12/29/2015".equals(¢.getDate());
+				assert "Tue Dec 29 00:00:00 IST 2015".equals((¢.getRegularDate() + ""));
 			}
 			if ("Dustin Diamond".equals(¢.getName()))
-				assertTrue("12/26/2016".equals(¢.getDate()));
+				assert "12/26/2016".equals(¢.getDate());
 		}
 
 	}
@@ -90,11 +89,11 @@ public class AnalyzeSourcesTest {
 		as.addSource(text2, "2015");
 		as.addSource(text3,"2013");
 		Map<String, Integer> wordsInSources=as.getWords();
-		assertTrue(wordsInSources.get("driving")== 2);
-		assertTrue(wordsInSources.get("possession")== 2);
-		assertTrue(wordsInSources.get("gun")== 1);
-		assertTrue(as.getData().getList().get(0).getKeyWords().contains("influence"));
-		assertTrue(as.getData().getList().get(3).getKeyWords().contains("possession"));
+		assert wordsInSources.get("driving") == 2;
+		assert wordsInSources.get("possession") == 2;
+		assert wordsInSources.get("gun") == 1;
+		assert as.getData().getList().get(0).getKeyWords().contains("influence");
+		assert as.getData().getList().get(3).getKeyWords().contains("possession");
 		
 	}
 }
