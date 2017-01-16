@@ -1,0 +1,12 @@
+language:
+  java
+
+jdk:
+  - java-8-oracle
+  
+branches:
+  only:
+    - master
+    
+script:
+    - mvn test
