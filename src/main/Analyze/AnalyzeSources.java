@@ -1,9 +1,15 @@
 package main.Analyze;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 
 import edu.stanford.nlp.util.StringUtils;
 import main.database.DataList;
@@ -12,8 +18,7 @@ import main.database.TableTuple;
 
 /**
  *
- * @author netanel 
- * 		   this class contains all the sources to be analyzed. It uses
+ * @author netanel this class contains all the sources to be analyzed. It uses
  *         the AnalyzeParagraph class in order to analyze each source, and the
  *         merge all the lists of each source so we have one big list with all
  *         the information we were looking for ready to be delivered to the GUI
@@ -35,7 +40,7 @@ public class AnalyzeSources {
 		data = new DataList();
 		words = new HashMap<String, Integer>();
 		initialNonKey();
-		interactiveData= new ArrayList<>();
+		interactiveData = new ArrayList<>();
 	}
 
 	private void initialNonKey() {
@@ -61,12 +66,12 @@ public class AnalyzeSources {
 					this.words.replace(str, ++value);
 				}
 			}
-		
+
 		for (TableTuple i : this.data)
 			for (String ¢ : StringUtils.split(i.getReason())) {
 				if (this.nonKeyWords.contains(¢))
 					continue;
-				if (this.words.get(¢) >= 2) 
+				if (this.words.get(¢) >= 2)
 					i.addKeyWord(¢);
 			}
 	}
@@ -84,11 +89,31 @@ public class AnalyzeSources {
 		interactiveData.addAll(new AnalyzePage(src).getInteractiveDetails());
 		findKeyWords();
 	}
+
+	public void addSourceFile(String pathToFile) throws FileNotFoundException {
+		try {
+			addSource(Files.toString(new File(pathToFile), Charsets.UTF_8));
+		} catch (FileNotFoundException e) {
+			throw new FileNotFoundException();
+		} catch (IOException ¢) {
+			¢.printStackTrace();
+		}
+	}
 	
+	public void addSourceFile(String pathToFile, String year) throws FileNotFoundException {
+		try {
+			addSource(Files.toString(new File(pathToFile), Charsets.UTF_8),year);
+		} catch (FileNotFoundException e) {
+			throw new FileNotFoundException();
+		} catch (IOException ¢) {
+			¢.printStackTrace();
+		}
+	}
+
 	public void addSource(final String src, String year) {
 		sources.add(src);
 		++numOfSources;
-		data.merge(new AnalyzePage(src,year).getDetails());
+		data.merge(new AnalyzePage(src, year).getDetails());
 		interactiveData.addAll(new AnalyzePage(src).getInteractiveDetails());
 		findKeyWords();
 	}
@@ -100,11 +125,12 @@ public class AnalyzeSources {
 	public DataList getData() {
 		return data;
 	}
-	
+
 	public Map<String, Integer> getWords() {
 		return words;
 	}
-	public List<InteractiveTableTuple> getInteractiveData(){
+
+	public List<InteractiveTableTuple> getInteractiveData() {
 		return this.interactiveData;
 	}
 }

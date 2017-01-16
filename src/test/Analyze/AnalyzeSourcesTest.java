@@ -1,10 +1,16 @@
 package test.Analyze;
 
 
+import static org.junit.Assert.*;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.google.common.io.Resources;
 
 import main.Analyze.AnalyzeSources;
 import main.database.TableTuple;
@@ -94,6 +100,37 @@ public class AnalyzeSourcesTest {
 		assert wordsInSources.get("gun") == 1;
 		assert as.getData().getList().get(0).getKeyWords().contains("influence");
 		assert as.getData().getList().get(3).getKeyWords().contains("possession");
+		
+	}
+
+	@Test
+	public void testAddSourceFile() {
+		boolean check=false;
+		final AnalyzeSources as = new AnalyzeSources();
+		try {
+			as.addSourceFile( (Resources.getResource("text3.txt") + "").replace("file:", ""));
+		} catch (Exception e) {
+			check=true;
+		}
+		assert check;
+		
+		try {
+			as.addSourceFile((Resources.getResource("text1.txt") + "").replace("file:", ""), "2013");
+			
+			ArrayList<TableTuple> details = as.getData().getList();
+			assert "Tito Ortiz".equals(details.get(0).getName());
+			assert "01/06/2013".equals(details.get(0).getDate());
+			assert "driving under influence".equals(details.get(0).getReason());
+			as.addSourceFile((Resources.getResource("text2.txt") + "").replace("file:",""));
+			details = as.getData().getList();
+			assert "Mark Salling".equals(details.get(3).getName());
+			assert "12/29/2016".equals(details.get(3).getDate());
+			assert "possession of pornography".equals(details.get(3).getReason());
+		
+		} catch (IOException e) {
+			fail();
+		}
+		
 		
 	}
 }
