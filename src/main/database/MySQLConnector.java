@@ -68,8 +68,8 @@ public class MySQLConnector {
 		logger.log(Level.INFO, "DB events created successfully");
 		runQuery("use events");
 		runUpdate(
-				"CREATE TABLE celebs_arrests (Name VARCHAR(30) NOT NULL,Arrest_Date DATE NOT NULL,Reason VARCHAR(150) NOT NULL,keywords VARCHAR(50) NOT NULL,PRIMARY KEY (Name,Arrest_Date,Reason))");
-		runUpdate("CREATE TABLE keywords_table (Keyword VARCHAR(15))");
+				"CREATE TABLE celebs_arrests (Name VARCHAR(30) NOT NULL,Arrest_Date DATE NOT NULL,Reason VARCHAR(400) NOT NULL,Keywords VARCHAR(200) NOT NULL,PRIMARY KEY (Name,Arrest_Date,Reason))");
+		runUpdate("CREATE TABLE keywords_table (Keyword VARCHAR(70))");
 		logger.log(Level.INFO, "tables celebs_arrests created successfully");
 	}
 
@@ -130,7 +130,7 @@ public class MySQLConnector {
 		for (final TableTuple ¢ : lin)
 			keywords.addAll(¢.getKeyWords());
 		for (String keyword : keywords)
-			runSafeUpdate("INSERT INTO keywords_table(?)", keyword);
+			runSafeUpdate("INSERT INTO keywords_table VALUES(?)", keyword);
 	}
 
 	public static void clearTable() throws SQLException {
