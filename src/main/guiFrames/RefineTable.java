@@ -27,7 +27,7 @@ public class RefineTable {
 	private static final String FILTER_BY_NAME = "SELECT * FROM celebs_arrests WHERE name LIKE CONCAT('%',?,'%') ORDER BY Name, UNIX_TIMESTAMP(Arrest_Date) DESC, Reason";
 	private static final String FILTER_BY_REASON = "SELECT * FROM celebs_arrests WHERE reason LIKE CONCAT('%',?,'%') ORDER BY Reason, Name, UNIX_TIMESTAMP(Arrest_Date) DESC";
 	private static final String FILTER_NAME_BY_RIGHT_CLICK = "SELECT * FROM celebs_arrests WHERE name = ? ORDER BY Name, UNIX_TIMESTAMP(Arrest_Date) DESC, Reason";
-	private static final String FILTER_REASON_BY_RIGHT_CLICK = "SELECT * FROM celebs_arrests WHERE reason ? ORDER BY Reason, Name, UNIX_TIMESTAMP(Arrest_Date) DESC";
+	private static final String FILTER_REASON_BY_RIGHT_CLICK = "SELECT * FROM celebs_arrests WHERE reason = ? ORDER BY Reason, Name, UNIX_TIMESTAMP(Arrest_Date) DESC";
 	private static final String FILTER_BY_AUTOCOMPLETE = "SELECT * FROM celebs_arrests WHERE name LIKE CONCAT(?,'%') OR year(arrest_date) LIKE CONCAT(?,'%') OR reason LIKE CONCAT(?,'%') ORDER BY Name, UNIX_TIMESTAMP(Arrest_Date) DESC, Reason";
 
 	private static final String SELECT_ALL_EVENTS = "SELECT * FROM celebs_arrests ORDER BY Name,UNIX_TIMESTAMP(Arrest_Date) DESC,Reason";
@@ -133,29 +133,30 @@ public class RefineTable {
 			throws SQLException {
 		ResultSet r = null;
 		if (fieldName == null) {
-			r = runSafeQuery(FILTER_BY_AUTOCOMPLETE, fieldValue);
+			String[] input = { fieldValue, fieldValue, fieldValue };
+			r = runSafeQuery(FILTER_BY_AUTOCOMPLETE, input);
 			fillEventsTable(m, r);
 			r.close();
 		}
 		if (m != null && fieldExist(fieldName) && fieldValue != null)
 			try {
-				ResultSet rs=null;
+				ResultSet rs = null;
 				switch (fieldName) {
 				case "Name":
 					rs = runSafeQuery(t != FilterType.RIGHT_CLICK ? FILTER_BY_NAME : FILTER_NAME_BY_RIGHT_CLICK,
 							fieldValue);
-					fillEventsTable(m, r);
+					fillEventsTable(m, rs);
 					rs.close();
 					break;
 				case "Year":
 					rs = runSafeQuery(FILTER_BY_YEAR, fieldValue);
-					fillEventsTable(m, r);
+					fillEventsTable(m, rs);
 					rs.close();
 					break;
 				case "Reason":
 					rs = runSafeQuery(t != FilterType.RIGHT_CLICK ? FILTER_BY_REASON : FILTER_REASON_BY_RIGHT_CLICK,
 							fieldValue);
-					fillEventsTable(m, r);
+					fillEventsTable(m, rs);
 					rs.close();
 					break;
 				}
