@@ -29,7 +29,8 @@ public class AutoComplete {
         final DefaultComboBoxModel model = new DefaultComboBoxModel();
         @SuppressWarnings({ "serial" })
 		final JComboBox cbInput = new JComboBox(model) {
-            public Dimension getPreferredSize() {
+            @Override
+			public Dimension getPreferredSize() {
                 return new Dimension(super.getPreferredSize().width, 0);
             }
         };
@@ -66,15 +67,18 @@ public class AutoComplete {
             }
         });
         txtInput.getDocument().addDocumentListener(new DocumentListener() {
-            public void insertUpdate(DocumentEvent __) {
+            @Override
+			public void insertUpdate(DocumentEvent __) {
                 updateList();
             }
 
-            public void removeUpdate(DocumentEvent __) {
+            @Override
+			public void removeUpdate(DocumentEvent __) {
                 updateList();
             }
 
-            public void changedUpdate(DocumentEvent __) {
+            @Override
+			public void changedUpdate(DocumentEvent __) {
                 updateList();
             }
 
