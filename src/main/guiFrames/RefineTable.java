@@ -134,7 +134,7 @@ public class RefineTable {
 		ResultSet r = null;
 		if (fieldName == null) {
 			String[] input = { fieldValue, fieldValue, fieldValue };
-			r = runSafeQuery(FILTER_BY_AUTOCOMPLETE, input);
+			r = runQuery(FILTER_BY_AUTOCOMPLETE, input);
 			fillEventsTable(m, r);
 			r.close();
 		}
@@ -143,18 +143,18 @@ public class RefineTable {
 				ResultSet rs = null;
 				switch (fieldName) {
 				case "Name":
-					rs = runSafeQuery(t != FilterType.RIGHT_CLICK ? FILTER_BY_NAME : FILTER_NAME_BY_RIGHT_CLICK,
+					rs = runQuery(t != FilterType.RIGHT_CLICK ? FILTER_BY_NAME : FILTER_NAME_BY_RIGHT_CLICK,
 							fieldValue);
 					fillEventsTable(m, rs);
 					rs.close();
 					break;
 				case "Year":
-					rs = runSafeQuery(FILTER_BY_YEAR, fieldValue);
+					rs = runQuery(FILTER_BY_YEAR, fieldValue);
 					fillEventsTable(m, rs);
 					rs.close();
 					break;
 				case "Reason":
-					rs = runSafeQuery(t != FilterType.RIGHT_CLICK ? FILTER_BY_REASON : FILTER_REASON_BY_RIGHT_CLICK,
+					rs = runQuery(t != FilterType.RIGHT_CLICK ? FILTER_BY_REASON : FILTER_REASON_BY_RIGHT_CLICK,
 							fieldValue);
 					fillEventsTable(m, rs);
 					rs.close();
@@ -218,7 +218,7 @@ public class RefineTable {
 	 */
 	public void getMostCommon(final JComboBox<String> s, final String fieldName, int k) throws SQLException {
 		if (s != null && fieldExist(fieldName))
-			fillMenu(s, runSafeQuery(SELECT_MOST_COMMON, (new Object[] { fieldName, fieldName, fieldName, k })));
+			fillMenu(s, runQuery(SELECT_MOST_COMMON, (new Object[] { fieldName, fieldName, fieldName, k })));
 	}
 
 	public void removeAllEvents(DefaultTableModel ¢) {

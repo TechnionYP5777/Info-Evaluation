@@ -85,20 +85,20 @@ public class MySQLConnector {
 		return conn.createStatement().executeQuery(query);
 	}
 
-	public static ResultSet runSafeQuery(final String query, final Object[] inputs) throws SQLException {
+	public static ResultSet runQuery(final String query, final Object[] inputs) throws SQLException {
 		PreparedStatement $ = conn.prepareStatement(query);
 		for (int ¢ = 1; ¢ <= inputs.length; ++¢)
 			$.setObject(¢, inputs[¢ - 1]);
 		return $.executeQuery();
 	}
 
-	public static ResultSet runSafeQuery(final String query, final Object input) throws SQLException {
+	public static ResultSet runQuery(final String query, final Object input) throws SQLException {
 		PreparedStatement $ = conn.prepareStatement(query);
 		$.setObject(1, input);
 		return $.executeQuery();
 	}
 
-	public static int runSafeUpdate(final String query, final Object input) throws SQLException {
+	public static int runUpdate(final String query, final Object input) throws SQLException {
 		PreparedStatement $ = conn.prepareStatement(query);
 		$.setObject(1, input);
 		return $.executeUpdate();
@@ -130,10 +130,10 @@ public class MySQLConnector {
 		for (final TableTuple ¢ : lin)
 			keywords.addAll(¢.getKeyWords());
 		for (String keyword : keywords)
-			runSafeUpdate("INSERT INTO keywords_table VALUES(?)", keyword);
+			runUpdate("INSERT INTO keywords_table VALUES(?)", keyword);
 	}
 
-	public static void clearTable() throws SQLException {
+	public static void clearDB() throws SQLException {
 		runUpdate("DELETE FROM celebs_arrests");
 		runUpdate("DELETE FROM keywords_table");
 	}
