@@ -41,7 +41,7 @@ public class GetCategoryTest {
 
 	@AfterClass
 	public static void disconnect() throws SQLException {
-		clearTable();
+		clearDB();
 		closeConnection();
 	}
 
@@ -49,33 +49,33 @@ public class GetCategoryTest {
 	public static void connect() throws Exception {
 		new MySQLConnector();
 	}
-	
+
 	@Before
 	public void init() throws Exception {
-		clearTable();
+		clearDB();
 		DataList lin = new DataList();
-		
-		TableTuple t1 = new TableTuple("Austin Chumlee Russell","01/09/2014","driving without a licesnce");
+
+		TableTuple t1 = new TableTuple("Austin Chumlee Russell", "01/09/2014", "driving without a licesnce");
 		t1.addKeyWord("driving license");
-		TableTuple t2 = new TableTuple("Austin Chumlee Russell","01/09/2014","driving without a licesnce");
+		TableTuple t2 = new TableTuple("Austin Chumlee Russell", "01/09/2014", "driving without a licesnce");
 		t2.addKeyWord("driving license");
-		TableTuple t3 = new TableTuple("Chris Kattan","02/10/2015","attacking wife");
+		TableTuple t3 = new TableTuple("Chris Kattan", "02/10/2015", "attacking wife");
 		t3.addKeyWord("attacking");
-		TableTuple t4 = new TableTuple("Hugh Jackman","02/12/2015","drunk driving");
+		TableTuple t4 = new TableTuple("Hugh Jackman", "02/12/2015", "drunk driving");
 		t4.addKeyWord("drunk driving");
-		TableTuple t5 = new TableTuple("Austin Chumlee Russell","03/09/2013","drunk driving");
+		TableTuple t5 = new TableTuple("Austin Chumlee Russell", "03/09/2013", "drunk driving");
 		t5.addKeyWord("drunk driving");
-		TableTuple t6 = new TableTuple("Ben Stiller","02/12/2015","driving without a licesnce");
+		TableTuple t6 = new TableTuple("Ben Stiller", "02/12/2015", "driving without a licesnce");
 		t6.addKeyWord("driving license");
-		TableTuple t7 = new TableTuple("Emile Hirsch","02/12/2015","drunk driving");
+		TableTuple t7 = new TableTuple("Emile Hirsch", "02/12/2015", "drunk driving");
 		t7.addKeyWord("drunk driving");
-		TableTuple t8 = new TableTuple("Chris Kattan","01/23/2014","attacking wife");
+		TableTuple t8 = new TableTuple("Chris Kattan", "01/23/2014", "attacking wife");
 		t8.addKeyWord("attacking");
-		TableTuple t9 = new TableTuple("Austin Chumlee Russell","01/09/2014","sexual assault");
+		TableTuple t9 = new TableTuple("Austin Chumlee Russell", "01/09/2014", "sexual assault");
 		t9.addKeyWord("assault");
-		TableTuple t10 = new TableTuple("Ben Stiller","02/12/2015","sexual assault");
+		TableTuple t10 = new TableTuple("Ben Stiller", "02/12/2015", "sexual assault");
 		t10.addKeyWord("assault");
-		lin.insert(t1);		
+		lin.insert(t1);
 		lin.insert(t2);
 		lin.insert(t3);
 		lin.insert(t4);

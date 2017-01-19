@@ -3,7 +3,7 @@
  */
 package test.guiFrames;
 
-import static main.database.MySQLConnector.clearTable;
+import static main.database.MySQLConnector.clearDB;
 import static main.database.MySQLConnector.closeConnection;
 import static main.database.MySQLConnector.runUpdate;
 import static org.junit.Assert.assertEquals;
@@ -37,7 +37,7 @@ public class SortByTest {
 
 	@AfterClass
 	public static void disconnect() throws SQLException {
-		clearTable();
+		clearDB();
 		closeConnection();
 	}
 
@@ -47,7 +47,7 @@ public class SortByTest {
 	}
 
 	public void initSortByName() throws Exception {
-		clearTable();
+		clearDB();
 		runUpdate("INSERT INTO celebs_arrests values('Ben Stiller','2015-02-12','drunk driving','drunk driving');");
 		runUpdate("INSERT INTO celebs_arrests values('Ben Stiller','2015-02-12','sexual assault','sexual assault');");
 		runUpdate(
@@ -89,7 +89,7 @@ public class SortByTest {
 	}
 
 	public void initSortByDate() throws Exception {
-		clearTable();
+		clearDB();
 		runUpdate(
 				"INSERT INTO celebs_arrests values('Chris Kattan','2014-01-23','suspicion of driving under the influence and driving with an expired license','drunk driving influence license')");
 		runUpdate(
@@ -130,7 +130,7 @@ public class SortByTest {
 	}
 
 	public void initSortByReason() throws Exception {
-		clearTable();
+		clearDB();
 		runUpdate(
 				"INSERT INTO celebs_arrests values('Austin Chumlee Russell','2013-03-09','sexual assault','assault')");
 		runUpdate(

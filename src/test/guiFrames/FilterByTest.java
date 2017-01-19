@@ -3,7 +3,7 @@
  */
 package test.guiFrames;
 
-import static main.database.MySQLConnector.clearTable;
+import static main.database.MySQLConnector.clearDB;
 import static main.database.MySQLConnector.closeConnection;
 import static main.database.MySQLConnector.runUpdate;
 import static org.junit.Assert.assertEquals;
@@ -44,13 +44,13 @@ public class FilterByTest {
 
 	@AfterClass
 	public static void disconnect() throws SQLException {
-		clearTable();
+		clearDB();
 		closeConnection();
 	}
 
 	@Before
 	public void init() throws Exception {
-		clearTable();
+		clearDB();
 		runUpdate("INSERT INTO celebs_arrests values('Austin Chumlee Russell','2013-03-09','sexual assault charges')");
 		runUpdate("INSERT INTO celebs_arrests values('Ben Stiller','2015-03-11','driving without a licesnce')");
 		runUpdate("INSERT INTO celebs_arrests values('Austin Chumlee Russell','2014-01-09','sexual assault')");

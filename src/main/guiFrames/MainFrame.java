@@ -279,7 +279,7 @@ public class MainFrame {
 					}
 
 				});
-				
+
 				/*
 				 * About
 				 */
@@ -350,7 +350,7 @@ public class MainFrame {
 			@Override
 			public void windowClosing(WindowEvent winEvt) {
 				try {
-					clearTable();
+					clearDB();
 				} catch (final SQLException e) {
 					JOptionPane.showMessageDialog(null, "problem with removing events from Database", "Error",
 							JOptionPane.INFORMATION_MESSAGE);
@@ -443,7 +443,7 @@ public class MainFrame {
 					keywords.add(key);
 				}
 		}
-		
+
 		AutoComplete.setupAutoComplete(searchTxt, keywords);
 
 		chckbxName = new JCheckBox("Name");
@@ -485,7 +485,7 @@ public class MainFrame {
 		}
 
 		chckbxSearch = new JCheckBox("");
-		
+
 		JButton btnAddEvents = new JButton("Add Events");
 		btnAddEvents.addActionListener(new ActionListener() {
 			@Override
@@ -494,74 +494,83 @@ public class MainFrame {
 		});
 
 		final GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap(2721, Short.MAX_VALUE)
-					.addComponent(lblImage, GroupLayout.PREFERRED_SIZE, 232, GroupLayout.PREFERRED_SIZE)
-					.addGap(247))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(30)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(btnLoadAnalyzeResults)
-							.addGap(87)
-							.addComponent(btnAddEvents, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(chckbxSearch, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, 744, GroupLayout.PREFERRED_SIZE)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+		groupLayout
+				.setHorizontalGroup(
+						groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup().addContainerGap(2721, Short.MAX_VALUE)
+										.addComponent(lblImage, GroupLayout.PREFERRED_SIZE, 232,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(247))
+								.addGroup(groupLayout.createSequentialGroup().addGap(30).addGroup(groupLayout
+										.createParallelGroup(Alignment.LEADING)
 										.addGroup(groupLayout.createSequentialGroup()
-											.addComponent(chckbxName)
-											.addGap(18)
-											.addComponent(chckbxDate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+												.addComponent(btnLoadAnalyzeResults).addGap(87)
+												.addComponent(btnAddEvents, GroupLayout.PREFERRED_SIZE, 145,
+														GroupLayout.PREFERRED_SIZE))
 										.addGroup(groupLayout.createSequentialGroup()
-											.addComponent(chckbxSortby)
-											.addPreferredGap(ComponentPlacement.UNRELATED)
-											.addComponent(chckbxFilterBy)))
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(chckbxReason)
-									.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-									.addComponent(txtpnChooseOneFrom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-							.addGap(18)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(btnSearch, GroupLayout.PREFERRED_SIZE, 224, GroupLayout.PREFERRED_SIZE)
-								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap(2153, Short.MAX_VALUE))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(chckbxSearch)
+												.addComponent(chckbxSearch, GroupLayout.PREFERRED_SIZE, 29,
+														GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.RELATED)
+												.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+														.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, 744,
+																GroupLayout.PREFERRED_SIZE)
+														.addGroup(groupLayout.createSequentialGroup()
+																.addGroup(groupLayout.createParallelGroup(
+																		Alignment.LEADING, false)
+																		.addGroup(groupLayout.createSequentialGroup()
+																				.addComponent(chckbxName).addGap(18)
+																				.addComponent(chckbxDate,
+																						GroupLayout.DEFAULT_SIZE,
+																						GroupLayout.DEFAULT_SIZE,
+																						Short.MAX_VALUE))
+																		.addGroup(groupLayout.createSequentialGroup()
+																				.addComponent(chckbxSortby)
+																				.addPreferredGap(
+																						ComponentPlacement.UNRELATED)
+																				.addComponent(chckbxFilterBy)))
+																.addPreferredGap(ComponentPlacement.RELATED)
+																.addComponent(chckbxReason)
+																.addPreferredGap(ComponentPlacement.RELATED,
+																		GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+																.addComponent(txtpnChooseOneFrom,
+																		GroupLayout.PREFERRED_SIZE,
+																		GroupLayout.DEFAULT_SIZE,
+																		GroupLayout.PREFERRED_SIZE)))
+												.addGap(18)
+												.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+														.addComponent(btnSearch, GroupLayout.PREFERRED_SIZE, 224,
+																GroupLayout.PREFERRED_SIZE)
+														.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 219,
+																GroupLayout.PREFERRED_SIZE))))
+										.addContainerGap(2153, Short.MAX_VALUE)));
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(groupLayout
+				.createSequentialGroup().addContainerGap()
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false).addComponent(chckbxSearch)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnSearch, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(chckbxSortby)
-								.addComponent(chckbxFilterBy))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(txtpnChooseOneFrom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-									.addComponent(chckbxName)
-									.addComponent(chckbxDate)
-									.addComponent(chckbxReason))
-								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-					.addPreferredGap(ComponentPlacement.RELATED, 980, Short.MAX_VALUE)
-					.addComponent(lblImage, GroupLayout.PREFERRED_SIZE, 193, GroupLayout.PREFERRED_SIZE)
-					.addGap(76)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(searchTxt, GroupLayout.PREFERRED_SIZE, 31,
+												GroupLayout.PREFERRED_SIZE)
+										.addComponent(btnSearch, GroupLayout.PREFERRED_SIZE, 28,
+												GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(chckbxSortby)
+										.addComponent(chckbxFilterBy))
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(txtpnChooseOneFrom, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+												.addComponent(chckbxName).addComponent(chckbxDate)
+												.addComponent(chckbxReason))
+										.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE))))
+				.addPreferredGap(ComponentPlacement.RELATED, 980, Short.MAX_VALUE)
+				.addComponent(lblImage, GroupLayout.PREFERRED_SIZE, 193, GroupLayout.PREFERRED_SIZE).addGap(76)
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(btnAddEvents, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnLoadAnalyzeResults, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
-					.addGap(171))
-		);
+						.addComponent(btnLoadAnalyzeResults, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 35,
+								GroupLayout.PREFERRED_SIZE))
+				.addGap(171)));
 		frame.getContentPane().setLayout(groupLayout);
 
 	}
