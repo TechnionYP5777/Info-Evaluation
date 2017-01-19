@@ -50,15 +50,19 @@ public class SortByTest {
 		clearTable();
 		runUpdate("INSERT INTO celebs_arrests values('Ben Stiller','2015-02-12','drunk driving','drunk driving');");
 		runUpdate("INSERT INTO celebs_arrests values('Ben Stiller','2015-02-12','sexual assault','sexual assault');");
-		runUpdate("INSERT INTO celebs_arrests values('Ben Stiller','2015-02-12','driving without a licesnce','driving');");
+		runUpdate(
+				"INSERT INTO celebs_arrests values('Ben Stiller','2015-02-12','driving without a licesnce','driving');");
 		runUpdate("INSERT INTO celebs_arrests values('Emile Hirsch','2015-02-12','assault charges','assault');");
 		runUpdate(
 				"INSERT INTO celebs_arrests values('Austin Chumlee Russell','2014-01-09','misdemeanor domestic violence charges','violence');");
-		runUpdate("INSERT INTO celebs_arrests values('Austin Chumlee Russell','2014-01-09','speeding while driving','driving');");
-		runUpdate("INSERT INTO celebs_arrests values('Austin Chumlee Russell','2013-03-09','sexual assault','assault');");
+		runUpdate(
+				"INSERT INTO celebs_arrests values('Austin Chumlee Russell','2014-01-09','speeding while driving','driving');");
+		runUpdate(
+				"INSERT INTO celebs_arrests values('Austin Chumlee Russell','2013-03-09','sexual assault','assault');");
 		runUpdate(
 				"INSERT INTO celebs_arrests values('Chris Kattan','2014-01-23','suspicion of driving under the influence and driving with an expired license','driving influecne license');");
-		runUpdate("INSERT INTO celebs_arrests values('Chris Kattan','2015-02-10','suspicion of drunk driving','drunk driving');");
+		runUpdate(
+				"INSERT INTO celebs_arrests values('Chris Kattan','2015-02-10','suspicion of drunk driving','drunk driving');");
 	}
 
 	@Test
@@ -88,14 +92,18 @@ public class SortByTest {
 		clearTable();
 		runUpdate(
 				"INSERT INTO celebs_arrests values('Chris Kattan','2014-01-23','suspicion of driving under the influence and driving with an expired license','drunk driving influence license')");
-		runUpdate("INSERT INTO celebs_arrests values('Ben Stiller','2015-02-12','driving without a licesnce','driving licence')");
+		runUpdate(
+				"INSERT INTO celebs_arrests values('Ben Stiller','2015-02-12','driving without a licesnce','driving licence')");
 		runUpdate("INSERT INTO celebs_arrests values('Emile Hirsch','2015-02-12','assault charges','assault')");
 		runUpdate("INSERT INTO celebs_arrests values('Brad Pitt','2014-01-09','sexual assault','assault')");
 		runUpdate("INSERT INTO celebs_arrests values('Hugh Jackman','2014-01-09','sexual assault','assault')");
-		runUpdate("INSERT INTO celebs_arrests values('Austin Chumlee Russell','2013-03-09','sexual assault','assault')");
-		runUpdate("INSERT INTO celebs_arrests values('Austin Chumlee Russell','2014-01-09','sexual assault','assault')");
+		runUpdate(
+				"INSERT INTO celebs_arrests values('Austin Chumlee Russell','2013-03-09','sexual assault','assault')");
+		runUpdate(
+				"INSERT INTO celebs_arrests values('Austin Chumlee Russell','2014-01-09','sexual assault','assault')");
 		runUpdate("INSERT INTO celebs_arrests values('Ben Stiller','2015-02-12','sexual assault','assault')");
-		runUpdate("INSERT INTO celebs_arrests values('Chris Kattan','2015-02-10','suspicion of drunk driving','drunk driving')");
+		runUpdate(
+				"INSERT INTO celebs_arrests values('Chris Kattan','2015-02-10','suspicion of drunk driving','drunk driving')");
 	}
 
 	@Test
@@ -123,15 +131,19 @@ public class SortByTest {
 
 	public void initSortByReason() throws Exception {
 		clearTable();
-		runUpdate("INSERT INTO celebs_arrests values('Austin Chumlee Russell','2013-03-09','sexual assault','assault')");
-		runUpdate("INSERT INTO celebs_arrests values('Ben Stiller','2015-03-11','driving without a licesnce','driving license')");
-		runUpdate("INSERT INTO celebs_arrests values('Austin Chumlee Russell','2014-01-09','sexual assault','assault')");
+		runUpdate(
+				"INSERT INTO celebs_arrests values('Austin Chumlee Russell','2013-03-09','sexual assault','assault')");
+		runUpdate(
+				"INSERT INTO celebs_arrests values('Ben Stiller','2015-03-11','driving without a licesnce','driving license')");
+		runUpdate(
+				"INSERT INTO celebs_arrests values('Austin Chumlee Russell','2014-01-09','sexual assault','assault')");
 		runUpdate("INSERT INTO celebs_arrests values('Hugh Jackman','2014-01-09','sexual assault','assault')");
 		runUpdate("INSERT INTO celebs_arrests values('Emile Hirsch','2014-02-11','theft','assault')");
 		runUpdate("INSERT INTO celebs_arrests values('Ben Stiller','2016-02-12','sexual assault','assault')");
 		runUpdate("INSERT INTO celebs_arrests values('Ben Stiller','2014-01-09','sexual assault','assault')");
 		runUpdate("INSERT INTO celebs_arrests values('Chris Kattan','2014-01-23','drunk driving','drunk driving')");
-		runUpdate("INSERT INTO celebs_arrests values('Ben Stiller','2015-08-12','driving without a licesnce','driving license')");
+		runUpdate(
+				"INSERT INTO celebs_arrests values('Ben Stiller','2015-08-12','driving without a licesnce','driving license')");
 		runUpdate("INSERT INTO celebs_arrests values('Chris Kattan','2013-05-10','theft','theft')");
 	}
 
