@@ -7,7 +7,6 @@ import java.sql.SQLException;
 
 import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import main.database.DataList;
@@ -47,10 +46,10 @@ public class MySQLConnectorTest {
 		t4.addKeyWord("drunk driving");
 		TableTuple t5 = new TableTuple("Suge Knight", "01/29/2015", "involved in a fatal hit run");
 		t5.addKeyWord("hit and run");
-		TableTuple t6 = new TableTuple("Emile Hirsch", "02/12/2015", "assualt charges");
-		t6.addKeyWord("assualt");
+		TableTuple t6 = new TableTuple("Emile Hirsch", "02/12/2015", "assault charges");
+		t6.addKeyWord("assault");
 		TableTuple t7 = new TableTuple("Austin Chumlee Russell", "03/09/2016", "sexual assault");
-		t7.addKeyWord("assualt");
+		t7.addKeyWord("assault");
 		TableTuple t8 = new TableTuple("Track Palin", "01/18/2016",
 				"charges of fourth-degree assault and interfering with the report of a domestic violence crime");
 		t8.addKeyWord("assault");
@@ -71,8 +70,6 @@ public class MySQLConnectorTest {
 		addAllKeywords(dl);
 	}
 
-	// TODO: fix test
-	@Ignore
 	@Test
 	public void keywordsTest() throws SQLException {
 		String str = "";
@@ -83,7 +80,8 @@ public class MySQLConnectorTest {
 		if (rs.next())
 			assertEquals(1, rs.getInt(1));
 		rs = runQuery("SELECT COUNT(*) FROM keywords_table");
-		// if (rs.next()) assertEquals(9,rs.getInt(1));
+		if (rs.next())
+			assertEquals(9, rs.getInt(1));
 		ResultSet r = runQuery("SELECT keywords FROM celebs_arrests WHERE name='Justin Bieber'");
 		if (r.next())
 			str = r.getString("keywords");
@@ -110,7 +108,7 @@ public class MySQLConnectorTest {
 		names[4] = "Don McLean";
 
 		for (int i = 0; i < 5; ++i) {
-			ResultSet rs = runSafeQuery("SELECT Arrest_Date FROM celebs_arrests WHERE Name=?", names[i]);
+			ResultSet rs = runQuery("SELECT Arrest_Date FROM celebs_arrests WHERE Name=?", names[i]);
 			if (rs.next() && rs.next())
 				assert rs.getString("Arrest_Date").equals(expectedDates[i]);
 		}
@@ -135,7 +133,7 @@ public class MySQLConnectorTest {
 
 	@Test
 	public void multipleParamsQueryTest() throws SQLException {
-		try (ResultSet rs = runSafeQuery("SELECT Name From celebs_arrests WHERE Reason LIKE CONCAT('%',?,'%')"
+		try (ResultSet rs = runQuery("SELECT Name From celebs_arrests WHERE Reason LIKE CONCAT('%',?,'%')"
 				+ "AND YEAR(Arrest_Date) = ? ORDER BY Name", new Object[] { "drunk driving", 2014 });) {
 			if (rs.next())
 				assertEquals("Justin Bieber", rs.getString(1));
