@@ -26,13 +26,13 @@ public class MySQLConnectorTest {
 
 	@AfterClass
 	public static void disconnect() throws SQLException {
-		clearTable();
+		clearDB();
 		closeConnection();
 	}
 
 	@Before
 	public void initializeDatabase() throws SQLException {
-		clearTable();
+		clearDB();
 		TableTuple t1 = new TableTuple("Justin Bieber", "01/23/2014",
 				"suspicion of driving under the influence and driving with an expired license");
 		t1.addKeyWord("driving");
