@@ -3,9 +3,7 @@
  */
 package test.guiFrames;
 
-import static main.database.MySQLConnector.clearDB;
-import static main.database.MySQLConnector.closeConnection;
-import static main.database.MySQLConnector.runUpdate;
+import static main.database.DatabaseConnector.*;
 import static org.junit.Assert.assertEquals;
 
 import java.sql.SQLException;
@@ -16,7 +14,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import main.database.MySQLConnector;
+import main.database.DatabaseConnector;
 import main.guiFrames.RefineTable;
 
 /**
@@ -43,7 +41,7 @@ public class SortByTest {
 
 	@BeforeClass
 	public static void connect() throws Exception {
-		new MySQLConnector();
+		new DatabaseConnector();
 	}
 
 	public void initSortByName() throws Exception {

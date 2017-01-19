@@ -3,16 +3,14 @@
  */
 package test.guiFrames;
 
-import static main.database.MySQLConnector.*;
+import static main.database.DatabaseConnector.*;
 
 import main.database.DataList;
-import main.database.MySQLConnector;
+import main.database.DatabaseConnector;
 import main.database.TableTuple;
 import main.guiFrames.RefineTable;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JComboBox;
 
@@ -47,7 +45,7 @@ public class GetCategoryTest {
 
 	@BeforeClass
 	public static void connect() throws Exception {
-		new MySQLConnector();
+		new DatabaseConnector();
 	}
 
 	@Before

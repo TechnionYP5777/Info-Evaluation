@@ -1,6 +1,6 @@
 package main.guiFrames;
 
-import static main.database.MySQLConnector.*;
+import static main.database.DatabaseConnector.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
