@@ -8,10 +8,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-
-import java.awt.GridLayout;
 import java.sql.SQLException;
-
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
@@ -34,6 +31,7 @@ import javax.swing.JTable;
 
 
 
+@SuppressWarnings("serial")
 public class InteractiveFrame extends JFrame {
 
 	private JFrame frame;
@@ -43,6 +41,7 @@ public class InteractiveFrame extends JFrame {
 	private JButton btnAddEvent;
 	private AnalyzeSources events;
 	private RefineTable inputList;
+	@SuppressWarnings("unused")
 	private DatabaseConnector connector;
 
 	/**
@@ -52,11 +51,10 @@ public class InteractiveFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					InteractiveFrame frame= new InteractiveFrame();
-					frame.setVisible(true);
+					new InteractiveFrame().setVisible(true);
 //					window.addEventButtonOnClick();
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (Exception ¢) {
+					¢.printStackTrace();
 				}
 				
 			}
@@ -150,7 +148,7 @@ public class InteractiveFrame extends JFrame {
 	public void addEventButtonOnClick() {
 		btnAddEvent.addActionListener(l->{
 			String input = txtEnterYourEvent.getText();
-			if (!input.equals("")) {
+			if (!"".equals(input)) {
 				events.addSource(input);
 				System.out.println(input);
 
@@ -163,8 +161,8 @@ public class InteractiveFrame extends JFrame {
 				final DefaultTableModel model = (DefaultTableModel)table.getModel();
 				try {
 					inputList.sortBy(model, "none");
-				} catch (SQLException e) {
-					e.printStackTrace();
+				} catch (SQLException ¢) {
+					¢.printStackTrace();
 				}
 
 			}
