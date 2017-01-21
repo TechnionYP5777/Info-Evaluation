@@ -46,7 +46,8 @@ import main.database.DatabaseConnector;
 import main.database.TableTuple;
 
 import static main.database.DatabaseConnector.*;
-
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /**
  * This class implements the main windows of the GUI
@@ -127,8 +128,7 @@ public class MainFrame {
 		EventQueue.invokeLater(() -> {
 			try {
 				final MainFrame window = new MainFrame();
-				
-				window.addEventBtnOnClick();
+
 				/* right click in table */
 				window.table.addMouseListener(new MouseAdapter() {
 					@Override
@@ -613,6 +613,9 @@ public class MainFrame {
 	 * 
 	 */
 	private void addEventBtnOnClick(){
-		btnAddEvents.addActionListener(l -> (new InteractiveFrame()).setVisible(true));
+		btnAddEvents.addActionListener(l-> {
+			InteractiveFrame iFrame = new InteractiveFrame();
+			iFrame.setVisible(true);
+		});
 	}
 }
