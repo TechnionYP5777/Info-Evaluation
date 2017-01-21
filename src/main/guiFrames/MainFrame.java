@@ -84,7 +84,6 @@ public class MainFrame {
 	private JButton btnLoadAnalyzeResults;
 	private JLabel lblImage;
 	private JCheckBox chckbxSearch;
-	private JButton btnAddEvents;
 	/**
 	 * sources to analyze
 	 */
@@ -487,8 +486,12 @@ public class MainFrame {
 
 		chckbxSearch = new JCheckBox("");
 
-		btnAddEvents = new JButton("Add Events");
-		
+		JButton btnAddEvents = new JButton("Add Events");
+		btnAddEvents.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent __) {
+			}
+		});
 
 		final GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout
@@ -608,14 +611,5 @@ public class MainFrame {
 		$.add(this.mnfilter);
 		return $;
 
-	}
-	/*
-	 * 
-	 */
-	private void addEventBtnOnClick(){
-		btnAddEvents.addActionListener(l-> {
-			InteractiveFrame iFrame = new InteractiveFrame();
-			iFrame.setVisible(true);
-		});
 	}
 }
