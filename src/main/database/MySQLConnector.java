@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,14 +21,14 @@ import java.util.logging.Logger;
  * @author osherh
  * @since 6/12/2016
  */
-public class DatabaseConnector {
-	private static final Logger logger = Logger.getLogger("DatabaseConnector".getClass().getName());
+public class MySQLConnector {
+	private static final Logger logger = Logger.getLogger("MySQLConnector".getClass().getName());
 	private static Connection conn;
 	private boolean dbExists;
 
-	public DatabaseConnector() throws Exception {
+	public MySQLConnector() throws Exception {
 		try {
-			connectToDatabase();
+			connectToServer();
 			logger.log(Level.INFO, "connected to server");
 			runQuery("use sys");
 		} catch (Exception ¢) {
@@ -51,19 +50,14 @@ public class DatabaseConnector {
 		}
 	}
 
-	private void connectToDatabase() throws Exception {
+	private void connectToServer() throws Exception {
 		try {
-			Class.forName("com.postgresql.jdbc.Driver");
+			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException ¢) {
 			throw ¢;
 		}
 		try {
-			String url = "jdbc:postgresql://localhost/";
-			Properties props = new Properties();
-			props.setProperty("user", "root");
-			props.setProperty("password", "dbpass");
-			props.setProperty("ssl", "true");
-			conn = DriverManager.getConnection(url, props);
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/", "root", "mysqlpass");
 		} catch (SQLException ¢) {
 			throw ¢;
 		}

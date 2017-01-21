@@ -10,18 +10,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 import main.database.DataList;
-import main.database.DatabaseConnector;
+import main.database.MySQLConnector;
 import main.database.TableTuple;
 
-import static main.database.DatabaseConnector.*;
+import static main.database.MySQLConnector.*;
 
 /*
  * @author osherh
  * @since 6/12/2016
  * */
-public class DatabaseConnectorTest {
-	public DatabaseConnectorTest() throws Exception {
-		new DatabaseConnector();
+public class MySQLConnectorTest {
+	public MySQLConnectorTest() throws Exception {
+		new MySQLConnector();
 	}
 
 	@AfterClass

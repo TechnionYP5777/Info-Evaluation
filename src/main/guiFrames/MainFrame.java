@@ -42,10 +42,10 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import main.Analyze.AnalyzeSources;
-import main.database.DatabaseConnector;
+import main.database.MySQLConnector;
 import main.database.TableTuple;
 
-import static main.database.DatabaseConnector.*;
+import static main.database.MySQLConnector.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -76,7 +76,7 @@ public class MainFrame {
 	private JCheckBox chckbxSortby;
 	private JCheckBox chckbxFilterBy;
 	@SuppressWarnings("unused")
-	private static DatabaseConnector connector;
+	private static MySQLConnector connector;
 	private JComboBox<String> comboBox;
 	private JTextPane txtpnChooseOneFrom;
 	private JScrollPane js;
@@ -341,7 +341,7 @@ public class MainFrame {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		try {
-			connector = new DatabaseConnector();
+			connector = new MySQLConnector();
 		} catch (final Exception e) {
 			JOptionPane.showMessageDialog(null, "problem with sql connector", "Error", JOptionPane.INFORMATION_MESSAGE);
 		}
@@ -365,7 +365,7 @@ public class MainFrame {
 		events.addSource(src1);
 		events.addSource(src2, "2015");
 
-		DatabaseConnector.addEvents(events.getData());
+		MySQLConnector.addEvents(events.getData());
 		try {
 			addAllKeywords(events.getData());
 		} catch (SQLException ¢) {
