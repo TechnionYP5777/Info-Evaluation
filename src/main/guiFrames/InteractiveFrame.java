@@ -183,11 +183,11 @@ public class InteractiveFrame extends JFrame {
 			} catch (SQLException ¢) {
 				¢.printStackTrace();
 			}
-/*
+
 			scrollPane.setVisible(false);
 			frame.setVisible(false);
 			setVisible(false);
 			dispose();
-*/		});
+		});
 	}
 }
