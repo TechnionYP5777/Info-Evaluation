@@ -1,4 +1,4 @@
-package main.database;
+package main.database.java;
 
 
 /**

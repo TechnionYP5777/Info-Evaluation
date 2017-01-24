@@ -1,5 +1,6 @@
-package main.database;
+package main.database.java;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,7 +9,9 @@ import java.sql.SQLException;
 
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
+import java.util.InvalidPropertiesFormatException;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,7 +31,7 @@ public class MySQLConnector {
 
 	public MySQLConnector() throws Exception {
 		try {
-			connectToServer();
+			conn = getConnection();
 			logger.log(Level.INFO, "connected to server");
 			runQuery("use sys");
 		} catch (Exception ¢) {
@@ -50,14 +53,25 @@ public class MySQLConnector {
 		}
 	}
 
-	private void connectToServer() throws Exception {
+	private Connection getConnection() throws SQLException, IOException, ClassNotFoundException {
+		Properties props = new Properties();
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			props.loadFromXML(getClass().getResourceAsStream("../resources/DatabaseConnectionProperties.xml"));
+		} catch (InvalidPropertiesFormatException ¢) {
+			throw ¢;
+		}
+		String $ = props.getProperty("jdbc.username");
+		String password = props.getProperty("jdbc.password");
+		String driver = props.getProperty("jdbc.driver");
+		String host = props.getProperty("jdbc.host");
+
+		try {
+			Class.forName(driver);
 		} catch (ClassNotFoundException ¢) {
 			throw ¢;
 		}
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/", "root", "mysqlpass");
+			return DriverManager.getConnection(host, $, password);
 		} catch (SQLException ¢) {
 			throw ¢;
 		}
