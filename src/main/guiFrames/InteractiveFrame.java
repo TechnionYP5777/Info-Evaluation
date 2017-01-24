@@ -37,10 +37,12 @@ public class InteractiveFrame extends JFrame {
 	private JTable table;
 	private JButton btnAddEvent;
 	private AnalyzeSources events;
-	private RefineTable inputList;
-
+	
 	private JButton btnSubmit;
+	private boolean inputAccepted;
+	
 
+	
 	/**
 	 * Launch the application.
 	 */
@@ -50,7 +52,6 @@ public class InteractiveFrame extends JFrame {
 			public void run() {
 				try {
 					new InteractiveFrame().setVisible(true);
-					// window.addEventButtonOnClick();
 				} catch (Exception ¢) {
 					¢.printStackTrace();
 				}
@@ -114,17 +115,6 @@ public class InteractiveFrame extends JFrame {
 		frame.getContentPane().setLayout(groupLayout);
 
 		events = new AnalyzeSources();
-
-		/*
-		 * initializing the table
-		 *
-		 */
-		inputList = new RefineTable();
-		inputList.addField("Date");
-		inputList.addField("Name");
-		inputList.addField("Reason");
-		inputList.addField("Year");
-
 		frame.setVisible(true);
 
 	}
@@ -133,17 +123,21 @@ public class InteractiveFrame extends JFrame {
 		return java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(utilDate));
 	}
 
+	
 	public void addEventButtonOnClick() {
 		btnAddEvent.addActionListener(l -> {
+			inputAccepted = false;
 			String input = txtEnterYourEvent.getText();
 			if (!"".equals(input))
 				try {
 					txtEnterYourEvent.setText("Loading please wait...");
-					events.addSource(input);
+					events.addSource(input, "2017");
 					txtEnterYourEvent.setText(input);
 				} catch (Exception e) {
 					txtEnterYourEvent.setText("Could not parse, please try again");
+					return;
 				}
+			inputAccepted = true;
 			for (InteractiveTableTuple itt : events.getInteractiveData()) {
 				Object[] e = new Object[3];
 				e[0] = itt.getName();
@@ -151,7 +145,7 @@ public class InteractiveFrame extends JFrame {
 				JComboBox<String> reasonsOptions = new JComboBox<>();
 				itt.getReasons().stream().forEach(x -> reasonsOptions.addItem(x.getReason()));
 				reasonsOptions.setVisible(true);
-				reasonsOptions.setSelectedItem("Click to choose reason");
+				txtEnterYourEvent.setText("Click to choose the most suitable reason");
 				table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(reasonsOptions));
 				e[2] = itt.getReasons().get(0).getReason();
 				((DefaultTableModel) table.getModel()).addRow(e);
@@ -163,19 +157,16 @@ public class InteractiveFrame extends JFrame {
 
 	public void submitBtnOnClick() {
 		btnSubmit.addActionListener(l -> {
+			if(!inputAccepted)
+				return;
 			DataList dl = new DataList();
 			final DefaultTableModel model = (DefaultTableModel) table.getModel();
-			for (int ¢ = 0; ¢ < model.getRowCount(); ++¢)
-				dl.insert(new TableTuple((String) model.getValueAt(¢, 0), model.getValueAt(¢, 1) + "",
-						(String) model.getValueAt(¢, 2)));
+			for (int ¢ = 0; ¢ < model.getRowCount() - 1; ++¢){
+				InteractiveTableTuple temp = events.getInteractiveData().get(¢);
+				dl.insert(new TableTuple(temp.getName(),temp.getDate(),(String) model.getValueAt(¢+1, 2)));
+			}
 			// TODO: how to add the new events to auto-complete?
 			MySQLConnector.addEvents(dl);
-			// try {
-			// addAllKeywords(dl);
-			// } catch (SQLException ¢) {
-			// ¢.printStackTrace();
-			// }
-
 			frame.setVisible(false);
 			setVisible(false);
 			dispose();
