@@ -14,16 +14,15 @@ import org.apache.jena.query.ResultSetRewindable;
  */
 public class Extractor {
 
-	private  ParameterizedSparqlString qs = new ParameterizedSparqlString ();
+	private  ParameterizedSparqlString qs = new ParameterizedSparqlString ( "prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>\n" + "\n" + "select * where {\n"
+			+ " ?p a <http://dbpedia.org/ontology/Person> . " + "} LIMIT 10000 OFFSET 10000");
 	private ResultSetRewindable results;
-	public Extractor(){
-		this.qs.appendIri("prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>\n" + "\n" + "select * where {\n"
-				+ " ?p a <http://dbpedia.org/ontology/Person> . " + "} LIMIT 100000 OFFSET 10000");
+	
 		/*
 		 * the query limits the number of results to 100,000, and the OFFSET means that we take
 		 * every 10,000th entry
 		 */
-	}
+	
 	
 	public void executeQuery(){
 		this.results = ResultSetFactory.copyResults(
