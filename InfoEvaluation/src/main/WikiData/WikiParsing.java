@@ -33,10 +33,8 @@ public String getText(){
 
 public String Parse(String filter) throws IOException{
 	Document doc = Jsoup.connect(this.url).get();
-	System.out.println("hi");
 	 this.parsedParagraphs = doc.select("p:contains"+"("+filter+")");
-	 this.parsedText = this.parsedParagraphs.text().toString();
-	 return this.parsedText;
+	 return this.parsedText = this.parsedParagraphs.text() + "";
 }
 
 }
