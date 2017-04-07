@@ -17,7 +17,7 @@ public class AnalyzeParagraphTest {
 	public void Test1() throws IOException{
 		WikiParsing wiki =  (new WikiParsing("https://en.wikipedia.org/wiki/Axl_Rose"));
 		wiki.Parse("arrested");
-		(new AnalyzeParagraph(wiki.getParagraphs())).AnalyzeArrestsQuery();();
+		(new AnalyzeParagraph(wiki.getParagraphs())).AnalyzeArrestsQuery();
 		
 	}
 
