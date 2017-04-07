@@ -31,6 +31,10 @@ public String getText(){
 	return this.parsedText;
 }
 
+public Elements getParagraphs(){
+	return this.parsedParagraphs;
+}
+
 public String Parse(String filter) throws IOException{
 	Document doc = Jsoup.connect(this.url).get();
 	 this.parsedParagraphs = doc.select("p:contains"+"("+filter+")");
