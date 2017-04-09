@@ -1,4 +1,7 @@
 <ion-view view-title="Queries">
+  <ion-nav-bar class="bar-positive" ng-style="{'background-color': viewColor}">
+    <ion-nav-back-button></ion-nav-back-button>
+  </ion-nav-bar>
   <ion-content>
     <ion-list>
       <ion-item ng-repeat="playlist in playlists" href="#/app/playlists/{{playlist.id}}">
