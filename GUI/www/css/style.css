@@ -1,4 +1,5 @@
 /* Empty. Add your own CSS if you like */
-.item-content {
-  background-color:#EF674C;
+
+.item .item-content {
+  background-color: #EF674C!important;
 }
