@@ -18,15 +18,15 @@ public class Extractor {
 +" PREFIX  dbo: <http://dbpedia.org/ontology/>"
 +" PREFIX  dbp: <http://dbpedia.org/property/>"
 
-+"SELECT DISTINCT ?deathPlace ?birthPlace ?deathDate ?birthDate  ?name ?resource"
++"SELECT DISTINCT  ?name  ?deathPlace ?birthPlace ?deathDate ?birthDate "
 +"WHERE {"
-  +"  ?resource   a <http://dbpedia.org/ontology/Person>;    dbp:name ?name; dbp:birthDate ?birthDate; dbp:deathDate ?deathDate; dbp:birthPlace ?birthPlace; dbp:deathPlace ?deathPlace. " 
+  +"  ?resource   a <http://dbpedia.org/ontology/Person>;    dbp:name ?name; dbp:birthPlace ?birthPlace; dbp:birthDate ?birthDate. OPTIONAL{?resource dbp:deathDate ?deathDate. ?resource dbp:deathPlace ?deathPlace} " 
    +" FILTER (lang(?name) = 'en')  } "
 +"ORDER BY DESC(?name)   LIMIT 10000 offset 10000 " );
 	private ResultSetRewindable results;
 	
 		/*
-		 * the query limits the number of results to 100,000, and the OFFSET means that we take
+		 * the query limits the number of results to 10,000, and the OFFSET means that we take
 		 * every 10,000th entry
 		 */
 	

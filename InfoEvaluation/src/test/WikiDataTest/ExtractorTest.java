@@ -21,7 +21,7 @@ public class ExtractorTest {
 	 Extractor extr= new Extractor();
 	 extr.executeQuery();
 	 ResultSetRewindable rs= extr.getResults();
-	//ResultSetFormatter.out(rs);
+	ResultSetFormatter.out(rs);
 	 assertEquals(rs.size(), 10000);
  }
 	
