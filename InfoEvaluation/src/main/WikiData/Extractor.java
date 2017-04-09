@@ -14,8 +14,15 @@ import org.apache.jena.query.ResultSetRewindable;
  */
 public class Extractor {
 
-	private  ParameterizedSparqlString qs = new ParameterizedSparqlString ( "prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>\n" + "\n" + "select * where {\n"
-			+ " ?p a <http://dbpedia.org/ontology/Person> . " + "} LIMIT 10000 OFFSET 10000");
+	private  ParameterizedSparqlString qs = new ParameterizedSparqlString ("PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
++" PREFIX  dbo: <http://dbpedia.org/ontology/>"
++" PREFIX  dbp: <http://dbpedia.org/property/>"
+
++"SELECT DISTINCT ?deathPlace ?birthPlace ?deathDate ?birthDate  ?name ?resource"
++"WHERE {"
+  +"  ?resource   a <http://dbpedia.org/ontology/Person>;    dbp:name ?name; dbp:birthDate ?birthDate; dbp:deathDate ?deathDate; dbp:birthPlace ?birthPlace; dbp:deathPlace ?deathPlace. " 
+   +" FILTER (lang(?name) = 'en')  } "
++"ORDER BY DESC(?name)   LIMIT 10000 offset 10000 " );
 	private ResultSetRewindable results;
 	
 		/*
@@ -25,6 +32,7 @@ public class Extractor {
 	
 	
 	public void executeQuery(){
+		
 		this.results = ResultSetFactory.copyResults(
 				QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", qs.asQuery()).execSelect());
 	}

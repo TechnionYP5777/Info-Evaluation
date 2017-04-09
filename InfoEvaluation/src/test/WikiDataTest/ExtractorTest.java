@@ -21,7 +21,7 @@ public class ExtractorTest {
 	 Extractor extr= new Extractor();
 	 extr.executeQuery();
 	 ResultSetRewindable rs= extr.getResults();
-	assert ResultSetFormatter.asText(rs).contains(" <http://dbpedia.org/resource/Yulian_Semyonov>  ");
+	//ResultSetFormatter.out(rs);
 	 assertEquals(rs.size(), 10000);
  }
 	
