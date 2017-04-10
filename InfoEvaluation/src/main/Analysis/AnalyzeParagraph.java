@@ -91,7 +91,7 @@ public class AnalyzeParagraph {
 							if ("amod".equals(rel2) || "dobj".equals(rel2))
 							{
 								reason += dep2.word() + " ";
-							    prefixDetails=(sentence.toString().substring(dep.beginPosition(), dep2.endPosition()));
+							    prefixDetails=((sentence + "").substring(dep.beginPosition(), dep2.endPosition()));
 							}
 							if ("xcomp".equals(rel2))
 								aux += " " + dep2.word();
@@ -127,11 +127,7 @@ public class AnalyzeParagraph {
 					
 				}
 				}
-			//Set reason in list of possible reasons ( could be there's only one reason found)
-			if(!prefixDetails.equals(""))
-			this.Information.add((prefixDetails).trim());
-			else
-				this.Information.add((reason + " " + details).trim());
+			this.Information.add((!"".equals(prefixDetails) ? prefixDetails : reason + " " + details).trim());
 			System.out.println((this.Information.get(index) + ""));
 		}
 		  ++index;
