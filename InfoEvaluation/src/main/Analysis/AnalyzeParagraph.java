@@ -60,6 +60,7 @@ public class AnalyzeParagraph {
 		String details = ""; // more details about the reason. e.g - where it
 								// happened.
 		String aux = "";
+		String	prefixDetails="";
 		// Finally we use the pipeline to annotate the document we created
 		pipeLine.annotate(document);
 		for (final CoreMap sentence : document.get(SentencesAnnotation.class)) {
@@ -88,7 +89,10 @@ public class AnalyzeParagraph {
 							final String rel2 = keshet.getRelation() + "";
 							final IndexedWord dep2 = keshet.getDependent();
 							if ("amod".equals(rel2) || "dobj".equals(rel2))
+							{
 								reason += dep2.word() + " ";
+							    prefixDetails=(sentence.toString().substring(dep.beginPosition(), dep2.endPosition()));
+							}
 							if ("xcomp".equals(rel2))
 								aux += " " + dep2.word();
 							switch (rel2) {
@@ -124,8 +128,10 @@ public class AnalyzeParagraph {
 				}
 				}
 			//Set reason in list of possible reasons ( could be there's only one reason found)
-			this.Information.add((reason + " " + details).trim());
-			System.out.println((reason + " " + details).trim());
+			if(!prefixDetails.equals(""))
+			this.Information.add((prefixDetails).trim());
+			else
+				this.Information.add((reason + " " + details).trim());
 			System.out.println((this.Information.get(index) + ""));
 		}
 		  ++index;

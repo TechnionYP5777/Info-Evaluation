@@ -20,5 +20,13 @@ public class AnalyzeParagraphTest {
 		(new AnalyzeParagraph(wiki.getParagraphs())).AnalyzeArrestsQuery();
 		
 	}
+	
+	@Test
+	public void Test2() throws IOException{
+		WikiParsing wiki =  (new WikiParsing("https://en.wikipedia.org/wiki/The_Weeknd"));
+		wiki.Parse("arrested");
+		(new AnalyzeParagraph(wiki.getParagraphs())).AnalyzeArrestsQuery();
+		
+	}
 
 }
