@@ -18,11 +18,11 @@ public class Extractor {
 +" PREFIX  dbo: <http://dbpedia.org/ontology/>"
 +" PREFIX  dbp: <http://dbpedia.org/property/>"
 
-+"SELECT DISTINCT  ?name  ?deathPlace ?birthPlace ?deathDate ?birthDate "
++"SELECT DISTINCT  ?name (SAMPLE (?deathPlace) as ?death)  (SAMPLE(?birthPlace) as ?birth) (SAMPLE(?deathDate) as ?dDate) (SAMPLE( ?birthDate) as ?bDate) "
 +"WHERE {"
-  +"  ?resource   a <http://dbpedia.org/ontology/Person>;    dbp:name ?name; dbp:birthPlace ?birthPlace; dbp:birthDate ?birthDate. OPTIONAL{?resource dbp:deathDate ?deathDate. ?resource dbp:deathPlace ?deathPlace} " 
-   +" FILTER (lang(?name) = 'en')  } "
-+"ORDER BY DESC(?name)   LIMIT 10000 offset 10000 " );
+  +"  ?resource   a <http://dbpedia.org/ontology/Person>;    dbp:name ?name; dbp:birthPlace ?birthPlace;dbp:birthDate ?birthDate. OPTIONAL{?resource dbp:deathDate ?deathDate. ?resource dbp:deathPlace ?deathPlace} " 
+   +" FILTER (lang(?name) = 'en')  }GROUP BY ?name "
++" ORDER BY DESC(?name)    LIMIT 10000 offset 10000 " );
 	private ResultSetRewindable results;
 	
 		/*
