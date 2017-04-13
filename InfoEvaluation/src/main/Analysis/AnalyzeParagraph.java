@@ -1,6 +1,7 @@
 package Analysis;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 
 import org.jsoup.nodes.Element;
@@ -8,11 +9,13 @@ import org.jsoup.select.Elements;
 
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.ling.IndexedWord;
+
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.semgraph.SemanticGraph;
 import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations.CollapsedDependenciesAnnotation;
 import edu.stanford.nlp.semgraph.SemanticGraphEdge;
+import edu.stanford.nlp.simple.Sentence;
 import edu.stanford.nlp.util.CoreMap;
 
 /** 
@@ -30,6 +33,22 @@ public class AnalyzeParagraph {
 	 this.Information = new LinkedList<String>();
  }
  
+ public String ArrestPenalty(Sentence s){
+	 //This function gets a sentence which may include the penalty for an arrest and returns it.
+	 //e.g. - 'He was sentenced to 2 years in jail' and the functio returns '2 years in jail' .
+	 final List<String> nerTags = s.nerTags();
+	 String res ="";
+	 int i=0;
+	 for (final String ¢ : nerTags){
+		 if("DURATION".equals(¢))
+			res += s.word(i) + " ";
+		 ++i;
+	 }
+	 System.out.println(res);
+	 return res.trim();
+ }
+ 
+
  public void AnalyzeArrestsQuery(){
 	 /*
 		 * First step is initiating the Stanford CoreNLP pipeline (the pipeline
@@ -61,9 +80,16 @@ public class AnalyzeParagraph {
 								// happened.
 		String aux = "";
 		String	prefixDetails="";
+		String penalty=""; // this string tells us what is the penalty for the arrest.
+		
 		// Finally we use the pipeline to annotate the document we created
 		pipeLine.annotate(document);
 		for (final CoreMap sentence : document.get(SentencesAnnotation.class)) {
+			Sentence sent = new Sentence(sentence);
+			if(sent.text().contains("sentenced")){
+			penalty=ArrestPenalty(sent);	
+			System.out.println("Sentenced for:"+penalty);
+			}
 			final SemanticGraph dependencies = sentence.get(CollapsedDependenciesAnnotation.class);
 			for (final IndexedWord root : dependencies.getRoots())
 				for (final SemanticGraphEdge edge : dependencies.getOutEdgesSorted(root)) {
@@ -127,7 +153,10 @@ public class AnalyzeParagraph {
 					
 				}
 				}
-			this.Information.add((!"".equals(prefixDetails) ? prefixDetails : reason + " " + details).trim());
+			this.Information.add(prefixDetails.trim());
+			System.out.println((this.Information.get(index) + ""));
+			++index;
+			this.Information.add((reason + " " + details).trim());
 			System.out.println((this.Information.get(index) + ""));
 		}
 		  ++index;

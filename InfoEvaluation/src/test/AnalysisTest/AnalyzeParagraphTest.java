@@ -10,7 +10,7 @@ import java.io.IOException;
  */
 import org.junit.Test;
 import Analysis.AnalyzeParagraph;
-import WikiData.WikiParsing; 
+import WikiData.WikiParsing;
 public class AnalyzeParagraphTest {
 	
 	@Test
@@ -28,5 +28,6 @@ public class AnalyzeParagraphTest {
 		(new AnalyzeParagraph(wiki.getParagraphs())).AnalyzeArrestsQuery();
 		
 	}
-
+	
+	
 }
