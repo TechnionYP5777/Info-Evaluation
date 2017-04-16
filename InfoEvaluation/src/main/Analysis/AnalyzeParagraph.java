@@ -33,7 +33,7 @@ public class AnalyzeParagraph {
 	 this.Information = new LinkedList<String>();
  }
  
- public String ArrestPenalty(Sentence s){
+ private String ArrestPenalty(Sentence s){
 	 //This function gets a sentence which may include the penalty for an arrest and returns it.
 	 //e.g. - 'He was sentenced to 2 years in jail' and the functio returns '2 years in jail' .
 	 final List<String> nerTags = s.nerTags();
@@ -117,7 +117,12 @@ public class AnalyzeParagraph {
 							if ("amod".equals(rel2) || "dobj".equals(rel2))
 							{
 								reason += dep2.word() + " ";
+								try{
 							    prefixDetails=((sentence + "").substring(dep.beginPosition(), dep2.endPosition()));
+								}
+								catch(IndexOutOfBoundsException e){
+									prefixDetails=sentence+"";
+								}
 							}
 							if ("xcomp".equals(rel2))
 								aux += " " + dep2.word();
@@ -164,4 +169,9 @@ public class AnalyzeParagraph {
 		}
  }
 
+ 
+ 
+ 
+ 
+ 
 }

@@ -29,5 +29,13 @@ public class AnalyzeParagraphTest {
 		
 	}
 	
+	@Test
+	public void Test3() throws IOException{
+		WikiParsing wiki =  (new WikiParsing("https://en.wikipedia.org/wiki/Shia_LaBeouf"));
+		wiki.Parse("arrested");
+		(new AnalyzeParagraph(wiki.getParagraphs())).AnalyzeArrestsQuery();
+		
+	}
+	
 	
 }

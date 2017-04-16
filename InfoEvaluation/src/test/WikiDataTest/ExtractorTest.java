@@ -1,7 +1,5 @@
 package WikiDataTest;
 
-import org.apache.jena.query.ResultSetFormatter;
-import org.apache.jena.query.ResultSetRewindable;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -20,9 +18,7 @@ public class ExtractorTest {
  @Test public void test1(){
 	 Extractor extr= new Extractor();
 	 extr.executeQuery();
-	 ResultSetRewindable rs= extr.getResults();
-	//ResultSetFormatter.out(rs);
-	 assertEquals(rs.size(), 10000);
+	 assertEquals(extr.getResults().size(), 10000);
  }
 	
 }
