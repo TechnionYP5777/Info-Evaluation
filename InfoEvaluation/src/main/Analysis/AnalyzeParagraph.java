@@ -39,8 +39,8 @@ public class AnalyzeParagraph {
 	 final List<String> nerTags = s.nerTags();
 	 String res ="";
 	 int i=0;
-	 for (final String Â¢ : nerTags){
-		 if("DURATION".equals(Â¢))
+	 for (final String ¢ : nerTags){
+		 if(¢.equals("DURATION"))
 			res += s.word(i) + " ";
 		 ++i;
 	 }
