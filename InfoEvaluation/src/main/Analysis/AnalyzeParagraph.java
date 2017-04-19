@@ -39,8 +39,8 @@ public class AnalyzeParagraph {
 	 final List<String> nerTags = s.nerTags();
 	 String res ="";
 	 int i=0;
-	 for (final String ¢ : nerTags){
-		 if(¢.equals("DURATION"))
+	 for (final String Â¢ : nerTags){
+		 if("DURATION".equals(Â¢))
 			res += s.word(i) + " ";
 		 ++i;
 	 }
@@ -88,7 +88,7 @@ public class AnalyzeParagraph {
 		pipeLine.annotate(document);
 		for (final CoreMap sentence : document.get(SentencesAnnotation.class)) {
 			Sentence sent = new Sentence(sentence);
-			if(sent.text().contains("sentenced")){
+			if(sent.text().contains("sentenced") || sent.text().contains("juried") || sent.text().contains("sent to jail") || sent.text().contains("charged")){
 			penalty=ArrestPenalty(sent);	
 			System.out.println("Sentenced for:"+penalty);
 			}
