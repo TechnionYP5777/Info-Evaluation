@@ -16,7 +16,7 @@ public class WikiParsingTest {
 	@Test
 	public void test1() throws IOException{
 
-		System.out.print((new WikiParsing("https://en.wikipedia.org/wiki/Axl_Rose")).Parse("arrested"));
+		System.out.print((new WikiParsing("https://en.wikipedia.org/wiki/Shia_LaBeouf")).Parse("arrested"));
 
 	}
 	

@@ -75,6 +75,8 @@ public class AnalyzeParagraph {
 		for (final Element paragraph : this.Paragraphs){
 		final String inputText = paragraph.text() + "";
 		final Annotation document = new Annotation(inputText);
+		System.out.println(document);
+
 		String reason = "";
 		String details = ""; // more details about the reason. e.g - where it
 								// happened.
@@ -158,14 +160,15 @@ public class AnalyzeParagraph {
 					
 				}
 				}
+			if(!"".equals(prefixDetails.trim())){
 			this.Information.add(prefixDetails.trim());
 			System.out.println((this.Information.get(index) + ""));
 			++index;
+			}
 			this.Information.add((reason + " " + details).trim());
 			System.out.println((this.Information.get(index) + ""));
-		}
-		  ++index;
-		  
+			++index;
+		}  
 		}
  }
 
