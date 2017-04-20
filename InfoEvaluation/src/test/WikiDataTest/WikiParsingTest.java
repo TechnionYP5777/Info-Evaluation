@@ -1,5 +1,6 @@
 package WikiDataTest;
 import java.io.IOException;
+ 
 
 /**
  * 
@@ -20,6 +21,10 @@ public class WikiParsingTest {
 
 	}
 	
+	@Test
+	public void test2() throws IOException{
+		System.out.print((new WikiParsing("https://en.wikipedia.org/wiki/Justin_Timberlake")).Parse("awarded"));
+	}
 	
 
 }
