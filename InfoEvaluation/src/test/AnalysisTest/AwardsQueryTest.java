@@ -1,5 +1,7 @@
 package AnalysisTest;
 import java.io.IOException;
+import java.util.LinkedList;
+
 import org.junit.Test;
 import Analysis.AwardsQuery;
 /**
@@ -17,6 +19,9 @@ public class AwardsQueryTest {
 		WikiParsing wiki = new WikiParsing("https://en.wikipedia.org/wiki/Justin_Timberlake");
 		wiki.Parse("awarded");
 		System.out.print(wiki.getText());
-	new AwardsQuery(wiki.getParagraphs());
+	 AwardsQuery aw =  new AwardsQuery(wiki.getParagraphs());
+	 aw.analyze();
+	 for (final String ¢ : aw.getInformation())
+		System.out.println(¢);
 	}
 }
