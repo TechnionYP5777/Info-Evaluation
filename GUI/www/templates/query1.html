@@ -3,13 +3,20 @@
     <ion-nav-back-button></ion-nav-back-button>
   </ion-nav-bar>
 	<ion-header-bar class="bar-royal">
-      <h1 class="title">People who were born in a certain place before a certain year</h1>
+      
     </ion-header-bar>
   <ion-content>
+	  <h2 class="title"><center>People who were born in a certain place before a certain year</center></h2>
 	<div class="item item-input-inset">
       <label class="item item-input-wrapper">		
 		  <i class="icon ion-edit placeholder-icon"></i>
       <input type="text" placeholder="Place of birth">
+      </label>
+  	 </div>
+	  <div class="item item-input-inset">
+      <label class="item item-input-wrapper">		
+		  <i class="icon ion-edit placeholder-icon"></i>
+      <input type="text" placeholder="year" numbers-only ng-model="account">
       </label>
   	 </div>
     <button class="button button-block padding">
