@@ -16,7 +16,7 @@ public class AwardsQueryTest {
 	
 	@Test
 	public void test1() throws IOException{
-		WikiParsing wiki = new WikiParsing("https://en.wikipedia.org/wiki/Justin_Timberlake");
+		WikiParsing wiki = new WikiParsing("https://en.wikipedia.org/wiki/Taylor_Swift");
 		wiki.Parse("awarded");
 		System.out.print(wiki.getText());
 	 AwardsQuery aw =  new AwardsQuery(wiki.getParagraphs());

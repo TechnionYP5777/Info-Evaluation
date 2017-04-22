@@ -3,7 +3,6 @@ package Analysis;
 import java.util.LinkedList;
 import edu.stanford.nlp.ie.util.RelationTriple;
 import edu.stanford.nlp.simple.*;
-
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -28,11 +27,15 @@ public class AwardsQuery {
 	    // Iterate over the sentences in the document
 		  for (final Element paragraph : this.Paragraphs)
 			for (Sentence sent : (new Document((paragraph.text() + ""))).sentences())
-				for (RelationTriple ¢ : sent.openieTriples())
-					Information.add(¢.confidence + "\t" + ¢.subjectLemmaGloss() + "\t" + ¢.relationLemmaGloss() + "\t"
-							+ ¢.objectLemmaGloss());
+				for (RelationTriple ¢ : sent.openieTriples()){
+					 String rel = ¢.relationLemmaGloss();
+					if (rel.contains("award") || rel.contains("win") || ¢.objectLemmaGloss().contains("award"))
+						Information.add(¢.confidence + "\t" + ¢.subjectLemmaGloss() + "\t" + ¢.relationLemmaGloss()
+								+ "\t" + ¢.objectLemmaGloss());
+				}
 		  
 	}
+	
 	
 	public LinkedList<String> getInformation(){
 		return this.Information;
