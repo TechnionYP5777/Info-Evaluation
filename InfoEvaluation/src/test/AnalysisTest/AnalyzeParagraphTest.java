@@ -37,5 +37,13 @@ public class AnalyzeParagraphTest {
 		
 	}
 	
-	
+	@Test
+	public void Test4() throws IOException{
+		WikiParsing wiki =  (new WikiParsing("https://en.wikipedia.org/wiki/Adele"));
+		wiki.Parse("won");
+		AnalyzeParagraph an = new AnalyzeParagraph(wiki.getParagraphs());
+		an.AnalyzeAwardsQuery();
+		for (final String ¢ : an.getInformation())
+			System.out.println(¢);
+		}
 }

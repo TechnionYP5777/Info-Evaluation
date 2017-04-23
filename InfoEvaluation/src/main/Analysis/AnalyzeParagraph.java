@@ -3,13 +3,10 @@ package Analysis;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
-
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.ling.IndexedWord;
-
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.semgraph.SemanticGraph;
@@ -31,6 +28,12 @@ public class AnalyzeParagraph {
  public AnalyzeParagraph(Elements Paragraphs){
 	 this.Paragraphs = Paragraphs;
 	 this.Information = new LinkedList<String>();
+ }
+ 
+ public void AnalyzeAwardsQuery(){
+	 AwardsQuery aw = new AwardsQuery(this.Paragraphs);
+	 aw.analyze();
+	 this.Information = aw.getInformation();
  }
  
  private String ArrestPenalty(Sentence s){
@@ -173,6 +176,9 @@ public class AnalyzeParagraph {
  }
 
  
+ public LinkedList<String> getInformation(){
+	 return this.Information;
+ }
 
  
  
