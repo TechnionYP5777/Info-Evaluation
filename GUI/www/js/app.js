@@ -41,6 +41,12 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       }
     })
 
+    .state('query1Results', {
+    	url: '/query1Results',
+    	templateUrl: 'templates/query1Results.html',
+    	controller: 'ShowResultsButtonCtrl'
+    })
+    
   .state('app.single', {
     url: '/playlists/:playlistId',
     views: {
