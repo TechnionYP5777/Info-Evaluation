@@ -1,0 +1,24 @@
+<ion-view>
+	<ion-nav-bar class="bar-positive>
+    	<ion-nav-back-button></ion-nav-back-button>
+  	</ion-nav-bar>
+	<ion-header-bar class="bar-royal">
+      <h1 class="title">Second Query Results</h1>
+    </ion-header-bar>
+  	<ion-content>
+  		<div class="row header">
+         	<div class="col">Name</div>
+         	<div class="col">Birth Place</div>
+         	<div class="col">Death Place</div>
+         	<div class="col">URL</div>
+       	</div>
+  	<div ng-controller="SecondQueryRecordsCtrl>	
+  		<div class="row" ng-repeat="record in records">
+          <div class="col">{{result.name}}</div>
+          <div class="col">{{result.brithPlace}}</div>
+          <div class="col">{{result.deathPlace}}</div>
+          <div class="col">{{result.url}}</div>
+    	</div>
+    </div>
+  	</ion-content>
+</ion-view>
