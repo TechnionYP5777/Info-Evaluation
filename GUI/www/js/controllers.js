@@ -48,6 +48,22 @@ angular.module('starter.controllers', [])
   ];
 })
 
+.controller('FirstQueryRecordsCtrl', function($scope) {
+  $scope.records = [];
+})
+
+
+.controller('FirstQueryRecordsCtrl', function($scope) {
+  $scope.records = [];
+})
+
+.controller('ShowResultsButtonCtrl',function($scope,$state){
+	$scope.showFirstQueryResults = function(){
+		  console.log('show results button was clicked');
+		$state.go('query1Results');
+	}
+})
+
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 });
 

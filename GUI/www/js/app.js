@@ -41,6 +41,12 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       }
     })
 
+    .state('query1Results', {
+    	url: '/query1Results',
+    	templateUrl: 'templates/query1Results.html',
+    	controller: 'ShowResultsButtonCtrl'
+    })
+    
   .state('app.single', {
     url: '/playlists/:playlistId',
     views: {
@@ -52,6 +58,28 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/playlists');
-});
+})
 
+
+.directive('onlyDigits', function () {
+    return {
+      require: 'ngModel',
+      restrict: 'A',
+      link: function (scope, element, attr, ctrl) {
+        function inputValue(val) {
+          if (val) {
+            var digits = val.replace(/[^0-9]/g, '');
+
+            if (digits !== val) {
+              ctrl.$setViewValue(digits);
+              ctrl.$render();
+            }
+            return parseInt(digits,10);
+          }
+          return undefined;
+        }            
+        ctrl.$parsers.push(inputValue);
+      }
+    };
+});
 
