@@ -30,8 +30,8 @@ public class AwardsQuery {
 				for (RelationTriple ¢ : sent.openieTriples()){
 					 String rel = ¢.relationLemmaGloss();
 					if (rel.contains("award") || rel.contains("win") || ¢.objectLemmaGloss().contains("award"))
-						Information.add(¢.confidence + "\t" + ¢.subjectLemmaGloss() + "\t" + ¢.relationLemmaGloss()
-								+ "\t" + ¢.objectLemmaGloss());
+						Information.add(¢.confidence + "\t" + ¢.subjectGloss() + "\t" + ¢.relationGloss()
+								+ "\t" + ¢.objectGloss());
 				}
 		  
 	}
