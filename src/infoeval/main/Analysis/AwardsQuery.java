@@ -1,4 +1,4 @@
-package main.Analysis;
+package infoeval.main.Analysis;
 
 import java.util.LinkedList;
 import edu.stanford.nlp.ie.util.RelationTriple;

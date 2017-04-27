@@ -1,14 +1,9 @@
-package test.AnalysisTest;
+package infoeval.test.AnalysisTest;
 import java.io.IOException;
 import org.junit.Test;
-import main.Analysis.AwardsQuery;
-/**
- * 
- * 
- * @author moshiko
- * since 20-04/-017
- */
-import main.WikiData.WikiParsing;
+
+import infoeval.main.Analysis.AwardsQuery;
+import infoeval.main.WikiData.WikiParsing;
 
 public class AwardsQueryTest {
 	
@@ -17,7 +12,7 @@ public class AwardsQueryTest {
 		WikiParsing wiki = new WikiParsing("https://en.wikipedia.org/wiki/Taylor_Swift");
 		wiki.Parse("awarded");
 		System.out.print(wiki.getText());
-	 main.Analysis.AwardsQuery aw =  new AwardsQuery(wiki.getParagraphs());
+	 infoeval.main.Analysis.AwardsQuery aw =  new AwardsQuery(wiki.getParagraphs());
 	 aw.analyze();
 	 for (final String ¢ : aw.getInformation())
 		System.out.println(¢);

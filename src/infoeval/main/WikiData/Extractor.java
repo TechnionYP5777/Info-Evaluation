@@ -1,4 +1,4 @@
-package main.WikiData;
+package infoeval.main.WikiData;
 
 import org.apache.jena.query.ParameterizedSparqlString;
 import org.apache.jena.query.QueryExecutionFactory;

@@ -1,4 +1,4 @@
-package test.WikiDataTest;
+package infoeval.test.WikiDataTest;
 import java.io.IOException;
  
 
@@ -12,7 +12,8 @@ import java.io.IOException;
 
 
 import org.junit.Test;
-import main.WikiData.WikiParsing;
+
+import infoeval.main.WikiData.WikiParsing;
 public class WikiParsingTest {
 	@Test
 	public void test1() throws IOException{

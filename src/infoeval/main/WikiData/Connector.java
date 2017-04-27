@@ -1,4 +1,4 @@
-package main.WikiData;
+package infoeval.main.WikiData;
 import java.sql.DriverManager;
 /**
  * 
