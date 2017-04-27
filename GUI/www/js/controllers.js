@@ -58,8 +58,10 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ShowResultsButtonCtrl',function($scope,$state){
-	$scope.showFirstQueryResults = function(){
-		  console.log('show results button was clicked');
+	$scope.showFirstQueryResults = function(place,year){
+		   console.log('show results button was clicked');
+       console.log(place);
+       console.log(year);
 		$state.go('query1Results');
 	}
 })
