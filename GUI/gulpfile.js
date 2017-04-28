@@ -16,7 +16,6 @@ gulp.task('default', ['sass']);
 gulp.task('sass', function(done) {
   gulp.src('./scss/ionic.app.scss')
     .pipe(sass())
-    .on('error', sass.logError)
     .pipe(gulp.dest('./www/css/'))
     .pipe(minifyCss({
       keepSpecialComments: 0
@@ -26,7 +25,7 @@ gulp.task('sass', function(done) {
     .on('end', done);
 });
 
-gulp.task('watch', ['sass'], function() {
+gulp.task('watch', function() {
   gulp.watch(paths.sass, ['sass']);
 });
 
