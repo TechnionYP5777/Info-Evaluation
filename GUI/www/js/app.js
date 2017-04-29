@@ -73,6 +73,24 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'io
         }
     })
 
+    .state('app.Query2Results', {
+        url: '/QueryResults',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/Query2Results.html',
+                controller: 'ActivityCtrl'
+            },
+            'fabContent': {
+                template: '<button id="fab-activity" class="button button-fab button-fab-top-right expanded button-energized-900 flap"><i class="icon ion-paper-airplane"></i></button>',
+                controller: function ($timeout) {
+                    $timeout(function () {
+                        document.getElementById('fab-activity').classList.toggle('on');
+                    }, 200);
+                }
+            }
+        }
+    })
+
     .state('app.friends', {
         url: '/friends',
         views: {

@@ -95,6 +95,15 @@ angular.module('starter.controllers', [])
     ionicMaterialInk.displayEffect();
 })
 
+.controller('ShowResultsButtonCtrl',function($scope,$state){
+	$scope.showFirstQueryResults = function(place,year){
+		   console.log('show results button was clicked');
+       console.log(place);
+       console.log(year);
+		$state.go('app.Query2Results');
+	}
+})
+
 .controller('FriendsCtrl', function($scope, $stateParams, $timeout, ionicMaterialInk, ionicMaterialMotion) {
     // Set Header
     $scope.$parent.showHeader();
