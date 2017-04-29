@@ -140,6 +140,24 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'io
         }
     })
 
+    .state('app.InteractiveSearch', {
+        url: '/Search',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/InteractiveSearch.html',
+                controller: 'InteractiveSearchCtrl'
+            },
+            'fabContent': {
+                template: '<button id="fab-search" class="button button-fab button-fab-bottom-right button-energized-900"><i class="icon ion-plus"></i></button>',
+                controller: function ($timeout) {
+                    /*$timeout(function () {
+                        document.getElementById('fab-profile').classList.toggle('on');
+                    }, 800);*/
+                }
+            }
+        }
+    })
+
     .state('app.profile', {
         url: '/profile',
         views: {
