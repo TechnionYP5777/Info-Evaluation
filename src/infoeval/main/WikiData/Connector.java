@@ -97,11 +97,6 @@ public class Connector {
 		return $.executeUpdate();
 	}
 
-	public void clearDB() throws SQLException {
-		runUpdate("DELETE FROM celebs_arrests");
-		runUpdate("DELETE FROM keywords_table");
-	}
-
 	public void closeConnection() {
 		try {
 			if (conn != null)
