@@ -25,6 +25,12 @@ import java.util.logging.Logger;
  */
 public class Connector {
 	private static final Logger logger = Logger.getLogger("Connector".getClass().getName());
+	private String username;
+	private String password;
+	private String driver;
+	private String server;
+	private String host;
+	private String db;	
 	private Connection conn;
 	//TODO: add caching connection
 
@@ -39,22 +45,27 @@ public class Connector {
 		logger.log(Level.INFO, "database created succesfully");
 	}
 
-	private Connection getConnection() throws SQLException, IOException, ClassNotFoundException {
+	public Connection getConnection() throws SQLException, IOException, ClassNotFoundException {
 		Properties props = new Properties();
 		try {
-			props.loadFromXML(getClass().getResourceAsStream("resources/MySQLServerConfiguration.xml"));
+			props.loadFromXML(getClass().getResourceAsStream("MySQLServerConfiguration.xml"));
 		} catch (InvalidPropertiesFormatException ¢) {
 			throw ¢;
 		}
-		String username = props.getProperty("jdbc.username"), password = props.getProperty("jdbc.password"),
-				driver = props.getProperty("jdbc.driver"), url = props.getProperty("jdbc.url");
+		username = props.getProperty("jdbc.username");
+		password = props.getProperty("jdbc.password");
+		driver = props.getProperty("jdbc.driver");
+		server = props.getProperty("jdbc.server");		
+		host = props.getProperty("jdbc.host");
+		db = props.getProperty("jdbc.db");
+				
 		try {
 			Class.forName(driver);
 		} catch (ClassNotFoundException ¢) {
 			throw ¢;
 		}
 		try {
-			return DriverManager.getConnection(url, username, password);
+			return DriverManager.getConnection(server+"://"+host+"/"+db, username, password);
 		} catch (SQLException ¢) {
 			throw ¢;
 		}
@@ -63,11 +74,11 @@ public class Connector {
 	private void givePermissions() throws SQLException, IOException {
 		Properties props = new Properties();
 		try {
-			props.loadFromXML(getClass().getResourceAsStream("resources/MySQLServerConfiguration.xml"));
+			props.loadFromXML(getClass().getResourceAsStream("MySQLServerConfiguration.xml"));
 		} catch (InvalidPropertiesFormatException ¢) {
 			throw ¢;
 		}
-		runQuery("GRANT ALL PRIVILEGES ON *.* TO user@% IDENTIFIED BY " + props.getProperty("jdbc.password"));
+		runQuery("GRANT ALL PRIVILEGES ON "+ db +".* TO " + username + "@" + host + " IDENTIFIED BY " + password);
 	}
 
 	public int runUpdate(final String query) throws SQLException {
