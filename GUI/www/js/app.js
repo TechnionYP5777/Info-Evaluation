@@ -158,6 +158,40 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'io
         }
     })
 
+    .state('app.Awards', {
+        url: '/Awards',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/awards.html',
+                controller: 'AwardsCtrl'
+            },
+            'fabContent': {
+                controller: function ($timeout) {
+                    /*$timeout(function () {
+                        document.getElementById('fab-profile').classList.toggle('on');
+                    }, 800);*/
+                }
+            }
+        }
+    })
+
+    .state('app.Arrests', {
+        url: '/Arrests',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/arrests.html',
+                controller: 'ArrestsCtrl'
+            },
+            'fabContent': {
+                controller: function ($timeout) {
+                    /*$timeout(function () {
+                        document.getElementById('fab-profile').classList.toggle('on');
+                    }, 800);*/
+                }
+            }
+        }
+    })
+
     .state('app.profile', {
         url: '/profile',
         views: {
