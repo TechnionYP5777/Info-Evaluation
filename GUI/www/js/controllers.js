@@ -173,6 +173,26 @@ angular.module('starter.controllers', [])
     ionicMaterialInk.displayEffect();
 })
 
+.controller('AddQueryCtrl', function($scope, $ionicPopup) {
+
+   $scope.searchPopUp = function() {
+	
+      var promptPopup = $ionicPopup.prompt({
+         title: 'Add a Query',
+         template: 'Enter your query please:',
+         inputType: 'text',
+         inputPlaceholder: 'Placeholder'
+      });
+        
+      promptPopup.then(function(res) {
+         console.log("A Query was added:");
+         console.log(res);
+      });
+		
+   };
+
+})
+
 .controller('AwardsCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk) {
     // Set Header
     $scope.$parent.showHeader();

@@ -148,12 +148,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'io
                 controller: 'InteractiveSearchCtrl'
             },
             'fabContent': {
-                template: '<button id="fab-search" class="button button-fab button-fab-bottom-right button-energized-900"><i class="icon ion-plus"></i></button>',
-                controller: function ($timeout) {
-                    /*$timeout(function () {
-                        document.getElementById('fab-profile').classList.toggle('on');
-                    }, 800);*/
-                }
+                template: '<button id="fab-search" ng-click="searchPopUp()" class="button button-fab button-fab-bottom-right button-energized-900"><i class="icon ion-plus"></i></button>',
+                controller: 'AddQueryCtrl'
             }
         }
     })
