@@ -114,13 +114,19 @@ return {
 };
 })
 
-
+.controller('agentScheduleCtrl', function($scope, $http, $timeout, Data) {
+ var url = "http://www.otago.ac.nz/itssdschedule/mobileappdevice/services/getUsers.php";
+ var url = "users.json";
+$http.get(url).success( function(response) {
+  Data.setUser(response);
+  $scope.users = response;
+})
 
 .controller('ShowResultsButtonCtrl',function($scope,$state){
 	$scope.showFirstQueryResults = function(place,year){
-		   console.log('show results button was clicked-query 2');
-       console.log(place);
-       console.log(year);
+		console.log('show results button was clicked-query 2');
+		Data.setYear(year);
+		Data.setPlace(place);
 		$state.go('app.Query2Results');
 	}
 })
