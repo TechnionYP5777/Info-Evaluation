@@ -96,15 +96,7 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('agentScheduleCtrl', function($scope, $http, $timeout, Data) {
- var url = "http://www.otago.ac.nz/itssdschedule/mobileappdevice/services/getUsers.php";
- var url = "users.json";
-$http.get(url).success( function(response) {
-  Data.setUser(response);
-  $scope.users = response;
-})
-
-.controller('ShowResultsButtonCtrl',function($scope,$state, Data){
+.controller('ShowResultsButtonCtrl',function($scope,$state/*, Data*/){
 	$scope.showFirstQueryResults = function(place,year){
 		console.log('show results button was clicked-query 2');
 		Data.setYear(year);

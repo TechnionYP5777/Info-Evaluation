@@ -204,7 +204,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'io
         }
     })
 	
-	.factory('Data', function () {
+	/*.factory('Data', function () {
 	var year = {};
 	var place = {};
 	return {
@@ -221,7 +221,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'io
 			place = placeparameter;
 		}
 	};
-	})
+	})*/
     ;
 
     // if none of the above states are matched, use this as the fallback
