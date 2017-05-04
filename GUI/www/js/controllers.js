@@ -95,6 +95,27 @@ angular.module('starter.controllers', [])
     ionicMaterialInk.displayEffect();
 })
 
+.factory('Data', function () {
+var year = {};
+var place = {};
+return {
+    getYear: function () {
+        return year;
+    },
+    setYear: function (yearparameter) {
+        year = yearparameter;
+    }
+	getPlace: function () {
+        return place;
+    },
+    setPlace: function (placeparameter) {
+        place = placeparameter;
+    }
+};
+})
+
+
+
 .controller('ShowResultsButtonCtrl',function($scope,$state){
 	$scope.showFirstQueryResults = function(place,year){
 		   console.log('show results button was clicked-query 2');
