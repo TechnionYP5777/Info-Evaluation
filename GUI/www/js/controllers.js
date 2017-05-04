@@ -95,24 +95,6 @@ angular.module('starter.controllers', [])
     ionicMaterialInk.displayEffect();
 })
 
-.factory('Data', function () {
-var year = {};
-var place = {};
-return {
-    getYear: function () {
-        return year;
-    },
-    setYear: function (yearparameter) {
-        year = yearparameter;
-    }
-	getPlace: function () {
-        return place;
-    },
-    setPlace: function (placeparameter) {
-        place = placeparameter;
-    }
-};
-})
 
 .controller('agentScheduleCtrl', function($scope, $http, $timeout, Data) {
  var url = "http://www.otago.ac.nz/itssdschedule/mobileappdevice/services/getUsers.php";
@@ -122,7 +104,7 @@ $http.get(url).success( function(response) {
   $scope.users = response;
 })
 
-.controller('ShowResultsButtonCtrl',function($scope,$state){
+.controller('ShowResultsButtonCtrl',function($scope,$state, Data){
 	$scope.showFirstQueryResults = function(place,year){
 		console.log('show results button was clicked-query 2');
 		Data.setYear(year);
