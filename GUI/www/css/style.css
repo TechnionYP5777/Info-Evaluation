@@ -31,7 +31,7 @@ p {
 }
 
 .menu-open .bar.bar-header.expanded {
-    background-color: #222;
+    background-color: #87CEFA;
 }
 
 .menu h2 {
@@ -48,6 +48,7 @@ p {
 
 .menu.menu-left * {
     font-weight: bold;
+   
 }
 
 .menu-open .ion-navicon {

@@ -181,7 +181,7 @@ angular.module('starter.controllers', [])
          title: 'Add a Query',
          template: 'Enter your query please:',
          inputType: 'text',
-         inputPlaceholder: 'Placeholder'
+         inputPlaceholder: 'Your Query'
       });
         
       promptPopup.then(function(res) {
