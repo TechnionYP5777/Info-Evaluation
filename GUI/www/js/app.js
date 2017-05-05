@@ -203,6 +203,25 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'io
             }
         }
     })
+	
+	/*.factory('Data', function () {
+	var year = {};
+	var place = {};
+	return {
+		getYear: function () {
+			return year;
+		},
+		setYear: function (yearparameter) {
+			year = yearparameter;
+		}
+		getPlace: function () {
+			return place;
+		},
+		setPlace: function (placeparameter) {
+			place = placeparameter;
+		}
+	};
+	})*/
     ;
 
     // if none of the above states are matched, use this as the fallback

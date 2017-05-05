@@ -95,11 +95,12 @@ angular.module('starter.controllers', [])
     ionicMaterialInk.displayEffect();
 })
 
-.controller('ShowResultsButtonCtrl',function($scope,$state){
+
+.controller('ShowResultsButtonCtrl',function($scope,$state/*, Data*/){
 	$scope.showFirstQueryResults = function(place,year){
-		   console.log('show results button was clicked-query 2');
-       console.log(place);
-       console.log(year);
+		console.log('show results button was clicked-query 2');
+		Data.setYear(year);
+		Data.setPlace(place);
 		$state.go('app.Query2Results');
 	}
 })
