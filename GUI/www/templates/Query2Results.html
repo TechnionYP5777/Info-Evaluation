@@ -4,7 +4,9 @@
             <div ui-sref="app.gallery" class="card stable-bg ink ink-dark">
                 <div class="item item-avatar item-text-wrap">
                     <span class="avatar" style="background-image: url('img/jon-snow.jpg');"></span>
-                    <strong>Netanel Flecher</strong> Was born in Israel, 1995.
+					<div ng-controller="QueryEntry">
+                    	<strong>Netanel Flecher</strong> Was born in {{place}}, {{year}}.
+					</div>
                     <div class="card-footer text-right">
                     </div>
                 </div>

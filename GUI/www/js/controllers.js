@@ -105,6 +105,12 @@ angular.module('starter.controllers', [])
 	}
 })
 
+.controller('QueryEntry',function($scope, DataQ){
+		console.log('show entered fields from button clicked-query 2');
+		$scope.year= DataQ.getYear();
+		$scope.place=DataQ.getPlace();
+})
+
 .controller('FriendsCtrl', function($scope, $stateParams, $timeout, ionicMaterialInk, ionicMaterialMotion) {
     // Set Header
     $scope.$parent.showHeader();
