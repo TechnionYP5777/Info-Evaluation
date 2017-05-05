@@ -96,11 +96,11 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('ShowResultsButtonCtrl',function($scope,$state/*, Data*/){
+.controller('ShowResultsButtonCtrl',function($scope,$state, DataQ){
 	$scope.showFirstQueryResults = function(place,year){
 		console.log('show results button was clicked-query 2');
-		Data.setYear(year);
-		Data.setPlace(place);
+		DataQ.setYear(year);
+		DataQ.setPlace(place);
 		$state.go('app.Query2Results');
 	}
 })
