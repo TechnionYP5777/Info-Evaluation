@@ -11,6 +11,11 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSetFormatter;
+import org.apache.jena.query.ResultSetRewindable;
+import org.apache.jena.rdf.model.Literal;
+
 
 /**
  * 
@@ -33,12 +38,14 @@ public class Connector {
 	public Connector() throws Exception {
 		try {
 			conn = getConnection();
-			logger.log(Level.INFO, "connected to server");
+			createTable();
+			fillTableWithDBpediaResults();
+			//TODO: check if needed 
+			//runQuery("use infoeval");
 		} catch (Exception e) {
 			throw  e;
 		}
-		
-		logger.log(Level.INFO, "database created succesfully");
+		logger.log(Level.INFO, "connected to server");
 	}
 
 	public Connection getConnection() throws SQLException, IOException, ClassNotFoundException {
@@ -67,8 +74,41 @@ public class Connector {
 		}
 	}
 
-	
+	public void createTable() throws SQLException{
+		runUpdate("CREATE TABLE IF NOT EXISTS "
+				+ "basic_info("
+				+ "Name VARCHAR(50) NOT NULL,"
+				+ "BirthPlace VARCHAR(50) NOT NULL,"
+				+ "DeathPlace VARCHAR(50) NULL,"
+				+ "BirthDate DATE NOT NULL,"
+				+ "DeathDate DATE NULL,"
+				+ "PRIMARY KEY (Name))");
+		logger.log(Level.INFO, "table created successfully");
+	}
 
+	public void fillTableWithDBpediaResults() throws SQLException{
+		Extractor ext = new Extractor();
+		ext.executeQuery();
+		ResultSetRewindable results = ext.getResults();
+		//TODO: print results
+	    ResultSetFormatter.outputAsXML(System.out,results);
+		for(int i=0;i<results.size();++i){
+			QuerySolution solution = results.nextSolution();
+			String name=solution.getLiteral("name").getString();
+		    String birthPlace=solution.getLiteral("birthPlace").getString();
+		    String birthDate=solution.getLiteral("birthDate").getString();
+		    String deathDate=solution.getLiteral("deathDate").getString();
+		    String deathPlace=solution.getLiteral("deathPlace").getString();
+		    Object[] inp=new Object[]{};
+		    inp[0]=name;
+		    inp[1]=birthPlace;
+		    inp[2]=deathPlace;
+		    inp[3]=birthDate;
+		    inp[4]=deathDate;
+		    runUpdate("INSERT INTO basic_info VALUES(?,?,?,?,?)",inp);			
+		}
+	}
+	
 	public int runUpdate(final String query) throws SQLException {
 		return conn.createStatement().executeUpdate(query);
 	}
@@ -80,7 +120,7 @@ public class Connector {
 	public ResultSet runQuery(final String query, final Object[] inputs) throws SQLException {
 		PreparedStatement ps = conn.prepareStatement(query);
 		for (int i = 1;i <= inputs.length; ++i)
-			ps.setObject(i, inputs[1-i]);
+			ps.setObject(i, inputs[i-1]);
 		return ps.executeQuery();
 	}
 
