@@ -2,11 +2,25 @@
 'use strict';
 
 angular.module('starter.services', [])
-.factory('User', function() {
 
-  var o = {
-    favorites: []
-  }
+.factory('DataQ', function () {
+	var year = {};
+	var place = {};
+	return {
+		getYear: function () {
+			return year;
+		},
+		setYear: function (yearparameter) {
+			year = yearparameter;
+		},
+		getPlace: function () {
+			return place;
+		},
+		setPlace: function (placeparameter) {
+			place = placeparameter;
+		}
+	};
+})
+;
 
-  return o;
-});
+
