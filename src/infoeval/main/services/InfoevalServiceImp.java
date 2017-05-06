@@ -2,7 +2,7 @@ package infoeval.main.services;
 
 import java.util.List;
 
-public class InfoevalServiceImp implements infoevalService {
+public class InfoevalServiceImp implements InfoevalService {
 
 	@Override
 	public List<String> getBornIn(String place, int year) {

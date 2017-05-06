@@ -8,7 +8,7 @@ import java.util.List;
  * 
  */
 
-public interface infoevalService {
+public interface InfoevalService {
 	List<String> getBornIn(String place, int year); 
 	//TODO: change String to an object of Entry 
 	
