@@ -15,6 +15,8 @@ import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.query.ResultSetRewindable;
 import org.apache.jena.rdf.model.Literal;
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.impl.ResourceImpl;
 
 
 /**
@@ -40,8 +42,6 @@ public class Connector {
 			conn = getConnection();
 			createTable();
 			fillTableWithDBpediaResults();
-			//TODO: check if needed 
-			//runQuery("use infoeval");
 		} catch (Exception e) {
 			throw  e;
 		}
@@ -78,34 +78,39 @@ public class Connector {
 		runUpdate("CREATE TABLE IF NOT EXISTS "
 				+ "basic_info("
 				+ "Name VARCHAR(50) NOT NULL,"
-				+ "BirthPlace VARCHAR(50) NOT NULL,"
+				+ "BirthPlace VARCHAR(50) NULL,"
 				+ "DeathPlace VARCHAR(50) NULL,"
-				+ "BirthDate DATE NOT NULL,"
+				+ "BirthDate DATE NULL,"
 				+ "DeathDate DATE NULL,"
 				+ "PRIMARY KEY (Name))");
 		logger.log(Level.INFO, "table created successfully");
 	}
 
 	public void fillTableWithDBpediaResults() throws SQLException{
+		clearDB();
 		Extractor ext = new Extractor();
 		ext.executeQuery();
 		ResultSetRewindable results = ext.getResults();
-		//TODO: print results
-	    ResultSetFormatter.outputAsXML(System.out,results);
-		for(int i=0;i<results.size();++i){
-			QuerySolution solution = results.nextSolution();
-			String name=solution.getLiteral("name").getString();
-		    String birthPlace=solution.getLiteral("birthPlace").getString();
-		    String birthDate=solution.getLiteral("birthDate").getString();
-		    String deathDate=solution.getLiteral("deathDate").getString();
-		    String deathPlace=solution.getLiteral("deathPlace").getString();
-		    Object[] inp=new Object[]{};
+		results.reset();
+	    for(int i=0;i<results.size();++i){
+	    	QuerySolution solution = results.nextSolution();
+	    	String name=solution.getLiteral("name").getString();
+	    	
+	    	RDFNode bPlace = solution.get("birth");
+	    	String birthPlace=!bPlace.isResource() ? null : bPlace.asResource().toString().split("resource/")[1];
+	    	RDFNode dPlace = solution.get("death");
+	    	String deathPlace=!dPlace.isResource() ? null : dPlace.asResource().toString().split("resource/")[1];
+	    	RDFNode bDate = solution.get("bDate");
+	    	String birthDate=!bDate.isLiteral() ? null : bDate.asLiteral().getValue().toString();
+	    	RDFNode dDate = solution.get("dDate");
+	    	String deathDate=!dDate.isLiteral() ? null : dDate.asLiteral().getValue().toString();
+	    	Object[] inp=new String[5];
 		    inp[0]=name;
 		    inp[1]=birthPlace;
 		    inp[2]=deathPlace;
 		    inp[3]=birthDate;
 		    inp[4]=deathDate;
-		    runUpdate("INSERT INTO basic_info VALUES(?,?,?,?,?)",inp);			
+		    runUpdate("INSERT INTO basic_info VALUES(?,?,?,?,?)",inp);
 		}
 	}
 	
@@ -124,10 +129,21 @@ public class Connector {
 		return ps.executeQuery();
 	}
 
+	public int runUpdate(final String query, final Object[] inputs) throws SQLException {
+		PreparedStatement ps = conn.prepareStatement(query);
+		for (int i = 1;i <= inputs.length; ++i)
+			ps.setObject(i, inputs[i-1]);
+		return ps.executeUpdate();
+	}
+	
 	public int runUpdate(final String query, final Object input) throws SQLException {
 		PreparedStatement $ = conn.prepareStatement(query);
 		$.setObject(1, input);
 		return $.executeUpdate();
+	}
+	
+	public void clearDB() throws SQLException{
+		runUpdate("DELETE FROM basic_info");
 	}
 
 	public void closeConnection() {
