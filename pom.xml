@@ -73,10 +73,17 @@
 			<version>20160810</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.jena/jena-arq -->
-<dependency>
-    <groupId>org.apache.jena</groupId>
-    <artifactId>jena-arq</artifactId>
-    <version>3.1.1</version>
-</dependency>
+		<dependency>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>jena-arq</artifactId>
+			<version>3.1.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>2.1-m07</version>
+		</dependency>
+
 	</dependencies>
 </project>
