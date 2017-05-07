@@ -80,8 +80,8 @@ public class Connector {
 				+ "Name VARCHAR(50) NOT NULL,"
 				+ "BirthPlace VARCHAR(50) NULL,"
 				+ "DeathPlace VARCHAR(50) NULL,"
-				+ "BirthDate DATE NULL,"
-				+ "DeathDate DATE NULL,"
+				+ "BirthDate VARCHAR(50) NULL,"
+				+ "DeathDate VARCHAR(50) NULL,"
 				+ "PRIMARY KEY (Name))");
 		logger.log(Level.INFO, "table created successfully");
 	}
@@ -92,18 +92,31 @@ public class Connector {
 		ext.executeQuery();
 		ResultSetRewindable results = ext.getResults();
 		results.reset();
-	    for(int i=0;i<results.size();++i){
+	    for(int i=0;i<results.size()/5000;++i){
 	    	QuerySolution solution = results.nextSolution();
 	    	String name=solution.getLiteral("name").getString();
 	    	
 	    	RDFNode bPlace = solution.get("birth");
-	    	String birthPlace=!bPlace.isResource() ? null : bPlace.asResource().toString().split("resource/")[1];
+	    	String birthPlace=null;
+	    	if (bPlace.isResource()){
+	    		birthPlace = bPlace.asResource().toString().split("resource/")[1];
+	    	}else if(bPlace.isLiteral()){
+	    		birthPlace = bPlace.asLiteral().toString().split("@")[0];
+	    	}
+	    	
 	    	RDFNode dPlace = solution.get("death");
-	    	String deathPlace=!dPlace.isResource() ? null : dPlace.asResource().toString().split("resource/")[1];
+	    	String deathPlace=null;
+	    	if(dPlace.isResource()){
+	    		deathPlace = dPlace.asResource().toString().split("resource/")[1];
+	    	}else if(dPlace.isLiteral()){
+	    		deathPlace = dPlace.asLiteral().toString().split("@")[0];
+	    	}
+	    	
 	    	RDFNode bDate = solution.get("bDate");
 	    	String birthDate=!bDate.isLiteral() ? null : bDate.asLiteral().getValue().toString();
 	    	RDFNode dDate = solution.get("dDate");
 	    	String deathDate=!dDate.isLiteral() ? null : dDate.asLiteral().getValue().toString();
+	    	
 	    	Object[] inp=new String[5];
 		    inp[0]=name;
 		    inp[1]=birthPlace;
