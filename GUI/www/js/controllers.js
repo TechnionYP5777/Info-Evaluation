@@ -101,6 +101,7 @@ angular.module('starter.controllers', [])
 		console.log('show results button was clicked-query 2');
 		DataQ.setYear(year);
 		DataQ.setPlace(place);
+
 		$state.go('app.Query2Results');
 	}
 })
@@ -109,6 +110,7 @@ angular.module('starter.controllers', [])
 		console.log('show entered fields from button clicked-query 2');
 		$scope.year= DataQ.getYear();
 		$scope.place=DataQ.getPlace();
+        //$scope.persons=Query2Results.successCallback();
 })
 
 .controller('FriendsCtrl', function($scope, $stateParams, $timeout, ionicMaterialInk, ionicMaterialMotion) {

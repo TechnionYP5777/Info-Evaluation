@@ -16,9 +16,24 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
+			
+			<plugin>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-maven-plugin</artifactId>
+		</plugin>
 		</plugins>
 	</build>
+	<parent>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-parent</artifactId>
+	<version>1.5.2.RELEASE</version>
+	</parent>
+	
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -86,4 +101,17 @@
 		</dependency>
 
 	</dependencies>
+	
+	<repositories>
+	<repository>
+		<id>spring-releases</id>
+		<url>http://repo.spring.io/libs-release</url>
+	</repository>
+</repositories>
+<pluginRepositories>
+	<pluginRepository>
+		<id>spring-releases</id>
+		<url>http://repo.spring.io/libs-release</url>
+	</pluginRepository>
+</pluginRepositories>
 </project>

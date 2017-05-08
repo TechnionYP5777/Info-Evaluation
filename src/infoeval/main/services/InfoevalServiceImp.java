@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.GET;
-
+@Path("Queries")
 public class InfoevalServiceImp implements InfoevalService {
 
 	@GET
+	@Path("Query2")
+	@Produces(MediaType.APPLICATION_JSON)
 	@Override
 	public List<String> getBornIn(String place, int year) {
 		List<String> retval=new ArrayList<String>();

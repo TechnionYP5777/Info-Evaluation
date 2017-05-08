@@ -30,7 +30,7 @@ angular.module('starter.services', [])
 	$scope.persons=[];
     $http({
       method: 'GET',
-      url: ApiEndpoint.url+ 'Query2',
+      url: ApiEndpoint.url+ 'Queries/Query2/',
     }).then(function successCallback(response) {
         $scope.persons = [];
         for(var r in response.data) {

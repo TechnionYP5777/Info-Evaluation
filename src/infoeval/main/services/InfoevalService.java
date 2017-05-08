@@ -3,7 +3,7 @@ package infoeval.main.services;
 import java.util.List;
 
 /** 
- * @author geniashand
+ * @author geniashand , Moshiko
  * @since  06-05-2017
  * 
  */
@@ -13,5 +13,6 @@ public interface InfoevalService {
 	//TODO: change String to an object of Entry 
 	
 	List<String> differentDeathPlace();
+	
 
 }
