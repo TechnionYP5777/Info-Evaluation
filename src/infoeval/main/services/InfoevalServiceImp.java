@@ -1,20 +1,19 @@
 package infoeval.main.services;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.ws.rs.GET;
-@SpringBootApplication
+@RestController 
 public class InfoevalServiceImp implements InfoevalService {
 	@Override
+	@RequestMapping("/test")
 	public List<String> getBornIn(String place, int year) {
-		List<String> retval=new ArrayList<String>();
-		retval.add("Yevgenia Shandalov");
-		retval.add("Moshiko Elisof");
-		retval.add("Netanel Felcher");
-		retval.add("Osher Hajaj");
-		return retval;
+		List<String> $=new ArrayList<String>();
+		$.add("Yevgenia Shandalov");
+		$.add("Moshiko Elisof");
+		$.add("Netanel Felcher");
+		$.add("Osher Hajaj");
+		return $;
 	}
 
 	@Override

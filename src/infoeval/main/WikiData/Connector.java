@@ -104,48 +104,35 @@ public class Connector {
 	    	
 	    	RDFNode bPlace = solution.get("birth");
 	    	String birthPlace=null;
-	    	if (bPlace.isResource()){
-	    		birthPlace = bPlace.asResource().toString().split("resource/")[1];
-	    	}else if(bPlace.isLiteral()){
-	    		birthPlace = bPlace.asLiteral().toString().split("@")[0];
-	    	}
+	    	if (bPlace.isResource())
+				birthPlace = (bPlace.asResource() + "").split("resource/")[1];
+			else if(bPlace.isLiteral())
+				birthPlace = (bPlace.asLiteral() + "").split("@")[0];
 	    	
 	    	RDFNode dPlace = solution.get("death");
     		
 	    	String deathPlace=null;
-	    	if(dPlace!=null){
-	    		if(dPlace.isResource()){
-	    			deathPlace = dPlace.asResource().toString().split("resource/")[1];
-	    		}else if(dPlace.isLiteral()){
-	    			deathPlace = dPlace.asLiteral().toString().split("@")[0];
-	    		}
-	    	}
+	    	if(dPlace!=null)
+				if (dPlace.isResource())
+					deathPlace = (dPlace.asResource() + "").split("resource/")[1];
+				else if (dPlace.isLiteral())
+					deathPlace = (dPlace.asLiteral() + "").split("@")[0];
 	    	
 	    	RDFNode bDate = solution.get("bDate");
-	    	String birthDate=!bDate.isLiteral() ? null : bDate.asLiteral().getValue().toString();
+	    	String birthDate=!bDate.isLiteral() ? null : bDate.asLiteral().getValue() + "";
 	    	
 	    	RDFNode dDate = solution.get("dDate");
 	    	String deathDate=null;
 	    	java.sql.Date sqlDeathDate=null;
 	    	if(dDate!=null){
-	    		deathDate=!dDate.isLiteral() ? null : dDate.asLiteral().getValue().toString();
-	    		if(1==deathDate.split("-").length){
-		    		sqlDeathDate = stringToSqlDate(deathDate,new SimpleDateFormat("yyyy"));
-		    	}else{
-		    		sqlDeathDate = stringToSqlDate(deathDate,new SimpleDateFormat("yyyy-MM-dd"));
-		    	}
+	    		deathDate=!dDate.isLiteral() ? null : dDate.asLiteral().getValue() + "";
+	    		sqlDeathDate = stringToSqlDate(deathDate, new SimpleDateFormat("yyyy" + (deathDate.split("-").length == 1 ? "" : "-MM-dd")));
 	    	}
 	    	
-	    	java.sql.Date sqlBirthDate=null;	    	
-	    	if(1==birthDate.split("-").length){
-	    		sqlBirthDate = stringToSqlDate(birthDate,new SimpleDateFormat("yyyy"));
-	    	}else if(birthDate.startsWith("--") && 2==birthDate.split("--").length){
-	    		String birthDate1 = birthDate.split("--")[1];	    		
-	    		sqlBirthDate = stringToSqlDate(birthDate1,new SimpleDateFormat("MM-dd"));
-	    	}else{
-	    		sqlBirthDate = stringToSqlDate(birthDate,new SimpleDateFormat("yyyy-MM-dd"));	    		
-	    	}
-	    
+	    	java.sql.Date sqlBirthDate=birthDate.split("-").length == 1 ? stringToSqlDate(birthDate, new SimpleDateFormat("yyyy"))
+					: !birthDate.startsWith("--") || birthDate.split("--").length != 2
+							? stringToSqlDate(birthDate, new SimpleDateFormat("yyyy-MM-dd"))
+							: stringToSqlDate(birthDate.split("--")[1], new SimpleDateFormat("MM-dd"));	    	
 	    	Object[] inp=new Object[5];
 		    inp[0]=name;
 		    inp[1]=birthPlace;
@@ -156,9 +143,8 @@ public class Connector {
 		}
 	}
 
-	private java.sql.Date stringToSqlDate(String stringDate,SimpleDateFormat dateFormat) throws ParseException{
-		java.util.Date utilDeathDate = dateFormat.parse(stringDate);
-		return new java.sql.Date(utilDeathDate.getTime());
+	private java.sql.Date stringToSqlDate(String stringDate,SimpleDateFormat f) throws ParseException{
+		return new java.sql.Date(f.parse(stringDate).getTime());
 	}
 
 	
@@ -172,15 +158,15 @@ public class Connector {
 
 	public ResultSet runQuery(final String query, final Object[] inputs) throws SQLException {
 		PreparedStatement ps = conn.prepareStatement(query);
-		for (int i = 1;i <= inputs.length; ++i)
-			ps.setObject(i, inputs[i-1]);
+		for (int ¢ = 1;¢ <= inputs.length; ++¢)
+			ps.setObject(¢, inputs[¢-1]);
 		return ps.executeQuery();
 	}
 
 	public int runUpdate(final String query, final Object[] inputs) throws SQLException {
 		PreparedStatement ps = conn.prepareStatement(query);
-		for (int i = 1;i <= inputs.length; ++i)
-			ps.setObject(i, inputs[i-1]);
+		for (int ¢ = 1;¢ <= inputs.length; ++¢)
+			ps.setObject(¢, inputs[¢-1]);
 		return ps.executeUpdate();
 	}
 	

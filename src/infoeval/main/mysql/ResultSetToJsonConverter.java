@@ -15,18 +15,18 @@ import java.sql.ResultSetMetaData;
 
 public class ResultSetToJsonConverter {
 	public static JSONArray convert(ResultSet s) throws SQLException, JSONException {
-		JSONArray json = new JSONArray();
+		JSONArray $ = new JSONArray();
 		for (ResultSetMetaData rsmd = s.getMetaData(); s.next();) {
 			int numColumns = rsmd.getColumnCount();
 			JSONObject obj = new JSONObject();
-			for (int i = 1; i <= numColumns; ++i) {
-				rsmd.getColumnName(i);
-				if (rsmd.getColumnType(i) == java.sql.Types.VARCHAR)
-					json.put(obj);
-				if (rsmd.getColumnType(i) == java.sql.Types.DATE)
-					json.put(obj);
+			for (int ¢ = 1; ¢ <= numColumns; ++¢) {
+				rsmd.getColumnName(¢);
+				if (rsmd.getColumnType(¢) == java.sql.Types.VARCHAR)
+					$.put(obj);
+				if (rsmd.getColumnType(¢) == java.sql.Types.DATE)
+					$.put(obj);
 			}
 		}
-		return json;
+		return $;
 	}
 }
