@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -80,20 +82,24 @@ public class Connector {
 				+ "Name VARCHAR(50) NOT NULL,"
 				+ "BirthPlace VARCHAR(50) NULL,"
 				+ "DeathPlace VARCHAR(50) NULL,"
-				+ "BirthDate VARCHAR(50) NULL,"
-				+ "DeathDate VARCHAR(50) NULL,"
+				+ "BirthDate DATE NULL,"
+				+ "DeathDate DATE NULL,"
 				+ "PRIMARY KEY (Name))");
 		logger.log(Level.INFO, "table created successfully");
 	}
 
-	public void fillTableWithDBpediaResults() throws SQLException{
+	public void fillTableWithDBpediaResults() throws SQLException, ParseException{
 		clearDB();
 		Extractor ext = new Extractor();
 		ext.executeQuery();
 		ResultSetRewindable results = ext.getResults();
 		results.reset();
-	    for(int i=0;i<results.size()/5000;++i){
+	    for(int i=0;i<results.size();++i){
+//TODO:
+	    	System.out.println(i);
+
 	    	QuerySolution solution = results.nextSolution();
+	    	
 	    	String name=solution.getLiteral("name").getString();
 	    	
 	    	RDFNode bPlace = solution.get("birth");
@@ -105,27 +111,56 @@ public class Connector {
 	    	}
 	    	
 	    	RDFNode dPlace = solution.get("death");
+    		
 	    	String deathPlace=null;
-	    	if(dPlace.isResource()){
-	    		deathPlace = dPlace.asResource().toString().split("resource/")[1];
-	    	}else if(dPlace.isLiteral()){
-	    		deathPlace = dPlace.asLiteral().toString().split("@")[0];
+	    	if(dPlace!=null){
+	    		if(dPlace.isResource()){
+	    			deathPlace = dPlace.asResource().toString().split("resource/")[1];
+	    		}else if(dPlace.isLiteral()){
+	    			deathPlace = dPlace.asLiteral().toString().split("@")[0];
+	    		}
 	    	}
 	    	
 	    	RDFNode bDate = solution.get("bDate");
 	    	String birthDate=!bDate.isLiteral() ? null : bDate.asLiteral().getValue().toString();
-	    	RDFNode dDate = solution.get("dDate");
-	    	String deathDate=!dDate.isLiteral() ? null : dDate.asLiteral().getValue().toString();
 	    	
-	    	Object[] inp=new String[5];
+	    	RDFNode dDate = solution.get("dDate");
+	    	String deathDate=null;
+	    	java.sql.Date sqlDeathDate=null;
+	    	if(dDate!=null){
+	    		deathDate=!dDate.isLiteral() ? null : dDate.asLiteral().getValue().toString();
+	    		if(1==deathDate.split("-").length){
+		    		sqlDeathDate = stringToSqlDate(deathDate,new SimpleDateFormat("yyyy"));
+		    	}else{
+		    		sqlDeathDate = stringToSqlDate(deathDate,new SimpleDateFormat("yyyy-MM-dd"));
+		    	}
+	    	}
+	    	
+	    	java.sql.Date sqlBirthDate=null;	    	
+	    	if(1==birthDate.split("-").length){
+	    		sqlBirthDate = stringToSqlDate(birthDate,new SimpleDateFormat("yyyy"));
+	    	}else if(birthDate.startsWith("--") && 2==birthDate.split("--").length){
+	    		String birthDate1 = birthDate.split("--")[1];	    		
+	    		sqlBirthDate = stringToSqlDate(birthDate1,new SimpleDateFormat("MM-dd"));
+	    	}else{
+	    		sqlBirthDate = stringToSqlDate(birthDate,new SimpleDateFormat("yyyy-MM-dd"));	    		
+	    	}
+	    
+	    	Object[] inp=new Object[5];
 		    inp[0]=name;
 		    inp[1]=birthPlace;
 		    inp[2]=deathPlace;
-		    inp[3]=birthDate;
-		    inp[4]=deathDate;
+		    inp[3]=sqlBirthDate;
+		    inp[4]=sqlDeathDate;
 		    runUpdate("INSERT INTO basic_info VALUES(?,?,?,?,?)",inp);
 		}
 	}
+
+	private java.sql.Date stringToSqlDate(String stringDate,SimpleDateFormat dateFormat) throws ParseException{
+		java.util.Date utilDeathDate = dateFormat.parse(stringDate);
+		return new java.sql.Date(utilDeathDate.getTime());
+	}
+
 	
 	public int runUpdate(final String query) throws SQLException {
 		return conn.createStatement().executeUpdate(query);
