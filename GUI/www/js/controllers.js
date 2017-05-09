@@ -105,12 +105,13 @@ angular.module('starter.controllers', [])
 	}
 })
 
-.controller('QueryEntry',function($scope,$http,$ionicPopUp,ApiEndpoint){
+.controller('QueryEntry',function($scope,$http,$ionicPopup){
 		console.log('show entered fields from button clicked-query 2');
+		$scope.year="1998";
 		$scope.persons=[];
 		$http({
 		  method: 'GET',
-		  url:ApiEndpoint.url + 'Queries/Query2/',
+		  url:'/localhost:8080/Queries/Query2/',
 		}).then(function successCallback(response) {
 			$scope.persons = [];
 			for(var r in response.data) {
@@ -119,14 +120,17 @@ angular.module('starter.controllers', [])
 			  $scope.place = person;
 			}
 			$scope.year="1999";
-			
+					console.log('success');
+
 
 		}, function errorCallback(response) {
 			var FetchErrorAlert = $ionicPopup.alert({
 				title: 'Fetch error!',
 				template: 'Unable to get data',
 			});
-		});
+			console.log('failure');
+		}
+			   );
 		
 })
 
