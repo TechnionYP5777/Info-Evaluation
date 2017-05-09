@@ -101,16 +101,33 @@ angular.module('starter.controllers', [])
 		console.log('show results button was clicked-query 2');
 		DataQ.setYear(year);
 		DataQ.setPlace(place);
-
 		$state.go('app.Query2Results');
 	}
 })
 
-.controller('QueryEntry',function($scope, DataQ){
+.controller('QueryEntry',function($scope,$http,$ionicPopUp,ApiEndpoint){
 		console.log('show entered fields from button clicked-query 2');
-		$scope.year= DataQ.getYear();
-		$scope.place=DataQ.getPlace();
-        //$scope.persons=Query2Results.successCallback();
+		$scope.persons=[];
+		$http({
+		  method: 'GET',
+		  url:ApiEndpoint.url + 'Queries/Query2/',
+		}).then(function successCallback(response) {
+			$scope.persons = [];
+			for(var r in response.data) {
+			  var person = r;
+			  $scope.persons.push(person);
+			  $scope.place = person;
+			}
+			$scope.year="1999";
+			
+
+		}, function errorCallback(response) {
+			var FetchErrorAlert = $ionicPopup.alert({
+				title: 'Fetch error!',
+				template: 'Unable to get data',
+			});
+		});
+		
 })
 
 .controller('FriendsCtrl', function($scope, $stateParams, $timeout, ionicMaterialInk, ionicMaterialMotion) {

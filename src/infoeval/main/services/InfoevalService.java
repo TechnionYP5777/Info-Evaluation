@@ -9,7 +9,7 @@ import java.util.List;
  */
 
 public interface InfoevalService {
-	List<String> getBornIn(String place, int year); 
+	List<String> getBornInPlaceYear(); 
 	//TODO: change String to an object of Entry 
 	
 	List<String> differentDeathPlace();

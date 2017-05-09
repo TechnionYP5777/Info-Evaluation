@@ -26,11 +26,11 @@ angular.module('starter.services', [])
 })
 
 
-.factory('Query2Results',function($scope,$http,$ionicPopup,ApiEndpoint){
+.factory('Query2Results',function($scope,$http,$ionicPopup){
 	$scope.persons=[];
     $http({
       method: 'GET',
-      url: ApiEndpoint.url+ 'Queries/Query2/',
+      url: 'Queries/Query2/',
     }).then(function successCallback(response) {
         $scope.persons = [];
         for(var r in response.data) {

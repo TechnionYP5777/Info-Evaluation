@@ -73,11 +73,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     })
 
     .state('app.Query2Results', {
-        url: '/QueryResults',
+        url: '/Query2Results',
         views: {
             'menuContent': {
                 templateUrl: 'templates/Query2Results.html',
-                controller: 'ActivityCtrl'
+                controller: 'QueryEntry'
             },
             'fabContent': {
                 template: '<button id="fab-activity" class="button button-fab button-fab-top-right expanded button-energized-900 flap"><i class="icon ion-paper-airplane"></i></button>',
