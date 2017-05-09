@@ -10,8 +10,8 @@
         <version>1.5.3.RELEASE</version>
     </parent>
 	<build>
-		<sourceDirectory>src/</sourceDirectory>
-		<testSourceDirectory>src/ </testSourceDirectory>
+		<sourceDirectory>src/infoeval/main</sourceDirectory>
+		<testSourceDirectory>src/infoeval/test </testSourceDirectory>
 		<pluginManagement>
 		<plugins>
 			<plugin>
