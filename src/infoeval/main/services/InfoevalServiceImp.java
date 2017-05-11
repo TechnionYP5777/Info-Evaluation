@@ -11,7 +11,7 @@ import java.util.List;
 @EnableAutoConfiguration
 public class InfoevalServiceImp implements InfoevalService {
 	@Override
-	@RequestMapping("Queries/Query2/")
+	@RequestMapping("Queries/Query2")
 	public List<String> getBornInPlaceYear() {
 		List<String> $=new ArrayList<String>();
 		$.add("Yevgenia Shandalov");
@@ -19,6 +19,7 @@ public class InfoevalServiceImp implements InfoevalService {
 		$.add("Netanel Felcher");
 		$.add("Osher Hajaj");
 		return $;
+		
 	}
 
 	@Override

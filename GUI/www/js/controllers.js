@@ -1,7 +1,9 @@
 /* global angular, document, window */
 'use strict';
 
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', []).constant('ApiEndpoint', {
+  url: 'http://localhost:8100/api'
+})
 
 .controller('AppCtrl', function($scope, $ionicModal, $ionicPopover, $timeout) {
     // Form data for the login modal
@@ -111,24 +113,25 @@ angular.module('starter.controllers', [])
 		$scope.persons=[];
 		$http({
 		  method: 'GET',
-		  url:'/localhost:8080/Queries/Query2/',
+		  url:'/Queries/Query2',
 		}).then(function successCallback(response) {
+			console.log('success');
 			$scope.persons = [];
 			for(var r in response.data) {
 			  var person = r;
+			  console.log(person);
 			  $scope.persons.push(person);
 			  $scope.place = person;
 			}
 			$scope.year="1999";
-					console.log('success');
-
-
+		
 		}, function errorCallback(response) {
+			alert(JSON.stringify(response))
 			var FetchErrorAlert = $ionicPopup.alert({
 				title: 'Fetch error!',
-				template: 'Unable to get data',
+				template: 'Unable to get data', 
 			});
-			console.log('failure');
+			console.log(response.data);
 		}
 			   );
 		
