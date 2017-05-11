@@ -4,7 +4,7 @@
    "proxies": [
     {
       "path": "/api",
-      "proxyUrl": "http://cors.api.com/api"
+      "proxyUrl": "http://localhost:8080/Queries/Query2"
     }
   ]
 }
