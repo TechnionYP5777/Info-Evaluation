@@ -20,12 +20,10 @@ public class ConnectorTest{
 	public void fillTableSizeTest() throws Exception{
 		Connector conn = new Connector();
 		assert conn.getConnection() != null;
-		ResultSet rs = conn.runQuery("SELECT COUNT(*) FROM basic_info");
-		int size = rs.getInt(1);
+		int size = conn.runQuery("SELECT COUNT(*) FROM basic_info").getInt(1);
 		Extractor ext = new Extractor();
 		ext.executeQuery();
-		int dbpediaResultsSize = ext.getResults().size();
-		assertEquals(dbpediaResultsSize,size);
+		assertEquals(ext.getResults().size(),size);
 		assertEquals(10000,size);
 		conn.closeConnection();
 	}
