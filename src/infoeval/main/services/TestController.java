@@ -4,7 +4,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TestController {
     @RequestMapping("/test")
-    public int test() {
-    	return 42;
+    public Test test() {
+    	Test $ = new Test();
+    	$.setNum(7);
+    	$.setStr("Green");
+    	return $;
     }
 }
