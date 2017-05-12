@@ -1,14 +1,20 @@
 package infoeval.main.services;
-import java.sql.Date;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * 
+ * @author geniashand
+ * @Since 12-05-2017
+ * 
+ *        This class was created for tutorial use and trial and error. 
+ *        Will be deleted once we figure out how the ionic + REST work
+ *
+ */
 
 import infoeval.main.mysql.TableEntry;
 @RestController
