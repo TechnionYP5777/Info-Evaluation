@@ -1,7 +1,10 @@
 package infoeval.main.services;
 import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,30 +16,20 @@ public class TestController {
     @RequestMapping("/test")
     public List<TableEntry> test() {
     	List<TableEntry> $ = new ArrayList<>();
-		Calendar cal1 = Calendar.getInstance();
-		cal1.set(Calendar.YEAR, 1912);
-		cal1.set(Calendar.MONTH, Calendar.JUNE);
-		cal1.set(Calendar.DAY_OF_MONTH, 23);
-		Date dateRep1 = (Date) cal1.getTime();
-		cal1 = Calendar.getInstance();
-		cal1.set(Calendar.YEAR, 1954);
-		cal1.set(Calendar.MONTH, Calendar.JUNE);
-		cal1.set(Calendar.DAY_OF_MONTH, 7);
-		Date dateRep2 = (Date) cal1.getTime();
-		TableEntry entry = new TableEntry(null, "Alan Turing", "Maida Vale", "Wilmslow", dateRep1, dateRep2);
+    	
+    	//Date utilDate1 = (Date) Date.from(Instant.from(LocalDate.of(1912, 6, 23)));
+    	//Date utilDate2 = (Date) Date.from(Instant.from(LocalDate.of(1954, 6, 7)));
+
+    	java.sql.Date utilDate1 = java.sql.Date.valueOf( LocalDate.of(1912, 6, 23) );
+    	java.sql.Date utilDate2 = java.sql.Date.valueOf( LocalDate.of(1954, 6, 7) );
+    	
+		TableEntry entry = new TableEntry(null, "Alan Turing", "Maida Vale", "Wilmslow", utilDate1, utilDate2);
 		$.add(entry);
 
-		cal1.set(Calendar.YEAR, 1886);
-		cal1.set(Calendar.MONTH, Calendar.OCTOBER);
-		cal1.set(Calendar.DAY_OF_MONTH, 16);
-		dateRep1 = (Date) cal1.getTime();
-		cal1 = Calendar.getInstance();
-		cal1.set(Calendar.YEAR, 1973);
-		cal1.set(Calendar.MONTH, Calendar.DECEMBER);
-		cal1.set(Calendar.DAY_OF_MONTH, 1);
-		dateRep2 = (Date) cal1.getTime();
+		utilDate1 = java.sql.Date.valueOf((LocalDate.of(1886, 10, 16)));
+		utilDate2 = java.sql.Date.valueOf(LocalDate.of(1973, 12, 1));
 
-		entry = new TableEntry(null, "David Ben-Gurion", "plonsk", "Ramat Gan", dateRep1, dateRep2);
+		entry = new TableEntry(null, "David Ben-Gurion", "plonsk", "Ramat Gan", utilDate1, utilDate2);
 		$.add(entry);
 		return $;
     }
