@@ -137,6 +137,33 @@ angular.module('starter.controllers', []).constant('ApiEndpoint', {
 		
 })
 
+.controller('Query1Entry',function($scope,$http,$ionicPopup){
+		console.log('show entered fields from button clicked-query 1');
+		$scope.persons=[];
+		$http({
+		  method: 'GET',
+		  url:'/Queries/Query1',
+		}).then(function successCallback(response) {
+			console.log('success');
+			$scope.persons = [];
+			for(var r in response.data) {
+			  var person = r;
+			  console.log(person);
+			  $scope.persons.push(person);
+			}
+		
+		}, function errorCallback(response) {
+			alert(JSON.stringify(response))
+			var FetchErrorAlert = $ionicPopup.alert({
+				title: 'Fetch error!',
+				template: 'Unable to get data', 
+			});
+		console.log(response.data);
+		}
+	);
+		
+})
+
 .controller('FriendsCtrl', function($scope, $stateParams, $timeout, ionicMaterialInk, ionicMaterialMotion) {
     // Set Header
     $scope.$parent.showHeader();
