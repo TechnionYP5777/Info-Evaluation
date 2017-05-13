@@ -118,7 +118,7 @@ angular.module('starter.controllers', []).constant('ApiEndpoint', {
 			console.log('success');
 			$scope.persons = [];
 			for(var r in response.data) {
-			  var person = r;
+			  var person = response.data[r];
 			  console.log(person);
 			  $scope.persons.push(person);
 			  $scope.place = person;
