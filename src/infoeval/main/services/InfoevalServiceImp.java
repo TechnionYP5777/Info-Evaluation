@@ -29,14 +29,6 @@ public class InfoevalServiceImp implements InfoevalService {
 	@Override
 	@RequestMapping("Queries/Query2")
 	public List<TableEntry> getBornInPlaceYear() {
-//		List<String> $ = new ArrayList<String>();
-//		$.add("Yevgenia Shandalov");
-//		$.add("Moshiko Elisof");
-//		$.add("Netanel Felcher");
-//		$.add("Osher Hajaj");
-//		$.add("Gavriel Shandalov");
-//		return $;
-		
 		List<TableEntry> $ = new ArrayList<TableEntry>();
 		java.sql.Date utilDate1 = java.sql.Date.valueOf( LocalDate.of(1912, 6, 23) );
 		TableEntry entry = new TableEntry(null, "Yevgenia Shandalov", "Maida Vale", null, utilDate1, null);
@@ -47,7 +39,6 @@ public class InfoevalServiceImp implements InfoevalService {
 		$.add(entry);
 		
 		return $;
-		
 	}
 
 	@Override

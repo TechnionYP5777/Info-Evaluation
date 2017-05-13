@@ -1,9 +1,6 @@
 package infoeval.test.WikiDataTest;
 import static org.junit.Assert.*;
 
-import java.sql.ResultSet;
-
-import org.apache.jena.query.ResultSetRewindable;
 import org.junit.Ignore;
 import org.junit.Test;
 import infoeval.main.WikiData.Connector;

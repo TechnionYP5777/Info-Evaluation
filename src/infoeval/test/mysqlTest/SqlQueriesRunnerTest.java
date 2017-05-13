@@ -8,7 +8,6 @@ import infoeval.main.mysql.TableEntry;
 import static org.junit.Assert.*;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 
 /**

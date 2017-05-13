@@ -14,11 +14,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.jena.query.QuerySolution;
-import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.query.ResultSetRewindable;
-import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.rdf.model.impl.ResourceImpl;
 
 
 /**
