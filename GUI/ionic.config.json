@@ -2,9 +2,15 @@
   "name": "sample",
   "app_id": "",
    "proxies": [
+	   {
+		   "path": "/Queries/Query1",
+      "proxyUrl": "http://localhost:8080/Queries/Query1/"
+	   }, 
     {
       "path": "/Queries/Query2",
       "proxyUrl": "http://localhost:8080/Queries/Query2/"
+		
     }
+	   
   ]
 }

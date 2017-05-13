@@ -3,21 +3,21 @@
        
 		<div ng-controller="Query1Entry">
 			 <ion-list>
-				<ion-item ng-repeat="p in persons">
-					<div class="item card-item">
+				<div class="item card-item">
+					<ion-item ng-repeat="p in persons">
 						<div class="card stable-bg ink-dark">
 							<div class="item item-avatar item-text-wrap">
 								<span class="avatar" style="background-image: url('img/jon-snow.jpg');"></span>
-								<strong>{{p.name}}</strong> Was born in Ohio, died in TLV.
+								<strong>{{p.name}}</strong> Was born in {{p.birthPlace}}, died in {{p.deathPlace}}.
 								<div class="card-footer text-right">
 									<div class="pull-left">
-										<i class="icon ion-clock"></i> 2nd Feb,2009
+										<i class="icon ion-clock"></i> {{p.deathDate}}
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				</ion-item>
+					</ion-item>
+				</div>
 			</ion-list>
         </div>
         
