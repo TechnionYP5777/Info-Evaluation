@@ -11,8 +11,7 @@ import infoeval.main.mysql.TableEntry;
  */
 
 public interface InfoevalService {
-	List<String> getBornInPlaceYear(); 
-	//TODO: change String to an object of Entry 
+	List<TableEntry> getBornInPlaceYear(); 
 	
 	List<TableEntry> differentDeathPlace();
 	

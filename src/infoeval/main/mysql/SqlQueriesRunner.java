@@ -32,24 +32,24 @@ public class SqlQueriesRunner {
 	}
 	//params has year and then place
 	public List<TableEntry> runQuery(int queryNum, Object[] params) throws SQLException{
-		if(1==queryNum){
+		if(queryNum == 1){
 			ResultSet rs = conn.runQuery(query1,params);
-			ArrayList<TableEntry> res = new ArrayList<TableEntry>();
+			ArrayList<TableEntry> $ = new ArrayList<TableEntry>();
 			while(rs.next()){
 				TableEntry te = new TableEntry("",rs.getString(1),rs.getString(2),rs.getString(3),rs.getDate(4),rs.getDate(5));
-				res.add(te);
+				$.add(te);
 			}
-			return res;
+			return $;
 		}	
-		if(2==queryNum){
-			ResultSet rs = conn.runQuery(query2);
-			ArrayList<TableEntry> res = new ArrayList<TableEntry>();
-			while(rs.next()){
-				TableEntry te = new TableEntry("",rs.getString(1),rs.getString(2),rs.getString(3),rs.getDate(4),rs.getDate(5));
-				res.add(te);
-			}
-			return res;
+		if (queryNum != 2)
+			return null;
+		ResultSet rs = conn.runQuery(query2);
+		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
+		while (rs.next()) {
+			TableEntry te = new TableEntry("", rs.getString(1), rs.getString(2), rs.getString(3), rs.getDate(4),
+					rs.getDate(5));
+			res.add(te);
 		}
-		return null;
+		return res;
 	}
 }

@@ -28,15 +28,26 @@ import java.util.List;
 public class InfoevalServiceImp implements InfoevalService {
 	@Override
 	@RequestMapping("Queries/Query2")
-	public List<String> getBornInPlaceYear() {
-		List<String> $ = new ArrayList<String>();
-		$.add("Yevgenia Shandalov");
-		$.add("Moshiko Elisof");
-		$.add("Netanel Felcher");
-		$.add("Osher Hajaj");
-		$.add("Gavriel Shandalov");
+	public List<TableEntry> getBornInPlaceYear() {
+//		List<String> $ = new ArrayList<String>();
+//		$.add("Yevgenia Shandalov");
+//		$.add("Moshiko Elisof");
+//		$.add("Netanel Felcher");
+//		$.add("Osher Hajaj");
+//		$.add("Gavriel Shandalov");
+//		return $;
+		
+		List<TableEntry> $ = new ArrayList<TableEntry>();
+		java.sql.Date utilDate1 = java.sql.Date.valueOf( LocalDate.of(1912, 6, 23) );
+		TableEntry entry = new TableEntry(null, "Yevgenia Shandalov", "Maida Vale", null, utilDate1, null);
+		$.add(entry);
+		
+		utilDate1 = java.sql.Date.valueOf((LocalDate.of(1886, 10, 16)));
+		entry = new TableEntry(null, "Gavriel Shandalov", "plonsk", null, utilDate1, null);
+		$.add(entry);
+		
 		return $;
-
+		
 	}
 
 	@Override

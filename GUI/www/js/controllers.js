@@ -109,7 +109,7 @@ angular.module('starter.controllers', []).constant('ApiEndpoint', {
 
 .controller('QueryEntry',function($scope,$http,$ionicPopup){
 		console.log('show entered fields from button clicked-query 2');
-		$scope.year="1998";
+		
 		$scope.persons=[];
 		$http({
 		  method: 'GET',
@@ -119,11 +119,10 @@ angular.module('starter.controllers', []).constant('ApiEndpoint', {
 			$scope.persons = [];
 			for(var r in response.data) {
 			  var person = response.data[r];
-			  console.log(person);
+			  console.log(person.name);
 			  $scope.persons.push(person);
-			  $scope.place = person;
+
 			}
-			$scope.year="1999";
 		
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response))
