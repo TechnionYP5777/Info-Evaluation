@@ -34,6 +34,7 @@ public class InfoevalServiceImp implements InfoevalService {
 		$.add("Moshiko Elisof");
 		$.add("Netanel Felcher");
 		$.add("Osher Hajaj");
+		$.add("Gavriel Shandalov");
 		return $;
 
 	}
@@ -41,11 +42,8 @@ public class InfoevalServiceImp implements InfoevalService {
 	@Override
 	@RequestMapping("Queries/Query1")
 	public List<TableEntry> differentDeathPlace() {
-List<TableEntry> $ = new ArrayList<>();
+		List<TableEntry> $ = new ArrayList<>();
     	
-    	//Date utilDate1 = (Date) Date.from(Instant.from(LocalDate.of(1912, 6, 23)));
-    	//Date utilDate2 = (Date) Date.from(Instant.from(LocalDate.of(1954, 6, 7)));
-
     	java.sql.Date utilDate1 = java.sql.Date.valueOf( LocalDate.of(1912, 6, 23) );
     	java.sql.Date utilDate2 = java.sql.Date.valueOf( LocalDate.of(1954, 6, 7) );
     	
