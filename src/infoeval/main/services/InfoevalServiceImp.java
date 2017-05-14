@@ -55,7 +55,7 @@ public class InfoevalServiceImp implements InfoevalService {
 		utilDate1 = java.sql.Date.valueOf((LocalDate.of(1886, 10, 16)));
 		utilDate2 = java.sql.Date.valueOf(LocalDate.of(1973, 12, 1));
 
-		entry = new TableEntry(null, "David Ben-Gurion", "plonsk", "Ramat Gan", utilDate1, utilDate2);
+		entry = new TableEntry("https://en.wikipedia.org/wiki/David_Ben-Gurion", "David Ben-Gurion", "plonsk", "Ramat Gan", utilDate1, utilDate2);
 		$.add(entry);
 		return $;
 	}
