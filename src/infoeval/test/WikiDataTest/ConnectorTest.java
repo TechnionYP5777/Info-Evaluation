@@ -20,6 +20,7 @@ public class ConnectorTest{
 		int size = conn.runQuery("SELECT COUNT(*) FROM basic_info").getInt(1);
 		Extractor ext = new Extractor();
 		ext.executeQuery();
+		//TODO: @osher check this . . . . 
 		assertEquals(ext.getResults().size(),size);
 		assertEquals(10000,size);
 		conn.closeConnection();
