@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * 
- * @author geniashand
+ * @author geniashand , Moshiko
  * @Since 06-05-2017
  * 
  *        This class is the functions of the web services
