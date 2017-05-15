@@ -40,17 +40,17 @@ public class Extractor {
 	 * the query limits the number of results to 10,000, and the OFFSET means
 	 * that we take every 10,000th entry
 	 */
-	public void executeQuery(ParameterizedSparqlString s) {
+	public void executeQuery(ParameterizedSparqlString ¢) {
 		this.results = ResultSetFactory.copyResults(
-				QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", s.asQuery()).execSelect());
+				QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", ¢.asQuery()).execSelect());
 	}
 
 	public ResultSetRewindable getResults() {
 		return this.results;
 	}
 
-	public ParameterizedSparqlString getQuery(String s) {
-		return "wikiIDQuery".equals(s) ? wikiIDQuery : "basicInfoQuery".equals(s) ? basicInfoQuery : null;
+	public ParameterizedSparqlString getQuery(String ¢) {
+		return "wikiIDQuery".equals(¢) ? wikiIDQuery : "basicInfoQuery".equals(¢) ? basicInfoQuery : null;
 	}
 	// " ?resource rdf:type dbo:Person; "+
 }

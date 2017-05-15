@@ -125,21 +125,20 @@ public class Connector {
 				sqlDeathDate = null;
 			else {
 				deathDate = !dDate.isLiteral() ? null : dDate.asLiteral().getValue() + "";
-				if (deathDate.contains(".")) {
+				if (deathDate.contains("."))
 					sqlDeathDate = null;
-				} else if (deathDate.split("-").length == 1 && deathDate.matches("[0-9]+") && birthDate.length() <= 4) {
+				else if (deathDate.split("-").length == 1 && deathDate.matches("[0-9]+") && birthDate.length() <= 4)
 					sqlDeathDate = stringToSqlDate(deathDate, new SimpleDateFormat("yyyy"));
-				} else if (deathDate.matches("[0-9][0-9][0-9][0-9][-][0-9][0-9][-][0-9][0-9]")) {
+				else if (deathDate.matches("[0-9][0-9][0-9][0-9][-][0-9][0-9][-][0-9][0-9]"))
 					sqlDeathDate = stringToSqlDate(deathDate, new SimpleDateFormat("yyyy-MM-dd"));
-				}
 				int monthNum = 1;
 				for (String month : months) {
 					if (deathDate.startsWith(month)) {
-						String parseDeathDate = deathDate.split(" ")[1] + "-" + monthNum + "";
+						String parseDeathDate = deathDate.split(" ")[1] + "-" + monthNum;
 						sqlDeathDate = stringToSqlDate(parseDeathDate, new SimpleDateFormat("yyyy-MM"));
 						break;
 					}
-					monthNum++;
+					++monthNum;
 				}
 			}
 
