@@ -98,13 +98,11 @@ angular.module('starter.controllers', []).constant('ApiEndpoint', {
 })
 
 
-.controller('ShowResultsButtonCtrl',function($scope,$state, DataQ){
-	$scope.showFirstQueryResults = function(place,year){
+.controller('ShowResultsButtonCtrl',function($scope,$state){
+	
 		console.log('show results button was clicked-query 2');
-		DataQ.setYear(year);
-		DataQ.setPlace(place);
 		$state.go('app.Query2Results');
-	}
+	
 })
 
 .controller('QueryEntry',function($scope,$http,$ionicPopup){
@@ -119,7 +117,7 @@ angular.module('starter.controllers', []).constant('ApiEndpoint', {
 			$scope.persons = [];
 			for(var r in response.data) {
 			  var person = response.data[r];
-			  console.log(person.name);
+			  console.log(person);
 			  $scope.persons.push(person);
 
 			}
