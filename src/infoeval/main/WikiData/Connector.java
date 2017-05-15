@@ -203,15 +203,15 @@ public class Connector {
 
 	public ResultSet runQuery(final String query, final Object[] inputs) throws SQLException {
 		PreparedStatement ps = conn.prepareStatement(query);
-		for (int $ = 1; $ <= inputs.length; ++$)
-			ps.setObject($, inputs[$ - 1]);
+		for (int ¢ = 1; ¢ <= inputs.length; ++¢)
+			ps.setObject(¢, inputs[¢ - 1]);
 		return ps.executeQuery();
 	}
 
 	public int runUpdate(final String query, final Object[] inputs) throws SQLException {
 		PreparedStatement ps = conn.prepareStatement(query);
-		for (int $ = 1; $ <= inputs.length; ++$)
-			ps.setObject($, inputs[$ - 1]);
+		for (int ¢ = 1; ¢ <= inputs.length; ++¢)
+			ps.setObject(¢, inputs[¢ - 1]);
 		return ps.executeUpdate();
 	}
 
