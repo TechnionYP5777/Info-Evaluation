@@ -28,7 +28,7 @@ import java.util.List;
 public class InfoevalServiceImp implements InfoevalService {
 	@Override
 	@RequestMapping("Queries/Query2")
-	public List<TableEntry> getBornInPlaceYear() {
+	public List<TableEntry> getBornInPlaceYear(int year,String place) {
 		List<TableEntry> $ = new ArrayList<TableEntry>();
 		java.sql.Date utilDate1 = java.sql.Date.valueOf( LocalDate.of(1912, 6, 23) );
 		TableEntry entry = new TableEntry(null, "Yevgenia Shandalov", "Maida Vale", null, utilDate1, null);
