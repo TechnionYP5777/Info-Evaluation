@@ -40,9 +40,6 @@ public class Extractor {
 	 * the query limits the number of results to 10,000, and the OFFSET means
 	 * that we take every 10,000th entry
 	 */
-	public Extractor(){
-	}
-	
 	public void executeQuery(ParameterizedSparqlString ¢) {
 		this.results = ResultSetFactory.copyResults(
 				QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", ¢.asQuery()).execSelect());
