@@ -101,19 +101,27 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('ShowResultsButtonCtrl',function($scope,$state){
-	$scope.showSecondQueryResults = function(){
+.controller('ShowResultsButtonCtrl',function($scope,$state,DataQ){
+	$scope.showSecondQueryResults = function(place,year){
 		console.log('show results button was clicked-query 2');
+		DataQ.setYear(year);
+		DataQ.setPlace(place);
 		$state.go('app.Query2Results');
 	};
 })
 
-.controller('QueryEntry',function($scope,$http,$ionicPopup){
+.controller('QueryEntry',function($scope,$http,$ionicPopup,DataQ){
 		console.log('show entered fields from button clicked-query 2');
+		console.log(DataQ.getYear());
+		console.log(DataQ.getPlace());
 		$scope.persons=[];
 		$http({
 		  method: 'GET',
 		  url:'/Queries/Query2',
+		params: {
+			year: DataQ.getYear,
+			place: DataQ.getPlace
+		}
 		}).then(function successCallback(response) {
 			console.log('success');
 			$scope.persons = [];
