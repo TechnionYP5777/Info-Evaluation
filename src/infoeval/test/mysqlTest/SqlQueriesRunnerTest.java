@@ -8,27 +8,31 @@ import infoeval.main.mysql.TableEntry;
 import static org.junit.Assert.*;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Optional;
 
+
+/**
+ * 
+ * @author osherh
+ * @Since 12-05-2017
+ *
+ */
 public class SqlQueriesRunnerTest {
 	@Test
-	public void query1Test() throws Exception {
-		for (TableEntry te : (new SqlQueriesRunner()).runQuery(1, Optional.of(new Object[] { 1993, "London" }))) {
+	public void query1Test() throws Exception{
+		for (TableEntry te : (new SqlQueriesRunner()).runQuery(1, (new Object[] { 1993, "London" }))) {
 			java.sql.Date birthDate = te.getBirthDate();
 			String birthPlace = te.getBirthPlace();
 			SimpleDateFormat formatYear = new SimpleDateFormat("yyyy");
 			String birthYear = formatYear.format(birthDate);
 			int bYear = Integer.parseInt(birthYear);
-			assert bYear < 1993;
+			assertTrue(bYear < 1993);
 			assertEquals(birthPlace, "London");
 		}
 	}
-
+	
 	@Test
-	public void query2Test() throws Exception {
-		for (TableEntry te : (new SqlQueriesRunner()).runQuery(2, null))
-			assertNotEquals(te.getBirthPlace(), te.getDeathPlace());
+	public void query2Test() throws Exception{
+		for (TableEntry ¢ : (new SqlQueriesRunner()).runQuery(2, null))
+			assertNotEquals(¢.getBirthPlace(), ¢.getDeathPlace());
 	}
-
 }
