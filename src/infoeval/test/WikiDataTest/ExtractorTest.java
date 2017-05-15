@@ -1,9 +1,7 @@
 package infoeval.test.WikiDataTest;
 
 import org.junit.Test;
-
 import infoeval.main.WikiData.Extractor;
-
 import static org.junit.Assert.*;
 
 /**
