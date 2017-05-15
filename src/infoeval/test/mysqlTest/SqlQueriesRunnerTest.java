@@ -26,8 +26,8 @@ public class SqlQueriesRunnerTest {
 
 	@Test
 	public void query2Test() throws Exception {
-		for (TableEntry ¢ : (new SqlQueriesRunner()).runQuery(2, null))
-			assertNotEquals(¢.getBirthPlace(), ¢.getDeathPlace());
+		for (TableEntry te : (new SqlQueriesRunner()).runQuery(2, null))
+			assertNotEquals(te.getBirthPlace(), te.getDeathPlace());
 	}
 
 }

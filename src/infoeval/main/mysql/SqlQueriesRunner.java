@@ -29,7 +29,7 @@ public class SqlQueriesRunner {
 
 	public List<TableEntry> runQuery(int queryNum, Optional<Object[]> params)
 			throws SQLException, NoSuchElementException {
-		ArrayList<TableEntry> $ = new ArrayList<TableEntry>();
+		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
 		if (queryNum == 1)
 			for (ResultSet rs = conn.runQuery(query1, params.get()); rs.next();) {
 				String name = rs.getString(1);
@@ -39,7 +39,7 @@ public class SqlQueriesRunner {
 				cal1.set(Calendar.YEAR, 1912);
 				cal1.set(Calendar.MONTH, Calendar.JUNE);
 				cal1.set(Calendar.DAY_OF_MONTH, 23);
-				$.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, (Date) cal1.getTime()));
+				res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, (Date) cal1.getTime()));
 			}
 		else {
 			if (queryNum != 2)
@@ -52,9 +52,9 @@ public class SqlQueriesRunner {
 				cal1.set(Calendar.MONTH, Calendar.JUNE);
 				cal1.set(Calendar.DAY_OF_MONTH, 23);
 				Date dummyDate = (Date) cal1.getTime();
-				$.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, deathPlace, dummyDate, dummyDate));
+				res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, deathPlace, dummyDate, dummyDate));
 			}
 		}
-		return $;
+		return res;
 	}
 }
