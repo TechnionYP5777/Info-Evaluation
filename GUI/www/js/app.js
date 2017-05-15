@@ -77,7 +77,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         views: {
             'menuContent': {
                 templateUrl: 'templates/Query2Results.html',
-                controller: 'QueryEntry'
+                controller: ''
             },
             'fabContent': {
                 template: '<button id="fab-activity" class="button button-fab button-fab-top-right expanded button-energized-900 flap"><i class="icon ion-paper-airplane"></i></button>',

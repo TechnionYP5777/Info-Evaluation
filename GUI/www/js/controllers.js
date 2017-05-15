@@ -1,7 +1,10 @@
 /* global angular, document, window */
 'use strict';
 
-angular.module('starter.controllers', []).constant('ApiEndpoint', {
+angular.module('starter.controllers', [])
+	
+	
+	.constant('ApiEndpoint', {
   url: 'http://localhost:8100/api'
 })
 
@@ -99,15 +102,14 @@ angular.module('starter.controllers', []).constant('ApiEndpoint', {
 
 
 .controller('ShowResultsButtonCtrl',function($scope,$state){
-	
+	$scope.showSecondQueryResults = function(){
 		console.log('show results button was clicked-query 2');
 		$state.go('app.Query2Results');
-	
+	};
 })
 
 .controller('QueryEntry',function($scope,$http,$ionicPopup){
 		console.log('show entered fields from button clicked-query 2');
-		
 		$scope.persons=[];
 		$http({
 		  method: 'GET',
@@ -116,12 +118,12 @@ angular.module('starter.controllers', []).constant('ApiEndpoint', {
 			console.log('success');
 			$scope.persons = [];
 			for(var r in response.data) {
+				console.log(r);
 			  var person = response.data[r];
-			  console.log(person);
 			  $scope.persons.push(person);
-
+				console.log(person.name);
 			}
-		
+		console.log('end of success');
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response))
 			var FetchErrorAlert = $ionicPopup.alert({
