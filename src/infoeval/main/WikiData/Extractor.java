@@ -22,7 +22,8 @@ public class Extractor {
 	private ParameterizedSparqlString wikiIdQuery;
 	private ResultSetRewindable results;
 	private Map<QueryTypes, ParameterizedSparqlString> queriesMap;
-	private static final int ENTRIES_NUM = 10000;
+	private static final int ENTRIES_NUM = 10;
+	private static final int SKIP_NUM = 10;	
 	
 	public Extractor() {
 		basicInfoQuery = new ParameterizedSparqlString("PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
@@ -37,7 +38,7 @@ public class Extractor {
 				"PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX  dbo: <http://dbpedia.org/ontology/>"
 						+ " PREFIX  dbp: <http://dbpedia.org/property/> SELECT DISTINCT ?name ?wikiPageID WHERE { "
 						+ " ?resource a <http://dbpedia.org/ontology/Person>; dbp:name ?name; dbo:wikiPageID ?wikiPageID."
-						+ " FILTER (lang(?name) = 'en')} ORDER BY DESC(?name) LIMIT "+ENTRIES_NUM+" OFFSET "+ENTRIES_NUM);
+						+ " FILTER (lang(?name) = 'en')} ORDER BY DESC(?name) LIMIT "+ENTRIES_NUM+" OFFSET "+SKIP_NUM);
 
 		queriesMap = new HashMap<QueryTypes, ParameterizedSparqlString>();
 		queriesMap.put(QueryTypes.BASIC_INFO, basicInfoQuery);
