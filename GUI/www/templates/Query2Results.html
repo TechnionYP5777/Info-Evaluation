@@ -1,28 +1,24 @@
 <ion-view view-title="Results">
-    <ion-content ng-class="{expanded:isExpanded}"  class="animate-fade-slide-in">
-		<div ng-controller="QueryEntry">
-            <div>
+    <ion-content ng-class="{expanded:isExpanded}"  class="list animate-fade-slide-in">
+        
+           <div ng-controller="QueryEntry">
+               
+              <div>
             <li ng-show="!persons.length">No persons</li>
             </div>
-            <div ng-repeat="per in persons" >
-                {{per.birthPlace}},{{ per.birthDate}},{{per.name}}
+               
+                    <div ng-repeat="per in persons" >
+                            <div class="card stable-bg ink-dark">            
+                                <div class="item item-avatar item-text-wrap">
+                                    <span class="avatar" style="background-image: url('img/jon-snow.jpg');"></span>
+                                </div>
+                                <strong>{{per.name}} </strong>  born on {{per.birthDate}} in {{per.birthPlace}} .           
+                            </div>
+                        </div>
+                    
             </div>
             
-			 <ion-list>
-				 <ion-item data-ng-repeat="p in persons">
-					<div class="item card-item">
-					
-						<div class="card stable-bg ink-dark">
-							<div class="item item-avatar item-text-wrap">
-								<span class="avatar" style="background-image: url('img/jon-snow.jpg');"></span>
-								<strong>{{p.name}}</strong> 
-							</div>
-						</div>
-					
-					</div>
-			     </ion-item>
-			</ion-list>
-        </div>
-       
+		
+		
     </ion-content>
 </ion-view>
