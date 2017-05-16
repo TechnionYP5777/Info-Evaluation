@@ -1,27 +1,47 @@
 package infoeval.test.WikiDataTest;
+
 import static org.junit.Assert.*;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import infoeval.main.WikiData.Connector;
 import infoeval.main.WikiData.Extractor;
+import infoeval.main.WikiData.QueryTypes;
+import java.sql.ResultSet;
 
-public class ConnectorTest{
-	@Test 
-	public void connectionTest() throws Exception{
+/**
+ * @author Netanel
+ * @author osherh
+ * @since 19-04-2017
+ */
+public class ConnectorTest {
+	private static final int ENTRIES_NUM = 10;
+
+	@Test
+	public void connectionTest() throws Exception {
 		assert (new Connector()).getConnection() != null;
 	}
 
-	@Ignore
-	@Test 
-	public void fillTableSizeTest() throws Exception{
+	@Test
+	public void fillTableSizeTest() throws Exception {
 		Connector conn = new Connector();
 		assert conn.getConnection() != null;
-		int size = conn.runQuery("SELECT COUNT(*) FROM basic_info").getInt(1);
 		Extractor ext = new Extractor();
-		ext.executeQuery();
-		assertEquals(ext.getResults().size(),size);
-		assertEquals(10000,size);
+
+		int size = 0;
+		ResultSet s = conn.runQuery("SELECT COUNT(*) FROM basic_info");
+		if (s.next())
+			size = s.getInt(1);
+		assertEquals(ENTRIES_NUM, size);
+		ext.executeQuery(QueryTypes.BASIC_INFO);
+		assertEquals(ext.getResults().size(), size);
+
+		size = 0;
+		s = conn.runQuery("SELECT COUNT(*) FROM wikiID");
+		if (s.next())
+			size = s.getInt(1);
+		assertEquals(ENTRIES_NUM, size);
+		ext.executeQuery(QueryTypes.WIKI_ID);
+		assertEquals(ext.getResults().size(), size);
 		conn.closeConnection();
 	}
 }
