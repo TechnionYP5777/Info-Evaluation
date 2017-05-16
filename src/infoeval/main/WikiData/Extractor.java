@@ -22,8 +22,8 @@ public class Extractor {
 	private ParameterizedSparqlString wikiIdQuery;
 	private ResultSetRewindable results;
 	private Map<QueryTypes, ParameterizedSparqlString> queriesMap;
-	private static final int ENTRIES_NUM = 10;
-	private static final int SKIP_NUM = 10;	
+	private static final int ENTRIES_NUM = 10000;
+	private static final int SKIP_NUM = 10000;	
 	
 	public Extractor() {
 		basicInfoQuery = new ParameterizedSparqlString("PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"

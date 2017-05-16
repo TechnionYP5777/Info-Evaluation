@@ -14,7 +14,7 @@ import java.sql.ResultSet;
  * @since 19-04-2017
  */
 public class ConnectorTest {
-	private static final int ENTRIES_NUM = 10;
+	private static final int ENTRIES_NUM = 10000;
 
 	@Test
 	public void connectionTest() throws Exception {
