@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat;
 public class SqlQueriesRunnerTest {
 	@Test
 	public void getBornInPlaceBeforeYearTest() throws Exception {
-		for (TableEntry te : (new SqlQueriesRunner()).getBornInPlaceBeforeYear("London", 1993)) {
+		for (TableEntry te : (new SqlQueriesRunner()).getBornInPlaceBeforeYear("London", "1993")) {
 			java.sql.Date birthDate = te.getBirthDate();
 			String birthPlace = te.getBirthPlace();
 			SimpleDateFormat formatYear = new SimpleDateFormat("yyyy");

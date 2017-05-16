@@ -26,11 +26,12 @@ public class SqlQueriesRunner {
 		conn = new Connector();
 	}
 
-	public List<TableEntry> getBornInPlaceBeforeYear(String place, int year) throws SQLException {
+	public List<TableEntry> getBornInPlaceBeforeYear(String place,String year) throws SQLException {
+		int yearVal = Integer.parseInt(year);
 		final String yearPlaceQuery = "SELECT basic_info.name,BirthDate,wikiPageID FROM basic_info,WikiID "
 				+ "WHERE YEAR(BirthDate) < ? AND BirthPlace = ? "
 				+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
-		Object[] inp = new Object[] { place, year };
+		Object[] inp = new Object[] { place, yearVal };
 		ResultSet rs = conn.runQuery(yearPlaceQuery, inp);
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
 		while (rs.next()) {
