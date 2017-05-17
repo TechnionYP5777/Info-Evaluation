@@ -28,9 +28,9 @@ public class Extractor {
 	public Extractor() {
 		basicInfoQuery = new ParameterizedSparqlString("PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
 				+ " PREFIX  dbo: <http://dbpedia.org/ontology/> PREFIX  dbp: <http://dbpedia.org/property/>"
-				+ " SELECT DISTINCT  ?name (SAMPLE (?spouse) as ?spouses)(SAMPLE (?deathPlace) as ?death)  (SAMPLE(?birthPlace) as ?birth) (SAMPLE(?deathDate) as ?dDate) (SAMPLE( ?birthDate) as ?bDate) "
+				+ " SELECT DISTINCT  ?name (SAMPLE (?occupation) as ?occup)(SAMPLE (?spouse) as ?spouses)(SAMPLE (?deathPlace) as ?death)  (SAMPLE(?birthPlace) as ?birth) (SAMPLE(?deathDate) as ?dDate) (SAMPLE( ?birthDate) as ?bDate) "
 				+ " WHERE {"
-				+ "  ?resource   a <http://dbpedia.org/ontology/Person>;    dbp:name ?name; dbp:birthPlace ?birthPlace;dbp:birthDate ?birthDate.OPTIONAL{?resource dbp:spouse ?spouse}. OPTIONAL{?resource dbp:deathDate ?deathDate. ?resource dbp:deathPlace ?deathPlace} "
+				+ "  ?resource   a <http://dbpedia.org/ontology/Person>;    dbp:name ?name; dbp:birthPlace ?birthPlace;dbp:birthDate ?birthDate.OPTIONAL{?resource dbo:occupation ?occupation}.OPTIONAL{?resource dbp:spouse ?spouse}. OPTIONAL{?resource dbp:deathDate ?deathDate. ?resource dbp:deathPlace ?deathPlace} "
 				+ " FILTER (lang(?name) = 'en')  }GROUP BY ?name "
 				+ " ORDER BY DESC(?name)    LIMIT "+ENTRIES_NUM+" OFFSET "+ENTRIES_NUM);
 
