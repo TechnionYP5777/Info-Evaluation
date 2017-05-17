@@ -7,8 +7,8 @@ import infoeval.main.WikiData.QueryTypes;
 
 import static org.junit.Assert.*;
 
-import org.apache.jena.query.ResultSetFormatter;
-import org.apache.jena.query.ResultSetRewindable;
+//import org.apache.jena.query.ResultSetFormatter;
+
 
 /**
  * 
