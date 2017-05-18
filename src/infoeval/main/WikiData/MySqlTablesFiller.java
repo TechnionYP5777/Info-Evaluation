@@ -13,6 +13,7 @@ import org.apache.jena.rdf.model.RDFNode;
 /**
  * 
  * @author osherh
+ * @author netanel
  * @since 17-05-2017
  *
  */
@@ -29,7 +30,8 @@ public class MySqlTablesFiller {
 	public void createTables() throws SQLException {
 		connector.runUpdate("CREATE TABLE IF NOT EXISTS basic_info(Name VARCHAR(100) NOT NULL,"
 				+ " BirthPlace VARCHAR(100) NULL,DeathPlace VARCHAR(100) NULL,BirthDate DATE NULL,"
-				+ " DeathDate DATE NULL)");
+				+ " DeathDate DATE NULL, occupation VARCHAR(100) NULL, spouseName VARCHAR(100) NULL,"
+				+ " spouseOccupation VARCHAR(100) NULL ");
 		logger.log(Level.INFO, "basic_info table created successfully");
 		connector.runUpdate(
 				"CREATE TABLE IF NOT EXISTS WikiID(Name VARCHAR(100) NOT NULL,wikiPageID VARCHAR(50) NOT NULL)");
@@ -61,7 +63,8 @@ public class MySqlTablesFiller {
 		for (int i = 0; i < results.size(); ++i) {
 			QuerySolution solution = results.nextSolution();
 
-			String name = solution.getLiteral("name").getString();
+			String name = solution.getLiteral("name").getString(),
+					spouseName = solution.getLiteral("sname").getString();
 
 			RDFNode bPlace = solution.get("birth");
 			String birthPlace = null;
@@ -79,6 +82,21 @@ public class MySqlTablesFiller {
 				else if (dPlace.isLiteral())
 					deathPlace = (dPlace.asLiteral() + "").split("@")[0];
 
+			RDFNode occupation = solution.get("occup");
+			String occup=null;
+			if(occupation!=null)
+				if (occupation.isResource())
+					occup = (occupation.asResource() + "").split("resource/")[1];
+				else if (dPlace.isLiteral())
+					occup = (occupation.asLiteral() + "").split("@")[0];
+			
+			RDFNode spOcuup = solution.get("spOccu");
+			String spouseOccupation=null;
+			if(spOcuup!=null)
+				if (spOcuup.isResource())
+					spouseOccupation = (spOcuup.asResource() + "").split("resource/")[1];
+				else if (dPlace.isLiteral())
+					spouseOccupation = (spOcuup.asLiteral() + "").split("@")[0];
 			RDFNode bDate = solution.get("bDate");
 			String birthDate = !bDate.isLiteral() ? null : bDate.asLiteral().getValue() + "";
 
@@ -138,13 +156,16 @@ public class MySqlTablesFiller {
 				++monthNum;
 			}
 
-			Object[] inp = new Object[5];
+			Object[] inp = new Object[8];
 			inp[0] = name;
 			inp[1] = birthPlace;
 			inp[2] = deathPlace;
 			inp[3] = sqlBirthDate;
 			inp[4] = sqlDeathDate;
-			connector.runUpdate("INSERT INTO basic_info VALUES(?,?,?,?,?)", inp);
+			inp[5] = occup;
+			inp[6] = spouseName;
+			inp[7] = spouseOccupation;
+			connector.runUpdate("INSERT INTO basic_info VALUES(?,?,?,?,?,?,?,?)", inp);
 		}
 	}
 

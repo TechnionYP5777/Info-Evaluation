@@ -54,8 +54,7 @@ public class Extractor {
 				+   "WHERE { "
 						+ " ?resource a <http://dbpedia.org/ontology/Person>; dbp:name ?name;"
 						+ "  dbo:wikiPageID ?wikiPageID."
-						+ " FILTER (lang(?name) = 'en')} "
-						+ "ORDER BY DESC(?name) LIMIT "+ENTRIES_NUM+" OFFSET "+SKIP_NUM);
+						+ " FILTER (lang(?name) = 'en')} ORDER BY DESC(?name) LIMIT "+ENTRIES_NUM+" OFFSET "+SKIP_NUM);
 
 		queriesMap = new HashMap<QueryTypes, ParameterizedSparqlString>();
 		queriesMap.put(QueryTypes.BASIC_INFO, basicInfoQuery);
