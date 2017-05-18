@@ -7,6 +7,9 @@ import infoeval.main.WikiData.QueryTypes;
 
 import static org.junit.Assert.*;
 
+//import org.apache.jena.query.ResultSetFormatter;
+
+
 /**
  * 
  * @author Netanel
@@ -18,17 +21,19 @@ import static org.junit.Assert.*;
 public class ExtractorTest {
 	private static final int ENTRIES_NUM = 10000;
 
-	@Test
-	public void basicInfoTest() {
-		Extractor extr = new Extractor();
-		extr.executeQuery(QueryTypes.BASIC_INFO);
-		assertEquals(extr.getResults().size(),ENTRIES_NUM);
-	}
+	
 
 	@Test
 	public void wikiIdTest() {
 		Extractor extr = new Extractor();
 		extr.executeQuery(QueryTypes.WIKI_ID);
 		assertEquals(extr.getResults().size(),ENTRIES_NUM);
+	}
+	@Test
+	public void basicInfoTest() {
+		Extractor extr = new Extractor();
+		extr.executeQuery(QueryTypes.BASIC_INFO);
+		assertEquals(extr.getResults().size(),ENTRIES_NUM);
+		//ResultSetFormatter.out(extr.getResults());
 	}
 }
