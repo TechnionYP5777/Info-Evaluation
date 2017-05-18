@@ -19,20 +19,29 @@ public class TableEntry{
 	private String deathPlace;
 	private Date birthDate;
 	private Date deathDate;
+	private String occupation;
+	private String SpouseName;
+	private String spouseOccupation;
 	//C'tors
 	public TableEntry(){
-		this.deathPlace=this.birthPlace = this.name = this.url = "";
+		this.deathPlace=this.birthPlace = this.name = this.url = 
+		this.occupation=this.SpouseName=this.spouseOccupation="";
 		this.deathDate=null;
 		this.birthDate=null;
 		
 	}
-	public TableEntry(String url, String name, String birthPlace, String deathPlace, Date birthDate, Date deathDate){
+	public TableEntry(String url, String name, String birthPlace, 
+					String deathPlace, Date birthDate, Date deathDate,
+					String occupation, String spouseName, String spouseOccupation){
 		setUrl(url);
 		setName(name);
 		setBirthPlace(birthPlace);
 		setDeathPlace(deathPlace);
 		setBirthDate(birthDate);
 		setDeathDate(deathDate);
+		setOccupation(occupation);
+		setSpouseName(spouseName);
+		setSpouseOccupation(spouseOccupation);
 		
 	}
 	//Setters
@@ -54,6 +63,15 @@ public class TableEntry{
 	public void setDeathDate(Date deathDate){
 		this.deathDate=deathDate;
 	}
+	public void setOccupation(String occupation){
+		this.occupation=occupation;
+	}
+	public void setSpouseName(String name){
+		this.SpouseName=name;
+	}
+	public void setSpouseOccupation(String occupation){
+		this.spouseOccupation=occupation;
+	}
 	//Getters
 	public String getUrl(){
 		return this.url;
@@ -73,5 +91,13 @@ public class TableEntry{
 	public Date getDeathDate(){
 		return this.deathDate;
 	}
-	
+	public String getOccupation(){
+		return this.occupation;
+	}
+	public String getSpouseName(){
+		return this.SpouseName;
+	}
+	public String getSpouseOccupation(){
+		return this.spouseOccupation;
+	}
 }
