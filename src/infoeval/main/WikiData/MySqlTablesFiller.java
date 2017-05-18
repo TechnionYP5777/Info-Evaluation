@@ -1,6 +1,5 @@
 package infoeval.main.WikiData;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,25 +10,32 @@ import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSetRewindable;
 import org.apache.jena.rdf.model.RDFNode;
 
+/**
+ * 
+ * @author osherh
+ * @since 17-05-2017
+ *
+ */
 public class MySqlTablesFiller {
 	private static final Logger logger = Logger.getLogger("MySqlTablesFiller".getClass().getName());
 	private Connector connector;
 	private String[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
 			"October", "November", "December" };
 
-	public MySqlTablesFiller() throws Exception{
+	public MySqlTablesFiller() throws Exception {
 		connector = new Connector();
 	}
-	
+
 	public void createTables() throws SQLException {
 		connector.runUpdate("CREATE TABLE IF NOT EXISTS basic_info(Name VARCHAR(100) NOT NULL,"
 				+ " BirthPlace VARCHAR(100) NULL,DeathPlace VARCHAR(100) NULL,BirthDate DATE NULL,"
 				+ " DeathDate DATE NULL)");
 		logger.log(Level.INFO, "basic_info table created successfully");
-		connector.runUpdate("CREATE TABLE IF NOT EXISTS WikiID(Name VARCHAR(100) NOT NULL,wikiPageID VARCHAR(50) NOT NULL)");
+		connector.runUpdate(
+				"CREATE TABLE IF NOT EXISTS WikiID(Name VARCHAR(100) NOT NULL,wikiPageID VARCHAR(50) NOT NULL)");
 		logger.log(Level.INFO, "WIKI_ID table created successfully");
 	}
-	
+
 	public void fillWikiIdTable() throws SQLException {
 		connector.clearWikiIdTable();
 		Extractor ext = new Extractor();
@@ -44,10 +50,9 @@ public class MySqlTablesFiller {
 			connector.runUpdate("INSERT INTO WikiID VALUES(?,?)", inp);
 		}
 	}
-	
 
-	public void fillBasicInfoTable() throws SQLException, ParseException{
-		
+	public void fillBasicInfoTable() throws SQLException, ParseException {
+
 		connector.clearBasicInfoTable();
 		Extractor ext = new Extractor();
 		ext.executeQuery(QueryTypes.BASIC_INFO);
@@ -90,10 +95,9 @@ public class MySqlTablesFiller {
 					sqlDeathDate = stringToSqlDate(deathDate, new SimpleDateFormat("yyyy"));
 				else if (deathDate.matches("[0-9][0-9][0-9][0-9][-][0-9][0-9][-][0-9][0-9]"))
 					sqlDeathDate = stringToSqlDate(deathDate, new SimpleDateFormat("yyyy-MM-dd"));
-				else if (deathDate.matches("--[0-9][0-9][-][0-9][0-9]")){
-					String subDeathDate = deathDate.substring(2,deathDate.length());
-					sqlDeathDate = stringToSqlDate(subDeathDate, new SimpleDateFormat("MM-dd"));
-				}
+				else if (deathDate.matches("--[0-9][0-9][-][0-9][0-9]"))
+					sqlDeathDate = stringToSqlDate(deathDate.substring(2, deathDate.length()),
+							new SimpleDateFormat("MM-dd"));
 				int monthNum = 1;
 				for (String month : months) {
 					if (deathDate.equals(month)) {
@@ -115,10 +119,9 @@ public class MySqlTablesFiller {
 				sqlBirthDate = null;
 			else if (birthDate.split("-").length == 1 && birthDate.matches("[0-9]+") && birthDate.length() <= 4)
 				sqlBirthDate = stringToSqlDate(birthDate, new SimpleDateFormat("yyyy"));
-			else if (birthDate.matches("--[0-9][0-9][-][0-9][0-9]")){
-					String subBirthDate = birthDate.substring(2,birthDate.length());
-					sqlDeathDate = stringToSqlDate(subBirthDate, new SimpleDateFormat("MM-dd"));
-			}
+			else if (birthDate.matches("--[0-9][0-9][-][0-9][0-9]"))
+				sqlDeathDate = stringToSqlDate(birthDate.substring(2, birthDate.length()),
+						new SimpleDateFormat("MM-dd"));
 			else if (birthDate.matches("[0-9][0-9][0-9][0-9][-][0-9][0-9][-][0-9][0-9]"))
 				sqlBirthDate = stringToSqlDate(birthDate, new SimpleDateFormat("yyyy-MM-dd"));
 			int monthNum = 1;
