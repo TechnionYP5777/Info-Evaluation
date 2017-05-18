@@ -29,13 +29,13 @@ public class TestController {
     	java.sql.Date utilDate1 = java.sql.Date.valueOf( LocalDate.of(1912, 6, 23) );
     	java.sql.Date utilDate2 = java.sql.Date.valueOf( LocalDate.of(1954, 6, 7) );
     	
-		TableEntry entry = new TableEntry(null, "Alan Turing", "Maida Vale", "Wilmslow", utilDate1, utilDate2);
+		TableEntry entry = new TableEntry(null, "Alan Turing", "Maida Vale", "Wilmslow", utilDate1, utilDate2,"","","");
 		$.add(entry);
 
 		utilDate1 = java.sql.Date.valueOf((LocalDate.of(1886, 10, 16)));
 		utilDate2 = java.sql.Date.valueOf(LocalDate.of(1973, 12, 1));
 
-		entry = new TableEntry(null, "David Ben-Gurion", "plonsk", "Ramat Gan", utilDate1, utilDate2);
+		entry = new TableEntry(null, "David Ben-Gurion", "plonsk", "Ramat Gan", utilDate1, utilDate2,"","","");
 		$.add(entry);
 		return $;
     }

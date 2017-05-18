@@ -31,11 +31,11 @@ public class InfoevalServiceImp implements InfoevalService {
 	public List<TableEntry> getBornInPlaceYear(String year,String place) {
 		List<TableEntry> $ = new ArrayList<TableEntry>();
 		java.sql.Date utilDate1 = java.sql.Date.valueOf( LocalDate.of(1912, 6, 23) );
-		TableEntry entry = new TableEntry(null, "Yevgenia Shandalov", "Maida Vale", null, utilDate1, null);
+		TableEntry entry = new TableEntry(null, "Yevgenia Shandalov", "Maida Vale", null, utilDate1, null,"","","");
 		$.add(entry);
 		
 		utilDate1 = java.sql.Date.valueOf((LocalDate.of(1886, 10, 16)));
-		entry = new TableEntry(null, "Gavriel Shandalov", "plonsk", null, utilDate1, null);
+		entry = new TableEntry(null, "Gavriel Shandalov", "plonsk", null, utilDate1, null,"","","");
 		$.add(entry);
 		
 		return $;
@@ -49,13 +49,13 @@ public class InfoevalServiceImp implements InfoevalService {
     	java.sql.Date utilDate1 = java.sql.Date.valueOf( LocalDate.of(1912, 6, 23) );
     	java.sql.Date utilDate2 = java.sql.Date.valueOf( LocalDate.of(1954, 6, 7) );
     	
-		TableEntry entry = new TableEntry(null, "Alan Turing", "Maida Vale", "Wilmslow", utilDate1, utilDate2);
+		TableEntry entry = new TableEntry(null, "Alan Turing", "Maida Vale", "Wilmslow", utilDate1, utilDate2,"","","");
 		$.add(entry);
 
 		utilDate1 = java.sql.Date.valueOf((LocalDate.of(1886, 10, 16)));
 		utilDate2 = java.sql.Date.valueOf(LocalDate.of(1973, 12, 1));
 
-		entry = new TableEntry(null, "David Ben-Gurion", "plonsk", "Ramat Gan", utilDate1, utilDate2);
+		entry = new TableEntry(null, "David Ben-Gurion", "plonsk", "Ramat Gan", utilDate1, utilDate2,"","","");
 		$.add(entry);
 		return $;
 	}
