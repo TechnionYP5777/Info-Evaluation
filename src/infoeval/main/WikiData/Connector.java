@@ -51,7 +51,7 @@ public class Connector {
 		host = props.getProperty("jdbc.host");
 		db = props.getProperty("jdbc.db");
 		dataSource.setDriverClassName(driver);
-		dataSource.setUrl(server + "://" + host + db);
+		dataSource.setUrl(server + "://" + host+ "/" +db);
 		dataSource.setUsername(username);
 		dataSource.setPassword(password);
 	}
