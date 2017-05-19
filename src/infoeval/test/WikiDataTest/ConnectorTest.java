@@ -1,11 +1,12 @@
 package infoeval.test.WikiDataTest;
 
 import static org.junit.Assert.*;
-
 import org.junit.Test;
 import infoeval.main.WikiData.Connector;
 import infoeval.main.WikiData.Extractor;
 import infoeval.main.WikiData.QueryTypes;
+
+import java.sql.Connection;
 import java.sql.ResultSet;
 
 /**
@@ -19,8 +20,9 @@ public class ConnectorTest {
 	@Test
 	public void connectionTest() throws Exception {
 		Connector conn = new Connector();
-		assert conn.getConnection() != null;
-		conn.closeConnection();
+		try (Connection connection = conn.getConnection();) {
+			assert connection != null;
+		}
 	}
 
 	@Test
@@ -36,8 +38,6 @@ public class ConnectorTest {
 		assertEquals(ENTRIES_NUM, size);
 		ext.executeQuery(QueryTypes.BASIC_INFO);
 		assertEquals(ext.getResults().size(), size);
-
-		conn.closeConnection();
 	}
 
 	@Test
@@ -54,7 +54,5 @@ public class ConnectorTest {
 		assertEquals(ENTRIES_NUM, size);
 		ext.executeQuery(QueryTypes.WIKI_ID);
 		assertEquals(ext.getResults().size(), size);
-
-		conn.closeConnection();
 	}
 }

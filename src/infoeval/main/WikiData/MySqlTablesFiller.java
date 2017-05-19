@@ -1,5 +1,6 @@
 package infoeval.main.WikiData;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,7 +28,7 @@ public class MySqlTablesFiller {
 		connector = new Connector();
 	}
 
-	public void createTables() throws SQLException {
+	public void createTables() throws SQLException, ClassNotFoundException, IOException {
 		connector.runUpdate("CREATE TABLE IF NOT EXISTS basic_info(Name VARCHAR(100) NOT NULL,"
 				+ " BirthPlace VARCHAR(100) NULL,DeathPlace VARCHAR(100) NULL,BirthDate DATE NULL,"
 				+ " DeathDate DATE NULL, occupation VARCHAR(100) NULL, spouseName VARCHAR(100) NULL,"
@@ -38,7 +39,7 @@ public class MySqlTablesFiller {
 		logger.log(Level.INFO, "WIKI_ID table created successfully");
 	}
 
-	public void fillWikiIdTable() throws SQLException {
+	public void fillWikiIdTable() throws SQLException, ClassNotFoundException, IOException {
 		connector.clearWikiIdTable();
 		Extractor ext = new Extractor();
 		ext.executeQuery(QueryTypes.WIKI_ID);
@@ -53,7 +54,7 @@ public class MySqlTablesFiller {
 		}
 	}
 
-	public void fillBasicInfoTable() throws SQLException, ParseException {
+	public void fillBasicInfoTable() throws SQLException, ParseException, ClassNotFoundException, IOException {
 
 		connector.clearBasicInfoTable();
 		Extractor ext = new Extractor();
@@ -83,16 +84,16 @@ public class MySqlTablesFiller {
 					deathPlace = (dPlace.asLiteral() + "").split("@")[0];
 
 			RDFNode occupation = solution.get("occup");
-			String occup=null;
-			if(occupation!=null)
+			String occup = null;
+			if (occupation != null)
 				if (occupation.isResource())
 					occup = (occupation.asResource() + "").split("resource/")[1];
 				else if (dPlace.isLiteral())
 					occup = (occupation.asLiteral() + "").split("@")[0];
-			
+
 			RDFNode spOcuup = solution.get("spOccu");
-			String spouseOccupation=null;
-			if(spOcuup!=null)
+			String spouseOccupation = null;
+			if (spOcuup != null)
 				if (spOcuup.isResource())
 					spouseOccupation = (spOcuup.asResource() + "").split("resource/")[1];
 				else if (dPlace.isLiteral())

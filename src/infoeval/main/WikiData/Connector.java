@@ -1,6 +1,5 @@
 package infoeval.main.WikiData;
 
-import java.sql.DriverManager;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +9,7 @@ import java.util.InvalidPropertiesFormatException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 /**
  * 
@@ -26,18 +26,18 @@ public class Connector {
 	private String server;
 	private String host;
 	private String db;
-	private Connection conn;
+	private static final BasicDataSource dataSource = new BasicDataSource();
 
-	public Connector() throws Exception {
+	public Connector() throws IOException {
 		try {
-			conn = getConnection();
-			logger.log(Level.INFO, "connected to server");
+			initializeConnectionPool();
+			logger.log(Level.INFO, "connection pool initialized");
 		} catch (Exception e) {
 			throw e;
 		}
 	}
 
-	public Connection getConnection() throws SQLException, IOException, ClassNotFoundException {
+	public void initializeConnectionPool() throws IOException {
 		Properties props = new Properties();
 		try {
 			props.loadFromXML(getClass().getResourceAsStream("MySQLServerConfiguration.xml"));
@@ -50,61 +50,59 @@ public class Connector {
 		server = props.getProperty("jdbc.server");
 		host = props.getProperty("jdbc.host");
 		db = props.getProperty("jdbc.db");
+		dataSource.setDriverClassName(driver);
+		dataSource.setUrl(server + "://" + host + db);
+		dataSource.setUsername(username);
+		dataSource.setPassword(password);
+	}
 
-		try {
-			Class.forName(driver);
-		} catch (ClassNotFoundException e) {
-			throw e;
+	public Connection getConnection() throws SQLException, IOException, ClassNotFoundException /* ,NamingException */ {
+		return dataSource.getConnection();
+	}
+
+	public int runUpdate(final String query) throws SQLException, ClassNotFoundException, IOException {
+		try (Connection connection = getConnection();) {
+			return connection.createStatement().executeUpdate(query);
 		}
-		try {
-			return DriverManager.getConnection(server + "://" + host + "/" + db, username, password);
-		} catch (SQLException e) {
-			throw e;
+	}
+
+	public ResultSet runQuery(final String query) throws SQLException, ClassNotFoundException, IOException {
+		try (Connection connection = getConnection();) {
+			return connection.createStatement().executeQuery(query);
 		}
 	}
 
-	public int runUpdate(final String query) throws SQLException {
-		return conn.createStatement().executeUpdate(query);
+	public ResultSet runQuery(final String query, final Object[] inputs)
+			throws SQLException, ClassNotFoundException, IOException {
+		try (PreparedStatement ps = getConnection().prepareStatement(query);) {
+			for (int ¢ = 1; ¢ <= inputs.length; ++¢)
+				ps.setObject(¢, inputs[¢ - 1]);
+			return ps.executeQuery();
+		}
 	}
 
-	public ResultSet runQuery(final String query) throws SQLException {
-		return conn.createStatement().executeQuery(query);
+	public int runUpdate(final String query, final Object[] inputs)
+			throws SQLException, ClassNotFoundException, IOException {
+		try (PreparedStatement ps = getConnection().prepareStatement(query);) {
+			for (int ¢ = 1; ¢ <= inputs.length; ++¢)
+				ps.setObject(¢, inputs[¢ - 1]);
+			return ps.executeUpdate();
+		}
 	}
 
-	public ResultSet runQuery(final String query, final Object[] inputs) throws SQLException {
-		PreparedStatement ps = conn.prepareStatement(query);
-		for (int ¢ = 1; ¢ <= inputs.length; ++¢)
-			ps.setObject(¢, inputs[¢ - 1]);
-		return ps.executeQuery();
+	public int runUpdate(final String query, final Object input)
+			throws SQLException, ClassNotFoundException, IOException {
+		try (PreparedStatement $ = getConnection().prepareStatement(query);) {
+			$.setObject(1, input);
+			return $.executeUpdate();
+		}
 	}
 
-	public int runUpdate(final String query, final Object[] inputs) throws SQLException {
-		PreparedStatement ps = conn.prepareStatement(query);
-		for (int ¢ = 1; ¢ <= inputs.length; ++¢)
-			ps.setObject(¢, inputs[¢ - 1]);
-		return ps.executeUpdate();
-	}
-
-	public int runUpdate(final String query, final Object input) throws SQLException {
-		PreparedStatement $ = conn.prepareStatement(query);
-		$.setObject(1, input);
-		return $.executeUpdate();
-	}
-
-	public void clearBasicInfoTable() throws SQLException {
+	public void clearBasicInfoTable() throws SQLException, ClassNotFoundException, IOException {
 		runUpdate("DELETE FROM basic_info");
 	}
 
-	public void clearWikiIdTable() throws SQLException {
+	public void clearWikiIdTable() throws SQLException, ClassNotFoundException, IOException {
 		runUpdate("DELETE FROM WikiID");
-	}
-
-	public void closeConnection() {
-		try {
-			if (conn != null)
-				conn.close();
-		} catch (final SQLException e) {
-			e.printStackTrace();
-		}
 	}
 }
