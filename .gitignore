@@ -94,6 +94,7 @@ $.*
 *.yy.cpp
 *.yy.h
 *.zip
+MySQLServerConfiguration.xml
 
 # Prefixes // vim: +,/^\s*$/-1!sort -u
 texput.*
