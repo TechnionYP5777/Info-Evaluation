@@ -46,7 +46,7 @@ public class SqlQueriesRunner {
 			cal1.set(Calendar.DAY_OF_MONTH, 23);
 			res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, (Date) cal1.getTime(), "", "", ""));
 		}
-		// conn.closeConnection();
+		conn.close();
 		return res;
 	}
 
@@ -67,7 +67,7 @@ public class SqlQueriesRunner {
 			res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, deathPlace, dummyDate, dummyDate, "", "",
 					""));
 		}
-		// conn.closeConnection();
+		conn.close();
 		return res;
 	}
 }

@@ -20,9 +20,9 @@ public class ConnectorTest {
 	@Test
 	public void connectionTest() throws Exception {
 		Connector conn = new Connector();
-		try (Connection connection = conn.getConnection();) {
-			assert connection != null;
-		}
+		Connection connection = conn.getConnection();
+		assert connection != null;
+		connection.close();
 	}
 
 	@Test
@@ -38,6 +38,7 @@ public class ConnectorTest {
 		assertEquals(ENTRIES_NUM, size);
 		ext.executeQuery(QueryTypes.BASIC_INFO);
 		assertEquals(ext.getResults().size(), size);
+		conn.close();
 	}
 
 	@Test
@@ -48,11 +49,11 @@ public class ConnectorTest {
 
 		int size = 0;
 		ResultSet s = conn.runQuery("SELECT COUNT(*) FROM wikiID");
-
 		if (s.next())
 			size = s.getInt(1);
 		assertEquals(ENTRIES_NUM, size);
 		ext.executeQuery(QueryTypes.WIKI_ID);
 		assertEquals(ext.getResults().size(), size);
+		conn.close();
 	}
 }

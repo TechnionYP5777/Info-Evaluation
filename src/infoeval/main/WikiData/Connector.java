@@ -2,6 +2,7 @@ package infoeval.main.WikiData;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -51,7 +52,7 @@ public class Connector {
 		host = props.getProperty("jdbc.host");
 		db = props.getProperty("jdbc.db");
 		dataSource.setDriverClassName(driver);
-		dataSource.setUrl(server + "://" + host+ "/" +db);
+		dataSource.setUrl(server + "://" + host + "/" + db);
 		dataSource.setUsername(username);
 		dataSource.setPassword(password);
 	}
@@ -61,41 +62,67 @@ public class Connector {
 	}
 
 	public int runUpdate(final String query) throws SQLException, ClassNotFoundException, IOException {
-		try (Connection connection = getConnection();) {
-			return connection.createStatement().executeUpdate(query);
-		}
+		Connection conn = getConnection();
+		Statement st = conn.createStatement();
+		int res = st.executeUpdate(query);
+		if (st != null)
+			st.close();
+		if (conn != null)
+			conn.close();
+		return res;
 	}
 
 	public ResultSet runQuery(final String query) throws SQLException, ClassNotFoundException, IOException {
-		try (Connection connection = getConnection();) {
-			return connection.createStatement().executeQuery(query);
-		}
+		ResultSet rs;
+		Connection conn = getConnection();
+		Statement st = conn.createStatement();
+		rs = st.executeQuery(query);
+		if (st != null)
+			st.close();
+		if (conn != null)
+			conn.close();
+		return rs;
 	}
 
 	public ResultSet runQuery(final String query, final Object[] inputs)
 			throws SQLException, ClassNotFoundException, IOException {
-		try (PreparedStatement ps = getConnection().prepareStatement(query);) {
-			for (int ¢ = 1; ¢ <= inputs.length; ++¢)
-				ps.setObject(¢, inputs[¢ - 1]);
-			return ps.executeQuery();
-		}
+		Connection conn = getConnection();
+		PreparedStatement ps = conn.prepareStatement(query);
+		for (int ¢ = 1; ¢ <= inputs.length; ++¢)
+			ps.setObject(¢, inputs[¢ - 1]);
+		ResultSet rs = ps.executeQuery();
+		if (ps != null)
+			ps.close();
+		if (conn != null)
+			conn.close();
+		return rs;
 	}
 
 	public int runUpdate(final String query, final Object[] inputs)
 			throws SQLException, ClassNotFoundException, IOException {
-		try (PreparedStatement ps = getConnection().prepareStatement(query);) {
-			for (int ¢ = 1; ¢ <= inputs.length; ++¢)
-				ps.setObject(¢, inputs[¢ - 1]);
-			return ps.executeUpdate();
-		}
+		Connection conn = getConnection();
+		PreparedStatement ps = conn.prepareStatement(query);
+		for (int ¢ = 1; ¢ <= inputs.length; ++¢)
+			ps.setObject(¢, inputs[¢ - 1]);
+		int res = ps.executeUpdate();
+		if (ps != null)
+			ps.close();
+		if (conn != null)
+			conn.close();
+		return res;
 	}
 
 	public int runUpdate(final String query, final Object input)
 			throws SQLException, ClassNotFoundException, IOException {
-		try (PreparedStatement $ = getConnection().prepareStatement(query);) {
-			$.setObject(1, input);
-			return $.executeUpdate();
-		}
+		Connection conn = getConnection();
+		PreparedStatement ps = conn.prepareStatement(query);
+		ps.setObject(1, input);
+		int res = ps.executeUpdate();
+		if (ps != null)
+			ps.close();
+		if (conn != null)
+			conn.close();
+		return res;
 	}
 
 	public void clearBasicInfoTable() throws SQLException, ClassNotFoundException, IOException {
@@ -104,5 +131,11 @@ public class Connector {
 
 	public void clearWikiIdTable() throws SQLException, ClassNotFoundException, IOException {
 		runUpdate("DELETE FROM WikiID");
+	}
+
+	// close all connections stored in the pool, associated with this dataSource
+	public void close() throws SQLException {
+		if (dataSource != null)
+			dataSource.close();
 	}
 }
