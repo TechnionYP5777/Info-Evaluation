@@ -12,12 +12,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.dbcp2.BasicDataSource;
 
-/**
- * 
+/** 
  * @author Netanel
  * @author osherh
  * @since 19-04-2017
- *
+ * [[SuppressWarningsSpartan]]
  */
 public class Connector {
 	private static final Logger logger = Logger.getLogger("Connector".getClass().getName());
@@ -77,6 +76,7 @@ public class Connector {
 		Connection conn = getConnection();
 		Statement st = conn.createStatement();
 		rs = st.executeQuery(query);
+	
 		if (st != null)
 			st.close();
 		if (conn != null)
@@ -91,10 +91,10 @@ public class Connector {
 		for (int ¢ = 1; ¢ <= inputs.length; ++¢)
 			ps.setObject(¢, inputs[¢ - 1]);
 		ResultSet rs = ps.executeQuery();
-		if (ps != null)
-			ps.close();
-		if (conn != null)
-			conn.close();
+//		if (ps != null)
+//			ps.close();
+//		if (conn != null)
+//			conn.close();
 		return rs;
 	}
 
@@ -105,10 +105,10 @@ public class Connector {
 		for (int ¢ = 1; ¢ <= inputs.length; ++¢)
 			ps.setObject(¢, inputs[¢ - 1]);
 		int res = ps.executeUpdate();
-		if (ps != null)
-			ps.close();
-		if (conn != null)
-			conn.close();
+//		if (ps != null)
+//			ps.close();
+//		if (conn != null)
+//			conn.close();
 		return res;
 	}
 

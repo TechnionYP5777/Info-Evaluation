@@ -111,7 +111,7 @@ public class MySqlTablesFiller {
 				sqlDeathDate = null;
 			else {
 				deathDate = !dDate.isLiteral() ? null : dDate.asLiteral().getValue() + "";
-				if (deathDate.contains("."))
+				if (deathDate.contains(".") || deathDate.contains("c."))
 					sqlDeathDate = null;
 				else if (deathDate.split("-").length == 1 && deathDate.matches("[0-9]+") && deathDate.length() <= 4)
 					sqlDeathDate = stringToSqlDate(deathDate, new SimpleDateFormat("yyyy"));
@@ -137,7 +137,7 @@ public class MySqlTablesFiller {
 			}
 
 			java.sql.Date sqlBirthDate = null;
-			if (birthDate.contains("."))
+			if (birthDate.contains(".") || birthDate.contains("c.") )
 				sqlBirthDate = null;
 			else if (birthDate.split("-").length == 1 && birthDate.matches("[0-9]+") && birthDate.length() <= 4)
 				sqlBirthDate = stringToSqlDate(birthDate, new SimpleDateFormat("yyyy"));
