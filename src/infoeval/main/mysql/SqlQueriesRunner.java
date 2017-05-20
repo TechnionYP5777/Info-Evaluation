@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map.Entry;
 
 import com.fasterxml.jackson.databind.deser.std.DateDeserializers.CalendarDeserializer;
 
@@ -41,18 +42,30 @@ public class SqlQueriesRunner {
 				+ "WHERE YEAR(BirthDate) < ? AND BirthPlace = ? "
 				+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
 		Object[] inp = new Object[] { yearVal, place };
-		ResultSet rs = conn.runQuery(yearPlaceQuery, inp);
+		ArrayList<Row> rs = conn.runQuery(yearPlaceQuery, inp);
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
-		while (rs.next()) {
-			String name = rs.getString(1);
-			Date birthDate = rs.getDate(2);
-			String wikiPageID = rs.getString(3);
-			Calendar cal1 = Calendar.getInstance();
-			cal1.set(Calendar.YEAR, 1912);
-			cal1.set(Calendar.MONTH, Calendar.JUNE);
-			cal1.set(Calendar.DAY_OF_MONTH, 23);
-			res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, new java.sql.Date( cal1.getTime().getTime()), "", "", ""));
+//		while (rs.next()) {
+//			String name = rs.getString(1);
+//			Date birthDate = rs.getDate(2);
+//			String wikiPageID = rs.getString(3);
+//			Calendar cal1 = Calendar.getInstance();
+//			cal1.set(Calendar.YEAR, 1912);
+//			cal1.set(Calendar.MONTH, Calendar.JUNE);
+//			cal1.set(Calendar.DAY_OF_MONTH, 23);
+//			res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, new java.sql.Date( cal1.getTime().getTime()), "", "", ""));
+//		}
+		
+		//Lets try with the new approach:
+		for (Row row : rs)
+		{
+		    for (Entry<Object, Class> col: row.row)
+		    {
+		        System.out.print(" > " + ((col.getValue()).cast(col.getKey())));
+		    }
+		    System.out.println();
 		}
+		
+		
 		//conn.close();
 		return res;
 	}

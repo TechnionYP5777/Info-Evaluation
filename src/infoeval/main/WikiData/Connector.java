@@ -2,15 +2,22 @@ package infoeval.main.WikiData;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.InvalidPropertiesFormatException;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.dbcp2.BasicDataSource;
+
+import infoeval.main.mysql.Row;
+import infoeval.main.mysql.TableEntry;
 
 /** 
  * @author Netanel
@@ -84,18 +91,24 @@ public class Connector {
 		return rs;
 	}
 
-	public ResultSet runQuery(final String query, final Object[] inputs)
+	public ArrayList<Row> runQuery(final String query, final Object[] inputs)
 			throws SQLException, ClassNotFoundException, IOException {
 		Connection conn = getConnection();
+		ArrayList<Row> table = new ArrayList<Row>();
 		PreparedStatement ps = conn.prepareStatement(query);
 		for (int ¢ = 1; ¢ <= inputs.length; ++¢)
 			ps.setObject(¢, inputs[¢ - 1]);
 		ResultSet rs = ps.executeQuery();
+		
+		//Creating an arraylist of table entries:
+		Row.formTable(rs, table);
+
 		if (ps != null)
 			ps.close();
 		if (conn != null)
 			conn.close();
-		return rs;
+		
+		return table;
 	}
 
 	public int runUpdate(final String query, final Object[] inputs)
