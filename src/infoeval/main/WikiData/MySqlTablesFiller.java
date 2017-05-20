@@ -24,7 +24,7 @@ public class MySqlTablesFiller {
 	private String[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
 			"October", "November", "December" };
 
-	public MySqlTablesFiller() throws Exception {
+	public MySqlTablesFiller() throws IOException {
 		connector = new Connector();
 	}
 
@@ -32,7 +32,7 @@ public class MySqlTablesFiller {
 		connector.runUpdate("CREATE TABLE IF NOT EXISTS basic_info(Name VARCHAR(100) NOT NULL,"
 				+ " BirthPlace VARCHAR(100) NULL,DeathPlace VARCHAR(100) NULL,BirthDate DATE NULL,"
 				+ " DeathDate DATE NULL, occupation VARCHAR(100) NULL, spouseName VARCHAR(100) NULL,"
-				+ " spouseOccupation VARCHAR(100) NULL ");
+				+ " spouseOccupation VARCHAR(100) NULL)");
 		logger.log(Level.INFO, "basic_info table created successfully");
 		connector.runUpdate(
 				"CREATE TABLE IF NOT EXISTS WikiID(Name VARCHAR(100) NOT NULL,wikiPageID VARCHAR(50) NOT NULL)");
@@ -46,6 +46,7 @@ public class MySqlTablesFiller {
 		ResultSetRewindable results = ext.getResults();
 		results.reset();
 		for (int i = 0; i < results.size(); ++i) {
+			System.out.println("Wiki ID entry num " + i);
 			QuerySolution solution = results.nextSolution();
 			Object[] inp = new Object[2];
 			inp[0] = solution.getLiteral("name").getString();
@@ -64,9 +65,11 @@ public class MySqlTablesFiller {
 		for (int i = 0; i < results.size(); ++i) {
 			QuerySolution solution = results.nextSolution();
 
-			String name = solution.getLiteral("name").getString(),
-					spouseName = solution.getLiteral("sname").getString();
+			System.out.println("basic info entry num " + i);
+			String name = solution.getLiteral("name").getString();
 
+			RDFNode sName = solution.get("sname");
+			String spouseName = sName == null || !sName.isLiteral() ? null : sName.asLiteral().getString() + "";
 			RDFNode bPlace = solution.get("birth");
 			String birthPlace = null;
 			if (bPlace != null)
@@ -166,6 +169,12 @@ public class MySqlTablesFiller {
 			inp[5] = occup;
 			inp[6] = spouseName;
 			inp[7] = spouseOccupation;
+			if (occup == null)
+				occup = "";
+			if (spouseName == null)
+				spouseName = "";
+			if (spouseOccupation == null)
+				spouseOccupation = "";
 			connector.runUpdate("INSERT INTO basic_info VALUES(?,?,?,?,?,?,?,?)", inp);
 		}
 	}
