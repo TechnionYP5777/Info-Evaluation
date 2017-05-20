@@ -26,7 +26,7 @@ public class ConnectorTest {
 	}
 
 	@Test
-	public void fillBasicInfoTableSizeTest() throws Exception {
+	public void basicInfoTableSizeTest() throws Exception {
 		Connector conn = new Connector();
 		assert conn.getConnection() != null;
 		Extractor ext = new Extractor();
@@ -42,7 +42,7 @@ public class ConnectorTest {
 	}
 
 	@Test
-	public void fillWikiIdTableSizeTest() throws Exception {
+	public void wikiIdTableSizeTest() throws Exception {
 		Connector conn = new Connector();
 		assert conn.getConnection() != null;
 		Extractor ext = new Extractor();
