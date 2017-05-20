@@ -26,15 +26,15 @@ public class sqlRunnerTest {
 	@Test
 	public void getBornInPlaceBeforeYearTest() throws Exception {
 		SqlQueriesRunner querun = new SqlQueriesRunner();
-		List<TableEntry> lst = (querun.getBornInPlaceBeforeYear("London", "1993"));
+		List<TableEntry> lst = (querun.getBornInPlaceBeforeYear("Casablanca", "1954"));
 		for (TableEntry te : lst) {
 			java.sql.Date birthDate = te.getBirthDate();
 			String birthPlace = te.getBirthPlace();
 			SimpleDateFormat formatYear = new SimpleDateFormat("yyyy");
 			String birthYear = formatYear.format(birthDate);
 			int bYear = Integer.parseInt(birthYear);
-			assert bYear < 1993;
-			assertEquals(birthPlace, "London");
+			assert bYear < 1954;
+			assertEquals("Casablanca",birthPlace);
 		}
 		querun.close();
 	}

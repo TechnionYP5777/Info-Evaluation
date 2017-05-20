@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.deser.std.DateDeserializers.CalendarDeserializer;
+
 import infoeval.main.WikiData.Connector;
 
 /** 
@@ -49,7 +51,7 @@ public class SqlQueriesRunner {
 			cal1.set(Calendar.YEAR, 1912);
 			cal1.set(Calendar.MONTH, Calendar.JUNE);
 			cal1.set(Calendar.DAY_OF_MONTH, 23);
-			res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, (Date) cal1.getTime(), "", "", ""));
+			res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, new java.sql.Date( cal1.getTime().getTime()), "", "", ""));
 		}
 		//conn.close();
 		return res;

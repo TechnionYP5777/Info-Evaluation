@@ -91,10 +91,10 @@ public class Connector {
 		for (int ¢ = 1; ¢ <= inputs.length; ++¢)
 			ps.setObject(¢, inputs[¢ - 1]);
 		ResultSet rs = ps.executeQuery();
-		if (ps != null)
-			ps.close();
-		if (conn != null)
-			conn.close();
+//		if (ps != null)
+//			ps.close();
+//		if (conn != null)
+//			conn.close();
 		return rs;
 	}
 
@@ -105,10 +105,10 @@ public class Connector {
 		for (int ¢ = 1; ¢ <= inputs.length; ++¢)
 			ps.setObject(¢, inputs[¢ - 1]);
 		int res = ps.executeUpdate();
-		if (ps != null)
-			ps.close();
-		if (conn != null)
-			conn.close();
+//		if (ps != null)
+//			ps.close();
+//		if (conn != null)
+//			conn.close();
 		return res;
 	}
 
