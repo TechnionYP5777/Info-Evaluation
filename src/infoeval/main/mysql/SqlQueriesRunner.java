@@ -10,14 +10,10 @@ import java.util.List;
 
 import infoeval.main.WikiData.Connector;
 
-/**
- * 
+/** 
  * @author osherh
- * @Since 12-05-2017
- * 
- *        This class runs SQL queries on mysql server and returns a list of
- *        table entry as results
- *
+ * @Since 12-05-2017This class runs SQL queries on mysql server and returns a list of table entry as results
+ * [[SuppressWarningsSpartan]]
  */
 public class SqlQueriesRunner {
 	private Connector conn;
@@ -25,6 +21,15 @@ public class SqlQueriesRunner {
 
 	public SqlQueriesRunner() throws Exception {
 		conn = new Connector();
+	}
+	
+	public void close(){
+		try{
+		conn.close();
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
 	}
 
 	public List<TableEntry> getBornInPlaceBeforeYear(String place, String year)
@@ -46,7 +51,7 @@ public class SqlQueriesRunner {
 			cal1.set(Calendar.DAY_OF_MONTH, 23);
 			res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, (Date) cal1.getTime(), "", "", ""));
 		}
-		conn.close();
+		//conn.close();
 		return res;
 	}
 
@@ -67,7 +72,7 @@ public class SqlQueriesRunner {
 			res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, deathPlace, dummyDate, dummyDate, "", "",
 					""));
 		}
-		conn.close();
+		//conn.close();
 		return res;
 	}
 }

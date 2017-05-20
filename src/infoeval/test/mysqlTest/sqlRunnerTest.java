@@ -25,7 +25,8 @@ public class sqlRunnerTest {
 	 */
 	@Test
 	public void getBornInPlaceBeforeYearTest() throws Exception {
-		List<TableEntry> lst = (new SqlQueriesRunner()).getBornInPlaceBeforeYear("London", "1993");
+		SqlQueriesRunner querun = new SqlQueriesRunner();
+		List<TableEntry> lst = (querun.getBornInPlaceBeforeYear("London", "1993"));
 		for (TableEntry te : lst) {
 			java.sql.Date birthDate = te.getBirthDate();
 			String birthPlace = te.getBirthPlace();
@@ -35,6 +36,7 @@ public class sqlRunnerTest {
 			assert bYear < 1993;
 			assertEquals(birthPlace, "London");
 		}
+		querun.close();
 	}
 
 //	@Test

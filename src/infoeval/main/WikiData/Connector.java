@@ -12,12 +12,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.dbcp2.BasicDataSource;
 
-/**
- * 
+/** 
  * @author Netanel
  * @author osherh
  * @since 19-04-2017
- *
+ * [[SuppressWarningsSpartan]]
  */
 public class Connector {
 	private static final Logger logger = Logger.getLogger("Connector".getClass().getName());
@@ -77,6 +76,7 @@ public class Connector {
 		Connection conn = getConnection();
 		Statement st = conn.createStatement();
 		rs = st.executeQuery(query);
+	
 		if (st != null)
 			st.close();
 		if (conn != null)
