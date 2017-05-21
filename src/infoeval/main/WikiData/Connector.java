@@ -78,17 +78,21 @@ public class Connector {
 		return res;
 	}
 
-	public ResultSet runQuery(final String query) throws SQLException, ClassNotFoundException, IOException {
+	public ArrayList<Row> runQuery(final String query) throws SQLException, ClassNotFoundException, IOException {
 		ResultSet rs;
 		Connection conn = getConnection();
 		Statement st = conn.createStatement();
 		rs = st.executeQuery(query);
-	
+		ArrayList<Row> table = new ArrayList<Row>();		
+		Row.formTable(rs,table);
+		if(rs!=null){
+			rs.close();
+		}
 		if (st != null)
 			st.close();
 		if (conn != null)
 			conn.close();
-		return rs;
+		return table;
 	}
 
 	public ArrayList<Row> runQuery(final String query, final Object[] inputs)
@@ -102,7 +106,10 @@ public class Connector {
 		
 		//Creating an arraylist of table entries:
 		Row.formTable(rs, table);
-
+		
+		if(rs!=null){
+			rs.close();
+		}
 		if (ps != null)
 			ps.close();
 		if (conn != null)

@@ -5,9 +5,12 @@ import org.junit.Test;
 import infoeval.main.WikiData.Connector;
 import infoeval.main.WikiData.Extractor;
 import infoeval.main.WikiData.QueryTypes;
+import infoeval.main.mysql.Row;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Map.Entry;
 
 /**
  * @author Netanel
@@ -29,15 +32,18 @@ public class ConnectorTest {
 	public void basicInfoTableSizeTest() throws Exception {
 		Connector conn = new Connector();
 		assert conn.getConnection() != null;
-		Extractor ext = new Extractor();
 
-		int size = 0;
-		ResultSet s = conn.runQuery("SELECT COUNT(*) FROM basic_info");
-		if (s.next())
-			size = s.getInt(1);
+		ArrayList<Row> rows = conn.runQuery("SELECT COUNT(*) FROM basic_info");
+		Row row = rows.get(0);
+		Entry<Object, Class> col = row.row.get(0);
+		Object size = col.getValue().cast(col.getKey());
+
 		assertEquals(ENTRIES_NUM, size);
+
+		Extractor ext = new Extractor();
 		ext.executeQuery(QueryTypes.BASIC_INFO);
 		assertEquals(ext.getResults().size(), size);
+		
 		conn.close();
 	}
 
@@ -45,15 +51,19 @@ public class ConnectorTest {
 	public void wikiIdTableSizeTest() throws Exception {
 		Connector conn = new Connector();
 		assert conn.getConnection() != null;
-		Extractor ext = new Extractor();
+		
+		ArrayList<Row> rows = conn.runQuery("SELECT COUNT(*) FROM WikiID");
+		Row row = rows.get(0);
+		Entry<Object, Class> col = row.row.get(0);
+		Object size = col.getValue().cast(col.getKey());
 
-		int size = 0;
-		ResultSet s = conn.runQuery("SELECT COUNT(*) FROM wikiID");
-		if (s.next())
-			size = s.getInt(1);
 		assertEquals(ENTRIES_NUM, size);
+
+		Extractor ext = new Extractor();
 		ext.executeQuery(QueryTypes.WIKI_ID);
 		assertEquals(ext.getResults().size(), size);
+		
+		
 		conn.close();
 	}
 }
