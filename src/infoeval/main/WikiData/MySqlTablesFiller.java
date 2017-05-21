@@ -1,5 +1,7 @@
 package infoeval.main.WikiData;
 
+import infoeval.main.WikiData.Connector;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -29,6 +31,7 @@ public class MySqlTablesFiller {
 	}
 
 	public void createTables() throws SQLException, ClassNotFoundException, IOException {
+		dropTables();
 		connector.runUpdate("CREATE TABLE IF NOT EXISTS basic_info(Name VARCHAR(100) NOT NULL,"
 				+ " BirthPlace VARCHAR(100) NULL,DeathPlace VARCHAR(100) NULL,BirthDate DATE NULL,"
 				+ " DeathDate DATE NULL, occupation VARCHAR(100) NULL, spouseName VARCHAR(100) NULL,"
@@ -46,6 +49,7 @@ public class MySqlTablesFiller {
 		ResultSetRewindable results = ext.getResults();
 		results.reset();
 		for (int i = 0; i < results.size(); ++i) {
+			//TODO: delete print
 			System.out.println("Wiki ID entry num " + i);
 			QuerySolution solution = results.nextSolution();
 			Object[] inp = new Object[2];
@@ -64,14 +68,14 @@ public class MySqlTablesFiller {
 		results.reset();
 		for (int i = 0; i < results.size(); ++i) {
 			QuerySolution solution = results.nextSolution();
-
+			//TODO: delete print
 			System.out.println("basic info entry num " + i);
 			String name = solution.getLiteral("name").getString();
 
 			RDFNode sName = solution.get("sname");
-			String spouseName = sName == null || !sName.isLiteral() ? null : sName.asLiteral().getString() + "";
+			String spouseName = sName == null || !sName.isLiteral() ? "No Spouse" : sName.asLiteral().getString() + "";
 			RDFNode bPlace = solution.get("birth");
-			String birthPlace = null;
+			String birthPlace = "No Birth Place";
 			if (bPlace != null)
 				if (bPlace.isResource())
 					birthPlace = (bPlace.asResource() + "").split("resource/")[1];
@@ -79,7 +83,7 @@ public class MySqlTablesFiller {
 					birthPlace = (bPlace.asLiteral() + "").split("@")[0];
 
 			RDFNode dPlace = solution.get("death");
-			String deathPlace = null;
+			String deathPlace = "No Death Place";
 			if (dPlace != null)
 				if (dPlace.isResource())
 					deathPlace = (dPlace.asResource() + "").split("resource/")[1];
@@ -87,15 +91,20 @@ public class MySqlTablesFiller {
 					deathPlace = (dPlace.asLiteral() + "").split("@")[0];
 
 			RDFNode occupation = solution.get("occup");
-			String occup = null;
-			if (occupation != null)
-				if (occupation.isResource())
-					occup = (occupation.asResource() + "").split("resource/")[1];
-				else if (dPlace.isLiteral())
+			String occup = "No Occupation";
+			if (occupation != null){
+				if (occupation.isResource()){
+					if(!occupation.asResource().toString().contains("resource")) occup ="No Occupation";
+					//TODO DELETE
+					//System.out.println("occupation is "+occupation.asResource() + "");
+					else occup = (occupation.asResource() + "").split("resource/")[1];
+				}
+				else if (occupation.isLiteral())
 					occup = (occupation.asLiteral() + "").split("@")[0];
-
+			}
+			
 			RDFNode spOcuup = solution.get("spOccu");
-			String spouseOccupation = null;
+			String spouseOccupation = "No Spouse Occupation";
 			if (spOcuup != null)
 				if (spOcuup.isResource())
 					spouseOccupation = (spOcuup.asResource() + "").split("resource/")[1];
@@ -159,7 +168,14 @@ public class MySqlTablesFiller {
 				}
 				++monthNum;
 			}
-
+	/*		
+			if (occup == null)
+				occup = "";
+			if (spouseName == null)
+				spouseName = "";
+			if (spouseOccupation == null)
+				spouseOccupation = "";
+	*/		
 			Object[] inp = new Object[8];
 			inp[0] = name;
 			inp[1] = birthPlace;
@@ -169,17 +185,17 @@ public class MySqlTablesFiller {
 			inp[5] = occup;
 			inp[6] = spouseName;
 			inp[7] = spouseOccupation;
-			if (occup == null)
-				occup = "";
-			if (spouseName == null)
-				spouseName = "";
-			if (spouseOccupation == null)
-				spouseOccupation = "";
+		
 			connector.runUpdate("INSERT INTO basic_info VALUES(?,?,?,?,?,?,?,?)", inp);
 		}
 	}
 
 	private java.sql.Date stringToSqlDate(String stringDate, SimpleDateFormat f) throws ParseException {
 		return new java.sql.Date(f.parse(stringDate).getTime());
+	}
+	
+	public void dropTables() throws SQLException, ClassNotFoundException, IOException{
+		connector.runUpdate("DROP TABLE basic_info");
+		connector.runUpdate("DROP TABLE WikiID");
 	}
 }

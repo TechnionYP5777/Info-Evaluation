@@ -2,14 +2,16 @@ package infoeval.test.WikiDataTest;
 
 import static org.junit.Assert.assertEquals;
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Map.Entry;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import infoeval.main.WikiData.Connector;
 import infoeval.main.WikiData.MySqlTablesFiller;
-
+import infoeval.main.mysql.Row;
 
 /**
  * @author osherh
@@ -18,9 +20,8 @@ import infoeval.main.WikiData.MySqlTablesFiller;
 public class MySqlTablesFillerTest {
 	private static final int ENTRIES_NUM = 10000;
 
-	
 	@BeforeClass
-	public static void test() throws IOException, ClassNotFoundException, SQLException, ParseException{
+	public static void test() throws IOException, ClassNotFoundException, SQLException, ParseException {
 		MySqlTablesFiller filler = new MySqlTablesFiller();
 		filler.createTables();
 		filler.fillBasicInfoTable();
@@ -31,11 +32,14 @@ public class MySqlTablesFillerTest {
 	public void basicInfoTableSizeTest() throws Exception {
 		Connector conn = new Connector();
 		assert conn.getConnection() != null;
-		int size = 0;
-		ResultSet s = conn.runQuery("SELECT COUNT(*) FROM basic_info");
-		if (s.next())
-			size = s.getInt(1);
+
+		ArrayList<Row> rows = conn.runQuery("SELECT COUNT(*) FROM basic_info");
+		Row row = rows.get(0);
+		Entry<Object, Class> col = row.row.get(0);
+		Object size = col.getValue().cast(col.getKey());
+
 		assertEquals(ENTRIES_NUM, size);
+
 		conn.close();
 	}
 
@@ -43,11 +47,14 @@ public class MySqlTablesFillerTest {
 	public void wikiIdTableSizeTest() throws Exception {
 		Connector conn = new Connector();
 		assert conn.getConnection() != null;
-		int size = 0;
-		ResultSet s = conn.runQuery("SELECT COUNT(*) FROM WikiID");
-		if (s.next())
-			size = s.getInt(1);
+
+		ArrayList<Row> rows = conn.runQuery("SELECT COUNT(*) FROM WikiID");
+		Row row = rows.get(0);
+		Entry<Object, Class> col = row.row.get(0);
+		Object size = col.getValue().cast(col.getKey());
+
 		assertEquals(ENTRIES_NUM, size);
+
 		conn.close();
 	}
 }
