@@ -52,7 +52,7 @@ public class SqlRunner {
 			String wikiPageID = (String) row.row.get(2).getValue().cast(row.row.get(2).getKey());
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
-			res.add(new TableEntry(wikiURL + wikiPageID, name,"","", birthDate,sqlDate ,"","",""));
+			res.add(new TableEntry(wikiURL + wikiPageID, name,place,"", birthDate,sqlDate ,"","",""));
 		 }
 		//TODO: delete
 		//printing
