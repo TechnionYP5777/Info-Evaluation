@@ -20,13 +20,13 @@ import org.apache.jena.rdf.model.RDFNode;
  * @since 17-05-2017
  *
  */
-public class MySqlTablesFiller {
-	private static final Logger logger = Logger.getLogger("MySqlTablesFiller".getClass().getName());
+public class SqlTablesFiller {
+	private static final Logger logger = Logger.getLogger("SqlTablesFiller".getClass().getName());
 	private Connector connector;
 	private String[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
 			"October", "November", "December" };
 
-	public MySqlTablesFiller() throws IOException {
+	public SqlTablesFiller() throws IOException {
 		connector = new Connector();
 	}
 
