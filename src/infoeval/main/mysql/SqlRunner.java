@@ -13,13 +13,23 @@ import java.text.SimpleDateFormat;
 
 import com.fasterxml.jackson.databind.deser.std.DateDeserializers.CalendarDeserializer;
 
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.boot.*;
+import org.springframework.boot.autoconfigure.*;
+import org.springframework.context.annotation.ComponentScan;
+
 import infoeval.main.WikiData.Connector;
+import infoeval.main.services.InfoevalServiceImp;
 
 /** 
- * @author osherh
+ * @author osherh , Moshe
  * @Since 12-05-2017This class runs SQL queries on mysql server and returns a list of table entry as results
  * [[SuppressWarningsSpartan]]
  */
+//@ComponentScan
+//@EnableAutoConfiguration
+//@RestController
 public class SqlRunner {
 	private Connector conn;
 	private String wikiURL = "https://en.wikipedia.org/?curid=";
@@ -36,14 +46,15 @@ public class SqlRunner {
 			e.printStackTrace();
 		}
 	}
-
+	
+	//@RequestMapping("Queries/Query2_real")
 	public List<TableEntry> getBornInPlaceBeforeYear(String place, String year)
 			throws SQLException, ClassNotFoundException, IOException,ParseException {
-		int yearVal = Integer.parseInt(year);
+		//int yearVal = Integer.parseInt(year);
 		final String yearPlaceQuery = "SELECT basic_info.name,BirthDate,wikiPageID FROM basic_info,WikiID "
 				+ "WHERE YEAR(BirthDate) < ? AND BirthPlace = ? "
 				+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
-		Object[] inp = new Object[] { yearVal, place };
+		Object[] inp = new Object[] { year, place };
 		ArrayList<Row> rs = conn.runQuery(yearPlaceQuery, inp);
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
 		for (Row row : rs){
@@ -104,4 +115,8 @@ public class SqlRunner {
 		}
 		return res;
 	}
+	
+//	public static void main(String[] args) throws Exception {
+//		SpringApplication.run(SqlRunner.class, args);
+//	}
 }

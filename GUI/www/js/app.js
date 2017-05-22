@@ -81,11 +81,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             },
             'fabContent': {
                 template: '',
-                controller: function ($timeout) {
-                    $timeout(function () {
-                        document.getElementById('fab-activity').classList.toggle('on');
-                    }, 200);
-                }
+                controller: ''
             }
         }
     })

@@ -35,6 +35,26 @@ gulp.task('remove-proxy', function() {
   });
 })
 
+gulp.task('add-proxy', function() {
+  return replace({
+    regex: "http://localhost:8080/Queries/Query2_real",
+    replacement: "http://localhost:8100/api",
+    paths: replaceFiles,
+    recursive: false,
+    silent: false,
+  });
+})
+
+gulp.task('remove-proxy', function() {
+  return replace({
+    regex: "http://localhost:8100/api",
+    replacement: "http://localhost:8080/Queries/Query2_real",
+    paths: replaceFiles,
+    recursive: false,
+    silent: false,
+  });
+})
+
 
 gulp.task('default', ['sass']);
 

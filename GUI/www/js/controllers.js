@@ -138,6 +138,7 @@ angular.module('starter.controllers', [])
 				title: 'Fetch error!',
 				template: 'Unable to get data', 
 			});
+			
 			console.log(response.data);
 		}
 			   );

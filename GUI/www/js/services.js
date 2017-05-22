@@ -11,7 +11,7 @@ angular.module('starter.services', [])
 	var place = {};
 	return {
 		getYear: function () {
-			return year;
+			return year.toString();
 		},
 		setYear: function (yearparameter) {
 			year = yearparameter;
