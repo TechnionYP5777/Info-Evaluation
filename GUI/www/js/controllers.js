@@ -119,13 +119,16 @@ angular.module('starter.controllers', [])
 		  method: 'GET',
 		  url:'/Queries/Query2',
 		params: {
-			year: DataQ.getYear,
-			place: DataQ.getPlace
+			place: DataQ.getPlace(),
+			year: DataQ.getYear()
 		}
 		}).then(function successCallback(response) {
+			alert((response))
 			console.log('success');
+			console.log(response.data);
 			$scope.persons = [];
 			for(var r in response.data) {
+				console.log('success2');
 				console.log(r);
 			  var person = response.data[r];
 			  $scope.persons.push(person);

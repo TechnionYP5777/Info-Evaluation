@@ -1,6 +1,7 @@
 package infoeval.main.services;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import infoeval.main.mysql.TableEntry;
@@ -17,6 +18,8 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 
@@ -30,8 +33,10 @@ import java.util.List;
 @EnableAutoConfiguration
 @RestController
 public class InfoevalServiceImp implements InfoevalService {
+	private static final Logger logger = Logger.getLogger("InfoevalServiceImp".getClass().getName());
+
 	@Override
-	@RequestMapping("Queries/Query2")
+	@RequestMapping(path="Queries/Query2",method = RequestMethod.GET)
 	public ArrayList<TableEntry> getBornInPlaceYear(String place ,String year) throws Exception {
 //		List<TableEntry> $ = new ArrayList<TableEntry>();
 //		java.sql.Date utilDate1 = java.sql.Date.valueOf( LocalDate.of(1912, 6, 23) );
@@ -45,7 +50,9 @@ public class InfoevalServiceImp implements InfoevalService {
 //		return $;
 		SqlRunner runner = new SqlRunner();
 		ArrayList<TableEntry> lst = runner.getBornInPlaceBeforeYear(place, year);
-		System.out.println(lst.size());
+		logger.log(Level.INFO, "Born in place before year was called.\n Parameters:"+"Place:"+place+", Year:"+year);
+		logger.log(Level.INFO, "list size:"+lst.size());
+		
 		return lst;
 	}
 
