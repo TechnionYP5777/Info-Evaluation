@@ -129,6 +129,7 @@ angular.module('starter.controllers', [])
 				console.log(r);
 			  var person = response.data[r];
 			  $scope.persons.push(person);
+				console.log("OHHHH YEAHHHHHH PUSH IT HARDER");
 				console.log(person.name);
 			}
 		console.log('end of success');

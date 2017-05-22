@@ -48,7 +48,7 @@ public class SqlRunner {
 	}
 	
 	//@RequestMapping("Queries/Query2_real")
-	public List<TableEntry> getBornInPlaceBeforeYear(String place, String year)
+	public ArrayList<TableEntry> getBornInPlaceBeforeYear(String place, String year)
 			throws SQLException, ClassNotFoundException, IOException,ParseException {
 		//int yearVal = Integer.parseInt(year);
 		final String yearPlaceQuery = "SELECT basic_info.name,BirthDate,wikiPageID FROM basic_info,WikiID "
@@ -76,7 +76,7 @@ public class SqlRunner {
 		return res;
 	}
 
-	public List<TableEntry> getDifferentDeathPlace() throws SQLException, ClassNotFoundException, IOException, ParseException {
+	public ArrayList<TableEntry> getDifferentDeathPlace() throws SQLException, ClassNotFoundException, IOException, ParseException {
 		final String birthDeathPlaceQuery = "SELECT basic_info.name,BirthPlace,DeathPlace,wikiPageID "
 				+ "FROM basic_info,WikiID WHERE DeathPlace IS NOT NULL AND BirthPlace != DeathPlace "
 				+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
@@ -95,7 +95,7 @@ public class SqlRunner {
 	}
 	
 	//TODO: I want to return their wiki pages ID's too. Got to design a solution for that 
-	public List<TableEntry> getSameOccupationCouples() throws SQLException, ClassNotFoundException, IOException, ParseException {
+	public ArrayList<TableEntry> getSameOccupationCouples() throws SQLException, ClassNotFoundException, IOException, ParseException {
 		//TODO: fix query
 		final String sameOccupationCouplesQuery = "SELECT B1.name AS Name,B2.name AS SpouseName,B1.occupation AS Occpation "
 				+ "FROM basic_info B1, basic_info B2 "

@@ -32,7 +32,7 @@ import java.util.List;
 public class InfoevalServiceImp implements InfoevalService {
 	@Override
 	@RequestMapping("Queries/Query2")
-	public List<TableEntry> getBornInPlaceYear(String year,String place) throws Exception {
+	public ArrayList<TableEntry> getBornInPlaceYear(String place ,String year) throws Exception {
 //		List<TableEntry> $ = new ArrayList<TableEntry>();
 //		java.sql.Date utilDate1 = java.sql.Date.valueOf( LocalDate.of(1912, 6, 23) );
 //		TableEntry entry = new TableEntry(null, "Yevgenia Shandalov", "Maida Vale", null, utilDate1, null,"","","");
@@ -44,13 +44,15 @@ public class InfoevalServiceImp implements InfoevalService {
 //		
 //		return $;
 		SqlRunner runner = new SqlRunner();
-		return runner.getBornInPlaceBeforeYear(place, year);
+		ArrayList<TableEntry> lst = runner.getBornInPlaceBeforeYear(place, year);
+		System.out.println(lst.size());
+		return lst;
 	}
 
 	@Override
 	@RequestMapping("Queries/Query1")
-	public List<TableEntry> differentDeathPlace() {
-		List<TableEntry> $ = new ArrayList<>();
+	public ArrayList<TableEntry> differentDeathPlace() {
+		ArrayList<TableEntry> $ = new ArrayList<>();
     	
     	java.sql.Date utilDate1 = java.sql.Date.valueOf( LocalDate.of(1912, 6, 23) );
     	java.sql.Date utilDate2 = java.sql.Date.valueOf( LocalDate.of(1954, 6, 7) );
