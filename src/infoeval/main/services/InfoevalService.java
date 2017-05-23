@@ -15,7 +15,7 @@ public interface InfoevalService {
 	List<TableEntry> getBornInPlaceYear(String year,String place) throws  Exception; 
 	//TODO: change String to an object of Entry 
 	
-	List<TableEntry> differentDeathPlace();
+	List<TableEntry> differentDeathPlace() throws Exception;
 	
 
 }

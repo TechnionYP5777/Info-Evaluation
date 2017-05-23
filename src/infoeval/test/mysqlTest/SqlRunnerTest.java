@@ -21,41 +21,40 @@ public class SqlRunnerTest {
 	SqlRunner querun;
 	
 	/**
-	 * [[SuppressWarningsSpartan]]
+	 *
 	 * @throws Exception 
 	 */
 	
 
-	public SqlRunnerTest() throws Exception{
-		querun = new SqlRunner();
-	}
 	
 	@Test
 	public void getBornInPlaceBeforeYearTest() throws Exception {
 		SqlRunner querun = new SqlRunner();
-		List<TableEntry> lst = (querun.getBornInPlaceBeforeYear("Casablanca", "1954"));
+		List<TableEntry> lst = (querun.getBornInPlaceBeforeYear("Frankfurt", "1900"));
 		for (TableEntry te : lst) {
 			java.sql.Date birthDate = te.getBirthDate();
 			String birthPlace = te.getBirthPlace();
 			SimpleDateFormat formatYear = new SimpleDateFormat("yyyy");
 			String birthYear = formatYear.format(birthDate);
 			int bYear = Integer.parseInt(birthYear);
-			assert bYear < 1954;
-			assertEquals("Casablanca",birthPlace);
+			assert bYear < 1900;
+			assertEquals("Frankfurt",birthPlace);
 		}
 		querun.close();
 	}
 
 	
-	@Ignore
-	@Test
-	public void getDifferentDeathPlaceTest() throws Exception {
-		SqlRunner querun = new SqlRunner();
-		List<TableEntry> lst = (querun.getDifferentDeathPlace());
-		for (TableEntry ¢ : lst) 
-			assertNotEquals(¢.getBirthPlace(), ¢.getDeathPlace());
-		querun.close();
-	}
+	
+//	@Test
+//	public void getDifferentDeathPlaceTest() throws Exception {
+//		SqlRunner querun = new SqlRunner();
+//		List<TableEntry> lst = (querun.getDifferentDeathPlace());
+//		for (TableEntry ¢ : lst) {
+//			assertNotEquals(¢.getBirthPlace(), ¢.getDeathPlace());
+//			System.out.println("Birth place:"+¢.getBirthPlace()+" Death place:"+¢.getDeathPlace());
+//		}
+//		querun.close();
+//	}
 	
 /*	@Ignore
 	@Test

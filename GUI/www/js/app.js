@@ -45,11 +45,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 controller: 'ActivityCtrl'
             },
             'fabContent': {
-                controller: function ($timeout) {
-                    $timeout(function () {
-                        document.getElementById('fab-activity').classList.toggle('on');
-                    }, 200);
-                }
+                controller: ''
             }
         }
     })

@@ -5,6 +5,8 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -21,7 +23,7 @@ import infoeval.main.WikiData.Connector;
 public class SqlRunner {
 	private Connector conn;
 	private String wikiURL = "https://en.wikipedia.org/?curid=";
-
+	private static final Logger logger = Logger.getLogger("SqlRunner".getClass().getName());
 	public SqlRunner() throws Exception {
 		conn = new Connector();
 	}
@@ -65,12 +67,15 @@ public class SqlRunner {
 	}
 
 	public ArrayList<TableEntry> getDifferentDeathPlace() throws SQLException, ClassNotFoundException, IOException, ParseException {
+		logger.log(Level.INFO, "Born and died in different place is being executed");
 		final String birthDeathPlaceQuery = "SELECT basic_info.name,BirthPlace,DeathPlace,wikiPageID "
 				+ "FROM basic_info,WikiID WHERE DeathPlace IS NOT NULL AND BirthPlace != DeathPlace "
 				+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
 		ArrayList<Row> rs = conn.runQuery(birthDeathPlaceQuery);
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
 		for (Row row : rs){
+			logger.log(Level.INFO, "One more added.");
+
 			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey()); 
 			String birthPlace = (String) row.row.get(1).getValue().cast(row.row.get(1).getKey()); 
 			String deathPlace = (String) row.row.get(2).getValue().cast(row.row.get(2).getKey());
@@ -79,6 +84,7 @@ public class SqlRunner {
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
 			res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, deathPlace,sqlDate ,sqlDate ,"","",""));
 		 }
+		logger.log(Level.INFO, "Finished");
 		return res;
 	}
 	

@@ -44,8 +44,9 @@ public class InfoevalServiceImp implements InfoevalService {
 	}
 
 	@Override
-	@RequestMapping("Queries/Query1")
-	public ArrayList<TableEntry> differentDeathPlace() {
+	@RequestMapping(path="Queries/Query1",method = RequestMethod.GET)
+	public ArrayList<TableEntry> differentDeathPlace() throws Exception {
+		logger.log(Level.INFO, "Born and died in different place was called");
 		ArrayList<TableEntry> $ = new ArrayList<>();
     	
     	java.sql.Date utilDate1 = java.sql.Date.valueOf( LocalDate.of(1912, 6, 23) );
@@ -60,6 +61,19 @@ public class InfoevalServiceImp implements InfoevalService {
 		entry = new TableEntry(null, "David Ben-Gurion", "plonsk", "Ramat Gan", utilDate1, utilDate2,"","","");
 		$.add(entry);
 		return $;
+	
+	
+	
+	//This is the code that should really run. The code above is just a stub. We don't run the actual Java code to find real resultsbecause the server is too slow for now ...
+		/*
+		 * TODO: DO NOT REMOVE THE CODE BELOW !!!! @MOSHIKO
+		 * 
+		 */
+	//	SqlRunner runner = new SqlRunner();
+//	ArrayList<TableEntry> lst = runner.getDifferentDeathPlace();
+//	logger.log(Level.INFO, "list size:"+lst.size());
+//	return lst;
+	
 	}
 
 	public static void main(String[] args) throws Exception {
