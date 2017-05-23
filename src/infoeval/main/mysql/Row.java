@@ -66,26 +66,21 @@ public class Row {
         }
     }
 
-    public static void formTable(ResultSet rs, List<Row> table)
+    public static void formTable(ResultSet s, List<Row> table)
             throws SQLException {
-        if (rs == null)
+        if (s == null)
             return;
 
         ResultSetMetaData rsmd;
         try {
-            rsmd = rs.getMetaData();
+            rsmd = s.getMetaData();
 
-            int NumOfCol = rsmd.getColumnCount();
-
-            while (rs.next()) {
-                Row current_row = new Row();
-
-                for (int i = 1; i <= NumOfCol; i++) {
-                    current_row.add(rs.getObject(i), rsmd.getColumnTypeName(i));
-                }
-
-                table.add(current_row);
-            }
+            for (int NumOfCol = rsmd.getColumnCount(); s.next();) {
+				Row current_row = new Row();
+				for (int ¢ = 1; ¢ <= NumOfCol; ++¢)
+					current_row.add(s.getObject(¢), rsmd.getColumnTypeName(¢));
+				table.add(current_row);
+			}
         } catch (SQLException e) {
             throw e;
         }

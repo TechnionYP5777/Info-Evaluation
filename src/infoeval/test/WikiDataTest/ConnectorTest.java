@@ -8,7 +8,6 @@ import infoeval.main.WikiData.QueryTypes;
 import infoeval.main.mysql.Row;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 

@@ -92,16 +92,12 @@ public class SqlTablesFiller {
 
 			RDFNode occupation = solution.get("occup");
 			String occup = "No Occupation";
-			if (occupation != null){
-				if (occupation.isResource()){
-					if(!occupation.asResource().toString().contains("resource")) occup ="No Occupation";
-					//TODO DELETE
-					//System.out.println("occupation is "+occupation.asResource() + "");
-					else occup = (occupation.asResource() + "").split("resource/")[1];
-				}
+			if (occupation != null)
+				if (occupation.isResource())
+					occup = !(occupation.asResource() + "").contains("resource") ? "No Occupation"
+							: (occupation.asResource() + "").split("resource/")[1];
 				else if (occupation.isLiteral())
 					occup = (occupation.asLiteral() + "").split("@")[0];
-			}
 			
 			RDFNode spOcuup = solution.get("spOccu");
 			String spouseOccupation = "No Spouse Occupation";

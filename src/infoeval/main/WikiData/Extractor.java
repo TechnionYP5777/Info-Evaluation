@@ -65,9 +65,9 @@ public class Extractor {
 	 * that we take every 10,000th entry
 	 */
 
-	public void executeQuery(QueryTypes t) {
+	public void executeQuery(QueryTypes ¢) {
 		this.results = ResultSetFactory.copyResults(QueryExecutionFactory
-				.sparqlService("http://dbpedia.org/sparql", queriesMap.get(t).asQuery()).execSelect());
+				.sparqlService("http://dbpedia.org/sparql", queriesMap.get(¢).asQuery()).execSelect());
 	}
 
 	public ResultSetRewindable getResults() {

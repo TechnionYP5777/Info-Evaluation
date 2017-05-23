@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.junit.Ignore;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,8 +52,8 @@ public class SqlRunnerTest {
 	public void getDifferentDeathPlaceTest() throws Exception {
 		SqlRunner querun = new SqlRunner();
 		List<TableEntry> lst = (querun.getDifferentDeathPlace());
-		for (TableEntry te : lst) 
-			assertNotEquals(te.getBirthPlace(), te.getDeathPlace());
+		for (TableEntry ¢ : lst) 
+			assertNotEquals(¢.getBirthPlace(), ¢.getDeathPlace());
 		querun.close();
 	}
 	

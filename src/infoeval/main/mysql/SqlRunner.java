@@ -2,34 +2,22 @@ package infoeval.main.mysql;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 import java.util.Map.Entry;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import com.fasterxml.jackson.databind.deser.std.DateDeserializers.CalendarDeserializer;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.boot.*;
-import org.springframework.boot.autoconfigure.*;
-import org.springframework.context.annotation.ComponentScan;
 
 import infoeval.main.WikiData.Connector;
-import infoeval.main.services.InfoevalServiceImp;
 
 /** 
  * @author osherh , Moshe
  * @Since 12-05-2017This class runs SQL queries on mysql server and returns a list of table entry as results
  * [[SuppressWarningsSpartan]]
  */
-//@ComponentScan
-//@EnableAutoConfiguration
-//@RestController
+
 public class SqlRunner {
 	private Connector conn;
 	private String wikiURL = "https://en.wikipedia.org/?curid=";
@@ -116,7 +104,5 @@ public class SqlRunner {
 		return res;
 	}
 	
-//	public static void main(String[] args) throws Exception {
-//		SpringApplication.run(SqlRunner.class, args);
-//	}
+
 }

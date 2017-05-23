@@ -12,12 +12,8 @@ import org.springframework.boot.autoconfigure.*;
 //import org.springframework.stereotype.*;
 //import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,22 +34,13 @@ public class InfoevalServiceImp implements InfoevalService {
 	@Override
 	@RequestMapping(path="Queries/Query2",method = RequestMethod.GET)
 	public ArrayList<TableEntry> getBornInPlaceYear(String place ,String year) throws Exception {
-//		List<TableEntry> $ = new ArrayList<TableEntry>();
-//		java.sql.Date utilDate1 = java.sql.Date.valueOf( LocalDate.of(1912, 6, 23) );
-//		TableEntry entry = new TableEntry(null, "Yevgenia Shandalov", "Maida Vale", null, utilDate1, null,"","","");
-//		$.add(entry);
-//		
-//		utilDate1 = java.sql.Date.valueOf((LocalDate.of(1886, 10, 16)));
-//		entry = new TableEntry(null, "Gavriel Shandalov", "plonsk", null, utilDate1, null,"","","");
-//		$.add(entry);
-//		
-//		return $;
+
 		SqlRunner runner = new SqlRunner();
-		ArrayList<TableEntry> lst = runner.getBornInPlaceBeforeYear(place, year);
+		ArrayList<TableEntry> $ = runner.getBornInPlaceBeforeYear(place, year);
 		logger.log(Level.INFO, "Born in place before year was called.\n Parameters:"+"Place:"+place+", Year:"+year);
-		logger.log(Level.INFO, "list size:"+lst.size());
+		logger.log(Level.INFO, "list size:"+$.size());
 		
-		return lst;
+		return $;
 	}
 
 	@Override
