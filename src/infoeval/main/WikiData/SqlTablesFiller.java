@@ -31,7 +31,7 @@ public class SqlTablesFiller {
 	}
 
 	public void createTables() throws SQLException, ClassNotFoundException, IOException {
-		dropTables();
+		//dropTables();
 		connector.runUpdate("CREATE TABLE IF NOT EXISTS basic_info(Name VARCHAR(100) NOT NULL,"
 				+ " BirthPlace VARCHAR(100) NULL,DeathPlace VARCHAR(100) NULL,BirthDate DATE NULL,"
 				+ " DeathDate DATE NULL, occupation VARCHAR(100) NULL, spouseName VARCHAR(100) NULL,"
