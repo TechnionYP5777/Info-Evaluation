@@ -57,4 +57,12 @@ public class SqlTablesFillerTest {
 
 		conn.close();
 	}
+	
+	@Test
+	public void basicInfoIndexTest() throws Exception {
+		SqlTablesFiller filler = new SqlTablesFiller();
+		filler.createIndexBasicInfo();
+		//filler.addIndexBasicInfo();
+	}
+	
 }

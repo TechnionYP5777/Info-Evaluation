@@ -67,8 +67,8 @@ public class SqlRunnerTest {
 	@Ignore
 	@Test
 	public void getSameOccupationCouplesTest() throws Exception {
-		for (TableEntry te : querun.getSameOccupationCouples())
-			assertEquals(te.getOccupation(), te.getSpouseOccupation());
+		for (TableEntry ¢ : querun.getSameOccupationCouples())
+			assertEquals(¢.getOccupation(), ¢.getSpouseOccupation());
 	}
 
 	@Ignore
@@ -104,7 +104,7 @@ public class SqlRunnerTest {
 	@Ignore
 	@Test
 	public void getSpouselessBetweenYearsTest() throws Exception {
-		for (TableEntry te : querun.getSpouselessBetweenYears("1900", "1980"))
-			assertEquals(te.getSpouseName(), "No Spouse Name");
+		for (TableEntry ¢ : querun.getSpouselessBetweenYears("1900", "1980"))
+			assertEquals(¢.getSpouseName(), "No Spouse Name");
 	}
 }

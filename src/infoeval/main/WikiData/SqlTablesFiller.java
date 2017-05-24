@@ -17,6 +17,7 @@ import org.apache.jena.rdf.model.RDFNode;
  * 
  * @author osherh
  * @author netanel
+ * @author Moshe
  * @since 17-05-2017
  *
  */
@@ -42,6 +43,15 @@ public class SqlTablesFiller {
 		logger.log(Level.INFO, "WIKI_ID table created successfully");
 	}
 
+	
+	public void createIndexBasicInfo() throws SQLException, ClassNotFoundException, IOException{
+		connector.runUpdate("CREATE INDEX basicInfoIndex "
+							+"ON basic_info ( Name, BirthDate,DeathDate);\n" );
+	}
+	//Not sure about the syntax - if its the same as create index. Will see in tests :)
+	public void addIndexBasicInfo() throws SQLException, ClassNotFoundException, IOException{
+		connector.runUpdate("ALTER TABLE basic_info ADD INDEX basicInfoIndex (Name, BirthDate,DeathDate);\n" );
+	}
 	public void fillWikiIdTable() throws SQLException, ClassNotFoundException, IOException {
 		connector.clearWikiIdTable();
 		Extractor ext = new Extractor();
