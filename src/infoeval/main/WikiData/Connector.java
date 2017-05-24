@@ -44,7 +44,7 @@ public class Connector {
 	}
 
 	public void cacheSettings() throws SQLException, ClassNotFoundException, IOException{
-		runUpdate("SET SESSION query_cache_type = DEMAND");
+		runUpdate("SET GLOBAL query_cache_type = DEMAND");
 	}
 	
 	public void initializeConnectionPool() throws IOException {
