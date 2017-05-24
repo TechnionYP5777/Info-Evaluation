@@ -26,7 +26,7 @@ public class SqlTablesFiller {
 	private String[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
 			"October", "November", "December" };
 
-	public SqlTablesFiller() throws IOException {
+	public SqlTablesFiller() throws IOException, ClassNotFoundException, SQLException {
 		connector = new Connector();
 	}
 

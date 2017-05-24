@@ -32,15 +32,21 @@ public class Connector {
 	private String db;
 	private static final BasicDataSource dataSource = new BasicDataSource();
 
-	public Connector() throws IOException {
+	public Connector() throws SQLException, ClassNotFoundException, IOException{
 		try {
 			initializeConnectionPool();
 			logger.log(Level.INFO, "connection pool initialized");
+			cacheSettings();
+			logger.log(Level.INFO, "cache settings are set");
 		} catch (Exception e) {
 			throw e;
 		}
 	}
 
+	public void cacheSettings() throws SQLException, ClassNotFoundException, IOException{
+		runUpdate("SET SESSION query_cache_type = DEMAND");
+	}
+	
 	public void initializeConnectionPool() throws IOException {
 		Properties props = new Properties();
 		try {
