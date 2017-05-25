@@ -83,11 +83,11 @@ p {
 /* Menue
 ==================================*/
 .map-background {
-    background-image: url('../img/Oldmap.jpg')
+    background-image: url('../img/grass.jpeg')
 }
 
 .clock-background {
-    background-image: url('../img/oldclock.jpg')
+    background-image: url('../img/sky.jpg')
 }
 
 .award-background {
