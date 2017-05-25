@@ -78,3 +78,14 @@ p {
     position: fixed;
     bottom: 0;
 }
+
+
+/* Menue
+==================================*/
+.map-background {
+    background-image: url('../img/Oldmap.jpg')
+}
+
+.clock-background {
+    background-image: url('../img/oldclock.jpg')
+}
