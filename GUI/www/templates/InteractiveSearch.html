@@ -1,19 +1,60 @@
 <ion-view view-title="Search">
     <ion-content ng-class="{expanded:$scope.isExpanded}">
-            <div class="content">
-             <div class="list animate-fade-slide-in-right">
-                <a href="#/app/Awards" class="item item-avatar item-icon-right">
-                    <img src="img/jon-snow.jpg">
-                    <h2>Arrests</h2>
-                    <p>Search for people who got arrested</p>
-                    <i class="icon ion-chatbubble muted"></i>
-                </a>
-                <a href="#/app/Arrests" class="item item-avatar item-icon-right">
-                    <img src="img/daenerys.jpg">
-                    <h2>Awards</h2>
-                    <p>Search for award-winners</p>
-                    <i class="icon ion-chatbubble muted"></i>
-                </a>
+           <div class="content">
+				 <div class="list animate-fade-slide-in-right">
+					 <a href="#/app/activity" class="item item-avatar item-icon-right map-background">
+						 <h2><b>Moved places</b></h2>
+						 <p style="color:black;">People who died and born in a <br/> different place</p>
+					</a>
+					<a href="#/app/Query2" class="item item-avatar item-icon-right clock-background">
+						<h2><b>Born before</b></h2>
+						<p style="color:black;">People who were born before a <br/> certain year in a certain place</p>
+					</a>
+					<a href="#/app/Awards" class="item item-avatar item-icon-right award-background">
+						<h2><b>Awards</b></h2>
+						<p style="color:black;">Search for award-winners</p>
+						
+						
+					</a>
+					<a href="#/app/Arrests" class="item item-avatar item-icon-right arrest-background">
+						<h2><b>Arrests</b></h2>
+						<p style="color:black;">Search for people who got arrested</p>
+					</a>
+					
+				</div>
+            </div> 
+		
+		
+		
+		
+		<!--<div class="content has-header">
+            <div class="list condensed-space no-padding animate-blinds done done done done done">
+                <div class="card dark-bg in map-background" style="transition-delay: 0.2s;">
+                    <a class="clear-bg item-bg-image waves-effect" href="#/app/activity" >
+                        <h2 style="color:black;">Moved places</h2>
+                        <p style="color:black;">People who died and born in a different place</p>
+                    </a>
+                </div>
+                <div class="card energized-bg in clock-background" href="#/app/Query2" style="transition-delay: 0.34s;">
+                    <a class="clear-bg item-bg-image waves-effect waves-button waves-light has-mask-reverse">
+                        <h2 style="color:black;">Born before</h2>
+                        <p style="color:black;">People who died and born in a different place</p>
+                    </a>
+                </div>
+                <div class="card assertive-bg in arrest-background" href="#/app/Awards" style="transition-delay: 0.47s;">
+                    <a class="clear-bg item-bg-image waves-effect waves-button waves-light has-mask-reverse">
+                        <h2 style="color:black;">Arrests</h2>
+                        <p style="color:black;">Search for people who got arrested</p>
+                    </a>
+                </div>
+                <div class="card balanced-bg in award-background" href="#/app/Arrests" style="transition-delay: 0.61s;">
+                    <a class="clear-bg item-bg-image waves-effect waves-button waves-light has-mask-reverse">
+                        <h2 style="color:black;">Awards</h2>
+                        <p style="color:black;">Search for award-winners</p>
+                    </a>
+                </div>
             </div>
+        </div> -->
+		
     </ion-content>
 </ion-view>

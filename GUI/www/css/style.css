@@ -78,3 +78,22 @@ p {
     position: fixed;
     bottom: 0;
 }
+
+
+/* Menue
+==================================*/
+.map-background {
+    background-image: url('../img/grass.jpeg')
+}
+
+.clock-background {
+    background-image: url('../img/sky.jpg')
+}
+
+.award-background {
+    background-image: url('../img/awards.jpg')
+}
+
+.arrest-background {
+    background-image: url('../img/handcuffs.jpeg')
+}
