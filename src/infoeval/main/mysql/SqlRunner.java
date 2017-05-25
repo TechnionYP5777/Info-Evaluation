@@ -1,116 +1,195 @@
 package infoeval.main.mysql;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Map.Entry;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import infoeval.main.WikiData.Connector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/** 
+/**
  * @author osherh , Moshe
- * @Since 12-05-2017This class runs SQL queries on mysql server and returns a list of table entry as results
- * [[SuppressWarningsSpartan]]
+ * @Since 12-05-2017 This class runs SQL queries on mysql server and returns a
+ *        list of table entry as results [[SuppressWarningsSpartan]]
  */
 
 public class SqlRunner {
 	private Connector conn;
+	QueryResultsSerializer resultsSer;
 	private String wikiURL = "https://en.wikipedia.org/?curid=";
 	private static final Logger logger = Logger.getLogger("SqlRunner".getClass().getName());
-	
+
 	public SqlRunner() throws Exception {
 		conn = new Connector();
+		resultsSer = new QueryResultsSerializer();
+		conn.runUpdate("CREATE TABLE IF NOT EXISTS serialized_query_results "
+				+ "(serialized_id int(30) NOT NULL AUTO_INCREMENT, " + "query_identifier VARCHAR(100) NOT NULL, "
+				+ "serialized_result LONGBLOB, " + "PRIMARY KEY (serialized_id))");
+		logger.log(Level.INFO, "serialized reulst table created successfully");
 	}
-	
-	public void close(){
-		try{
+
+	public void close() {
+		try {
 			conn.close();
-		}
-		catch(SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-		
-	//@RequestMapping("Queries/Query2_real")
+
+	// @RequestMapping("Queries/Query2_real")
 	public ArrayList<TableEntry> getBornInPlaceBeforeYear(String place, String year)
-			throws SQLException, ClassNotFoundException, IOException,ParseException {
-		logger.log(Level.INFO, "Born and died in different place is being executed");
-		final String beforeYearInPlace = "SELECT SQL_CACHE basic_info.name,BirthDate,wikiPageID FROM basic_info,WikiID "
-				+ "WHERE YEAR(BirthDate) < ? AND BirthPlace = ? "
-				+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
+			throws SQLException, ClassNotFoundException, IOException, ParseException {
 		Object[] inp = new Object[] { year, place };
-		ArrayList<Row> rs = conn.runQuery(beforeYearInPlace, inp);
+		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
+				+ "WHERE qeury_identifier = " + "getBornInPlaceBeforeYear(?,?)", inp);
+		long serialized_id = -1;
+
+		if (id_result.isEmpty()) {
+			final String beforeYearInPlace = "SELECT SQL_CACHE basic_info.name,BirthDate,wikiPageID "
+					+ "FROM basic_info,WikiID " + "WHERE YEAR(BirthDate) < ? AND BirthPlace = ? "
+					+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
+			logger.log(Level.INFO, "Born and died in different place is being executed");
+			ArrayList<Row> rowsList = conn.runQuery(beforeYearInPlace, inp);
+			String query_identifier = "getBornInPlaceBeforeYear" + "(" + year + place + ")";
+			Connection connection = conn.getConnection();
+			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rowsList);
+			connection.close();
+		} else {
+			serialized_id = (long) id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
+		}
+
+		Connection connection = conn.getConnection();
+		@SuppressWarnings("unchecked")
+		ArrayList<Row> rows = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
+		connection.close();
+
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
-		for (Row row : rs){
-			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey()); 
-			Date birthDate = (java.sql.Date) row.row.get(1).getValue().cast(row.row.get(1).getKey()); 
+		for (Row row : rows) {
+			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey());
+			Date birthDate = (java.sql.Date) row.row.get(1).getValue().cast(row.row.get(1).getKey());
 			String wikiPageID = (String) row.row.get(2).getValue().cast(row.row.get(2).getKey());
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
-			res.add(new TableEntry(wikiURL + wikiPageID, name, place, "", birthDate, sqlDate,"","",""));
-		 }
+			res.add(new TableEntry(wikiURL + wikiPageID, name, place, "", birthDate, sqlDate, "", "", ""));
+		}
 		return res;
 	}
 
-	public ArrayList<TableEntry> getDifferentDeathPlace() throws SQLException, ClassNotFoundException, IOException, ParseException {
-		logger.log(Level.INFO, "Different birth and death place is being executed");
-		final String birthDeathPlace = "SELECT SQL_CACHE basic_info.name,BirthPlace,DeathPlace,wikiPageID "
-				+ "FROM basic_info,WikiID "
-				+ "WHERE DeathPlace != 'No Death Place' "
-				+ "AND BirthPlace != DeathPlace "
-				+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
-		ArrayList<Row> rs = conn.runQuery(birthDeathPlace);
+	public ArrayList<TableEntry> getDifferentDeathPlace()
+			throws SQLException, ClassNotFoundException, IOException, ParseException {
+		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
+				+ "WHERE qeury_identifier = " + "getDifferentDeathPlace(?,?)");
+		long serialized_id = -1;
+
+		if (id_result.isEmpty()) {
+			final String birthDeathPlace = "SELECT SQL_CACHE basic_info.name,BirthPlace,DeathPlace,wikiPageID "
+					+ "FROM basic_info,WikiID " + "WHERE DeathPlace != 'No Death Place' "
+					+ "AND BirthPlace != DeathPlace "
+					+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
+			logger.log(Level.INFO, "Different birth and death place is being executed");
+			ArrayList<Row> rowsList = conn.runQuery(birthDeathPlace);
+			String query_identifier = "getDifferentDeathPlace()";
+			Connection connection = conn.getConnection();
+			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rowsList);
+			connection.close();
+		} else {
+			serialized_id = (long) id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
+		}
+
+		Connection connection = conn.getConnection();
+		@SuppressWarnings("unchecked")
+		ArrayList<Row> rows = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
+		connection.close();
+
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
-		int i=1;
-		for (Row row : rs){
+		int i = 1;
+		for (Row row : rows) {
 			logger.log(Level.INFO, "record num " + i + " added");
-			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey()); 
-			String birthPlace = (String) row.row.get(1).getValue().cast(row.row.get(1).getKey()); 
+			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey());
+			String birthPlace = (String) row.row.get(1).getValue().cast(row.row.get(1).getKey());
 			String deathPlace = (String) row.row.get(2).getValue().cast(row.row.get(2).getKey());
 			String wikiPageID = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
-			res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, deathPlace,sqlDate ,sqlDate ,"","",""));
+			res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, deathPlace, sqlDate, sqlDate, "", "", ""));
 			++i;
 		}
 		return res;
 	}
-	
-	public ArrayList<TableEntry> getSameOccupationCouples() throws SQLException, ClassNotFoundException, IOException, ParseException {
-		logger.log(Level.INFO, "Same occupation couples is being executed");
-		final String sameOccupationCouples = "SELECT SQL_CACHE name,spouseName,occupation,spouseOccupation "
-				+ "FROM basic_info "
-				+ "WHERE spouseName != 'No Spouse Name' AND spouseOccupation != 'No Spouse Occupation' "
-				+ "AND occupation = spouseOccupation"; 		
-		ArrayList<Row> rs = conn.runQuery(sameOccupationCouples); 
+
+	public ArrayList<TableEntry> getSameOccupationCouples()
+			throws SQLException, ClassNotFoundException, IOException, ParseException {
+		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
+				+ "WHERE qeury_identifier = " + "getSameOccupationCouples(?,?)");
+		long serialized_id = -1;
+
+		if (id_result.isEmpty()) {
+			final String sameOccupationCouples = "SELECT SQL_CACHE name,spouseName,occupation,spouseOccupation "
+					+ "FROM basic_info "
+					+ "WHERE spouseName != 'No Spouse Name' AND spouseOccupation != 'No Spouse Occupation' "
+					+ "AND occupation = spouseOccupation";
+			logger.log(Level.INFO, "Same occupation couples is being executed");
+			ArrayList<Row> rowsList = conn.runQuery(sameOccupationCouples);
+			String query_identifier = "getSameOccupationCouples()";
+			Connection connection = conn.getConnection();
+			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rowsList);
+			connection.close();
+		} else {
+			serialized_id = (long) id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
+		}
+
+		Connection connection = conn.getConnection();
+		@SuppressWarnings("unchecked")
+		ArrayList<Row> rows = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
+		connection.close();
+
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
-		for (Row row : rs){
-			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey()); 
-			String spouseName = (String) row.row.get(1).getValue().cast(row.row.get(1).getKey()); 
+		for (Row row : rows) {
+			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey());
+			String spouseName = (String) row.row.get(1).getValue().cast(row.row.get(1).getKey());
 			String occupation = (String) row.row.get(2).getValue().cast(row.row.get(2).getKey());
 			String spouseOoccupation = (String) row.row.get(2).getValue().cast(row.row.get(2).getKey());
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
-			res.add(new TableEntry("", name, "", "",sqlDate ,sqlDate ,occupation, spouseName,spouseOoccupation));
+			res.add(new TableEntry("", name, "", "", sqlDate, sqlDate, occupation, spouseName, spouseOoccupation));
 		}
 		return res;
 	}
-	
-	public ArrayList<TableEntry> getSameBirthPlaceCouples() throws SQLException, ClassNotFoundException, IOException, ParseException {
-		logger.log(Level.INFO, "same birth place couples is being executed");
-		final String sameBirthPlaceCouples = "SELECT SQL_CACHE B1.name AS Name,B2.name AS SpouseName,B1.birthPlace AS BirthPlace "
-				+ "FROM basic_info B1, basic_info B2 "
-				+ "WHERE B1.spouseName = B2.name AND B2.spouseName = B1.name "
-				+ "AND B1.birthPlace = B2.birthPlace"; 
-		ArrayList<Row> rs = conn.runQuery(sameBirthPlaceCouples); 
+
+	public ArrayList<TableEntry> getSameBirthPlaceCouples()
+			throws SQLException, ClassNotFoundException, IOException, ParseException {
+		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
+				+ "WHERE qeury_identifier = " + "getSameBirthPlaceCouples(?,?)");
+		long serialized_id = -1;
+
+		if (id_result.isEmpty()) {
+			final String sameBirthPlaceCouples = "SELECT SQL_CACHE B1.name AS Name,B2.name AS SpouseName,B1.birthPlace AS BirthPlace "
+					+ "FROM basic_info B1, basic_info B2 "
+					+ "WHERE B1.spouseName = B2.name AND B2.spouseName = B1.name "
+					+ "AND B1.birthPlace = B2.birthPlace";
+			logger.log(Level.INFO, "same birth place couples is being executed");
+			ArrayList<Row> rowsList = conn.runQuery(sameBirthPlaceCouples);
+			String query_identifier = "getSameBirthPlaceCouples()";
+			Connection connection = conn.getConnection();
+			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rowsList);
+			connection.close();
+		} else {
+			serialized_id = (long) id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
+		}
+
+		Connection connection = conn.getConnection();
+		@SuppressWarnings("unchecked")
+		ArrayList<Row> rows = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
+		connection.close();
+
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
-		for (Row row : rs){
-			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey()); 
-			String spouseName = (String) row.row.get(1).getValue().cast(row.row.get(1).getKey()); 
+		for (Row row : rows) {
+			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey());
+			String spouseName = (String) row.row.get(1).getValue().cast(row.row.get(1).getKey());
 			String birthPlace = (String) row.row.get(2).getValue().cast(row.row.get(2).getKey());
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
@@ -119,50 +198,85 @@ public class SqlRunner {
 		return res;
 	}
 
-	public ArrayList<TableEntry> getOccupationBetweenYears(String year1, String year2, String occupation) throws SQLException, ClassNotFoundException, IOException, ParseException {
-		logger.log(Level.INFO, "occupation between years is being executed");
-		final String occupationBetweenYears = "SELECT SQL_CACHE name,birthDate,deathDate,wikiPageId "
-				+ "FROM basic_info, WikiID "
-				+ "WHERE deathDate IS NOT NULL "
-				+ "AND YEAR(birthDate) >= ? AND YEAR(deathDate) <= ? "
-				+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)"; 
-		Object[] inp = new Object[] { year1, year2, occupation };
-		ArrayList<Row> rs = conn.runQuery(occupationBetweenYears,inp); 
+	public ArrayList<TableEntry> getOccupationBetweenYears(String year1, String year2, String occupation)
+			throws SQLException, ClassNotFoundException, IOException, ParseException {
+		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
+				+ "WHERE qeury_identifier = " + "getOccupationBetweenYears(?,?)");
+		long serialized_id = -1;
+
+		if (id_result.isEmpty()) {
+			final String occupationBetweenYears = "SELECT SQL_CACHE name,birthDate,deathDate,wikiPageId "
+					+ "FROM basic_info, WikiID " + "WHERE deathDate IS NOT NULL "
+					+ "AND YEAR(birthDate) >= ? AND YEAR(deathDate) <= ? "
+					+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
+			logger.log(Level.INFO, "occupation between years is being executed");
+			Object[] inp = new Object[] { year1, year2, occupation };
+			ArrayList<Row> rowsList = conn.runQuery(occupationBetweenYears, inp);
+			String query_identifier = "getOccupationBetweenYears(" + year1 + "," + year2 + "," + occupation + ")";
+			Connection connection = conn.getConnection();
+			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rowsList);
+			connection.close();
+		} else {
+			serialized_id = (long) id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
+		}
+
+		Connection connection = conn.getConnection();
+		@SuppressWarnings("unchecked")
+		ArrayList<Row> rows = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
+		connection.close();
+
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
-		for (Row row : rs){
-			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey()); 
-			Date birthDate = (java.sql.Date) row.row.get(1).getValue().cast(row.row.get(1).getKey()); 
-			Date deathDate = (java.sql.Date) row.row.get(2).getValue().cast(row.row.get(2).getKey()); 
+		for (Row row : rows) {
+			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey());
+			Date birthDate = (java.sql.Date) row.row.get(1).getValue().cast(row.row.get(1).getKey());
+			Date deathDate = (java.sql.Date) row.row.get(2).getValue().cast(row.row.get(2).getKey());
 			String wikiPageID = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
 			res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, deathDate, occupation, "", ""));
 		}
 		return res;
 	}
 
-	public ArrayList<TableEntry> getSpouselessBetweenYears(String year1, String year2) throws SQLException, ClassNotFoundException, IOException, ParseException {
-		logger.log(Level.INFO, "spouseless between years is being executed");
-		final String spouselessBetweenYears = "SELECT SQL_CACHE name,birthDate,deathDate,occupation,wikiPageId "
-				+ "FROM basic_info, WikiID "
-				+ "WHERE deathDate IS NOT NULL "
-				+ "AND YEAR(birthDate) >= ? AND YEAR(deathDate) <= ? "
-				+ "AND spouseName = 'No Spouse Name' "
-				+ "AND occupation = ? "				
-				+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)"; 
-		Object[] inp = new Object[] { year1, year2 };
-		ArrayList<Row> rs = conn.runQuery(spouselessBetweenYears,inp); 
+	public ArrayList<TableEntry> getSpouselessBetweenYears(String year1, String year2)
+			throws SQLException, ClassNotFoundException, IOException, ParseException {
+		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
+				+ "WHERE qeury_identifier = " + "getOccupationBetweenYears(?,?)");
+		long serialized_id = -1;
+
+		if (id_result.isEmpty()) {
+			final String spouselessBetweenYears = "SELECT SQL_CACHE name,birthDate,deathDate,occupation,wikiPageId "
+					+ "FROM basic_info, WikiID " + "WHERE deathDate IS NOT NULL "
+					+ "AND YEAR(birthDate) >= ? AND YEAR(deathDate) <= ? " + "AND spouseName = 'No Spouse Name' "
+					+ "AND occupation = ? "
+					+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
+			logger.log(Level.INFO, "spouseless between years is being executed");
+			Object[] inp = new Object[] { year1, year2 };
+			ArrayList<Row> rowsList = conn.runQuery(spouselessBetweenYears, inp);
+			String query_identifier = "getSpouselessBetweenYears(" + year1 + "," + year2 + ")";
+			Connection connection = conn.getConnection();
+			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rowsList);
+			connection.close();
+		} else {
+			serialized_id = (long) id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
+		}
+
+		Connection connection = conn.getConnection();
+		@SuppressWarnings("unchecked")
+		ArrayList<Row> rows = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
+		connection.close();
+
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
-		for (Row row : rs){
-			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey()); 
-			Date birthDate = (java.sql.Date) row.row.get(1).getValue().cast(row.row.get(1).getKey()); 
-			Date deathDate = (java.sql.Date) row.row.get(2).getValue().cast(row.row.get(2).getKey()); 
-			String occupation = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey()); 			
+		for (Row row : rows) {
+			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey());
+			Date birthDate = (java.sql.Date) row.row.get(1).getValue().cast(row.row.get(1).getKey());
+			Date deathDate = (java.sql.Date) row.row.get(2).getValue().cast(row.row.get(2).getKey());
+			String occupation = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
 			String wikiPageID = (String) row.row.get(4).getValue().cast(row.row.get(4).getKey());
 			res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, deathDate, occupation, "", ""));
 		}
 		return res;
-	}	
-	
-	public ArrayList<Row> runQuery(String s,Object[] inp) throws ClassNotFoundException, SQLException, IOException{
-		return conn.runQuery(s,inp);
+	}
+
+	public ArrayList<Row> runQuery(String s, Object[] inp) throws ClassNotFoundException, SQLException, IOException {
+		return conn.runQuery(s, inp);
 	}
 }
