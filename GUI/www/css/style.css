@@ -89,3 +89,11 @@ p {
 .clock-background {
     background-image: url('../img/oldclock.jpg')
 }
+
+.award-background {
+    background-image: url('../img/awards.jpg')
+}
+
+.arrest-background {
+    background-image: url('../img/handcuffs.jpeg')
+}
