@@ -47,26 +47,27 @@ public class SqlRunner {
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
 				+ "WHERE qeury_identifier = " + "getBornInPlaceBeforeYear(?,?)", inp);
 		long serialized_id = -1;
-
+		ArrayList<Row> rows=new ArrayList<>() ; 
 		if (id_result.isEmpty()) {
 			final String beforeYearInPlace = "SELECT SQL_CACHE basic_info.name,BirthDate,wikiPageID "
 					+ "FROM basic_info,WikiID " + "WHERE YEAR(BirthDate) < ? AND BirthPlace = ? "
 					+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
 			logger.log(Level.INFO, "Born and died in different place is being executed");
-			ArrayList<Row> rowsList = conn.runQuery(beforeYearInPlace, inp);
+			rows = conn.runQuery(beforeYearInPlace, inp);
 			String query_identifier = "getBornInPlaceBeforeYear" + "(" + year + place + ")";
 			Connection connection = conn.getConnection();
-			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rowsList);
+			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rows);
 			connection.close();
 		} else {
 			serialized_id = (long) id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
-		}
+	
 
 		Connection connection = conn.getConnection();
 		@SuppressWarnings("unchecked")
-		ArrayList<Row> rows = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
+		ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
 		connection.close();
-
+		rows.addAll(rows2);
+		}
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
 		for (Row row : rows) {
 			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey());
@@ -84,27 +85,28 @@ public class SqlRunner {
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
 				+ "WHERE qeury_identifier = " + "getDifferentDeathPlace(?,?)");
 		long serialized_id = -1;
-
+		ArrayList<Row> rows=new ArrayList<>();
 		if (id_result.isEmpty()) {
 			final String birthDeathPlace = "SELECT SQL_CACHE basic_info.name,BirthPlace,DeathPlace,wikiPageID "
 					+ "FROM basic_info,WikiID " + "WHERE DeathPlace != 'No Death Place' "
 					+ "AND BirthPlace != DeathPlace "
 					+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
 			logger.log(Level.INFO, "Different birth and death place is being executed");
-			ArrayList<Row> rowsList = conn.runQuery(birthDeathPlace);
+			rows = conn.runQuery(birthDeathPlace);
 			String query_identifier = "getDifferentDeathPlace()";
 			Connection connection = conn.getConnection();
-			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rowsList);
+			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rows);
 			connection.close();
 		} else {
 			serialized_id = (long) id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
-		}
+		
 
 		Connection connection = conn.getConnection();
 		@SuppressWarnings("unchecked")
-		ArrayList<Row> rows = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
+		ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
 		connection.close();
-
+		rows.addAll(rows2);
+		}
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
 		int i = 1;
 		for (Row row : rows) {
@@ -126,26 +128,28 @@ public class SqlRunner {
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
 				+ "WHERE qeury_identifier = " + "getSameOccupationCouples(?,?)");
 		long serialized_id = -1;
-
+		ArrayList<Row> rows=new ArrayList<>();
 		if (id_result.isEmpty()) {
 			final String sameOccupationCouples = "SELECT SQL_CACHE name,spouseName,occupation,spouseOccupation "
 					+ "FROM basic_info "
 					+ "WHERE spouseName != 'No Spouse Name' AND spouseOccupation != 'No Spouse Occupation' "
 					+ "AND occupation = spouseOccupation";
 			logger.log(Level.INFO, "Same occupation couples is being executed");
-			ArrayList<Row> rowsList = conn.runQuery(sameOccupationCouples);
+			rows = conn.runQuery(sameOccupationCouples);
 			String query_identifier = "getSameOccupationCouples()";
 			Connection connection = conn.getConnection();
-			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rowsList);
+			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rows);
 			connection.close();
 		} else {
 			serialized_id = (long) id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
-		}
+		
 
 		Connection connection = conn.getConnection();
 		@SuppressWarnings("unchecked")
-		ArrayList<Row> rows = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
+		ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
+		rows.addAll(rows2);
 		connection.close();
+		}
 
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
 		for (Row row : rows) {
@@ -165,27 +169,28 @@ public class SqlRunner {
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
 				+ "WHERE qeury_identifier = " + "getSameBirthPlaceCouples(?,?)");
 		long serialized_id = -1;
-
+		ArrayList<Row> rows=new ArrayList<>();
 		if (id_result.isEmpty()) {
 			final String sameBirthPlaceCouples = "SELECT SQL_CACHE B1.name AS Name,B2.name AS SpouseName,B1.birthPlace AS BirthPlace "
 					+ "FROM basic_info B1, basic_info B2 "
 					+ "WHERE B1.spouseName = B2.name AND B2.spouseName = B1.name "
 					+ "AND B1.birthPlace = B2.birthPlace";
 			logger.log(Level.INFO, "same birth place couples is being executed");
-			ArrayList<Row> rowsList = conn.runQuery(sameBirthPlaceCouples);
+			rowst = conn.runQuery(sameBirthPlaceCouples);
 			String query_identifier = "getSameBirthPlaceCouples()";
 			Connection connection = conn.getConnection();
-			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rowsList);
+			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rows);
 			connection.close();
 		} else {
 			serialized_id = (long) id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
-		}
+		
 
 		Connection connection = conn.getConnection();
 		@SuppressWarnings("unchecked")
-		ArrayList<Row> rows = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
+		ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
+		rows.addAll(rows2);
 		connection.close();
-
+		}
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
 		for (Row row : rows) {
 			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey());
@@ -203,7 +208,7 @@ public class SqlRunner {
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
 				+ "WHERE qeury_identifier = " + "getOccupationBetweenYears(?,?)");
 		long serialized_id = -1;
-
+		ArrayList<Row> rows=new ArrayList<>();
 		if (id_result.isEmpty()) {
 			final String occupationBetweenYears = "SELECT SQL_CACHE name,birthDate,deathDate,wikiPageId "
 					+ "FROM basic_info, WikiID " + "WHERE deathDate IS NOT NULL "
@@ -211,20 +216,21 @@ public class SqlRunner {
 					+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
 			logger.log(Level.INFO, "occupation between years is being executed");
 			Object[] inp = new Object[] { year1, year2, occupation };
-			ArrayList<Row> rowsList = conn.runQuery(occupationBetweenYears, inp);
+			rows = conn.runQuery(occupationBetweenYears, inp);
 			String query_identifier = "getOccupationBetweenYears(" + year1 + "," + year2 + "," + occupation + ")";
 			Connection connection = conn.getConnection();
-			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rowsList);
+			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rows);
 			connection.close();
 		} else {
 			serialized_id = (long) id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
-		}
+		
 
 		Connection connection = conn.getConnection();
 		@SuppressWarnings("unchecked")
-		ArrayList<Row> rows = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
+		ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
+		rows.addAll(rows2);
 		connection.close();
-
+		}
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
 		for (Row row : rows) {
 			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey());
@@ -241,7 +247,7 @@ public class SqlRunner {
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
 				+ "WHERE qeury_identifier = " + "getOccupationBetweenYears(?,?)");
 		long serialized_id = -1;
-
+		ArrayList<Row> rows=new ArrayList<>();
 		if (id_result.isEmpty()) {
 			final String spouselessBetweenYears = "SELECT SQL_CACHE name,birthDate,deathDate,occupation,wikiPageId "
 					+ "FROM basic_info, WikiID " + "WHERE deathDate IS NOT NULL "
@@ -250,20 +256,21 @@ public class SqlRunner {
 					+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
 			logger.log(Level.INFO, "spouseless between years is being executed");
 			Object[] inp = new Object[] { year1, year2 };
-			ArrayList<Row> rowsList = conn.runQuery(spouselessBetweenYears, inp);
+			rows = conn.runQuery(spouselessBetweenYears, inp);
 			String query_identifier = "getSpouselessBetweenYears(" + year1 + "," + year2 + ")";
 			Connection connection = conn.getConnection();
-			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rowsList);
+			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rows);
 			connection.close();
 		} else {
 			serialized_id = (long) id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
-		}
+		
 
 		Connection connection = conn.getConnection();
 		@SuppressWarnings("unchecked")
-		ArrayList<Row> rows = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
+		ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
+		rows.addAll(rows2);
 		connection.close();
-
+		}
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
 		for (Row row : rows) {
 			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey());
