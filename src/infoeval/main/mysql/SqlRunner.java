@@ -43,11 +43,11 @@ public class SqlRunner {
 	public ArrayList<TableEntry> getBornInPlaceBeforeYear(String place, String year)
 			throws SQLException, ClassNotFoundException, IOException, ParseException {
 		Object[] inp = new Object[] { place,year };
-//		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
-//				+ "WHERE query_identifier = " + "getBornInPlaceYear(?,?)", inp);
+		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
+				+ "WHERE query_identifier = " + "getBornInPlaceYear(?,?)", inp);
 		long serialized_id = -1;
 		ArrayList<Row> rows=new ArrayList<>() ; 
-		if (1==1) {
+		if (id_result.isEmpty()) {
 			final String beforeYearInPlace = "SELECT SQL_CACHE basic_info.name,BirthDate,wikiPageID "
 					+ "FROM basic_info,WikiID " + " WHERE BirthPlace = ? AND YEAR(BirthDate) < ?  "
 					+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
@@ -56,12 +56,12 @@ public class SqlRunner {
 			String query_identifier = "getBornInPlaceYear" + "(" + place + year + ")";
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
 		} 
-		//	else {
-//			serialized_id = (long) id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
-//			@SuppressWarnings("unchecked")
-//			ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(conn, serialized_id);
-//			rows.addAll(rows2);
-//		}
+			else {
+			serialized_id = (long) id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
+			@SuppressWarnings("unchecked")
+			ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(conn, serialized_id);
+			rows.addAll(rows2);
+		}
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
 		for (Row row : rows) {
 			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey());

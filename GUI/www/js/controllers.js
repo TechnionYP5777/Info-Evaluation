@@ -123,7 +123,6 @@ angular.module('starter.controllers', [])
 			year: DataQ.getYear()
 		}
 		}).then(function successCallback(response) {
-			alert((response))
 			console.log('success');
 			console.log(response.data);
 			$scope.persons = [];
@@ -132,7 +131,6 @@ angular.module('starter.controllers', [])
 				console.log(r);
 			  var person = response.data[r];
 			  $scope.persons.push(person);
-				console.log("OHHHH YEAHHHHHH PUSH IT HARDER");
 				console.log(person.name);
 			}
 		console.log('end of success');
