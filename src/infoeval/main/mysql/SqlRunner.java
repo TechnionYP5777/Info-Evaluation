@@ -176,7 +176,7 @@ public class SqlRunner {
 					+ "WHERE B1.spouseName = B2.name AND B2.spouseName = B1.name "
 					+ "AND B1.birthPlace = B2.birthPlace";
 			logger.log(Level.INFO, "same birth place couples is being executed");
-			rowst = conn.runQuery(sameBirthPlaceCouples);
+			rows = conn.runQuery(sameBirthPlaceCouples);
 			String query_identifier = "getSameBirthPlaceCouples()";
 			Connection connection = conn.getConnection();
 			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rows);
