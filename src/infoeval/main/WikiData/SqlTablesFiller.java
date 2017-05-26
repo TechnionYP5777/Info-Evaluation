@@ -41,7 +41,7 @@ public class SqlTablesFiller {
 		connector.runUpdate(
 				"CREATE TABLE IF NOT EXISTS WikiID(Name VARCHAR(100) NOT NULL,wikiPageID VARCHAR(50) NOT NULL)");
 		logger.log(Level.INFO, "WIKI_ID table created successfully");
-		addPrimaryKeyWikiID();
+		createIndexWikiID();
 	}
 
 	
@@ -54,8 +54,8 @@ public class SqlTablesFiller {
 		connector.runUpdate("ALTER TABLE basic_info ADD INDEX basicInfoIndex (Name, BirthDate,DeathDate);\n" );
 	}
 	
-	public void addPrimaryKeyWikiID() throws SQLException, ClassNotFoundException, IOException{
-		connector.runUpdate("ALTER TABLE WikiID ADD PRIMARY KEY (wikiPageID)");			
+	public void createIndexWikiID() throws SQLException, ClassNotFoundException, IOException{
+		connector.runUpdate("ALTER TABLE WikiID ADD INDEX wikiIdIndex (wikiPageID)");			
 	}
 	
 	public void fillWikiIdTable() throws SQLException, ClassNotFoundException, IOException {
