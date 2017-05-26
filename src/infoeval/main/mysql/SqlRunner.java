@@ -44,7 +44,7 @@ public class SqlRunner {
 			throws SQLException, ClassNotFoundException, IOException, ParseException {
 		Object[] inp = new Object[] { place,year };
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
-				+ "WHERE query_identifier = " + "getBornInPlaceYear(?,?)", inp);
+				+ "WHERE query_identifier LIKE CONCAT(getBornInPlaceYear(?,?))", inp);
 		long serialized_id = -1;
 		ArrayList<Row> rows=new ArrayList<>() ; 
 		if (id_result.isEmpty()) {
@@ -183,7 +183,7 @@ public class SqlRunner {
 			throws SQLException, ClassNotFoundException, IOException, ParseException {
 		Object[] inp = new Object[] { year1, year2, occupation };
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
-				+ "WHERE qeury_identifier = " + "getOccupationBetweenYears(?,?,?)",inp);
+				+ "WHERE qeury_identifier LIKE CONCAT(getOccupationBetweenYears(?,?,?))",inp);
 		long serialized_id = -1;
 		ArrayList<Row> rows=new ArrayList<>();
 		if (id_result.isEmpty()) {
@@ -216,7 +216,7 @@ public class SqlRunner {
 			throws SQLException, ClassNotFoundException, IOException, ParseException {
 		Object[] inp = new Object[] { year1, year2 };
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
-				+ "WHERE qeury_identifier = " + "getSpouselessBetweenYears(?,?)",inp);
+				+ "WHERE qeury_identifier LIKE CONCAT(getSpouselessBetweenYears(?,?))",inp);
 		long serialized_id = -1;
 		ArrayList<Row> rows=new ArrayList<>();
 		if (id_result.isEmpty()) {
