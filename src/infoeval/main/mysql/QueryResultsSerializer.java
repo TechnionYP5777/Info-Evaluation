@@ -58,7 +58,7 @@ public class QueryResultsSerializer {
 		pstmt.close();
 		c.close();
 
-		logger.log(Level.INFO, "Qeury with Serialized_ID: " + serialized_id + " has been deserialized");
+		logger.log(Level.INFO, "Query with Serialized_ID: " + serialized_id + " has been deserialized");
 		return deSerializedObject;
 	}
 }

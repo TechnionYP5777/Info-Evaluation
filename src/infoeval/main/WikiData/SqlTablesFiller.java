@@ -45,11 +45,7 @@ public class SqlTablesFiller {
 	}
 
 	
-	public void createIndexBasicInfo() throws SQLException, ClassNotFoundException, IOException{
-		connector.runUpdate("CREATE INDEX basicInfoIndex "
-							+"ON basic_info ( Name, BirthDate,DeathDate);\n" );
-	}
-	//Not sure about the syntax - if its the same as create index. Will see in tests :)
+	
 	public void addIndexBasicInfo() throws SQLException, ClassNotFoundException, IOException{
 		connector.runUpdate("ALTER TABLE basic_info ADD INDEX basicInfoIndex (Name, BirthDate,DeathDate);\n" );
 	}
