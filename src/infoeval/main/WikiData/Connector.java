@@ -64,6 +64,8 @@ public class Connector {
 		dataSource.setUrl(server + "://" + host + "/" + db);
 		dataSource.setUsername(username);
 		dataSource.setPassword(password);
+		dataSource.setTestOnBorrow(true);
+		dataSource.setValidationQuery("SELECT 1");
 	}
 
 	public Connection getConnection() throws SQLException, IOException, ClassNotFoundException /* ,NamingException */ {

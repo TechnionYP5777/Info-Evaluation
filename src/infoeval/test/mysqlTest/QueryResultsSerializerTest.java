@@ -31,7 +31,7 @@ public class QueryResultsSerializerTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void serializeANDdeSerializeTest() throws Exception {
-		runner.close();
+
 		
 		long serialized_id = -1;
 		String query_identifier = "testQuery";
