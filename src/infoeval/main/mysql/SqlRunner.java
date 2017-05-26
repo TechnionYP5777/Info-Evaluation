@@ -1,7 +1,6 @@
 package infoeval.main.mysql;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -55,18 +54,12 @@ public class SqlRunner {
 			logger.log(Level.INFO, "Born and died in different place is being executed");
 			rows = conn.runQuery(beforeYearInPlace, inp);
 			String query_identifier = "getBornInPlaceBeforeYear" + "(" + year + place + ")";
-			Connection connection = conn.getConnection();
-			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rows);
-			connection.close();
+			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
 		} else {
 			serialized_id = (long) id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
-	
-
-		Connection connection = conn.getConnection();
-		@SuppressWarnings("unchecked")
-		ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
-		connection.close();
-		rows.addAll(rows2);
+			@SuppressWarnings("unchecked")
+			ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(conn, serialized_id);
+			rows.addAll(rows2);
 		}
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
 		for (Row row : rows) {
@@ -83,7 +76,7 @@ public class SqlRunner {
 	public ArrayList<TableEntry> getDifferentDeathPlace()
 			throws SQLException, ClassNotFoundException, IOException, ParseException {
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
-				+ "WHERE qeury_identifier = " + "getDifferentDeathPlace(?,?)");
+				+ "WHERE qeury_identifier = " + "getDifferentDeathPlace()");
 		long serialized_id = -1;
 		ArrayList<Row> rows=new ArrayList<>();
 		if (id_result.isEmpty()) {
@@ -94,18 +87,12 @@ public class SqlRunner {
 			logger.log(Level.INFO, "Different birth and death place is being executed");
 			rows = conn.runQuery(birthDeathPlace);
 			String query_identifier = "getDifferentDeathPlace()";
-			Connection connection = conn.getConnection();
-			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rows);
-			connection.close();
+			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
 		} else {
 			serialized_id = (long) id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
-		
-
-		Connection connection = conn.getConnection();
-		@SuppressWarnings("unchecked")
-		ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
-		connection.close();
-		rows.addAll(rows2);
+			@SuppressWarnings("unchecked")
+			ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(conn, serialized_id);
+			rows.addAll(rows2);
 		}
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
 		int i = 1;
@@ -126,7 +113,7 @@ public class SqlRunner {
 	public ArrayList<TableEntry> getSameOccupationCouples()
 			throws SQLException, ClassNotFoundException, IOException, ParseException {
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
-				+ "WHERE qeury_identifier = " + "getSameOccupationCouples(?,?)");
+				+ "WHERE qeury_identifier = " + "getSameOccupationCouples()");
 		long serialized_id = -1;
 		ArrayList<Row> rows=new ArrayList<>();
 		if (id_result.isEmpty()) {
@@ -137,18 +124,12 @@ public class SqlRunner {
 			logger.log(Level.INFO, "Same occupation couples is being executed");
 			rows = conn.runQuery(sameOccupationCouples);
 			String query_identifier = "getSameOccupationCouples()";
-			Connection connection = conn.getConnection();
-			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rows);
-			connection.close();
+			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
 		} else {
 			serialized_id = (long) id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
-		
-
-		Connection connection = conn.getConnection();
-		@SuppressWarnings("unchecked")
-		ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
-		rows.addAll(rows2);
-		connection.close();
+			@SuppressWarnings("unchecked")
+			ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(conn, serialized_id);
+			rows.addAll(rows2);
 		}
 
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
@@ -167,7 +148,7 @@ public class SqlRunner {
 	public ArrayList<TableEntry> getSameBirthPlaceCouples()
 			throws SQLException, ClassNotFoundException, IOException, ParseException {
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
-				+ "WHERE qeury_identifier = " + "getSameBirthPlaceCouples(?,?)");
+				+ "WHERE qeury_identifier = " + "getSameBirthPlaceCouples()");
 		long serialized_id = -1;
 		ArrayList<Row> rows=new ArrayList<>();
 		if (id_result.isEmpty()) {
@@ -178,18 +159,12 @@ public class SqlRunner {
 			logger.log(Level.INFO, "same birth place couples is being executed");
 			rows = conn.runQuery(sameBirthPlaceCouples);
 			String query_identifier = "getSameBirthPlaceCouples()";
-			Connection connection = conn.getConnection();
-			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rows);
-			connection.close();
+			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
 		} else {
 			serialized_id = (long) id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
-		
-
-		Connection connection = conn.getConnection();
-		@SuppressWarnings("unchecked")
-		ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
-		rows.addAll(rows2);
-		connection.close();
+			@SuppressWarnings("unchecked")
+			ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(conn, serialized_id);
+			rows.addAll(rows2);
 		}
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
 		for (Row row : rows) {
@@ -205,8 +180,9 @@ public class SqlRunner {
 
 	public ArrayList<TableEntry> getOccupationBetweenYears(String year1, String year2, String occupation)
 			throws SQLException, ClassNotFoundException, IOException, ParseException {
+		Object[] inp = new Object[] { year1, year2, occupation };
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
-				+ "WHERE qeury_identifier = " + "getOccupationBetweenYears(?,?)");
+				+ "WHERE qeury_identifier = " + "getOccupationBetweenYears(?,?,?)",inp);
 		long serialized_id = -1;
 		ArrayList<Row> rows=new ArrayList<>();
 		if (id_result.isEmpty()) {
@@ -215,21 +191,14 @@ public class SqlRunner {
 					+ "AND YEAR(birthDate) >= ? AND YEAR(deathDate) <= ? "
 					+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
 			logger.log(Level.INFO, "occupation between years is being executed");
-			Object[] inp = new Object[] { year1, year2, occupation };
 			rows = conn.runQuery(occupationBetweenYears, inp);
 			String query_identifier = "getOccupationBetweenYears(" + year1 + "," + year2 + "," + occupation + ")";
-			Connection connection = conn.getConnection();
-			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rows);
-			connection.close();
+			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
 		} else {
 			serialized_id = (long) id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
-		
-
-		Connection connection = conn.getConnection();
-		@SuppressWarnings("unchecked")
-		ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
-		rows.addAll(rows2);
-		connection.close();
+			@SuppressWarnings("unchecked")
+			ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(conn, serialized_id);
+			rows.addAll(rows2);
 		}
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
 		for (Row row : rows) {
@@ -244,8 +213,9 @@ public class SqlRunner {
 
 	public ArrayList<TableEntry> getSpouselessBetweenYears(String year1, String year2)
 			throws SQLException, ClassNotFoundException, IOException, ParseException {
+		Object[] inp = new Object[] { year1, year2 };
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
-				+ "WHERE qeury_identifier = " + "getOccupationBetweenYears(?,?)");
+				+ "WHERE qeury_identifier = " + "getSpouselessBetweenYears(?,?)",inp);
 		long serialized_id = -1;
 		ArrayList<Row> rows=new ArrayList<>();
 		if (id_result.isEmpty()) {
@@ -255,21 +225,14 @@ public class SqlRunner {
 					+ "AND occupation = ? "
 					+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
 			logger.log(Level.INFO, "spouseless between years is being executed");
-			Object[] inp = new Object[] { year1, year2 };
 			rows = conn.runQuery(spouselessBetweenYears, inp);
 			String query_identifier = "getSpouselessBetweenYears(" + year1 + "," + year2 + ")";
-			Connection connection = conn.getConnection();
-			serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rows);
-			connection.close();
+			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
 		} else {
 			serialized_id = (long) id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
-		
-
-		Connection connection = conn.getConnection();
-		@SuppressWarnings("unchecked")
-		ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
-		rows.addAll(rows2);
-		connection.close();
+			@SuppressWarnings("unchecked")
+			ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(conn, serialized_id);
+			rows.addAll(rows2);
 		}
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
 		for (Row row : rows) {
@@ -285,5 +248,9 @@ public class SqlRunner {
 
 	public ArrayList<Row> runQuery(String s, Object[] inp) throws ClassNotFoundException, SQLException, IOException {
 		return conn.runQuery(s, inp);
+	}
+	
+	public Connector getConnector(){
+		return conn;
 	}
 }

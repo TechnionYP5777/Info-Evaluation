@@ -1,5 +1,7 @@
 package infoeval.main.mysql;
 
+import infoeval.main.WikiData.Connector;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -21,9 +23,10 @@ public class QueryResultsSerializer {
 	private static final String SERIALIZE_RESULT = "INSERT INTO serialized_query_results(query_identifier, serialized_result) VALUES (?, ?)";
 	private static final String DESERIALIZE_RESULT = "SELECT serialized_result FROM serialized_query_results WHERE serialized_id = ?";
 
-	public long serializeQueryResults(Connection c, String query_identifier, Object resultToSerialize)
-			throws SQLException {
+	public long serializeQueryResults(Connector conn, String query_identifier, Object resultToSerialize)
+			throws SQLException, ClassNotFoundException, IOException {
 
+		Connection c = conn.getConnection();
 		PreparedStatement pstmt = c.prepareStatement(SERIALIZE_RESULT);
 		pstmt.setString(1, query_identifier);
 		pstmt.setObject(2, resultToSerialize);
@@ -33,14 +36,16 @@ public class QueryResultsSerializer {
 		int serialized_id = !rs.next() ? -1 : rs.getInt(1);
 		rs.close();
 		pstmt.close();
-
+		c.close();
+		
 		logger.log(Level.INFO, "Query " + query_identifier + " has been serialized");
 		return serialized_id;
 	}
 
-	public Object deSerializeQueryResults(Connection c, long serialized_id)
+	public Object deSerializeQueryResults(Connector conn, long serialized_id)
 			throws SQLException, IOException, ClassNotFoundException {
 
+		Connection c = conn.getConnection();		
 		PreparedStatement pstmt = c.prepareStatement(DESERIALIZE_RESULT);
 		pstmt.setLong(1, serialized_id);
 		ResultSet rs = pstmt.executeQuery();
@@ -51,6 +56,7 @@ public class QueryResultsSerializer {
 		Object deSerializedObject = objectIn.readObject();
 		rs.close();
 		pstmt.close();
+		c.close();
 
 		logger.log(Level.INFO, "Qeury with Serialized_ID: " + serialized_id + " has been deserialized");
 		return deSerializedObject;

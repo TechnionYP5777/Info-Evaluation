@@ -24,8 +24,8 @@ public class QueryResultsSerializerTest {
 	
 	public QueryResultsSerializerTest() throws Exception {
 		resultsSer = new QueryResultsSerializer();
-		connector = new Connector();
 		runner = new SqlRunner();
+		connector = runner.getConnector();
 	}
 
 	@Test
@@ -45,12 +45,8 @@ public class QueryResultsSerializerTest {
 		rows.add(row1);
 		rows.add(row2);
 		rows.add(row3);
-		Connection connection = connector.getConnection();
-		serialized_id = resultsSer.serializeQueryResults(connection, query_identifier, rows);
-		connection.close();
-		connection = connector.getConnection();
-		ArrayList<Row> result = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connection, serialized_id);
-		connection.close();
+		serialized_id = resultsSer.serializeQueryResults(connector, query_identifier, rows);
+		ArrayList<Row> result = (ArrayList<Row>) resultsSer.deSerializeQueryResults(connector, serialized_id);
 		int i = 1;
 		for (Row r : result) {
 			int val = (int) r.row.get(0).getValue().cast(r.row.get(0).getKey());
