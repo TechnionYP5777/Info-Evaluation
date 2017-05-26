@@ -110,11 +110,14 @@ public class Connector {
 		ResultSet rs = ps.executeQuery();
 		
 		//Creating an arraylist of table entries:
-		Row.formTable(rs, table);
+		
+		
 		
 		if(rs!=null){
+			Row.formTable(rs, table);
 			rs.close();
 		}
+		
 		if (ps != null)
 			ps.close();
 		if (conn != null)

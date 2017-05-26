@@ -45,6 +45,7 @@ public class Row implements Serializable {
 		TYPE.put("TIME", Time.class);
 		TYPE.put("TIMESTAMP", Timestamp.class);
 		TYPE.put("SERIAL", Integer.class);
+		TYPE.put("INT", Integer.class);
 		// ...
 	}
 
