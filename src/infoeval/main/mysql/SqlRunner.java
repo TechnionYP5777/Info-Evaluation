@@ -48,9 +48,13 @@ public class SqlRunner {
 		long serialized_id = -1;
 		ArrayList<Row> rows=new ArrayList<>() ; 
 		if (id_result.isEmpty()) {
-			final String beforeYearInPlace = "SELECT SQL_CACHE basic_info.name,BirthDate,wikiPageID "
-					+ "FROM basic_info,WikiID " + " WHERE BirthPlace = ? AND YEAR(BirthDate) < ?  "
-					+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
+//			final String beforeYearInPlace = "SELECT SQL_CACHE filtered_info.name,filtered_info.BirthDate,wikiPageID "
+//					+ "FROM basic_info,WikiID " + " WHERE BirthPlace = ? AND YEAR(BirthDate) < ?  "
+//					+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
+			final String beforeYearInPlace = "SELECT SQL_CACHE filtered_info.name,filtered_info.BirthDate,WikiID.wikiPageID "
+					+"FROM (SELECT * FROM basic_info WHERE BirthPlace = ? AND YEAR(BirthDate) < ?) AS filtered_info  "
+					+ "LEFT JOIN WikiID "
+					+ "ON WikiID.name = filtered_info.name ;\n";
 			logger.log(Level.INFO, "Born and died in different place is being executed");
 			rows = conn.runQuery(beforeYearInPlace, inp);
 			String query_identifier = "getBornInPlaceYear" + "(" + place + year + ")";

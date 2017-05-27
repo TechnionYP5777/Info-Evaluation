@@ -27,7 +27,7 @@ public class Row implements Serializable {
 
 	static {
 		TYPE = new HashMap<String, Class>();
-
+		TYPE.put("VARCHAR", String.class);
 		TYPE.put("INTEGER", Integer.class);
 		TYPE.put("TINYINT", Byte.class);
 		TYPE.put("SMALLINT", Short.class);
@@ -39,13 +39,13 @@ public class Row implements Serializable {
 		TYPE.put("NUMERIC", BigDecimal.class);
 		TYPE.put("BOOLEAN", Boolean.class);
 		TYPE.put("CHAR", String.class);
-		TYPE.put("VARCHAR", String.class);
 		TYPE.put("LONGVARCHAR", String.class);
 		TYPE.put("DATE", Date.class);
 		TYPE.put("TIME", Time.class);
 		TYPE.put("TIMESTAMP", Timestamp.class);
 		TYPE.put("SERIAL", Integer.class);
 		TYPE.put("INT", Integer.class);
+		//TYPE.put("VARCHAR", Date.class);
 		// ...
 	}
 
@@ -54,13 +54,27 @@ public class Row implements Serializable {
 	}
 
 	public <T> void add(T data) {
-		row.add(new AbstractMap.SimpleImmutableEntry<Object, Class>(data, data.getClass()));
+		Logger logi = Logger.getLogger(Row.class.getName());
+		logi.log(Level.SEVERE,
+				"Data type is: "+data.getClass().getName()
+				+"Data is :"+data.toString());
+		this.row.add(new AbstractMap.SimpleImmutableEntry<Object, Class>(data, data.getClass()));
 	}
 
 	public void add(Object data, String sqlType) {
 		Class castType = Row.TYPE.get(sqlType.toUpperCase());
+		Logger logi = Logger.getLogger(Row.class.getName());
+		logi.log(Level.SEVERE,
+				"The cast type: "+castType.toString() + "sqlType="+sqlType);
 		try {
-			this.add(castType.cast(data));
+			 Object castedData = castType.cast(data);
+			 if(castedData == null){
+				 //If its null - it has a missing field. e.g. - WikiID. So, just add an empty string.
+				 add("");
+			 }
+			 else{
+			this.add(castedData);
+			}
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 			Logger lgr = Logger.getLogger(Row.class.getName());
