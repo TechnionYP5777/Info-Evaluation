@@ -124,14 +124,14 @@ angular.module('starter.controllers', [])
 		}
 		}).then(function successCallback(response) {
 			console.log('success');
-			console.log(response.data);
 			$scope.persons = [];
 			for(var r in response.data) {
-				console.log('success2');
 				console.log(r);
 			  var person = response.data[r];
 			  $scope.persons.push(person);
 				console.log(person.name);
+				console.log(person.wikiPageID);
+				console.log(person);
 			}
 		console.log('end of success');
 		}, function errorCallback(response) {
