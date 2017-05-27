@@ -44,7 +44,6 @@ public class SqlRunner {
 		}
 	}
 
-	// @RequestMapping("Queries/Query2_real")
 	public ArrayList<TableEntry> getBornInPlaceBeforeYear(String place, String year)
 			throws SQLException, ClassNotFoundException, IOException, ParseException {
 		Object[] inp = new Object[] { place,year };
@@ -53,9 +52,6 @@ public class SqlRunner {
 		long serialized_id = -1;
 		ArrayList<Row> rows=new ArrayList<>() ; 
 		if (id_result.isEmpty()) {
-//			final String beforeYearInPlace = "SELECT SQL_CACHE filtered_info.name,filtered_info.BirthDate,wikiPageID "
-//					+ "FROM basic_info,WikiID " + " WHERE BirthPlace = ? AND YEAR(BirthDate) < ?  "
-//					+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
 			final String beforeYearInPlace = "SELECT SQL_CACHE filtered_info.name,filtered_info.BirthDate,WikiID.wikiPageID "
 					+"FROM (SELECT * FROM basic_info WHERE BirthPlace = ? AND YEAR(BirthDate) < ?) AS filtered_info  "
 					+ "LEFT JOIN WikiID "
