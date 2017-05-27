@@ -30,6 +30,11 @@ public class SqlRunner {
 				+ "serialized_result LONGBLOB, " + "PRIMARY KEY (serialized_id))");
 		logger.log(Level.INFO, "serialized reulst table created successfully");
 	}
+	
+	public void clearSerializedQueries() throws Exception{
+		conn.runUpdate("TRUNCATE TABLE serialized_query_results ");
+		logger.log(Level.INFO, " CLEARED Serialized Reulst table successfully");
+	}
 
 	public void close() {
 		try {

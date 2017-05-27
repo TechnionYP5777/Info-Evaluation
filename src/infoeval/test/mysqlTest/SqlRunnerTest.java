@@ -42,6 +42,10 @@ public class SqlRunnerTest {
 	public static void close() {
 		querun.close();
 	}
+	@Test
+	public void TestClearSerializedQueries() throws Exception{
+		querun.clearSerializedQueries();
+	}
 
 	// @Ignore
 	@Test
