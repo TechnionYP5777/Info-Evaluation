@@ -55,25 +55,23 @@ public class Row implements Serializable {
 
 	public <T> void add(T data) {
 		Logger logi = Logger.getLogger(Row.class.getName());
-		logi.log(Level.SEVERE,
-				"Data type is: "+data.getClass().getName()
-				+"Data is :"+data.toString());
+		logi.log(Level.INFO,
+				"Data type is: " + data.getClass().getName() + "Data is :" + data);
 		this.row.add(new AbstractMap.SimpleImmutableEntry<Object, Class>(data, data.getClass()));
 	}
 
 	public void add(Object data, String sqlType) {
 		Class castType = Row.TYPE.get(sqlType.toUpperCase());
 		Logger logi = Logger.getLogger(Row.class.getName());
-		logi.log(Level.SEVERE,
-				"The cast type: "+castType.toString() + "sqlType="+sqlType);
+		logi.log(Level.INFO,
+				"The cast type: " + castType + "sqlType="+sqlType);
 		try {
 			 Object castedData = castType.cast(data);
-			 if(castedData == null){
-				 //If its null - it has a missing field. e.g. - WikiID. So, just add an empty string.
-				 add("");
-			 }
-			 else{
-			this.add(castedData);
+			 if (castedData != null)
+				this.add(castedData);
+			else {
+				logi.log(Level.SEVERE, "FIRST=" + this.row.get(0) + " SECOND=" + this.row.get(1));
+				add("");
 			}
 		} catch (NullPointerException e) {
 			e.printStackTrace();

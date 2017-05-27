@@ -33,13 +33,13 @@ public class QueryResultsSerializer {
 		pstmt.executeUpdate();
 
 		ResultSet rs = pstmt.getGeneratedKeys();
-		int serialized_id = !rs.next() ? -1 : rs.getInt(1);
+		int $ = !rs.next() ? -1 : rs.getInt(1);
 		rs.close();
 		pstmt.close();
 		c.close();
 		
 		logger.log(Level.INFO, "Query " + query_identifier + " has been serialized");
-		return serialized_id;
+		return $;
 	}
 
 	public Object deSerializeQueryResults(Connector conn, long serialized_id)
@@ -53,12 +53,12 @@ public class QueryResultsSerializer {
 		byte[] buf = rs.getBytes(1);
 		@SuppressWarnings("resource")
 		ObjectInputStream objectIn = buf == null ? null : new ObjectInputStream(new ByteArrayInputStream(buf));
-		Object deSerializedObject = objectIn.readObject();
+		Object $ = objectIn.readObject();
 		rs.close();
 		pstmt.close();
 		c.close();
 
 		logger.log(Level.INFO, "Query with Serialized_ID: " + serialized_id + " has been deserialized");
-		return deSerializedObject;
+		return $;
 	}
 }
