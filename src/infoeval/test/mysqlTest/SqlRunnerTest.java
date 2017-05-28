@@ -10,12 +10,8 @@ import org.junit.Ignore;
 import org.junit.BeforeClass;
 import org.junit.AfterClass;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 
@@ -42,12 +38,12 @@ public class SqlRunnerTest {
 	public static void close() {
 		querun.close();
 	}
+	
 	@Test
 	public void TestClearSerializedQueries() throws Exception{
 		querun.clearSerializedQueries();
 	}
 
-	// @Ignore
 	@Test
 	public void getBornInPlaceBeforeYearTest() throws Exception {
 		for (TableEntry te : querun.getBornInPlaceBeforeYear("Casablanca", "1954")) {
@@ -68,7 +64,6 @@ public class SqlRunnerTest {
 			assertNotEquals(¢.getBirthPlace(), ¢.getDeathPlace());
 	}
 
-	@Ignore
 	@Test
 	public void getSameOccupationCouplesTest() throws Exception {
 		for (TableEntry ¢ : querun.getSameOccupationCouples())
@@ -89,7 +84,6 @@ public class SqlRunnerTest {
 		}
 	}
 
-	@Ignore
 	@Test
 	public void getOccupationBetweenYearsTest() throws Exception {
 		for (TableEntry te : querun.getOccupationBetweenYears("1840", "1920", "Politician")) {
@@ -105,7 +99,6 @@ public class SqlRunnerTest {
 		}
 	}
 
-	@Ignore
 	@Test
 	public void getSpouselessBetweenYearsTest() throws Exception {
 		for (TableEntry ¢ : querun.getSpouselessBetweenYears("1900", "1980"))

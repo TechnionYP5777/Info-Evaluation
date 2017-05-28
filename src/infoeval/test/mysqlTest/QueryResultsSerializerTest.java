@@ -14,7 +14,7 @@ import java.util.ArrayList;
 /**
  * 
  * @author osherh
- * @Since 12-05-2017
+ * @Since 25-05-2017
  *
  */
 public class QueryResultsSerializerTest {

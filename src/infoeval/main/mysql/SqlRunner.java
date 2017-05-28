@@ -21,7 +21,8 @@ public class SqlRunner {
 	QueryResultsSerializer resultsSer;
 	private String wikiURL = "https://en.wikipedia.org/?curid=";
 	private static final Logger logger = Logger.getLogger("SqlRunner".getClass().getName());
-
+	private static final int LIMIT_NUM = 40;
+	
 	public SqlRunner() throws Exception {
 		conn = new Connector();
 		resultsSer = new QueryResultsSerializer();
@@ -55,7 +56,8 @@ public class SqlRunner {
 			final String beforeYearInPlace = "SELECT SQL_CACHE filtered_info.name,filtered_info.BirthDate,WikiID.wikiPageID "
 					+"FROM (SELECT * FROM basic_info WHERE BirthPlace = ? AND YEAR(BirthDate) < ?) AS filtered_info  "
 					+ "LEFT JOIN WikiID "
-					+ "ON WikiID.name = filtered_info.name ;\n";
+					+ "ON WikiID.name = filtered_info.name "
+					+ "LIMIT "+LIMIT_NUM;
 			logger.log(Level.INFO, "Born and died in different place is being executed");
 			rows = conn.runQuery(beforeYearInPlace, inp);
 			String query_identifier = "getBornInPlaceYear" + "(" + place + year + ")";
@@ -83,7 +85,7 @@ public class SqlRunner {
 	public ArrayList<TableEntry> getDifferentDeathPlace()
 			throws SQLException, ClassNotFoundException, IOException, ParseException {
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
-				+ "WHERE qeury_identifier = " + "getDifferentDeathPlace()");
+				+ "WHERE query_identifier = " + "getDifferentDeathPlace()");
 		long serialized_id = -1;
 		ArrayList<Row> rows=new ArrayList<>();
 		if (id_result.isEmpty()) {
@@ -120,14 +122,15 @@ public class SqlRunner {
 	public ArrayList<TableEntry> getSameOccupationCouples()
 			throws SQLException, ClassNotFoundException, IOException, ParseException {
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
-				+ "WHERE qeury_identifier = " + "getSameOccupationCouples()");
+				+ "WHERE query_identifier LIKE 'getSameOccupationCouples()'");
 		long serialized_id = -1;
 		ArrayList<Row> rows=new ArrayList<>();
 		if (id_result.isEmpty()) {
 			final String sameOccupationCouples = "SELECT SQL_CACHE name,spouseName,occupation,spouseOccupation "
 					+ "FROM basic_info "
 					+ "WHERE spouseName != 'No Spouse Name' AND spouseOccupation != 'No Spouse Occupation' "
-					+ "AND occupation = spouseOccupation";
+					+ "AND occupation = spouseOccupation "
+					+ "LIMIT "+LIMIT_NUM;
 			logger.log(Level.INFO, "Same occupation couples is being executed");
 			rows = conn.runQuery(sameOccupationCouples);
 			String query_identifier = "getSameOccupationCouples()";
@@ -155,14 +158,45 @@ public class SqlRunner {
 	public ArrayList<TableEntry> getSameBirthPlaceCouples()
 			throws SQLException, ClassNotFoundException, IOException, ParseException {
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
-				+ "WHERE qeury_identifier = " + "getSameBirthPlaceCouples()");
+				+ "WHERE query_identifier LIKE 'getSameBirthPlaceCouples()'");
 		long serialized_id = -1;
 		ArrayList<Row> rows=new ArrayList<>();
 		if (id_result.isEmpty()) {
-			final String sameBirthPlaceCouples = "SELECT SQL_CACHE B1.name AS Name,B2.name AS SpouseName,B1.birthPlace AS BirthPlace "
-					+ "FROM basic_info B1, basic_info B2 "
-					+ "WHERE B1.spouseName = B2.name AND B2.spouseName = B1.name "
-					+ "AND B1.birthPlace = B2.birthPlace";
+			
+			final String sameBirthPlaceCouples = ""
+					+ "SELECT SQL_CACHE B1.name AS Name, basic_info.name AS SpouseName, B1.birthPlace AS BirthPlace "
+					+ "FROM (SELECT * FROM basic_info "
+					+ "WHERE spouseName != 'No Spouse Name' "
+					+ "AND birthPlace != 'No Birth Place') AS B1 "
+					+ "LEFT JOIN basic_info "
+					+ "ON B1.spouseName = basic_info.name "
+					+ "AND basic_info.spouseName = B1.name "
+					+ "AND B1.birthPlace = basic_info.birthPlace ";
+			
+		/*	
+			final String sameBirthPlaceCouples = ""
+					+ "SELECT SQL_CACHE B1.name AS Name, B2.name AS SpouseName, B1.birthPlace AS BirthPlace "
+					+ "FROM basic_info AS B1 "
+					+ "LEFT JOIN basic_info AS B2 "
+					+ "ON B1.spouseName = B2.name "
+					+ "AND B2.spouseName = B1.name "
+					+ "AND B1.birthPlace = B2.birthPlace ";
+		
+		/*
+				final String sameBirthPlaceCouples = ""
+			+ "SELECT SQL_CACHE B1.name AS Name,B2.name AS SpouseName,B1.birthPlace AS BirthPlace "
+			+ "FROM (SELECT * FROM basic_info "
+			+ "WHERE spouseName != 'No Spouse Name' "
+			+ "AND birthPlace != 'No Birth Place') AS B1 "
+			+ "LEFT JOIN "
+			+ "(SELECT * FROM basic_info "
+			+ "WHERE spouseName != 'No Spouse Name' "
+			+ "AND birthPlace != 'No Birth Place') AS B2 "
+			+ "ON B1.spouseName = B2.name "
+			+ "AND B2.spouseName = B1.name "
+			+ "AND B1.birthPlace = B2.birthPlace ";
+		 */
+
 			logger.log(Level.INFO, "same birth place couples is being executed");
 			rows = conn.runQuery(sameBirthPlaceCouples);
 			String query_identifier = "getSameBirthPlaceCouples()";
@@ -189,14 +223,19 @@ public class SqlRunner {
 			throws SQLException, ClassNotFoundException, IOException, ParseException {
 		Object[] inp = new Object[] { year1, year2, occupation };
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
-				+ "WHERE qeury_identifier LIKE CONCAT('getOccupationBetweenYears(',?,?,?,')')",inp);
+				+ "WHERE query_identifier LIKE CONCAT('getOccupationBetweenYears(',?,?,?,')')",inp);
 		long serialized_id = -1;
 		ArrayList<Row> rows=new ArrayList<>();
 		if (id_result.isEmpty()) {
-			final String occupationBetweenYears = "SELECT SQL_CACHE name,birthDate,deathDate,wikiPageId "
-					+ "FROM basic_info, WikiID " + "WHERE deathDate IS NOT NULL "
+			final String occupationBetweenYears = "SELECT SQL_CACHE filtered_info.name, filtered_info.birthDate, filtered_info.deathDate, WikiID.wikiPageId "
+					+ "FROM (SELECT * FROM basic_info "
+					+ "WHERE deathDate IS NOT NULL "					
 					+ "AND YEAR(birthDate) >= ? AND YEAR(deathDate) <= ? "
-					+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
+					+ "AND occupation = ?) AS filtered_info "
+					+ "LEFT JOIN WikiID "
+					+ "ON WikiID.name = filtered_info.name "
+					+ "LIMIT "+LIMIT_NUM;
+			
 			logger.log(Level.INFO, "occupation between years is being executed");
 			rows = conn.runQuery(occupationBetweenYears, inp);
 			String query_identifier = "getOccupationBetweenYears(" + year1 + "," + year2 + "," + occupation + ")";
@@ -222,15 +261,17 @@ public class SqlRunner {
 			throws SQLException, ClassNotFoundException, IOException, ParseException {
 		Object[] inp = new Object[] { year1, year2 };
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
-				+ "WHERE qeury_identifier LIKE CONCAT('getSpouselessBetweenYears','(',?,?,')')",inp);
+				+ "WHERE query_identifier LIKE CONCAT('getSpouselessBetweenYears','(',?,?,')')",inp);
 		long serialized_id = -1;
 		ArrayList<Row> rows=new ArrayList<>();
 		if (id_result.isEmpty()) {
-			final String spouselessBetweenYears = "SELECT SQL_CACHE name,birthDate,deathDate,occupation,wikiPageId "
-					+ "FROM basic_info, WikiID " + "WHERE deathDate IS NOT NULL "
+			final String spouselessBetweenYears = "SELECT SQL_CACHE filtered_info.name, filtered_info.birthDate, filtered_info.deathDate, filtered_info.occupation, WikiID.wikiPageId "
+					+ "FROM (SELECT * FROM basic_info WHERE deathDate IS NOT NULL "
 					+ "AND YEAR(birthDate) >= ? AND YEAR(deathDate) <= ? " + "AND spouseName = 'No Spouse Name' "
-					+ "AND occupation = ? "
-					+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
+					+ ") AS filtered_info "
+					+ "LEFT JOIN WikiID "
+					+ "ON WikiID.name = filtered_info.name "
+					+ "LIMIT "+LIMIT_NUM;
 			logger.log(Level.INFO, "spouseless between years is being executed");
 			rows = conn.runQuery(spouselessBetweenYears, inp);
 			String query_identifier = "getSpouselessBetweenYears(" + year1 + "," + year2 + ")";
