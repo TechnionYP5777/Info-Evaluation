@@ -160,6 +160,7 @@ angular.module('starter.controllers', [])
 			  var person = response.data[r];
 			  console.log(person);
 			  $scope.persons.push(person);
+				console.log(person.name);
 			}
 		
 		}, function errorCallback(response) {

@@ -89,10 +89,17 @@ public class SqlRunner {
 		long serialized_id = -1;
 		ArrayList<Row> rows=new ArrayList<>();
 		if (id_result.isEmpty()) {
-			final String birthDeathPlace = "SELECT SQL_CACHE basic_info.name,BirthPlace,DeathPlace,wikiPageID "
-					+ "FROM basic_info,WikiID " + "WHERE DeathPlace != 'No Death Place' "
-					+ "AND BirthPlace != DeathPlace "
-					+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
+//			final String birthDeathPlace = "SELECT SQL_CACHE basic_info.name,BirthPlace,DeathPlace,wikiPageID "
+//					+ "FROM basic_info,WikiID " + "WHERE DeathPlace != 'No Death Place' "
+//					+ "AND BirthPlace != DeathPlace "
+//					+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
+//			
+			final String birthDeathPlace = "SELECT SQL_CACHE filtered_info.name,filtered_info.BirthDate,filtered_info.DeathPlace,WikiID.wikiPageID "
+					+"FROM (SELECT * FROM basic_info WHERE DeathPlace != 'No Death Place' "
+					+ " AND BirthPlace != DeathPlace) AS filtered_info  "
+					+ "LEFT JOIN WikiID "
+					+ "ON WikiID.name = filtered_info.name "
+					+ "LIMIT "+LIMIT_NUM;
 			logger.log(Level.INFO, "Different birth and death place is being executed");
 			rows = conn.runQuery(birthDeathPlace);
 			String query_identifier = "getDifferentDeathPlace()";
