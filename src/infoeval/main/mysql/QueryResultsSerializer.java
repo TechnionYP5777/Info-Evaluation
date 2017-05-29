@@ -23,7 +23,7 @@ public class QueryResultsSerializer {
 	private static final String SERIALIZE_RESULT = "INSERT INTO serialized_query_results(query_identifier, serialized_result) VALUES (?, ?)";
 	private static final String DESERIALIZE_RESULT = "SELECT serialized_result FROM serialized_query_results WHERE serialized_id = ?";
 
-	public long serializeQueryResults(Connector conn, String query_identifier, Object resultToSerialize)
+	public int serializeQueryResults(Connector conn, String query_identifier, Object resultToSerialize)
 			throws SQLException, ClassNotFoundException, IOException {
 
 		Connection c = conn.getConnection();
@@ -37,17 +37,17 @@ public class QueryResultsSerializer {
 		rs.close();
 		pstmt.close();
 		c.close();
-		
+
 		logger.log(Level.INFO, "Query " + query_identifier + " has been serialized");
 		return $;
 	}
 
-	public Object deSerializeQueryResults(Connector conn, long serialized_id)
+	public Object deSerializeQueryResults(Connector conn, int serialized_id)
 			throws SQLException, IOException, ClassNotFoundException {
 
-		Connection c = conn.getConnection();		
+		Connection c = conn.getConnection();
 		PreparedStatement pstmt = c.prepareStatement(DESERIALIZE_RESULT);
-		pstmt.setLong(1, serialized_id);
+		pstmt.setInt(1, serialized_id);
 		ResultSet rs = pstmt.executeQuery();
 		rs.next();
 		byte[] buf = rs.getBytes(1);

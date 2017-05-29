@@ -33,7 +33,7 @@ public class QueryResultsSerializerTest {
 	public void serializeANDdeSerializeTest() throws Exception {
 
 		
-		long serialized_id = -1;
+		int serialized_id = -1;
 		String query_identifier = "testQuery";
 		ArrayList<Row> rows = new ArrayList<Row>();
 		Row row1 = new Row();

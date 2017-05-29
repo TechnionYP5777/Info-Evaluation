@@ -38,9 +38,10 @@ public class SqlRunnerTest {
 	public static void close() {
 		querun.close();
 	}
-	
+
+	@Ignore
 	@Test
-	public void TestClearSerializedQueries() throws Exception{
+	public void TestClearSerializedQueries() throws Exception {
 		querun.clearSerializedQueries();
 	}
 
@@ -57,7 +58,6 @@ public class SqlRunnerTest {
 		}
 	}
 
-	@Ignore
 	@Test
 	public void getDifferentDeathPlaceTest() throws Exception {
 		for (TableEntry ¢ : querun.getDifferentDeathPlace())
