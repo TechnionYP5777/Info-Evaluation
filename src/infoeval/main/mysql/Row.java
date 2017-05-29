@@ -70,7 +70,6 @@ public class Row implements Serializable {
 			 if (castedData != null)
 				this.add(castedData);
 			else {
-				logi.log(Level.SEVERE, "FIRST=" + this.row.get(0) + " SECOND=" + this.row.get(1));
 				add("");
 			}
 		} catch (NullPointerException e) {

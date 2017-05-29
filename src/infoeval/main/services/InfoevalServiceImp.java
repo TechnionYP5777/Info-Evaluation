@@ -43,24 +43,26 @@ public class InfoevalServiceImp implements InfoevalService {
 		return $;
 	}
 
+
 	@Override
 	@RequestMapping(path="Queries/Query1",method = RequestMethod.GET)
 	public ArrayList<TableEntry> differentDeathPlace() throws Exception {
 		logger.log(Level.INFO, "Born and died in different place was called");
-		ArrayList<TableEntry> $ = new ArrayList<>();
-    	
-    	java.sql.Date utilDate1 = java.sql.Date.valueOf( LocalDate.of(1912, 6, 23) );
-    	java.sql.Date utilDate2 = java.sql.Date.valueOf( LocalDate.of(1954, 6, 7) );
-    	
-		TableEntry entry = new TableEntry(null, "Alan Turing", "Maida Vale", "Wilmslow", utilDate1, utilDate2,"","","");
-		$.add(entry);
-
-		utilDate1 = java.sql.Date.valueOf((LocalDate.of(1886, 10, 16)));
-		utilDate2 = java.sql.Date.valueOf(LocalDate.of(1973, 12, 1));
-
-		entry = new TableEntry(null, "David Ben-Gurion", "plonsk", "Ramat Gan", utilDate1, utilDate2,"","","");
-		$.add(entry);
-		return $;
+		
+		//ArrayList<TableEntry> $ = new ArrayList<>();
+    	//
+    	//java.sql.Date utilDate1 = java.sql.Date.valueOf( LocalDate.of(1912, 6, 23) );
+    //	java.sql.Date utilDate2 = java.sql.Date.valueOf( LocalDate.of(1954, 6, 7) );
+    	//
+	//	TableEntry entry = new TableEntry(null, "Alan Turing", "Maida Vale", "Wilmslow", utilDate1, utilDate2,"","","");
+		//$.add(entry);
+//
+		//utilDate1 = java.sql.Date.valueOf((LocalDate.of(1886, 10, 16)));
+		//utilDate2 = java.sql.Date.valueOf(LocalDate.of(1973, 12, 1));
+//
+		//entry = new TableEntry(null, "David Ben-Gurion", "plonsk", "Ramat Gan", utilDate1, utilDate2,"","","");
+		//$.add(entry);
+		//return $;
 	
 	
 	
@@ -69,10 +71,10 @@ public class InfoevalServiceImp implements InfoevalService {
 		 * TODO: DO NOT REMOVE THE CODE BELOW !!!! @MOSHIKO
 		 * 
 		 */
-	//	SqlRunner runner = new SqlRunner();
-//	ArrayList<TableEntry> lst = runner.getDifferentDeathPlace();
-//	logger.log(Level.INFO, "list size:"+lst.size());
-//	return lst;
+		SqlRunner runner = new SqlRunner();
+	ArrayList<TableEntry> lst = runner.getDifferentDeathPlace();
+	logger.log(Level.INFO, "list size:"+lst.size());
+	return lst;
 	
 	}
 

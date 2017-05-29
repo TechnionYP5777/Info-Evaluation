@@ -158,9 +158,11 @@ angular.module('starter.controllers', [])
 			$scope.persons = [];
 			for(var r in response.data) {
 			  var person = response.data[r];
-			  console.log(person);
+			 
 			  $scope.persons.push(person);
 				console.log(person.name);
+				console.log(person.birthPlace);
+				console.log(person.deathPlace);
 			}
 		
 		}, function errorCallback(response) {

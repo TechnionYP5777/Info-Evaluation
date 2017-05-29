@@ -89,8 +89,9 @@ public class Connector {
 		Statement st = conn.createStatement();
 		rs = st.executeQuery(query);
 		ArrayList<Row> table = new ArrayList<Row>();		
-		Row.formTable(rs,table);
+		
 		if(rs!=null){
+			Row.formTable(rs,table);
 			rs.close();
 		}
 		if (st != null)

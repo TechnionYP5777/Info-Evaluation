@@ -85,7 +85,7 @@ public class SqlRunner {
 	public ArrayList<TableEntry> getDifferentDeathPlace()
 			throws SQLException, ClassNotFoundException, IOException, ParseException {
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
-				+ "WHERE query_identifier = " + "getDifferentDeathPlace()");
+				+ "WHERE query_identifier LIKE 'differentDeathPlace()'");
 		long serialized_id = -1;
 		ArrayList<Row> rows=new ArrayList<>();
 		if (id_result.isEmpty()) {
@@ -94,7 +94,7 @@ public class SqlRunner {
 //					+ "AND BirthPlace != DeathPlace "
 //					+ "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE WikiID.name = basic_info.name LIMIT 1)";
 //			
-			final String birthDeathPlace = "SELECT SQL_CACHE filtered_info.name,filtered_info.BirthDate,filtered_info.DeathPlace,WikiID.wikiPageID "
+			final String birthDeathPlace = "SELECT SQL_CACHE filtered_info.name,filtered_info.BirthPlace,filtered_info.DeathPlace,WikiID.wikiPageID "
 					+"FROM (SELECT * FROM basic_info WHERE DeathPlace != 'No Death Place' "
 					+ " AND BirthPlace != DeathPlace) AS filtered_info  "
 					+ "LEFT JOIN WikiID "
