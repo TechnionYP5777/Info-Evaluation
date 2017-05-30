@@ -12,8 +12,8 @@
 		
     },
 	   {
-      "path": "/Queries/Query2_real",
-      "proxyUrl": "http://localhost:8080/Queries/Query2_real/"
+      "path": "/Queries/Arrests",
+      "proxyUrl": "http://localhost:8080/Queries/Arrests/"
 		
     }
 	   
