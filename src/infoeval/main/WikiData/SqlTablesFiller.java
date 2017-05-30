@@ -36,7 +36,7 @@ public class SqlTablesFiller {
 		connector.runUpdate("CREATE TABLE IF NOT EXISTS basic_info(Name VARCHAR(100) NOT NULL,"
 				+ " BirthPlace VARCHAR(100) NULL,DeathPlace VARCHAR(100) NULL,BirthDate DATE NULL,"
 				+ " DeathDate DATE NULL, occupation VARCHAR(100) NULL, spouseName VARCHAR(100) NULL,"
-				+ " spouseOccupation VARCHAR(100) NULL)");
+				+ " spouseOccupation VARCHAR(100) NULL, photoLink VARCHAR(200) NULL");
 		logger.log(Level.INFO, "basic_info table created successfully");
 		connector.runUpdate(
 				"CREATE TABLE IF NOT EXISTS WikiID(Name VARCHAR(100) NOT NULL,wikiPageID VARCHAR(50) NOT NULL)");
@@ -184,7 +184,8 @@ public class SqlTablesFiller {
 			if (spouseOccupation == null)
 				spouseOccupation = "";
 	*/		
-			Object[] inp = new Object[8];
+			String photoLink="";
+			Object[] inp = new Object[9];
 			inp[0] = name;
 			inp[1] = birthPlace;
 			inp[2] = deathPlace;
@@ -193,6 +194,7 @@ public class SqlTablesFiller {
 			inp[5] = occup;
 			inp[6] = spouseName;
 			inp[7] = spouseOccupation;
+			inp[8] = photoLink;
 		
 			connector.runUpdate("INSERT INTO basic_info VALUES(?,?,?,?,?,?,?,?)", inp);
 		}

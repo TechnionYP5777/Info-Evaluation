@@ -22,17 +22,18 @@ public class TableEntry{
 	private String occupation;
 	private String SpouseName;
 	private String spouseOccupation;
+	private String photoLink;
 	//C'tors
 	public TableEntry(){
 		this.deathPlace=this.birthPlace = this.name = this.url = 
-		this.occupation=this.SpouseName=this.spouseOccupation="";
+		this.occupation=this.SpouseName=this.spouseOccupation=this.photoLink="";
 		this.deathDate=null;
 		this.birthDate=null;
 		
 	}
 	public TableEntry(String url, String name, String birthPlace, 
 					String deathPlace, Date birthDate, Date deathDate,
-					String occupation, String spouseName, String spouseOccupation){
+					String occupation, String spouseName, String spouseOccupation, String link){
 		setUrl(url);
 		setName(name);
 		setBirthPlace(birthPlace);
@@ -42,6 +43,7 @@ public class TableEntry{
 		setOccupation(occupation);
 		setSpouseName(spouseName);
 		setSpouseOccupation(spouseOccupation);
+		setPhotoLink(link);
 		
 	}
 	//Setters
@@ -72,6 +74,9 @@ public class TableEntry{
 	public void setSpouseOccupation(String occupation){
 		this.spouseOccupation=occupation;
 	}
+	public void setPhotoLink(String link){
+		this.photoLink=link;
+	}
 	//Getters
 	public String getUrl(){
 		return this.url;
@@ -99,5 +104,8 @@ public class TableEntry{
 	}
 	public String getSpouseOccupation(){
 		return this.spouseOccupation;
+	}
+	public String getPhotoLink(){
+		return this.photoLink;
 	}
 }
