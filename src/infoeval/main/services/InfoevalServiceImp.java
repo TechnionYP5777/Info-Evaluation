@@ -85,6 +85,9 @@ public class InfoevalServiceImp implements InfoevalService {
 	@RequestMapping(path="Queries/Arrests",method = RequestMethod.GET)
 	public LinkedList<String> getArrested(String name) throws Exception {
 		logger.log(Level.INFO, "Get Arrests was called.\n Parameters:"+"Name:"+name);
+		//Parse user's input:
+		name = name.trim().replaceAll(" ", "_");
+		
 		WikiParsing wiki =  (new WikiParsing("https://en.wikipedia.org/wiki/"+name));
 		wiki.Parse("arrested");
 		AnalyzeParagraph analyze = new AnalyzeParagraph(wiki.getParagraphs());
