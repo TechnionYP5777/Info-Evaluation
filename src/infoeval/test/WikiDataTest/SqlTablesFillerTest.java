@@ -20,43 +20,43 @@ import infoeval.main.mysql.Row;
 public class SqlTablesFillerTest {
 	private static final int ENTRIES_NUM = 10000;
 
-//	@BeforeClass
-//	public static void test() throws IOException, ClassNotFoundException, SQLException, ParseException {
-//		SqlTablesFiller filler = new SqlTablesFiller();
-//		filler.createTables();
-//		filler.fillBasicInfoTable();
-//		filler.fillWikiIdTable();
-//	}
-//
-//	@Test
-//	public void basicInfoTableSizeTest() throws Exception {
-//		Connector conn = new Connector();
-//		assert conn.getConnection() != null;
-//
-//		ArrayList<Row> rows = conn.runQuery("SELECT COUNT(*) FROM basic_info");
-//		Row row = rows.get(0);
-//		Entry<Object, Class> col = row.row.get(0);
-//		Object size = col.getValue().cast(col.getKey());
-//
-//		assertEquals(ENTRIES_NUM, size);
-//
-//		conn.close();
-//	}
-//
-//	@Test
-//	public void wikiIdTableSizeTest() throws Exception {
-//		Connector conn = new Connector();
-//		assert conn.getConnection() != null;
-//
-//		ArrayList<Row> rows = conn.runQuery("SELECT COUNT(*) FROM WikiID");
-//		Row row = rows.get(0);
-//		Entry<Object, Class> col = row.row.get(0);
-//		Object size = col.getValue().cast(col.getKey());
-//
-//		assertEquals(ENTRIES_NUM, size);
-//
-//		conn.close();
-//	}
+	@BeforeClass
+	public static void test() throws IOException, ClassNotFoundException, SQLException, ParseException {
+		SqlTablesFiller filler = new SqlTablesFiller();
+		filler.createTables();
+		filler.fillBasicInfoTable();
+	filler.fillWikiIdTable();
+	}
+
+	@Test
+	public void basicInfoTableSizeTest() throws Exception {
+		Connector conn = new Connector();
+		assert conn.getConnection() != null;
+
+		ArrayList<Row> rows = conn.runQuery("SELECT COUNT(*) FROM basic_info");
+		Row row = rows.get(0);
+		Entry<Object, Class> col = row.row.get(0);
+		Object size = col.getValue().cast(col.getKey());
+
+		assertEquals(ENTRIES_NUM, size);
+
+		conn.close();
+	}
+
+	@Test
+	public void wikiIdTableSizeTest() throws Exception {
+		Connector conn = new Connector();
+		assert conn.getConnection() != null;
+
+		ArrayList<Row> rows = conn.runQuery("SELECT COUNT(*) FROM WikiID");
+		Row row = rows.get(0);
+		Entry<Object, Class> col = row.row.get(0);
+		Object size = col.getValue().cast(col.getKey());
+
+		assertEquals(ENTRIES_NUM, size);
+
+		conn.close();
+	}
 	
 	@Test
 	public void IndexTest() throws Exception {

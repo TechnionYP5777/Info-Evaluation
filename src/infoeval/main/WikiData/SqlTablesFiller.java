@@ -32,11 +32,11 @@ public class SqlTablesFiller {
 	}
 
 	public void createTables() throws SQLException, ClassNotFoundException, IOException {
-		//dropTables();
+		dropTables();
 		connector.runUpdate("CREATE TABLE IF NOT EXISTS basic_info(Name VARCHAR(100) NOT NULL,"
 				+ " BirthPlace VARCHAR(100) NULL,DeathPlace VARCHAR(100) NULL,BirthDate DATE NULL,"
 				+ " DeathDate DATE NULL, occupation VARCHAR(100) NULL, spouseName VARCHAR(100) NULL,"
-				+ " spouseOccupation VARCHAR(100) NULL, photoLink VARCHAR(200) NULL");
+				+ " spouseOccupation VARCHAR(100) NULL, photoLink VARCHAR(500) NULL)");
 		logger.log(Level.INFO, "basic_info table created successfully");
 		connector.runUpdate(
 				"CREATE TABLE IF NOT EXISTS WikiID(Name VARCHAR(100) NOT NULL,wikiPageID VARCHAR(50) NOT NULL)");
@@ -152,6 +152,12 @@ public class SqlTablesFiller {
 				}
 
 			}
+		 
+			
+			String photoLink ="No Photo";
+			if(solution.get("photo")!=null)
+				photoLink=solution.get("photo").toString();
+			
 
 			java.sql.Date sqlBirthDate = null;
 			if (birthDate.contains(".") || birthDate.contains("c.") )
@@ -184,7 +190,7 @@ public class SqlTablesFiller {
 			if (spouseOccupation == null)
 				spouseOccupation = "";
 	*/		
-			String photoLink="";
+			
 			Object[] inp = new Object[9];
 			inp[0] = name;
 			inp[1] = birthPlace;
@@ -195,8 +201,9 @@ public class SqlTablesFiller {
 			inp[6] = spouseName;
 			inp[7] = spouseOccupation;
 			inp[8] = photoLink;
+			System.out.println(photoLink);
 		
-			connector.runUpdate("INSERT INTO basic_info VALUES(?,?,?,?,?,?,?,?)", inp);
+			connector.runUpdate("INSERT INTO basic_info VALUES(?,?,?,?,?,?,?,?,?)", inp);
 		}
 	}
 
