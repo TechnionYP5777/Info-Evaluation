@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import infoeval.main.mysql.TableEntry;
+import infoeval.main.Analysis.AnalyzeParagraph;
+import infoeval.main.WikiData.WikiParsing;
 import infoeval.main.mysql.SqlRunner;
 
 import org.springframework.boot.*;
@@ -14,6 +16,7 @@ import org.springframework.boot.autoconfigure.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -77,6 +80,19 @@ public class InfoevalServiceImp implements InfoevalService {
 	return lst;
 	
 	}
+	
+	@Override
+	@RequestMapping(path="Queries/Arrests",method = RequestMethod.GET)
+	public LinkedList<String> getArrested(String name) throws Exception {
+		logger.log(Level.INFO, "Get Arrests was called.\n Parameters:"+"Name:"+name);
+		WikiParsing wiki =  (new WikiParsing("https://en.wikipedia.org/wiki/"+name));
+		wiki.Parse("arrested");
+		AnalyzeParagraph analyze = new AnalyzeParagraph(wiki.getParagraphs());
+		analyze.AnalyzeArrestsQuery();
+		LinkedList<String> results = analyze.getInformation();
+		return results;
+	}
+	
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(InfoevalServiceImp.class, args);
