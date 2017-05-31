@@ -21,9 +21,6 @@
 		
 		
         <div ng-controller="QueryEntry">
-			 <div>
-            	<li ng-show="!persons.length">No persons</li>
-            </div>
 			<div ng-repeat="per in persons" >
 				<div class="card stable-bg ink-dark">            
 					<div class="item-avatar item-text-wrap">
@@ -33,6 +30,9 @@
 
 				</div>
 			</div>
+			 <div>
+            	<li ng-show="!persons.length">No persons</li>
+            </div>
 		</div>
 		
 	<!-- <div ng-controller="QueryEntry">

@@ -2,7 +2,7 @@
     <ion-content ng-class="{expanded:isExpanded}" class="animate-fade-slide-in">
        
         <div ng-controller="ArrestsCtrl">
-			<div ng-repeat="info in information" >
+			<div ng-repeat="info in information track by $index" >
 				<div class="card stable-bg ink-dark">            
 					<div class="item-avatar item-text-wrap">
 						<span class="avatar" style="background-image: url('img/jon-snow.jpg');"></span>

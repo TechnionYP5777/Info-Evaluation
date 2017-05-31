@@ -294,7 +294,7 @@ angular.module('starter.controllers', [])
 
 .controller('ArrestsParameters',function($scope,$state,ArrestsParams){
 	$scope.showArrestsResults = function(name){
-		if(name == null || name.toString().trim().length() == 0){
+		if(name == null ||  name.trim().length == 0){
 			alert('Please Insert a Name!')
 		}
 		else{
@@ -328,7 +328,7 @@ angular.module('starter.controllers', [])
 			for(var r in response.data) {
 			  var info = response.data[r];
 			 
-			  $scope.persons.push(info);
+			  $scope.information.push(info);
 			  console.log(info);
 			}
 		
