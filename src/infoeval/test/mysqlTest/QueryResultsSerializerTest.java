@@ -7,6 +7,7 @@ import infoeval.main.WikiData.Connector;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
+import org.junit.Ignore;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -16,6 +17,14 @@ import java.util.ArrayList;
  * @author osherh
  * @Since 25-05-2017
  *
+ */
+
+/*
+ * ATTENTION ! When you want to test this class , remove the @Ignore attributes.
+ * I added it since the connector tries to read from the config.xml file which won't be uploaded to GitHub and it causes
+ * travisCI to fail. 
+ * like moshiko did in the connectorTest it's relevant here too
+ * @osherh 
  */
 public class QueryResultsSerializerTest {
 	private QueryResultsSerializer resultsSer;
@@ -28,6 +37,7 @@ public class QueryResultsSerializerTest {
 		connector = runner.getConnector();
 	}
 
+	@Ignore
 	@Test
 	@SuppressWarnings("unchecked")
 	public void serializeANDdeSerializeTest() throws Exception {
