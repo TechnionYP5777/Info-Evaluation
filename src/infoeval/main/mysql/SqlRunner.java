@@ -4,12 +4,19 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Map.Entry;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import infoeval.main.WikiData.Connector;
+import infoeval.main.WikiData.Extractor;
+import infoeval.main.WikiData.QueryTypes;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.apache.commons.lang3.text.WordUtils;
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSetRewindable;
+import org.apache.jena.rdf.model.RDFNode;
 
 /**
  * @author osherh , Moshe
@@ -59,16 +66,15 @@ public class SqlRunner {
 		int serialized_id = -1;
 		ArrayList<Row> rows = new ArrayList<>();
 		if (id_result.isEmpty()) {
-			final String beforeYearInPlace = "SELECT SQL_CACHE filtered_info.name,filtered_info.BirthDate,WikiID.wikiPageID "
+			final String beforeYearInPlace = "SELECT SQL_CACHE filtered_info.name, filtered_info.BirthDate, filtered_info.photoLink, WikiID.wikiPageID "
 					+ "FROM (SELECT * FROM basic_info WHERE BirthPlace = ? AND YEAR(BirthDate) < ?) AS filtered_info  "
 					+ "LEFT JOIN WikiID " + "ON WikiID.name = filtered_info.name " + "LIMIT " + LIMIT_NUM;
-			logger.log(Level.INFO, "Born and died in different place is being executed");
+			logger.log(Level.INFO, "Born in place before year query is being executed");
 			rows = conn.runQuery(beforeYearInPlace, inp);
 			String query_identifier = "getBornInPlaceYear" + "(" + place + year + ")";
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
 		} else {
 			serialized_id = (int) id_result.get(0).row.get(0).getKey();
-			// serialized_id = (int)
 			// id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
 			@SuppressWarnings("unchecked")
 			ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(conn, serialized_id);
@@ -79,10 +85,11 @@ public class SqlRunner {
 			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey());
 			Date birthDate = (java.sql.Date) row.row.get(1).getValue().cast(row.row.get(1).getKey());
 			String wikiPageID = (String) row.row.get(2).getValue().cast(row.row.get(2).getKey());
+			String photoLink = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
-			String photoLink = (String) row.row.get(8).getValue().cast(row.row.get(8).getKey());
-			res.add(new TableEntry(wikiURL + wikiPageID, name, place, "", birthDate, sqlDate, "", "", "",photoLink));
+			res.add(new TableEntry(wikiURL + wikiPageID, name, place, "", birthDate, sqlDate, "", "", "", photoLink,
+					""));
 		}
 		return res;
 	}
@@ -94,25 +101,16 @@ public class SqlRunner {
 		int serialized_id = -1;
 		ArrayList<Row> rows = new ArrayList<>();
 		if (id_result.isEmpty()) {
-			// final String birthDeathPlace = "SELECT SQL_CACHE
-			// basic_info.name,BirthPlace,DeathPlace,wikiPageID "
-			// + "FROM basic_info,WikiID " + "WHERE DeathPlace != 'No Death
-			// Place' "
-			// + "AND BirthPlace != DeathPlace "
-			// + "AND wikiPageID = (SELECT wikiPageID FROM WikiID WHERE
-			// WikiID.name = basic_info.name LIMIT 1)";
-			//
-			final String birthDeathPlace = "SELECT SQL_CACHE filtered_info.name,filtered_info.BirthPlace,filtered_info.DeathPlace,WikiID.wikiPageID "
+			final String birthDeathPlace = "SELECT SQL_CACHE filtered_info.name, filtered_info.BirthPlace, filtered_info.DeathPlace, filtered_info.photoLink, WikiID.wikiPageID "
 					+ "FROM (SELECT * FROM basic_info WHERE DeathPlace != 'No Death Place' "
 					+ " AND BirthPlace != DeathPlace) AS filtered_info  " + "LEFT JOIN WikiID "
 					+ "ON WikiID.name = filtered_info.name " + "LIMIT " + LIMIT_NUM;
-			logger.log(Level.INFO, "Different birth and death place is being executed");
+			logger.log(Level.INFO, "Different birth and death place query is being executed");
 			rows = conn.runQuery(birthDeathPlace);
 			String query_identifier = "getDifferentDeathPlace()";
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
 		} else {
 			serialized_id = (int) id_result.get(0).row.get(0).getKey();
-			// serialized_id = (int)
 			// id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
 			@SuppressWarnings("unchecked")
 			ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(conn, serialized_id);
@@ -125,11 +123,12 @@ public class SqlRunner {
 			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey());
 			String birthPlace = (String) row.row.get(1).getValue().cast(row.row.get(1).getKey());
 			String deathPlace = (String) row.row.get(2).getValue().cast(row.row.get(2).getKey());
-			String wikiPageID = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
+			String photoLink = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
+			String wikiPageID = (String) row.row.get(4).getValue().cast(row.row.get(4).getKey());
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
-			String photoLink = (String) row.row.get(8).getValue().cast(row.row.get(8).getKey());
-			res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, deathPlace, sqlDate, sqlDate, "", "", "",photoLink));
+			res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, deathPlace, sqlDate, sqlDate, "", "", "",
+					photoLink, ""));
 			++i;
 		}
 		return res;
@@ -146,7 +145,7 @@ public class SqlRunner {
 					+ "FROM basic_info "
 					+ "WHERE spouseName != 'No Spouse Name' AND spouseOccupation != 'No Spouse Occupation' "
 					+ "AND occupation = spouseOccupation " + "LIMIT " + LIMIT_NUM;
-			logger.log(Level.INFO, "Same occupation couples is being executed");
+			logger.log(Level.INFO, "Same occupation couples query is being executed");
 			rows = conn.runQuery(sameOccupationCouples);
 			String query_identifier = "getSameOccupationCouples()";
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
@@ -166,7 +165,8 @@ public class SqlRunner {
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
 			String photoLink = (String) row.row.get(8).getValue().cast(row.row.get(8).getKey());
-			res.add(new TableEntry("", name, "", "", sqlDate, sqlDate, occupation, spouseName, spouseOoccupation,photoLink));
+			res.add(new TableEntry("", name, "", "", sqlDate, sqlDate, occupation, spouseName, spouseOoccupation,
+					photoLink, ""));
 		}
 		return res;
 	}
@@ -205,7 +205,7 @@ public class SqlRunner {
 			 * "AND B1.birthPlace = B2.birthPlace ";
 			 */
 
-			logger.log(Level.INFO, "same birth place couples is being executed");
+			logger.log(Level.INFO, "same birth place couples query is being executed");
 			rows = conn.runQuery(sameBirthPlaceCouples);
 			String query_identifier = "getSameBirthPlaceCouples()";
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
@@ -225,7 +225,7 @@ public class SqlRunner {
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
 			String photoLink = (String) row.row.get(8).getValue().cast(row.row.get(8).getKey());
-			res.add(new TableEntry("", name, birthPlace, "", sqlDate, sqlDate, "", spouseName, "",photoLink));
+			res.add(new TableEntry("", name, birthPlace, "", sqlDate, sqlDate, "", spouseName, "", photoLink, ""));
 		}
 		return res;
 	}
@@ -238,18 +238,17 @@ public class SqlRunner {
 		int serialized_id = -1;
 		ArrayList<Row> rows = new ArrayList<>();
 		if (id_result.isEmpty()) {
-			final String occupationBetweenYears = "SELECT SQL_CACHE filtered_info.name, filtered_info.birthDate, filtered_info.deathDate, WikiID.wikiPageId "
+			final String occupationBetweenYears = "SELECT SQL_CACHE filtered_info.name, filtered_info.birthDate, filtered_info.deathDate, filtered_info.photoLink, WikiID.wikiPageId "
 					+ "FROM (SELECT * FROM basic_info " + "WHERE deathDate IS NOT NULL "
 					+ "AND YEAR(birthDate) >= ? AND YEAR(deathDate) <= ? " + "AND occupation = ?) AS filtered_info "
 					+ "LEFT JOIN WikiID " + "ON WikiID.name = filtered_info.name " + "LIMIT " + LIMIT_NUM;
 
-			logger.log(Level.INFO, "occupation between years is being executed");
+			logger.log(Level.INFO, "occupation between years query is being executed");
 			rows = conn.runQuery(occupationBetweenYears, inp);
 			String query_identifier = "getOccupationBetweenYears(" + year1 + "," + year2 + "," + occupation + ")";
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
 		} else {
 			serialized_id = (int) id_result.get(0).row.get(0).getKey();
-			// serialized_id = (int)
 			// id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
 			@SuppressWarnings("unchecked")
 			ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(conn, serialized_id);
@@ -260,9 +259,10 @@ public class SqlRunner {
 			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey());
 			Date birthDate = (java.sql.Date) row.row.get(1).getValue().cast(row.row.get(1).getKey());
 			Date deathDate = (java.sql.Date) row.row.get(2).getValue().cast(row.row.get(2).getKey());
-			String wikiPageID = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
-			String photoLink = (String) row.row.get(8).getValue().cast(row.row.get(8).getKey());
-			res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, deathDate, occupation, "", "",photoLink));
+			String photoLink = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
+			String wikiPageID = (String) row.row.get(4).getValue().cast(row.row.get(4).getKey());
+			res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, deathDate, occupation, "", "",
+					photoLink, ""));
 		}
 		return res;
 	}
@@ -275,18 +275,17 @@ public class SqlRunner {
 		int serialized_id = -1;
 		ArrayList<Row> rows = new ArrayList<>();
 		if (id_result.isEmpty()) {
-			final String spouselessBetweenYears = "SELECT SQL_CACHE filtered_info.name, filtered_info.birthDate, filtered_info.deathDate, filtered_info.occupation, WikiID.wikiPageId "
+			final String spouselessBetweenYears = "SELECT SQL_CACHE filtered_info.name, filtered_info.birthDate, filtered_info.deathDate, filtered_info.occupation, filtered_info.photoLink, WikiID.wikiPageId "
 					+ "FROM (SELECT * FROM basic_info WHERE deathDate IS NOT NULL "
 					+ "AND YEAR(birthDate) >= ? AND YEAR(deathDate) <= ? " + "AND spouseName = 'No Spouse Name' "
 					+ ") AS filtered_info " + "LEFT JOIN WikiID " + "ON WikiID.name = filtered_info.name " + "LIMIT "
 					+ LIMIT_NUM;
-			logger.log(Level.INFO, "spouseless between years is being executed");
+			logger.log(Level.INFO, "spouseless between years query is being executed");
 			rows = conn.runQuery(spouselessBetweenYears, inp);
 			String query_identifier = "getSpouselessBetweenYears(" + year1 + "," + year2 + ")";
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
 		} else {
 			serialized_id = (int) id_result.get(0).row.get(0).getKey();
-			// serialized_id = (int)
 			// id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
 			@SuppressWarnings("unchecked")
 			ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(conn, serialized_id);
@@ -298,11 +297,72 @@ public class SqlRunner {
 			Date birthDate = (java.sql.Date) row.row.get(1).getValue().cast(row.row.get(1).getKey());
 			Date deathDate = (java.sql.Date) row.row.get(2).getValue().cast(row.row.get(2).getKey());
 			String occupation = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
-			String wikiPageID = (String) row.row.get(4).getValue().cast(row.row.get(4).getKey());
-			String photoLink = (String) row.row.get(8).getValue().cast(row.row.get(8).getKey());
-			res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, deathDate, occupation, "", "",photoLink));
+			String photoLink = (String) row.row.get(4).getValue().cast(row.row.get(4).getKey());
+			String wikiPageID = (String) row.row.get(5).getValue().cast(row.row.get(5).getKey());
+			res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, deathDate, occupation, "", "",
+					photoLink, ""));
 		}
 		return res;
+	}
+
+	@SuppressWarnings("unchecked")
+	public TableEntry getPersonalInfo(String name) throws ClassNotFoundException, SQLException, IOException {
+		Object[] inp = new Object[] { name };
+		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
+				+ "WHERE query_identifier LIKE CONCAT('getPersonalInfo','(',?,')')", inp);
+		int serialized_id = -1;
+		ArrayList<Row> rows = new ArrayList<>();
+
+		String overviewStr = "";
+		if (id_result.isEmpty()) {
+			String newName = WordUtils.capitalize(name).replaceAll(" ", "_");
+			Extractor ext = new Extractor(newName);
+			logger.log(Level.INFO, "abstract extraction query is being executed");
+			ext.executeQuery(QueryTypes.ABSTRACT);
+			ResultSetRewindable results = ext.getResults();
+
+			results.reset();
+			QuerySolution solution = results.nextSolution();
+			RDFNode overview = solution.get("abstract");
+			overviewStr = "No Abstract";
+			if (overview != null)
+				if (overview.isResource())
+					overviewStr = (overview.asResource() + "").split("resource/")[1];
+				else if (overview.isLiteral())
+					overviewStr = (overview.asLiteral() + "").split("@")[0];
+
+			final String personalInfoQuery = "SELECT SQL_CACHE filtered_info.*, WikiID.wikiPageId "
+					+ "FROM (SELECT * FROM basic_info WHERE name = ? LIMIT 1) AS filtered_info " + "LEFT JOIN WikiID "
+					+ "ON WikiID.name = filtered_info.name " + "LIMIT 1";
+			logger.log(Level.INFO, "personal info query is being executed");
+			rows = conn.runQuery(personalInfoQuery, inp);
+
+			Object[] toSerilaize = new Object[2];
+			toSerilaize[0] = rows;
+			toSerilaize[1] = overviewStr;
+
+			String query_identifier = "getPersonalInfo(" + name + ")";
+			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, toSerilaize);
+		} else {
+			serialized_id = (int) id_result.get(0).row.get(0).getKey();
+			Object[] output = (Object[]) resultsSer.deSerializeQueryResults(conn, serialized_id);
+			rows = (ArrayList<Row>) output[0];
+			overviewStr = (String) output[1];
+		}
+		Row res_row = rows.get(0);
+		String birthPlace = (String) res_row.row.get(1).getValue().cast(res_row.row.get(1).getKey());
+		String deathPlace = (String) res_row.row.get(2).getValue().cast(res_row.row.get(2).getKey());
+		Date birthDate = (java.sql.Date) res_row.row.get(3).getValue().cast(res_row.row.get(3).getKey());
+		Date deathDate = (java.sql.Date) res_row.row.get(4).getValue().cast(res_row.row.get(4).getKey());
+		String occupation = (String) res_row.row.get(5).getValue().cast(res_row.row.get(5).getKey());
+		String spouseName = (String) res_row.row.get(6).getValue().cast(res_row.row.get(6).getKey());
+		String spouseOccupation = (String) res_row.row.get(7).getValue().cast(res_row.row.get(7).getKey());
+		String photoLink = (String) res_row.row.get(8).getValue().cast(res_row.row.get(8).getKey());
+		String wikiPageID = (String) res_row.row.get(9).getValue().cast(res_row.row.get(9).getKey());
+
+		TableEntry te = new TableEntry(wikiURL + wikiPageID, name, birthPlace, deathPlace, birthDate, deathDate,
+				occupation, spouseName, spouseOccupation, photoLink, overviewStr);
+		return te;
 	}
 
 	public ArrayList<Row> runQuery(String s, Object[] inp) throws ClassNotFoundException, SQLException, IOException {
