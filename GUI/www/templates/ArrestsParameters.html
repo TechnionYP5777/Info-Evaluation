@@ -1,0 +1,31 @@
+<ion-view view-title="Look for Arrests of a Person">
+    <ion-content ng-class="{expanded:isExpanded}" class="animate-fade-slide-in">
+        <ion-nav-view>
+        <div class="item card-item">  
+            <div  class="card stable-bg ink ink-dark">
+                <div class="item item-avatar item-text-wrap">
+                      <div>
+            <h2>Please insert the name of the Person you wish to find information about: </h2>
+             <br>
+			<br>
+			</div>
+		  <div class="item item-input-inset">
+			  <label class="item item-input-wrapper">		
+					<i class="icon ion-edit placeholder-icon"></i>
+					<input type="text" placeholder="Name of Person" ng-model="name">
+					<span ng-show="!name">Please Enter a Name!</span>
+					
+			  </label>
+		 </div>
+		<div ng-controller="ArrestsParameters">
+			<button class="button button-block padding" ng-click="showArrestsResults(name)">
+				Show Results
+			</button>
+		</div>
+    </div>
+            </div>
+        </div>
+        </ion-nav-view>
+       
+    </ion-content>
+</ion-view>
