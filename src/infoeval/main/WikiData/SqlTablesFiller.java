@@ -154,11 +154,7 @@ public class SqlTablesFiller {
 			}
 		 
 			
-			String photoLink ="No Photo";
-			if(solution.get("photo")!=null)
-				photoLink=solution.get("photo").toString();
-			
-
+			String photoLink =solution.get("photo") == null ? "No Photo" : solution.get("photo") + "";
 			java.sql.Date sqlBirthDate = null;
 			if (birthDate.contains(".") || birthDate.contains("c.") )
 				sqlBirthDate = null;

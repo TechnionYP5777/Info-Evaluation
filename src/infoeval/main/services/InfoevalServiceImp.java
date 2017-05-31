@@ -75,9 +75,9 @@ public class InfoevalServiceImp implements InfoevalService {
 		 * 
 		 */
 		SqlRunner runner = new SqlRunner();
-	ArrayList<TableEntry> lst = runner.getDifferentDeathPlace();
-	logger.log(Level.INFO, "list size:"+lst.size());
-	return lst;
+	ArrayList<TableEntry> $ = runner.getDifferentDeathPlace();
+	logger.log(Level.INFO, "list size:"+$.size());
+	return $;
 	
 	}
 	

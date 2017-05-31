@@ -67,11 +67,10 @@ public class Row implements Serializable {
 				"The cast type: " + castType + "sqlType="+sqlType);
 		try {
 			 Object castedData = castType.cast(data);
-			 if (castedData != null)
-				this.add(castedData);
-			else {
+			 if (castedData == null)
 				add("");
-			}
+			else
+				this.add(castedData);
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 			Logger lgr = Logger.getLogger(Row.class.getName());

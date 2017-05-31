@@ -53,27 +53,24 @@ public class AnalyzeParagraph {
  
  static String getShortestString(LinkedList<String> refined_lst) {
      int maxLength =refined_lst.get(0).length();
-     String shortestString = null;
-     for (int i=0;i< refined_lst.size() ; i ++) {
+     String $ = null;
+     for (int i=0;i< refined_lst.size() ; ++i) {
     	 String s=refined_lst.get(i);
-    	 System.out.println(s);
          if (s.length() <= maxLength) {
              maxLength = s.length();
-             shortestString = s;
+             $ = s;
          }
      }
-     return shortestString;
+     return $;
  }
  
  public LinkedList<String> RefineResults(int limit){
 	 //Take only the longest #limit results.
-	 LinkedList<String> refined_lst = new LinkedList<String>(this.Information);
-	 System.out.println(refined_lst.size());
-	 while(refined_lst.size() > limit){
-		 System.out.println(getShortestString(refined_lst));
-		 refined_lst.remove(getShortestString(refined_lst));
-	 }
-	 return refined_lst;
+	 LinkedList<String> $ = new LinkedList<String>(this.Information);
+	 System.out.println($.size());
+	 while($.size() > limit)
+		$.remove(getShortestString($));
+	 return $;
  }
  
 
