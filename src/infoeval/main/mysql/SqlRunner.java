@@ -33,6 +33,7 @@ public class SqlRunner {
 
 	public SqlRunner() throws Exception {
 		conn = new Connector();
+		conn.cacheSettings();
 		resultsSer = new QueryResultsSerializer();
 		conn.runUpdate("CREATE TABLE IF NOT EXISTS serialized_query_results "
 				+ "(serialized_id int(30) NOT NULL AUTO_INCREMENT, " + "query_identifier VARCHAR(100) NOT NULL, "

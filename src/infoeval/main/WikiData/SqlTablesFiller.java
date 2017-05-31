@@ -30,7 +30,11 @@ public class SqlTablesFiller {
 	public SqlTablesFiller() throws IOException, ClassNotFoundException, SQLException {
 		connector = new Connector();
 	}
-
+	
+	public void close() throws IOException, ClassNotFoundException, SQLException {
+		connector.close();
+	}
+	
 	public void createTables() throws SQLException, ClassNotFoundException, IOException {
 		dropTables();
 		connector.runUpdate("CREATE TABLE IF NOT EXISTS basic_info(Name VARCHAR(100) NOT NULL,"
@@ -41,16 +45,15 @@ public class SqlTablesFiller {
 		connector.runUpdate(
 				"CREATE TABLE IF NOT EXISTS WikiID(Name VARCHAR(100) NOT NULL,wikiPageID VARCHAR(50) NOT NULL)");
 		logger.log(Level.INFO, "WIKI_ID table created successfully");
-		createIndexWikiID();
 	}
 
 	
 	
 	public void addIndexBasicInfo() throws SQLException, ClassNotFoundException, IOException{
-		connector.runUpdate("ALTER TABLE basic_info ADD INDEX basicInfoIndex (Name, BirthDate,DeathDate);\n" );
+		connector.runUpdate("ALTER TABLE basic_info ADD INDEX basicInfoIndex (Name,BirthDate,DeathDate,photoLink);\n" );
 	}
 	
-	public void createIndexWikiID() throws SQLException, ClassNotFoundException, IOException{
+	public void addIndexWikiID() throws SQLException, ClassNotFoundException, IOException{
 		connector.runUpdate("ALTER TABLE WikiID ADD INDEX wikiIdIndex (wikiPageID)");			
 	}
 	
@@ -93,7 +96,6 @@ public class SqlTablesFiller {
 					birthPlace = (bPlace.asResource() + "").split("resource/")[1];
 				else if (bPlace.isLiteral())
 					birthPlace = (bPlace.asLiteral() + "").split("@")[0];
-
 			RDFNode dPlace = solution.get("death");
 			String deathPlace = "No Death Place";
 			if (dPlace != null)
@@ -101,7 +103,6 @@ public class SqlTablesFiller {
 					deathPlace = (dPlace.asResource() + "").split("resource/")[1];
 				else if (dPlace.isLiteral())
 					deathPlace = (dPlace.asLiteral() + "").split("@")[0];
-
 			RDFNode occupation = solution.get("occup");
 			String occup = "No Occupation";
 			if (occupation != null)
@@ -113,11 +114,15 @@ public class SqlTablesFiller {
 			
 			RDFNode spOcuup = solution.get("spOccu");
 			String spouseOccupation = "No Spouse Occupation";
-			if (spOcuup != null)
-				if (spOcuup.isResource())
-					spouseOccupation = (spOcuup.asResource() + "").split("resource/")[1];
-				else if (dPlace.isLiteral())
+			if (spOcuup != null){
+				if (spOcuup.isResource()){
+					if(!(spOcuup.asResource() + "").contains("resource")){
+						spouseOccupation = "No Spouse Occupation";						
+					}
+					else spouseOccupation = (spOcuup.asResource() + "").split("resource/")[1];
+				}else if (dPlace.isLiteral())
 					spouseOccupation = (spOcuup.asLiteral() + "").split("@")[0];
+			}	
 			RDFNode bDate = solution.get("bDate");
 			String birthDate = !bDate.isLiteral() ? null : bDate.asLiteral().getValue() + "";
 

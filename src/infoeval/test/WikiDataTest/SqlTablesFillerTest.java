@@ -28,55 +28,49 @@ import infoeval.main.mysql.Row;
  * @osherh 
  */
 public class SqlTablesFillerTest {
-	private static final int ENTRIES_NUM = 10000;
-
+	private final int ENTRIES_NUM = 10000;
+	
 	@BeforeClass
-	@Ignore
+	//@Ignore
 	public static void init() throws IOException, ClassNotFoundException, SQLException, ParseException {
 		SqlTablesFiller filler = new SqlTablesFiller();
-		filler.createTables();
-		filler.fillBasicInfoTable();
-		filler.fillWikiIdTable();
+		//filler.createTables();
+		//filler.fillBasicInfoTable();
+		//filler.fillWikiIdTable();
+		filler.close();
 	}
 
-	@Ignore
+//	@Ignore
 	@Test
 	public void basicInfoTableSizeTest() throws Exception {
 		Connector conn = new Connector();
-		assert conn.getConnection() != null;
-
 		ArrayList<Row> rows = conn.runQuery("SELECT COUNT(*) FROM basic_info");
 		Row row = rows.get(0);
 		Entry<Object, Class> col = row.row.get(0);
-		Object size = col.getValue().cast(col.getKey());
-
+		long size = (long) col.getValue().cast(col.getKey());
 		assertEquals(ENTRIES_NUM, size);
-
 		conn.close();
 	}
 
-	@Ignore
+//	@Ignore
 	@Test
 	public void wikiIdTableSizeTest() throws Exception {
 		Connector conn = new Connector();
-		assert conn.getConnection() != null;
-
 		ArrayList<Row> rows = conn.runQuery("SELECT COUNT(*) FROM WikiID");
 		Row row = rows.get(0);
 		Entry<Object, Class> col = row.row.get(0);
-		Object size = col.getValue().cast(col.getKey());
-
+		long size = (long) col.getValue().cast(col.getKey());
 		assertEquals(ENTRIES_NUM, size);
-
 		conn.close();
 	}
 	
-	@Ignore
+//	@Ignore
 	@Test
 	public void IndexTest() throws Exception {
 		SqlTablesFiller filler = new SqlTablesFiller();
 		filler.addIndexBasicInfo();
-		filler.createIndexWikiID();
+		filler.addIndexWikiID();
+		filler.close();
 	}
 	
 }

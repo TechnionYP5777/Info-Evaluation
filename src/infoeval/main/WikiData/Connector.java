@@ -36,8 +36,6 @@ public class Connector {
 		try {
 			initializeConnectionPool();
 			logger.log(Level.INFO, "connection pool initialized");
-			cacheSettings();
-			logger.log(Level.INFO, "cache settings are set");
 		} catch (Exception e) {
 			throw e;
 		}
@@ -45,6 +43,7 @@ public class Connector {
 
 	public void cacheSettings() throws SQLException, ClassNotFoundException, IOException{
 		runUpdate("SET GLOBAL query_cache_type = DEMAND");
+		logger.log(Level.INFO, "cache settings are set");
 	}
 	
 	public void initializeConnectionPool() throws IOException {
