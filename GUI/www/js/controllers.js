@@ -274,6 +274,7 @@ angular.module('starter.controllers', [])
     $scope.$parent.setExpanded(false);
     $scope.$parent.setHeaderFab(false);
 
+	
     // Set Motion
     $timeout(function() {
         ionicMaterialMotion.slideUp({
@@ -291,13 +292,51 @@ angular.module('starter.controllers', [])
     ionicMaterialInk.displayEffect();
 })
 
-.controller('ArrestsCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk) {
+.controller('ArrestsParameters',function($scope,$state,ArrestsParams){
+	$scope.showArrestsResults = function(name){
+		
+		console.log('Sending params for Arrests query ');
+		ArrestsParams.setName(name)
+		$state.go('app.ArrestsResults');
+	};
+})
+
+
+.controller('ArrestsCtrl', function($scope,$http, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk,ArrestsParams) {
     // Set Header
     $scope.$parent.showHeader();
     $scope.$parent.clearFabs();
     $scope.isExpanded = false;
     $scope.$parent.setExpanded(false);
     $scope.$parent.setHeaderFab(false);
+	
+	console.log('Show results of Get Arrests was called');
+		$scope.information=[];
+		$http({
+		  method: 'GET',
+		  url:'/Queries/Arrests',
+			params: {
+			name: ArrestsParams.getName()
+		}
+		}).then(function successCallback(response) {
+			console.log('success');
+			$scope.information = [];
+			for(var r in response.data) {
+			  var info = response.data[r];
+			 
+			  $scope.persons.push(info);
+			  console.log(info);
+			}
+		
+		}, function errorCallback(response) {
+			alert(JSON.stringify(response))
+			var FetchErrorAlert = $ionicPopup.alert({
+				title: 'Fetch error!',
+				template: 'Unable to get data', 
+			});
+		console.log(response.data);
+		}
+	);
 
     // Set Motion
     $timeout(function() {

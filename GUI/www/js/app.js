@@ -161,8 +161,25 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             }
         }
     })
+	
+	.state('app.ArrestsParams', {
+        url: '/ArrestsInsertParams',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/ArrestsParameters.html',
+                controller: 'ActivityCtrl'
+            },
+            'fabContent': {
+                controller: function ($timeout) {
+                    /*$timeout(function () {
+                        document.getElementById('fab-profile').classList.toggle('on');
+                    }, 800);*/
+                }
+            }
+        }
+    })
 
-    .state('app.Arrests', {
+    .state('app.ArrestsResults', {
         url: '/Arrests',
         views: {
             'menuContent': {

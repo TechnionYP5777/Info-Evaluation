@@ -25,6 +25,19 @@ angular.module('starter.services', [])
 	};
 })
 
+
+.factory('ArrestsParams', function () {
+	var name={};
+	return {
+		getName: function () {
+			return name.toString();
+		},
+		setName: function (nameParameter) {
+			name = nameParameter;
+		}
+	};
+})
+
 //EOF
 ;
 
