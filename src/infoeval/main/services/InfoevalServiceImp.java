@@ -92,8 +92,8 @@ public class InfoevalServiceImp implements InfoevalService {
 		wiki.Parse("arrested");
 		AnalyzeParagraph analyze = new AnalyzeParagraph(wiki.getParagraphs());
 		analyze.AnalyzeArrestsQuery();
-		LinkedList<String> results = analyze.getInformation();
-		return results;
+		//LinkedList<String> results = analyze.getInformation();
+		return analyze.RefineResults(2);
 	}
 	
 

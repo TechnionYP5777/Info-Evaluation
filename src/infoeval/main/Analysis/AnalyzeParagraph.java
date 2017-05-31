@@ -38,7 +38,7 @@ public class AnalyzeParagraph {
  
  private String ArrestPenalty(Sentence s){
 	 //This function gets a sentence which may include the penalty for an arrest and returns it.
-	 //e.g. - 'He was sentenced to 2 years in jail' and the functio returns '2 years in jail' .
+	 //e.g. - 'He was sentenced to 2 years in jail' and the function returns '2 years in jail' .
 	 final List<String> nerTags = s.nerTags();
 	 String res ="";
 	 int i=0;
@@ -49,6 +49,31 @@ public class AnalyzeParagraph {
 	 }
 	 System.out.println(res);
 	 return res.trim();
+ }
+ 
+ static String getShortestString(LinkedList<String> refined_lst) {
+     int maxLength =refined_lst.get(0).length();
+     String shortestString = null;
+     for (int i=0;i< refined_lst.size() ; i ++) {
+    	 String s=refined_lst.get(i);
+    	 System.out.println(s);
+         if (s.length() <= maxLength) {
+             maxLength = s.length();
+             shortestString = s;
+         }
+     }
+     return shortestString;
+ }
+ 
+ public LinkedList<String> RefineResults(int limit){
+	 //Take only the longest #limit results.
+	 LinkedList<String> refined_lst = new LinkedList<String>(this.Information);
+	 System.out.println(refined_lst.size());
+	 while(refined_lst.size() > limit){
+		 System.out.println(getShortestString(refined_lst));
+		 refined_lst.remove(getShortestString(refined_lst));
+	 }
+	 return refined_lst;
  }
  
 
