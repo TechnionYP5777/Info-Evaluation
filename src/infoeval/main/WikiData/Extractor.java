@@ -20,12 +20,20 @@ public class Extractor {
 
 	private ParameterizedSparqlString basicInfoQuery;
 	private ParameterizedSparqlString wikiIdQuery;
+	private ParameterizedSparqlString abstractQuery;
 	private ResultSetRewindable results;
 	private Map<QueryTypes, ParameterizedSparqlString> queriesMap;
 	private static final int ENTRIES_NUM = 10000;
 	private static final int SKIP_NUM = 10000;	
 	
+	/**
+	 * [[SuppressWarningsSpartan]]
+	 */
 	public Extractor() {
+		/*
+		 * the query limits the number of results to 10,000, and the OFFSET means
+		 * that we take every 10,000th entry
+		 */
 		basicInfoQuery = new ParameterizedSparqlString
 				("  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
 				+ " PREFIX  dbo: <http://dbpedia.org/ontology/>"
@@ -45,7 +53,7 @@ public class Extractor {
 							+ " ?spouse dbo:occupation ?spOccupation}. "
 					+ " OPTIONAL{?resource dbp:deathDate ?deathDate. ?resource dbp:deathPlace ?deathPlace} "
 				+ " FILTER (lang(?name) = 'en')  }GROUP BY ?name "
-				+ " ORDER BY DESC(?name)    LIMIT "+ENTRIES_NUM+" OFFSET "+ENTRIES_NUM);
+				+ " ORDER BY DESC(?name)    LIMIT "+ENTRIES_NUM+" OFFSET "+SKIP_NUM);
 
 		wikiIdQuery = new ParameterizedSparqlString(
 					"PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
@@ -56,15 +64,26 @@ public class Extractor {
 						+ " ?resource a <http://dbpedia.org/ontology/Person>; dbp:name ?name;"
 						+ "  dbo:wikiPageID ?wikiPageID."
 						+ " FILTER (lang(?name) = 'en')} ORDER BY DESC(?name) LIMIT "+ENTRIES_NUM+" OFFSET "+SKIP_NUM);
+	
 
 		queriesMap = new HashMap<QueryTypes, ParameterizedSparqlString>();
 		queriesMap.put(QueryTypes.BASIC_INFO, basicInfoQuery);
 		queriesMap.put(QueryTypes.WIKI_ID, wikiIdQuery);
 	}
-	/*
-	 * the query limits the number of results to 10,000, and the OFFSET means
-	 * that we take every 10,000th entry
-	 */
+	
+	public Extractor(String nameToGetAbstractFor) {
+		abstractQuery = new ParameterizedSparqlString(
+			"PREFIX res: <http://dbpedia.org/resource/> "
+		+	"PREFIX dbo: <http://dbpedia.org/ontology/> " 
+
+		+	"SELECT ?abstract WHERE { "
+				+ "res:" + nameToGetAbstractFor +" dbo:abstract ?abstract. "
+		+	"FILTER (lang(?abstract) = 'en')}"); 
+
+		queriesMap = new HashMap<QueryTypes, ParameterizedSparqlString>();
+		queriesMap.put(QueryTypes.ABSTRACT, abstractQuery);
+	}
+	
 
 	public void executeQuery(QueryTypes ¢) {
 		this.results = ResultSetFactory.copyResults(QueryExecutionFactory
