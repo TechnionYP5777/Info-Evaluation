@@ -294,10 +294,14 @@ angular.module('starter.controllers', [])
 
 .controller('ArrestsParameters',function($scope,$state,ArrestsParams){
 	$scope.showArrestsResults = function(name){
-		
+		if(name == null || name.toString().trim().length() == 0){
+			alert('Please Insert a Name!')
+		}
+		else{
 		console.log('Sending params for Arrests query ');
 		ArrestsParams.setName(name)
 		$state.go('app.ArrestsResults');
+		}
 	};
 })
 
