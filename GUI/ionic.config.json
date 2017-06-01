@@ -15,6 +15,11 @@
       "path": "/Queries/Arrests",
       "proxyUrl": "http://localhost:8080/Queries/Arrests/"
 		
+    },
+	   {
+      "path": "/Queries/PersonalInformation",
+      "proxyUrl": "http://localhost:8080/Queries/PersonalInformation/"
+		
     }
 	   
   ]

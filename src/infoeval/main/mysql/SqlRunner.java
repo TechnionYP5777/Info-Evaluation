@@ -188,24 +188,6 @@ public class SqlRunner {
 					+ "ON B1.spouseName = basic_info.name " + "AND basic_info.spouseName = B1.name "
 					+ "AND B1.birthPlace = basic_info.birthPlace ";
 
-			/*
-			 * final String sameBirthPlaceCouples = "" +
-			 * "SELECT SQL_CACHE B1.name AS Name, B2.name AS SpouseName, B1.birthPlace AS BirthPlace "
-			 * + "FROM basic_info AS B1 " + "LEFT JOIN basic_info AS B2 " +
-			 * "ON B1.spouseName = B2.name " + "AND B2.spouseName = B1.name " +
-			 * "AND B1.birthPlace = B2.birthPlace ";
-			 * 
-			 * /* final String sameBirthPlaceCouples = "" +
-			 * "SELECT SQL_CACHE B1.name AS Name,B2.name AS SpouseName,B1.birthPlace AS BirthPlace "
-			 * + "FROM (SELECT * FROM basic_info " +
-			 * "WHERE spouseName != 'No Spouse Name' " +
-			 * "AND birthPlace != 'No Birth Place') AS B1 " + "LEFT JOIN " +
-			 * "(SELECT * FROM basic_info " +
-			 * "WHERE spouseName != 'No Spouse Name' " +
-			 * "AND birthPlace != 'No Birth Place') AS B2 " +
-			 * "ON B1.spouseName = B2.name " + "AND B2.spouseName = B1.name " +
-			 * "AND B1.birthPlace = B2.birthPlace ";
-			 */
 
 			logger.log(Level.INFO, "same birth place couples query is being executed");
 			rows = conn.runQuery(sameBirthPlaceCouples);
@@ -213,8 +195,6 @@ public class SqlRunner {
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
 		} else {
 			serialized_id = (int) id_result.get(0).row.get(0).getKey();
-			// serialized_id = (int)
-			// id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
 			@SuppressWarnings("unchecked")
 			ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(conn, serialized_id);
 			rows.addAll(rows2);
@@ -250,7 +230,6 @@ public class SqlRunner {
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
 		} else {
 			serialized_id = (int) id_result.get(0).row.get(0).getKey();
-			// id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
 			@SuppressWarnings("unchecked")
 			ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(conn, serialized_id);
 			rows.addAll(rows2);

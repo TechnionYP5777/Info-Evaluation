@@ -19,6 +19,8 @@ public interface InfoevalService {
 	List<TableEntry> differentDeathPlace() throws Exception;
 
 	LinkedList<String> getArrested(String name) throws Exception;
+
+	TableEntry getPersonal_Information(String name) throws Exception;
 	
 
 }

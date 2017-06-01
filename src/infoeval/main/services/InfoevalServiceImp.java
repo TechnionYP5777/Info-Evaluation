@@ -96,9 +96,23 @@ public class InfoevalServiceImp implements InfoevalService {
 		return analyze.RefineResults(2);
 	}
 	
+	@Override
+	@RequestMapping(path="Queries/PersonalInformation",method = RequestMethod.GET)
+	public TableEntry getPersonal_Information(String name) throws Exception {
+		logger.log(Level.INFO, "Get Arrests was called.\n Parameters:"+"Name:"+name);
+		//Parse user's input:
+		name = name.trim().replaceAll(" ", "_");
+		SqlRunner runner = new SqlRunner();
+		TableEntry $ = runner.getPersonalInfo(name);
+		return $;
+		
+	}
+	
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(InfoevalServiceImp.class, args);
 	}
+	
+	
 
 }

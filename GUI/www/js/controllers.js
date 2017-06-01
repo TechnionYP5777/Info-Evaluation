@@ -331,6 +331,8 @@ angular.module('starter.controllers', [])
 	
 	console.log('Show results of Get Arrests was called');
 		$scope.information=[];
+		$scope.name = ArrestsParams.getName();
+		console.log($scope.name);
 		$http({
 		  method: 'GET',
 		  url:'/Queries/Arrests',
@@ -342,7 +344,34 @@ angular.module('starter.controllers', [])
 			$scope.information = [];
 			for(var r in response.data) {
 			  var info = response.data[r];
-			 
+			  
+			  $scope.information.push(info);
+			  console.log(info);
+			}
+		
+		}, function errorCallback(response) {
+			alert(JSON.stringify(response))
+			var FetchErrorAlert = $ionicPopup.alert({
+				title: 'Fetch error!',
+				template: 'Unable to get data', 
+			});
+		console.log(response.data);
+		}
+	);
+	
+	//Get the image of the person:
+	$http({
+		  method: 'GET',
+		  url:'/Queries/Arrests',
+			params: {
+			name: ArrestsParams.getName()
+		}
+		}).then(function successCallback(response) {
+			console.log('success');
+			$scope.information = [];
+			for(var r in response.data) {
+			  var info = response.data[r];
+			  
 			  $scope.information.push(info);
 			  console.log(info);
 			}
