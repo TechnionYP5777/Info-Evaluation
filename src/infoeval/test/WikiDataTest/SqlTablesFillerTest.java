@@ -31,8 +31,9 @@ import infoeval.main.mysql.Row;
 public class SqlTablesFillerTest {
 	private final int ENTRIES_NUM = 10000;
 	static SqlTablesFiller filler;
+	
 	@BeforeClass
-	//@Ignore
+	@Ignore
 	public static void init() throws IOException, ClassNotFoundException, SQLException, ParseException {
 	filler = new SqlTablesFiller();
 		//filler.createTables();
@@ -40,12 +41,14 @@ public class SqlTablesFillerTest {
 		//filler.fillWikiIdTable();
 	//	filler.close();
 	}
+	
 	@AfterClass
+	@Ignore
 	public static void close() throws ClassNotFoundException, IOException, SQLException{
 		filler.close();
 	}
 
-//	@Ignore
+	@Ignore
 	@Test
 	public void basicInfoTableSizeTest() throws Exception {
 		Connector conn = new Connector();
@@ -56,8 +59,8 @@ public class SqlTablesFillerTest {
 		assertEquals(ENTRIES_NUM, size);
 		//conn.close();
 	}
-//
-////	@Ignore
+
+	@Ignore
 	@Test
 	public void wikiIdTableSizeTest() throws Exception {
 		Connector conn = new Connector();
@@ -68,8 +71,8 @@ public class SqlTablesFillerTest {
 		assertEquals(ENTRIES_NUM, size);
 		//conn.close();
 	}
-//	
-//	@Ignore
+	
+	@Ignore
 	@Test
 	public void IndexTest() throws Exception {
 //		SqlTablesFiller filler = new SqlTablesFiller();

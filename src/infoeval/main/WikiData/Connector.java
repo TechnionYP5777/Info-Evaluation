@@ -41,7 +41,7 @@ public class Connector {
 		}
 	}
 
-	public void cacheSettings() throws SQLException, ClassNotFoundException, IOException{
+	public void setCaching() throws SQLException, ClassNotFoundException, IOException{
 		runUpdate("SET GLOBAL query_cache_type = DEMAND");
 		logger.log(Level.INFO, "cache settings are set");
 	}

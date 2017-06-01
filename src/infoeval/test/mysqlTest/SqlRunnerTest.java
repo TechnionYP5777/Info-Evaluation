@@ -23,10 +23,11 @@ import java.util.ArrayList;
 
 /*
  * ATTENTION ! When you want to test this class , remove the @Ignore attributes.
- * I added it since the connector tries to read from the config.xml file which won't be uploaded to GitHub and it causes
- * travisCI to fail. 
- * like moshiko did in the connectorTest it's relevant here too
- * @osherh 
+ * I added it since the connector tries to read from the config.xml file which
+ * won't be uploaded to GitHub and it causes travisCI to fail. like moshiko did
+ * in the connectorTest it's relevant here too
+ * 
+ * @osherh
  */
 public class SqlRunnerTest {
 	static SqlRunner querun;
@@ -56,17 +57,17 @@ public class SqlRunnerTest {
 	@Ignore
 	@Test
 	public void getBornInPlaceBeforeYearTest() throws Exception {
-		for (TableEntry te : querun.getBornInPlaceBeforeYear("Casablanca", "1954")) {
+		for (TableEntry te : querun.getBornInPlaceBeforeYear("Canada", "1970")) {
 			java.sql.Date birthDate = te.getBirthDate();
 			String birthPlace = te.getBirthPlace();
 			SimpleDateFormat formatYear = new SimpleDateFormat("yyyy");
 			String birthYear = formatYear.format(birthDate);
 			int bYear = Integer.parseInt(birthYear);
-			assert bYear < 1954;
-			assertEquals("Casablanca", birthPlace);
+			assert bYear < 1970;
+			assert birthPlace.contains("Canada");
 		}
 	}
-	
+
 	@Ignore
 	@Test
 	public void getDifferentDeathPlaceTest() throws Exception {

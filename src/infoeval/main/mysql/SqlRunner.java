@@ -33,7 +33,7 @@ public class SqlRunner {
 
 	public SqlRunner() throws Exception {
 		conn = new Connector();
-		conn.cacheSettings();
+		conn.setCaching();
 		resultsSer = new QueryResultsSerializer();
 		conn.runUpdate("CREATE TABLE IF NOT EXISTS serialized_query_results "
 				+ "(serialized_id int(30) NOT NULL AUTO_INCREMENT, " + "query_identifier VARCHAR(100) NOT NULL, "
@@ -67,8 +67,8 @@ public class SqlRunner {
 		int serialized_id = -1;
 		ArrayList<Row> rows = new ArrayList<>();
 		if (id_result.isEmpty()) {
-			final String beforeYearInPlace = "SELECT SQL_CACHE filtered_info.name, filtered_info.BirthDate, filtered_info.photoLink, WikiID.wikiPageID "
-					+ "FROM (SELECT * FROM basic_info WHERE BirthPlace = ? AND YEAR(BirthDate) < ?) AS filtered_info  "
+			final String beforeYearInPlace = "SELECT SQL_CACHE filtered_info.name, filtered_info.BirthPlace, filtered_info.BirthDate, filtered_info.photoLink, WikiID.wikiPageID "
+					+ "FROM (SELECT * FROM basic_info WHERE BirthPlace LIKE CONCAT('%',?,'%') AND YEAR(BirthDate) < ?) AS filtered_info  "
 					+ "LEFT JOIN WikiID " + "ON WikiID.name = filtered_info.name " + "LIMIT " + LIMIT_NUM;
 			logger.log(Level.INFO, "Born in place before year query is being executed");
 			rows = conn.runQuery(beforeYearInPlace, inp);
@@ -84,13 +84,14 @@ public class SqlRunner {
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
 		for (Row row : rows) {
 			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey());
-			Date birthDate = (java.sql.Date) row.row.get(1).getValue().cast(row.row.get(1).getKey());
-			String wikiPageID = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
-			String photoLink = (String) row.row.get(2).getValue().cast(row.row.get(2).getKey());
+			String birthPlace = (String) row.row.get(1).getValue().cast(row.row.get(1).getKey());
+			Date birthDate = (java.sql.Date) row.row.get(2).getValue().cast(row.row.get(2).getKey());
+			String photoLink = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
+			String wikiPageID = (String) row.row.get(4).getValue().cast(row.row.get(4).getKey());
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
-			res.add(new TableEntry(wikiURL + wikiPageID, name, place, "", birthDate, sqlDate, "", "", "", photoLink,
-					""));
+			res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, "", birthDate, sqlDate, "", "", "",
+					photoLink, ""));
 		}
 		return res;
 	}
@@ -165,9 +166,9 @@ public class SqlRunner {
 			String spouseOoccupation = (String) row.row.get(2).getValue().cast(row.row.get(2).getKey());
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
-			
-			res.add(new TableEntry("", name, "", "", sqlDate, sqlDate, occupation, spouseName, spouseOoccupation,
-					"", ""));
+
+			res.add(new TableEntry("", name, "", "", sqlDate, sqlDate, occupation, spouseName, spouseOoccupation, "",
+					""));
 		}
 		return res;
 	}
