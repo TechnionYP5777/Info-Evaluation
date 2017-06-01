@@ -362,25 +362,23 @@ angular.module('starter.controllers', [])
 	//Get the image of the person:
 	$http({
 		  method: 'GET',
-		  url:'/Queries/Arrests',
+		  url:'/Queries/PersonalInformation',
 			params: {
 			name: ArrestsParams.getName()
 		}
 		}).then(function successCallback(response) {
-			console.log('success');
-			$scope.information = [];
-			for(var r in response.data) {
-			  var info = response.data[r];
-			  
-			  $scope.information.push(info);
-			  console.log(info);
-			}
+			console.log('personal data - success');
+			$scope.personalInformation = response.data;
+			console.log('url is ' + personalInformation.photoLink);
+				if(personalInformation.photoLink == "No Photo") {
+					personalInformation.photoLink="http://www.freeiconspng.com/uploads/profile-icon-9.png";
+				}
 		
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response))
 			var FetchErrorAlert = $ionicPopup.alert({
 				title: 'Fetch error!',
-				template: 'Unable to get data', 
+				template: 'Unable to get personal data', 
 			});
 		console.log(response.data);
 		}
