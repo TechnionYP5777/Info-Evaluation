@@ -166,7 +166,10 @@ angular.module('starter.controllers', [])
 			$scope.persons = [];
 			for(var r in response.data) {
 			  var person = response.data[r];
-				console.log(person.photoLink);
+				console.log('url is ' + person.photoLink);
+				if(person.photoLink == "No Photo") {
+					person.photoLink="http://www.freeiconspng.com/uploads/profile-icon-9.png";
+				}
 				var photoUrl= "url('"+person.photoLink+"')";
 				person.photoLink=photoUrl;
 			 
