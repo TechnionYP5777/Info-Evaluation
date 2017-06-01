@@ -87,6 +87,7 @@ public class SqlRunner {
 			String birthPlace = (String) row.row.get(1).getValue().cast(row.row.get(1).getKey());
 			Date birthDate = (java.sql.Date) row.row.get(2).getValue().cast(row.row.get(2).getKey());
 			String photoLink = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
+			photoLink.replaceAll("'", "\'");
 			String wikiPageID = (String) row.row.get(4).getValue().cast(row.row.get(4).getKey());
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
@@ -126,6 +127,7 @@ public class SqlRunner {
 			String birthPlace = (String) row.row.get(1).getValue().cast(row.row.get(1).getKey());
 			String deathPlace = (String) row.row.get(2).getValue().cast(row.row.get(2).getKey());
 			String photoLink = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
+			photoLink.replaceAll("'", "\'");
 			String wikiPageID = (String) row.row.get(4).getValue().cast(row.row.get(4).getKey());
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
@@ -240,6 +242,7 @@ public class SqlRunner {
 			Date birthDate = (java.sql.Date) row.row.get(1).getValue().cast(row.row.get(1).getKey());
 			Date deathDate = (java.sql.Date) row.row.get(2).getValue().cast(row.row.get(2).getKey());
 			String photoLink = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
+			photoLink.replaceAll("'", "\'");
 			String wikiPageID = (String) row.row.get(4).getValue().cast(row.row.get(4).getKey());
 			res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, deathDate, occupation, "", "",
 					photoLink, ""));
@@ -278,6 +281,7 @@ public class SqlRunner {
 			Date deathDate = (java.sql.Date) row.row.get(2).getValue().cast(row.row.get(2).getKey());
 			String occupation = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
 			String photoLink = (String) row.row.get(4).getValue().cast(row.row.get(4).getKey());
+			photoLink.replaceAll("'", "\'");
 			String wikiPageID = (String) row.row.get(5).getValue().cast(row.row.get(5).getKey());
 			res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, deathDate, occupation, "", "",
 					photoLink, ""));
@@ -338,6 +342,7 @@ public class SqlRunner {
 		String spouseName = (String) res_row.row.get(6).getValue().cast(res_row.row.get(6).getKey());
 		String spouseOccupation = (String) res_row.row.get(7).getValue().cast(res_row.row.get(7).getKey());
 		String photoLink = (String) res_row.row.get(8).getValue().cast(res_row.row.get(8).getKey());
+		photoLink.replaceAll("'", "\'");
 		String wikiPageID = (String) res_row.row.get(9).getValue().cast(res_row.row.get(9).getKey());
 
 		TableEntry te = new TableEntry(wikiURL + wikiPageID, name, birthPlace, deathPlace, birthDate, deathDate,
