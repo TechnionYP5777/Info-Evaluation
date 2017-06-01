@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.Ignore;
@@ -29,14 +30,18 @@ import infoeval.main.mysql.Row;
  */
 public class SqlTablesFillerTest {
 	private final int ENTRIES_NUM = 10000;
-	
+	static SqlTablesFiller filler;
 	@BeforeClass
 	//@Ignore
 	public static void init() throws IOException, ClassNotFoundException, SQLException, ParseException {
-		SqlTablesFiller filler = new SqlTablesFiller();
+	filler = new SqlTablesFiller();
 		//filler.createTables();
 		//filler.fillBasicInfoTable();
 		//filler.fillWikiIdTable();
+	//	filler.close();
+	}
+	@AfterClass
+	public static void close() throws ClassNotFoundException, IOException, SQLException{
 		filler.close();
 	}
 
@@ -49,10 +54,10 @@ public class SqlTablesFillerTest {
 		Entry<Object, Class> col = row.row.get(0);
 		long size = (long) col.getValue().cast(col.getKey());
 		assertEquals(ENTRIES_NUM, size);
-		conn.close();
+		//conn.close();
 	}
-
-//	@Ignore
+//
+////	@Ignore
 	@Test
 	public void wikiIdTableSizeTest() throws Exception {
 		Connector conn = new Connector();
@@ -61,16 +66,17 @@ public class SqlTablesFillerTest {
 		Entry<Object, Class> col = row.row.get(0);
 		long size = (long) col.getValue().cast(col.getKey());
 		assertEquals(ENTRIES_NUM, size);
-		conn.close();
+		//conn.close();
 	}
-	
+//	
 //	@Ignore
 	@Test
 	public void IndexTest() throws Exception {
-		SqlTablesFiller filler = new SqlTablesFiller();
+//		SqlTablesFiller filler = new SqlTablesFiller();
+		filler.dropIndex();
 		filler.addIndexBasicInfo();
 		filler.addIndexWikiID();
-		filler.close();
+		//filler.close();
 	}
 	
 }

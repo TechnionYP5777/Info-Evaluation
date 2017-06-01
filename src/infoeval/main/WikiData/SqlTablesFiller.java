@@ -216,4 +216,8 @@ public class SqlTablesFiller {
 		connector.runUpdate("DROP TABLE basic_info");
 		connector.runUpdate("DROP TABLE WikiID");
 	}
+	public void dropIndex() throws SQLException, ClassNotFoundException, IOException{
+		connector.runUpdate("DROP INDEX basicInfoIndex ON basic_info");
+		connector.runUpdate("DROP INDEX wikiIdIndex ON wikiID");
+	}
 }
