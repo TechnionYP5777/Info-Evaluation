@@ -128,10 +128,15 @@ angular.module('starter.controllers', [])
 			for(var r in response.data) {
 				console.log(r);
 			  var person = response.data[r];
+				console.log('url is ' + person.photoLink);
+				var photoUrl= "url('"+person.photoLink+"')";
+				person.photoLink=photoUrl;
+				
 			  $scope.persons.push(person);
 				console.log(person.name);
 				console.log(person.wikiPageID);
 				console.log(person);
+				console.log(person.photoLink);
 			}
 		console.log('end of success');
 		}, function errorCallback(response) {
@@ -158,11 +163,15 @@ angular.module('starter.controllers', [])
 			$scope.persons = [];
 			for(var r in response.data) {
 			  var person = response.data[r];
+				console.log(person.photoLink);
+				var photoUrl= "url('"+person.photoLink+"')";
+				person.photoLink=photoUrl;
 			 
 			  $scope.persons.push(person);
 				console.log(person.name);
 				console.log(person.birthPlace);
 				console.log(person.deathPlace);
+				console.log(person.photoLink);
 			}
 		
 		}, function errorCallback(response) {
