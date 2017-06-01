@@ -1,20 +1,20 @@
 <ion-view view-title="People who died and born in a different place">
     <ion-content ng-class="{expanded:isExpanded}" class="animate-fade-slide-in">
-       
+		
 		<div ng-controller="Query1Entry">
-			 <ion-list>
-				<div class="item card-item">
-					<ion-item ng-repeat="p in persons">
-						<div class="card stable-bg ink-dark">
-							<div class="item item-avatar item-text-wrap">
-								<span class="avatar" style="background-image: url('img/jon-snow.jpg');"></span>
-								<strong>{{p.name}}</strong> Was born in {{p.birthPlace}}, died in {{p.deathPlace}}.
-							</div>
-						</div>
-					</ion-item>
+			<div ng-repeat="per in persons" >
+				<div class="card stable-bg ink-dark">            
+					<div class="item-avatar item-text-wrap">
+						<span class="avatar" style="background-image: url('img/jon-snow.jpg');"></span>
+						<p style="color:black;"><strong>{{p.name}}</strong> Was born in {{p.birthPlace}}, died in {{p.deathPlace}}. </p>
+					</div>
+
 				</div>
-			</ion-list>
-        </div>
+			</div>
+			 <div>
+            	<li ng-show="!persons.length">No persons</li>
+            </div>
+		</div>
         
        
     </ion-content>
