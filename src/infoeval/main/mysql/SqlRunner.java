@@ -85,8 +85,8 @@ public class SqlRunner {
 		for (Row row : rows) {
 			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey());
 			Date birthDate = (java.sql.Date) row.row.get(1).getValue().cast(row.row.get(1).getKey());
-			String wikiPageID = (String) row.row.get(2).getValue().cast(row.row.get(2).getKey());
-			String photoLink = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
+			String wikiPageID = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
+			String photoLink = (String) row.row.get(2).getValue().cast(row.row.get(2).getKey());
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
 			res.add(new TableEntry(wikiURL + wikiPageID, name, place, "", birthDate, sqlDate, "", "", "", photoLink,
@@ -165,9 +165,9 @@ public class SqlRunner {
 			String spouseOoccupation = (String) row.row.get(2).getValue().cast(row.row.get(2).getKey());
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
-			String photoLink = (String) row.row.get(8).getValue().cast(row.row.get(8).getKey());
+			
 			res.add(new TableEntry("", name, "", "", sqlDate, sqlDate, occupation, spouseName, spouseOoccupation,
-					photoLink, ""));
+					"", ""));
 		}
 		return res;
 	}
@@ -225,8 +225,7 @@ public class SqlRunner {
 			String birthPlace = (String) row.row.get(2).getValue().cast(row.row.get(2).getKey());
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
-			String photoLink = (String) row.row.get(8).getValue().cast(row.row.get(8).getKey());
-			res.add(new TableEntry("", name, birthPlace, "", sqlDate, sqlDate, "", spouseName, "", photoLink, ""));
+			res.add(new TableEntry("", name, birthPlace, "", sqlDate, sqlDate, "", spouseName, "", "", ""));
 		}
 		return res;
 	}
