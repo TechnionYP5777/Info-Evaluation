@@ -281,13 +281,56 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('AwardsCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk) {
+.controller('AwardsParameters',function($scope,$state,AwardsParams){
+	$scope.showAwardsResults = function(name){
+		if(name == null ||  name.trim().length == 0){
+			alert('Please Insert a Name!')
+		}
+		else{
+		console.log('Sending params for Arrests query ');
+		AwardsParams.setName(name)
+		$state.go('app.AwardsResults');
+		}
+	};
+})
+
+.controller('AwardsCtrl', function($scope,$http, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk,AwardsParams) {
     // Set Header
     $scope.$parent.showHeader();
     $scope.$parent.clearFabs();
     $scope.isExpanded = false;
     $scope.$parent.setExpanded(false);
     $scope.$parent.setHeaderFab(false);
+	
+		console.log('Show results of Get Awards was called');
+		$scope.information=[];
+		$scope.name = AwardsParams.getName();
+		console.log($scope.name);
+		$http({
+		  method: 'GET',
+		  url:'/Queries/Awards',
+			params: {
+			name: AwardsParams.getName()
+		}
+		}).then(function successCallback(response) {
+			console.log('success');
+			$scope.information = [];
+			for(var r in response.data) {
+			  var info = response.data[r];
+			  
+			  $scope.information.push(info);
+			  console.log(info);
+			}
+		
+		}, function errorCallback(response) {
+			alert(JSON.stringify(response))
+			var FetchErrorAlert = $ionicPopup.alert({
+				title: 'Fetch error!',
+				template: 'Unable to get data', 
+			});
+		console.log(response.data);
+		}
+	);
 
 	
     // Set Motion

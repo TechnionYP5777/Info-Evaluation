@@ -144,13 +144,30 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             }
         }
     })
+	
+	.state('app.AwardsParams', {
+        url: '/AwardsInsertParams',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/AwardsParameters.html',
+                controller: 'ActivityCtrl'
+            },
+            'fabContent': {
+                controller: function ($timeout) {
+                    /*$timeout(function () {
+                        document.getElementById('fab-profile').classList.toggle('on');
+                    }, 800);*/
+                }
+            }
+        }
+    })
 
-    .state('app.Awards', {
+    .state('app.AwardsResults', {
         url: '/Awards',
         views: {
             'menuContent': {
                 templateUrl: 'templates/awards.html',
-                controller: 'AwardsCtrl'
+                controller: ''
             },
             'fabContent': {
                 controller: function ($timeout) {

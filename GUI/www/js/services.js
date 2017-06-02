@@ -38,6 +38,18 @@ angular.module('starter.services', [])
 	};
 })
 
+.factory('AwardsParams', function () {
+	var name={};
+	return {
+		getName: function () {
+			return name.toString();
+		},
+		setName: function (nameParameter) {
+			name = nameParameter;
+		}
+	};
+})
+
 //EOF
 ;
 
