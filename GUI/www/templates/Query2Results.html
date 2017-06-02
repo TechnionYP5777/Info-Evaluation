@@ -21,7 +21,8 @@
 		
 		
         <div ng-controller="QueryEntry">
-			<div ng-repeat="per in persons" >
+			<span ng-repeat="per in persons" >
+				<span class="label label-default">
 				<div class="card stable-bg ink-dark">            
 					<div class="item-avatar item-text-wrap">
 						<span class="avatar" style="background-image: {{per.photoLink}};"></span>
@@ -30,11 +31,14 @@
 					</div>
 
 				</div>
-			</div>
+			
+			</span>
+			</span>
 			 <div>
             	<li ng-show="!persons.length">No persons</li>
             </div>
 		</div>
+		
 		
 	<!-- <div ng-controller="QueryEntry">
 			 <ion-list>
