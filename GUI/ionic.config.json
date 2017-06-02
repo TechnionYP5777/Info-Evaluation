@@ -20,6 +20,11 @@
       "path": "/Queries/PersonalInformation",
       "proxyUrl": "http://localhost:8080/Queries/PersonalInformation/"
 		
+    },
+	     {
+      "path": "/Queries/Awards",
+      "proxyUrl": "http://localhost:8080/Queries/Awards/"
+		
     }
 	   
   ]

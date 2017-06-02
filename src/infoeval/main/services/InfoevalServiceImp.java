@@ -97,6 +97,21 @@ public class InfoevalServiceImp implements InfoevalService {
 	}
 	
 	@Override
+	@RequestMapping(path="Queries/Awards",method = RequestMethod.GET)
+	public LinkedList<String> getAwards(String name) throws Exception {
+		logger.log(Level.INFO, "Get Awards was called.\n Parameters:"+"Name:"+name);
+		//Parse user's input:
+		name = name.trim().replaceAll(" ", "_");
+		
+		WikiParsing wiki =  (new WikiParsing("https://en.wikipedia.org/wiki/"+name));
+		wiki.Parse("won");
+		AnalyzeParagraph analyze = new AnalyzeParagraph(wiki.getParagraphs());
+		analyze.AnalyzeAwardsQuery();
+		//LinkedList<String> results = analyze.getInformation();
+		return analyze.RefineResults(2);
+	}
+	
+	@Override
 	@RequestMapping(path="Queries/PersonalInformation",method = RequestMethod.GET)
 	public TableEntry getPersonal_Information(String name) throws Exception {
 		logger.log(Level.INFO, "Get Arrests was called.\n Parameters:"+"Name:"+name);
