@@ -318,54 +318,55 @@ public class SqlRunner {
 
 	public TableEntry getPersonalInfoFromDBpedia(String name)
 			throws ClassNotFoundException, SQLException, IOException, ParseException {
-		Object[] inp = new Object[] { name };
-		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
-				+ "WHERE query_identifier LIKE CONCAT('getPersonalInfo','(',?,')')", inp);
-		int serialized_id = -1;
+		// Object[] inp = new Object[] { name };
+		// ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " +
+		// "FROM serialized_query_results "
+		// + "WHERE query_identifier LIKE CONCAT('getPersonalInfo','(',?,')')",
+		// inp);
+		// int serialized_id = -1;
 		TableEntry result;
 
-		if (id_result.isEmpty()) {
-			Extractor ext = new Extractor(name);
+		// if (id_result.isEmpty()) {
+		Extractor ext = new Extractor(name);
+		logger.log(Level.INFO, "abstract extraction query is being executed");
+		ext.executeQuery(QueryTypes.ABSTRACT);
+		ResultSetRewindable results = ext.getResults();
 
-			logger.log(Level.INFO, "abstract extraction query is being executed");
-			ext.executeQuery(QueryTypes.ABSTRACT);
-			ResultSetRewindable results = ext.getResults();
+		results.reset();
+		QuerySolution solution = results.nextSolution();
+		RDFNode overview = solution.get("abstract");
+		String overviewStr = "No Abstract";
+		if (overview != null)
+			if (overview.isResource())
+				overviewStr = (overview.asResource() + "").split("resource/")[1];
+			else if (overview.isLiteral())
+				overviewStr = (overview.asLiteral() + "").split("@")[0];
 
-			results.reset();
-			QuerySolution solution = results.nextSolution();
-			RDFNode overview = solution.get("abstract");
-			String overviewStr = "No Abstract";
-			if (overview != null)
-				if (overview.isResource())
-					overviewStr = (overview.asResource() + "").split("resource/")[1];
-				else if (overview.isLiteral())
-					overviewStr = (overview.asLiteral() + "").split("@")[0];
+		logger.log(Level.INFO, "basic Info By Name extraction query is being executed");
+		ext.executeQuery(QueryTypes.BASIC_INFO_BY_NAME);
+		ResultSetRewindable basicInfoByNameResults = ext.getResults();
+		basicInfoByNameResults.reset();
 
-			logger.log(Level.INFO, "basic Info By Name extraction query is being executed");
-			ext.executeQuery(QueryTypes.BASIC_INFO_BY_NAME);
-			ResultSetRewindable basicInfoByNameResults = ext.getResults();
-			basicInfoByNameResults.reset();
+		SqlTablesFiller filler = new SqlTablesFiller();
+		TableEntry te = filler.getInfo(basicInfoByNameResults, name);
+		filler.close();
 
-			SqlTablesFiller filler = new SqlTablesFiller();
-			TableEntry te = filler.getInfo(basicInfoByNameResults, name);
-			filler.close();
-
-			result = new TableEntry(te);
-			result.setUrl("");
-			result.setOverview(overviewStr);
-			String photoLink = result.getPhotoLink();
-			photoLink.replaceAll("'", "\'");
-			result.setPhotoLink(photoLink);
-			Object[] toSerilaize = new Object[1];
-			toSerilaize[0] = result;
-
-			String query_identifier = "getPersonalInfo(" + name + ")";
-			resultsSer.serializeQueryResults(conn, query_identifier, toSerilaize);
-		} else {
-			serialized_id = (int) id_result.get(0).row.get(0).getKey();
-			Object[] output = (Object[]) resultsSer.deSerializeQueryResults(conn, serialized_id);
-			result = (TableEntry) output[0];
-		}
+		result = new TableEntry(te);
+		result.setUrl("");
+		result.setOverview(overviewStr);
+		String photoLink = result.getPhotoLink();
+		photoLink.replaceAll("'", "\'");
+		result.setPhotoLink(photoLink);
+		Object[] toSerilaize = new Object[1];
+		toSerilaize[0] = result;
+		/*
+		 * String query_identifier = "getPersonalInfo(" + name + ")";
+		 * resultsSer.serializeQueryResults(conn, query_identifier,
+		 * toSerilaize); } else { serialized_id = (int)
+		 * id_result.get(0).row.get(0).getKey(); Object[] output = (Object[])
+		 * resultsSer.deSerializeQueryResults(conn, serialized_id); result =
+		 * (TableEntry) output[0]; }
+		 */
 		return result;
 	}
 

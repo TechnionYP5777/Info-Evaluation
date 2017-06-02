@@ -4,6 +4,8 @@ import org.apache.jena.query.ParameterizedSparqlString;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.ResultSetFactory;
 import org.apache.jena.query.ResultSetRewindable;
+import org.apache.jena.sparql.engine.http.QueryEngineHTTP;
+
 import java.util.Map;
 import java.util.HashMap;
 import infoeval.main.WikiData.QueryTypes;
@@ -80,11 +82,16 @@ public class Extractor {
 		+	" SELECT ?abstract WHERE {"
 		+   "res:" + name + " dbo:abstract ?abstract."
 		+	"FILTER (lang(?abstract) = 'en')}"); 
+			  	   
 		
 		basicInfoByNameQuery = new ParameterizedSparqlString
 				( " PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
 				+ " PREFIX  dbo: <http://dbpedia.org/ontology/>"
 				+ " PREFIX  dbp: <http://dbpedia.org/property/>"
+				+ " PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
+			//  + " PREFIX bif:<>"
+				+ " PREFIX bif:<bif:>"	   
+				
 				+ " SELECT"
 					+ " (SAMPLE (?photoLink) as ?photo) (SAMPLE (?occupation) as ?occup)"
 					+ " (SAMPLE (?spouse) as ?spouses) (SAMPLE (?spName) as ?sname)"
@@ -92,29 +99,35 @@ public class Extractor {
 					+ " (SAMPLE(?birthPlace) as ?birth) (SAMPLE(?deathDate) as ?dDate) "
 					+ " (SAMPLE( ?birthDate) as ?bDate) "
 				+ " WHERE {"
-					+ " ?resource   a <http://dbpedia.org/ontology/Person>;  "
-					+ " dbp:name ?name" + "@en" + "; dbp:birthPlace ?birthPlace;dbp:birthDate ?birthDate."
+					+ " ?resource a dbo:Person."
+					+ " ?resource rdfs:label ?name." 
+			        + " FILTER(bif:contains(?name,?nameVal))"  
+					+ " ?resource dbp:birthPlace ?birthPlace."
+					+ " ?resource dbp:birthDate ?birthDate."
 					+ " OPTIONAL{?resource dbo:occupation ?occupation}."
 					+ " OPTIONAL{?resource dbo:thumbnail ?photoLink}."
 					+ " OPTIONAL{?resource dbo:spouse ?spouse. ?spouse dbp:name ?spName."
 							+ " ?spouse dbo:occupation ?spOccupation}. "
 					+ " OPTIONAL{?resource dbp:deathDate ?deathDate. ?resource dbp:deathPlace ?deathPlace} "
-					//+ "  FILTER (lang(?birthPlace) = 'en') "
 					+ " }");
-					//+ " LIMIT 1");
 
 		//abstractQuery.setIri("name","http://dbpedia.org/resorce/"+name);
-		basicInfoByNameQuery.setLiteral("name",name);
+		basicInfoByNameQuery.setLiteral("nameVal",name);
 		
 		queriesMap = new HashMap<QueryTypes, ParameterizedSparqlString>();
 		queriesMap.put(QueryTypes.ABSTRACT, abstractQuery);
 		queriesMap.put(QueryTypes.BASIC_INFO_BY_NAME, basicInfoByNameQuery);
 	}
 	
+	@SuppressWarnings("resource")
 	public void executeQuery(QueryTypes ¢) {
+	//	this.results = ResultSetFactory.copyResults(
+	//			(new QueryEngineHTTP("http://dbpedia.org/sparql", queriesMap.get(¢).asQuery())).execSelect());
+		
 		this.results = ResultSetFactory.copyResults(QueryExecutionFactory
 				.sparqlService("http://dbpedia.org/sparql", queriesMap.get(¢).asQuery()).execSelect());
 	}
+	
 
 	public ResultSetRewindable getResults() {
 		return this.results;

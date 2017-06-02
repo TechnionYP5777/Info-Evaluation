@@ -40,13 +40,13 @@ public class SqlRunnerTest {
 	 */
 
 	@BeforeClass
-	// @Ignore
+	@Ignore
 	public static void initRunner() throws Exception {
 		querun = new SqlRunner();
 	}
 
 	@AfterClass
-	// @Ignore
+	@Ignore
 	public static void close() {
 		querun.close();
 	}
@@ -154,11 +154,11 @@ public class SqlRunnerTest {
 
 	}
 
-	// @Ignore
+	@Ignore
 	@Test
 	public void getPersonalInfoNotInDBTest() throws Exception {
 
-		String name = "bruce springsteen";
+		String name = "james brown";
 		TableEntry te = querun.getPersonalInfo(name);
 
 		System.out.println("Name is " + te.getName());
