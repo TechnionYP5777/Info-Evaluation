@@ -119,82 +119,77 @@ public class SqlRunnerTest {
 		for (TableEntry ¢ : querun.getSpouselessBetweenYears("1900", "1980"))
 			assertEquals(¢.getSpouseName(), "No Spouse Name");
 	}
-	
 
 	@Ignore
 	@Test
 	public void getPersonalInfoTest() throws Exception {
-/*		
-		ArrayList<Row> res = querun.runQuery("SELECT name FROM basic_info WHERE name NOT LIKE CONCAT('%,%') LIMIT 25",null);
-		for(Row r : res){
-			String name = (String) r.row.get(0).getValue().cast(r.row.get(0).getKey());
-			System.out.println(name);
-		}
-
-*/		
-		String name ="yasuhiro takato"; 
+		/*
+		 * ArrayList<Row> res = querun.
+		 * runQuery("SELECT name FROM basic_info WHERE name NOT LIKE CONCAT('%,%') LIMIT 25"
+		 * ,null); for(Row r : res){ String name = (String)
+		 * r.row.get(0).getValue().cast(r.row.get(0).getKey());
+		 * System.out.println(name); }
+		 * 
+		 */
+		String name = "yasuhiro takato";
 		TableEntry te = querun.getPersonalInfo(name);
-		
-		System.out.println("Name is "+te.getName());
-		
-		System.out.println("Birth Place is "+te.getBirthPlace());
-		
-		System.out.println("Birth Place is "+te.getDeathPlace());
-		
+
+		System.out.println("Name is " + te.getName());
+
+		System.out.println("Birth Place is " + te.getBirthPlace());
+
+		System.out.println("Birth Place is " + te.getDeathPlace());
+
 		Date birthDate = te.getBirthDate();
-		if(birthDate!=null){
-			System.out.println("Birth Date is "+ birthDate);
-		}
-		
+		if (birthDate != null)
+			System.out.println("Birth Date is " + birthDate);
+
 		Date deathDate = te.getDeathDate();
-		if(deathDate!=null){
-			System.out.println("Death Date is "+ deathDate);
-		}
+		if (deathDate != null)
+			System.out.println("Death Date is " + deathDate);
 
-		System.out.println("Occupation is "+te.getOccupation());
+		System.out.println("Occupation is " + te.getOccupation());
 
-		System.out.println("Spouse Name is "+te.getSpouseName());
+		System.out.println("Spouse Name is " + te.getSpouseName());
 
-		System.out.println("Spouse Occupation is "+te.getSpouseOccupation());
-		
-		System.out.println("PhotoLink is "+te.getPhotoLink());
-		
-		System.out.println("Abstract is "+te.getOverview());
-	
+		System.out.println("Spouse Occupation is " + te.getSpouseOccupation());
+
+		System.out.println("PhotoLink is " + te.getPhotoLink());
+
+		System.out.println("Abstract is " + te.getOverview());
+
 	}
 
 	@Ignore
 	@Test
 	public void getPersonalInfoNotInDBTest() throws Exception {
-		
-		String name ="bruce springsteen"; 
+
+		String name = "bruce springsteen";
 		TableEntry te = querun.getPersonalInfo(name);
-		
-		System.out.println("Name is "+te.getName());
-		
-		System.out.println("Birth Place is "+te.getBirthPlace());
-		
-		System.out.println("Death Place is "+te.getDeathPlace());
-		
+
+		System.out.println("Name is " + te.getName());
+
+		System.out.println("Birth Place is " + te.getBirthPlace());
+
+		System.out.println("Death Place is " + te.getDeathPlace());
+
 		Date birthDate = te.getBirthDate();
-		if(birthDate!=null){
-			System.out.println("Birth Date is "+ birthDate);
-		}
-		
+		if (birthDate != null)
+			System.out.println("Birth Date is " + birthDate);
+
 		Date deathDate = te.getDeathDate();
-		if(deathDate!=null){
-			System.out.println("Death Date is "+ deathDate);
-		}
+		if (deathDate != null)
+			System.out.println("Death Date is " + deathDate);
 
-		System.out.println("Occupation is "+te.getOccupation());
+		System.out.println("Occupation is " + te.getOccupation());
 
-		System.out.println("Spouse Name is "+te.getSpouseName());
+		System.out.println("Spouse Name is " + te.getSpouseName());
 
-		System.out.println("Spouse Occupation is "+te.getSpouseOccupation());
-		
-		System.out.println("PhotoLink is "+te.getPhotoLink());
-		
-		System.out.println("Abstract is "+te.getOverview());
-	
+		System.out.println("Spouse Occupation is " + te.getSpouseOccupation());
+
+		System.out.println("PhotoLink is " + te.getPhotoLink());
+
+		System.out.println("Abstract is " + te.getOverview());
+
 	}
 }

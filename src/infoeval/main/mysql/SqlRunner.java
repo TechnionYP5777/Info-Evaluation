@@ -315,18 +315,18 @@ public class SqlRunner {
 		}
 		return res;
 	}
-	
-	public TableEntry getPersonalInfoFromDBpedia(String name) throws ClassNotFoundException, SQLException, IOException, ParseException{
-		Object[] inp = new Object[] { name };		
+
+	public TableEntry getPersonalInfoFromDBpedia(String name)
+			throws ClassNotFoundException, SQLException, IOException, ParseException {
+		Object[] inp = new Object[] { name };
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
 				+ "WHERE query_identifier LIKE CONCAT('getPersonalInfo','(',?,')')", inp);
 		int serialized_id = -1;
-		ArrayList<Row> rows = new ArrayList<>();
 		TableEntry result;
 
-		if(id_result.isEmpty()){
+		if (id_result.isEmpty()) {
 			Extractor ext = new Extractor(name);
-	
+
 			logger.log(Level.INFO, "abstract extraction query is being executed");
 			ext.executeQuery(QueryTypes.ABSTRACT);
 			ResultSetRewindable results = ext.getResults();
@@ -340,47 +340,48 @@ public class SqlRunner {
 					overviewStr = (overview.asResource() + "").split("resource/")[1];
 				else if (overview.isLiteral())
 					overviewStr = (overview.asLiteral() + "").split("@")[0];
-		
+
 			logger.log(Level.INFO, "basic Info By Name extraction query is being executed");
 			ext.executeQuery(QueryTypes.BASIC_INFO_BY_NAME);
 			ResultSetRewindable basicInfoByNameResults = ext.getResults();
 			basicInfoByNameResults.reset();
-		
+
 			SqlTablesFiller filler = new SqlTablesFiller();
-			TableEntry te = filler.getInfo(basicInfoByNameResults,name);
+			TableEntry te = filler.getInfo(basicInfoByNameResults, name);
 			filler.close();
-		
+
 			result = new TableEntry(te);
 			result.setUrl("");
 			result.setOverview(overviewStr);
-		
+
 			Object[] toSerilaize = new Object[1];
 			toSerilaize[0] = result;
 
 			String query_identifier = "getPersonalInfo(" + name + ")";
 			resultsSer.serializeQueryResults(conn, query_identifier, toSerilaize);
-		}else {
+		} else {
 			serialized_id = (int) id_result.get(0).row.get(0).getKey();
 			Object[] output = (Object[]) resultsSer.deSerializeQueryResults(conn, serialized_id);
 			result = (TableEntry) output[0];
 		}
 		return result;
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public TableEntry getPersonalInfo(String name) throws ClassNotFoundException, SQLException, IOException, ParseException {
+	public TableEntry getPersonalInfo(String name)
+			throws ClassNotFoundException, SQLException, IOException, ParseException {
 		Object[] inp = new Object[] { name };
 		ArrayList<Row> res = conn.runQuery("SELECT name FROM basic_info WHERE name = ?", inp);
 		String newName = WordUtils.capitalize(name).replaceAll(" ", "_");
-		if(res.isEmpty()){
-			return getPersonalInfoFromDBpedia(newName);				
+		if (res.isEmpty()) {
+			return getPersonalInfoFromDBpedia(newName);
 		}
-		
+
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
 				+ "WHERE query_identifier LIKE CONCAT('getPersonalInfo','(',?,')')", inp);
 		int serialized_id = -1;
 		ArrayList<Row> rows = new ArrayList<>();
-		
+
 		String overviewStr = "";
 		if (id_result.isEmpty()) {
 			Extractor ext = new Extractor(newName);
@@ -397,21 +398,21 @@ public class SqlRunner {
 					overviewStr = (overview.asResource() + "").split("resource/")[1];
 				else if (overview.isLiteral())
 					overviewStr = (overview.asLiteral() + "").split("@")[0];
-			
-				final String personalInfoQuery = "SELECT SQL_CACHE filtered_info.*, WikiID.wikiPageId "
+
+			final String personalInfoQuery = "SELECT SQL_CACHE filtered_info.*, WikiID.wikiPageId "
 					+ "FROM (SELECT * FROM basic_info WHERE name = ?) AS filtered_info " + "LEFT JOIN WikiID "
 					+ "ON WikiID.name = filtered_info.name " + "LIMIT 1";
-		
-				logger.log(Level.INFO, "personal info query is being executed");
-				rows = conn.runQuery(personalInfoQuery, inp);
-			
+
+			logger.log(Level.INFO, "personal info query is being executed");
+			rows = conn.runQuery(personalInfoQuery, inp);
+
 			Object[] toSerilaize = new Object[2];
 			toSerilaize[0] = rows;
 			toSerilaize[1] = overviewStr;
 
 			String query_identifier = "getPersonalInfo(" + name + ")";
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, toSerilaize);
-		}else {
+		} else {
 			serialized_id = (int) id_result.get(0).row.get(0).getKey();
 			Object[] output = (Object[]) resultsSer.deSerializeQueryResults(conn, serialized_id);
 			rows = (ArrayList<Row>) output[0];
@@ -420,18 +421,17 @@ public class SqlRunner {
 		Row res_row = rows.get(0);
 		String birthPlace = (String) res_row.row.get(1).getValue().cast(res_row.row.get(1).getKey());
 		String deathPlace = (String) res_row.row.get(2).getValue().cast(res_row.row.get(2).getKey());
-		
+
 		Date birthDate = null;
-		if(!"".equals(res_row.row.get(3).getKey())){			
-			birthDate = (java.sql.Date) res_row.row.get(3).getValue().cast(res_row.row.get(3).getKey());			
+		if (!"".equals(res_row.row.get(3).getKey())) {
+			birthDate = (java.sql.Date) res_row.row.get(3).getValue().cast(res_row.row.get(3).getKey());
 		}
-		
+
 		Date deathDate = null;
-		Object key = res_row.row.get(4).getKey();
-		if(!"".equals(res_row.row.get(4).getKey())){			
-			deathDate = (java.sql.Date) res_row.row.get(4).getValue().cast(res_row.row.get(4).getKey());			
+		if (!"".equals(res_row.row.get(4).getKey())) {
+			deathDate = (java.sql.Date) res_row.row.get(4).getValue().cast(res_row.row.get(4).getKey());
 		}
-		
+
 		String occupation = (String) res_row.row.get(5).getValue().cast(res_row.row.get(5).getKey());
 		String spouseName = (String) res_row.row.get(6).getValue().cast(res_row.row.get(6).getKey());
 		String spouseOccupation = (String) res_row.row.get(7).getValue().cast(res_row.row.get(7).getKey());

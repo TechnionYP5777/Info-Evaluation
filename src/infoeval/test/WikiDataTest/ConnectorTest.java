@@ -20,12 +20,14 @@ import java.util.Map.Entry;
  */
 public class ConnectorTest {
 	private static final int ENTRIES_NUM = 10000;
-	
+
 	/*
-	 * ATTENTION ! When you want to test this class , remove the @ignore attributes.
-	 * I added it becasue connector tries to read from the config.xml file which won't be uploaded to GitHub and it causes
-	 * travisCI to fail. 
-	 * @Moshiko 
+	 * ATTENTION ! When you want to test this class , remove the @ignore
+	 * attributes. I added it becasue connector tries to read from the
+	 * config.xml file which won't be uploaded to GitHub and it causes travisCI
+	 * to fail.
+	 * 
+	 * @Moshiko
 	 */
 	@Ignore
 	@Test
@@ -35,6 +37,7 @@ public class ConnectorTest {
 		assert connection != null;
 		connection.close();
 	}
+
 	@Ignore
 	@Test
 	public void basicInfoTableSizeTest() throws Exception {
@@ -51,16 +54,16 @@ public class ConnectorTest {
 		Extractor ext = new Extractor();
 		ext.executeQuery(QueryTypes.BASIC_INFO);
 		assertEquals(ext.getResults().size(), size);
-		
+
 		conn.close();
 	}
-	
+
 	@Ignore
 	@Test
 	public void wikiIdTableSizeTest() throws Exception {
 		Connector conn = new Connector();
 		assert conn.getConnection() != null;
-		
+
 		ArrayList<Row> rows = conn.runQuery("SELECT COUNT(*) FROM WikiID");
 		Row row = rows.get(0);
 		Entry<Object, Class> col = row.row.get(0);
@@ -71,8 +74,7 @@ public class ConnectorTest {
 		Extractor ext = new Extractor();
 		ext.executeQuery(QueryTypes.WIKI_ID);
 		assertEquals(ext.getResults().size(), size);
-		
-		
+
 		conn.close();
 	}
 }

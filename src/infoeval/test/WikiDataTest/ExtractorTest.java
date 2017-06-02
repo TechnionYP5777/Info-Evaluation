@@ -25,7 +25,7 @@ import org.apache.jena.rdf.model.RDFNode;
 public class ExtractorTest {
 	private static final int ENTRIES_NUM = 10000;
 
- @Test
+	@Test
 	public void wikiIdTest() {
 		Extractor extr = new Extractor();
 		extr.executeQuery(QueryTypes.WIKI_ID);
@@ -58,17 +58,5 @@ public class ExtractorTest {
 
 		assertEquals(overviewStr,
 				"Jessica Zelinka (born September 3, 1981 in London, Ontario) is a Canadian pentathlete, heptathlete, and 100 m hurdler. Her personal best score is 6599 points for the heptathlon. She was the gold medalist at the 2007 Pan American Games. Zelinka won silver at the 2010 Commonwealth Games and repeated her silver medal at the 2014 Commonwealth Games. At the 2012 Summer Olympics Zelinka finished in 7th overall in both the heptathlon and 100 m hurdles.");
-	}
-	
-	@Test
-	public void basicInfoByNameTest() {
-		String name = "justin timberlake";
-		String newName = WordUtils.capitalize(name).replaceAll(" ", "_");
-		Extractor extr = new Extractor(newName);
-		extr.executeQuery(QueryTypes.BASIC_INFO_BY_NAME);
-		ResultSetRewindable results = extr.getResults();
-
-		results.reset();
-		QuerySolution solution = results.nextSolution();
 	}
 }

@@ -45,7 +45,7 @@ public class Row implements Serializable {
 		TYPE.put("TIMESTAMP", Timestamp.class);
 		TYPE.put("SERIAL", Integer.class);
 		TYPE.put("INT", Integer.class);
-		//TYPE.put("VARCHAR", Date.class);
+		// TYPE.put("VARCHAR", Date.class);
 		// ...
 	}
 
@@ -55,19 +55,17 @@ public class Row implements Serializable {
 
 	public <T> void add(T data) {
 		Logger logi = Logger.getLogger(Row.class.getName());
-		logi.log(Level.INFO,
-				"Data type is: " + data.getClass().getName() + "Data is :" + data);
+		logi.log(Level.INFO, "Data type is: " + data.getClass().getName() + "Data is :" + data);
 		this.row.add(new AbstractMap.SimpleImmutableEntry<Object, Class>(data, data.getClass()));
 	}
 
 	public void add(Object data, String sqlType) {
 		Class castType = Row.TYPE.get(sqlType.toUpperCase());
 		Logger logi = Logger.getLogger(Row.class.getName());
-		logi.log(Level.INFO,
-				"The cast type: " + castType + "sqlType="+sqlType);
+		logi.log(Level.INFO, "The cast type: " + castType + "sqlType=" + sqlType);
 		try {
-			 Object castedData = castType.cast(data);
-			 if (castedData == null)
+			Object castedData = castType.cast(data);
+			if (castedData == null)
 				add("");
 			else
 				this.add(castedData);

@@ -15,12 +15,11 @@ import org.apache.commons.dbcp2.BasicDataSource;
 
 import infoeval.main.mysql.Row;
 
-/** 
+/**
  * @author Netanel
  * @author osherh
  * @author Moshiko - moving to Row class , to make it WORK.
- * @since 19-04-2017
- * [[SuppressWarningsSpartan]]
+ * @since 19-04-2017 [[SuppressWarningsSpartan]]
  */
 public class Connector {
 	private static final Logger logger = Logger.getLogger("Connector".getClass().getName());
@@ -32,7 +31,7 @@ public class Connector {
 	private String db;
 	private static final BasicDataSource dataSource = new BasicDataSource();
 
-	public Connector() throws SQLException, ClassNotFoundException, IOException{
+	public Connector() throws SQLException, ClassNotFoundException, IOException {
 		try {
 			initializeConnectionPool();
 			logger.log(Level.INFO, "connection pool initialized");
@@ -41,11 +40,11 @@ public class Connector {
 		}
 	}
 
-	public void setCaching() throws SQLException, ClassNotFoundException, IOException{
+	public void setCaching() throws SQLException, ClassNotFoundException, IOException {
 		runUpdate("SET GLOBAL query_cache_type = DEMAND");
 		logger.log(Level.INFO, "cache settings are set");
 	}
-	
+
 	public void initializeConnectionPool() throws IOException {
 		Properties props = new Properties();
 		try {
@@ -87,10 +86,10 @@ public class Connector {
 		Connection conn = getConnection();
 		Statement st = conn.createStatement();
 		rs = st.executeQuery(query);
-		ArrayList<Row> table = new ArrayList<Row>();		
-		
-		if(rs!=null){
-			Row.formTable(rs,table);
+		ArrayList<Row> table = new ArrayList<Row>();
+
+		if (rs != null) {
+			Row.formTable(rs, table);
 			rs.close();
 		}
 		if (st != null)
@@ -108,21 +107,19 @@ public class Connector {
 		for (int ¢ = 1; ¢ <= inputs.length; ++¢)
 			ps.setObject(¢, inputs[¢ - 1]);
 		ResultSet rs = ps.executeQuery();
-		
-		//Creating an arraylist of table entries:
-		
-		
-		
-		if(rs!=null){
+
+		// Creating an arraylist of table entries:
+
+		if (rs != null) {
 			Row.formTable(rs, table);
 			rs.close();
 		}
-		
+
 		if (ps != null)
 			ps.close();
 		if (conn != null)
 			conn.close();
-		
+
 		return table;
 	}
 
