@@ -40,11 +40,13 @@ public class SqlRunnerTest {
 	 */
 
 	@BeforeClass
+	@Ignore
 	public static void initRunner() throws Exception {
 		querun = new SqlRunner();
 	}
 
 	@AfterClass
+	@Ignore
 	public static void close() {
 		querun.close();
 	}
@@ -123,14 +125,6 @@ public class SqlRunnerTest {
 	@Ignore
 	@Test
 	public void getPersonalInfoTest() throws Exception {
-		/*
-		 * ArrayList<Row> res = querun.
-		 * runQuery("SELECT name FROM basic_info WHERE name NOT LIKE CONCAT('%,%') LIMIT 25"
-		 * ,null); for(Row r : res){ String name = (String)
-		 * r.row.get(0).getValue().cast(r.row.get(0).getKey());
-		 * System.out.println(name); }
-		 * 
-		 */
 		String name = "yasuhiro takato";
 		TableEntry te = querun.getPersonalInfo(name);
 
