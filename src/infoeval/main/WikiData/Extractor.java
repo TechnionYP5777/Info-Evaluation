@@ -21,6 +21,7 @@ public class Extractor {
 	private ParameterizedSparqlString basicInfoQuery;
 	private ParameterizedSparqlString wikiIdQuery;
 	private ParameterizedSparqlString abstractQuery;
+	private ParameterizedSparqlString basicInfoByNameQuery;
 	private ResultSetRewindable results;
 	private Map<QueryTypes, ParameterizedSparqlString> queriesMap;
 	private static final int ENTRIES_NUM = 10000;
@@ -35,15 +36,15 @@ public class Extractor {
 		 * that we take every 10,000th entry
 		 */
 		basicInfoQuery = new ParameterizedSparqlString
-				("  PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+				( " PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
 				+ " PREFIX  dbo: <http://dbpedia.org/ontology/>"
 				+ " PREFIX  dbp: <http://dbpedia.org/property/>"
 				+ " SELECT DISTINCT "
 					+ " ?name (SAMPLE (?photoLink) as ?photo) (SAMPLE (?occupation) as ?occup)"
-					+ "(SAMPLE (?spouse) as ?spouses) (SAMPLE (?spName) as ?sname)"
-					+ "(SAMPLE (?spOccupation) as ?spOccu) (SAMPLE (?deathPlace) as ?death)"
-					+ "(SAMPLE(?birthPlace) as ?birth) (SAMPLE(?deathDate) as ?dDate) "
-					+ "(SAMPLE( ?birthDate) as ?bDate) "
+					+ " (SAMPLE (?spouse) as ?spouses) (SAMPLE (?spName) as ?sname)"
+					+ " (SAMPLE (?spOccupation) as ?spOccu) (SAMPLE (?deathPlace) as ?death)"
+					+ " (SAMPLE(?birthPlace) as ?birth) (SAMPLE(?deathDate) as ?dDate) "
+					+ " (SAMPLE( ?birthDate) as ?bDate) "
 				+ " WHERE {"
 					+ " ?resource   a <http://dbpedia.org/ontology/Person>;  "
 					+ " dbp:name ?name; dbp:birthPlace ?birthPlace;dbp:birthDate ?birthDate."
@@ -71,20 +72,45 @@ public class Extractor {
 		queriesMap.put(QueryTypes.WIKI_ID, wikiIdQuery);
 	}
 	
-	public Extractor(String nameToGetAbstractFor) {
+	public Extractor(String name) {
 		abstractQuery = new ParameterizedSparqlString(
-			"PREFIX res: <http://dbpedia.org/resource/> "
-		+	"PREFIX dbo: <http://dbpedia.org/ontology/> " 
+			" PREFIX res: <http://dbpedia.org/resource/>" 
+		+	" PREFIX dbo: <http://dbpedia.org/ontology/>" 
 
-		+	"SELECT ?abstract WHERE { "
-				+ "res:" + nameToGetAbstractFor +" dbo:abstract ?abstract. "
+		+	" SELECT ?abstract WHERE {"
+		+   "res:" + name + " dbo:abstract ?abstract."
 		+	"FILTER (lang(?abstract) = 'en')}"); 
+		
+		basicInfoByNameQuery = new ParameterizedSparqlString
+				( " PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+				+ " PREFIX  dbo: <http://dbpedia.org/ontology/>"
+				+ " PREFIX  dbp: <http://dbpedia.org/property/>"
+				+ " SELECT"
+					+ " (SAMPLE (?photoLink) as ?photo) (SAMPLE (?occupation) as ?occup)"
+					+ " (SAMPLE (?spouse) as ?spouses) (SAMPLE (?spName) as ?sname)"
+					+ " (SAMPLE (?spOccupation) as ?spOccu) (SAMPLE (?deathPlace) as ?death)"
+					+ " (SAMPLE(?birthPlace) as ?birth) (SAMPLE(?deathDate) as ?dDate) "
+					+ " (SAMPLE( ?birthDate) as ?bDate) "
+				+ " WHERE {"
+					+ " ?resource   a <http://dbpedia.org/ontology/Person>;  "
+					+ " dbp:name ?name" + "@en" + "; dbp:birthPlace ?birthPlace;dbp:birthDate ?birthDate."
+					+ " OPTIONAL{?resource dbo:occupation ?occupation}."
+					+ " OPTIONAL{?resource dbo:thumbnail ?photoLink}."
+					+ " OPTIONAL{?resource dbo:spouse ?spouse. ?spouse dbp:name ?spName."
+							+ " ?spouse dbo:occupation ?spOccupation}. "
+					+ " OPTIONAL{?resource dbp:deathDate ?deathDate. ?resource dbp:deathPlace ?deathPlace} "
+					//+ "  FILTER (lang(?birthPlace) = 'en') "
+					+ " }");
+					//+ " LIMIT 1");
 
+		//abstractQuery.setIri("name","http://dbpedia.org/resorce/"+name);
+		basicInfoByNameQuery.setLiteral("name",name);
+		
 		queriesMap = new HashMap<QueryTypes, ParameterizedSparqlString>();
 		queriesMap.put(QueryTypes.ABSTRACT, abstractQuery);
+		queriesMap.put(QueryTypes.BASIC_INFO_BY_NAME, basicInfoByNameQuery);
 	}
 	
-
 	public void executeQuery(QueryTypes ¢) {
 		this.results = ResultSetFactory.copyResults(QueryExecutionFactory
 				.sparqlService("http://dbpedia.org/sparql", queriesMap.get(¢).asQuery()).execSelect());

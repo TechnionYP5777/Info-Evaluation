@@ -1,6 +1,5 @@
 package infoeval.main.services;
 
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,6 +18,10 @@ public interface InfoevalService {
 	List<TableEntry> differentDeathPlace() throws Exception;
 
 	LinkedList<String> getArrested(String name) throws Exception;
+
+	TableEntry getPersonal_Information(String name) throws Exception;
+
+	LinkedList<String> getAwards(String name) throws Exception;
 	
 
 }

@@ -281,13 +281,56 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('AwardsCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk) {
+.controller('AwardsParameters',function($scope,$state,AwardsParams){
+	$scope.showAwardsResults = function(name){
+		if(name == null ||  name.trim().length == 0){
+			alert('Please Insert a Name!')
+		}
+		else{
+		console.log('Sending params for Arrests query ');
+		AwardsParams.setName(name)
+		$state.go('app.AwardsResults');
+		}
+	};
+})
+
+.controller('AwardsCtrl', function($scope,$http, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk,AwardsParams) {
     // Set Header
     $scope.$parent.showHeader();
     $scope.$parent.clearFabs();
     $scope.isExpanded = false;
     $scope.$parent.setExpanded(false);
     $scope.$parent.setHeaderFab(false);
+	
+		console.log('Show results of Get Awards was called');
+		$scope.information=[];
+		$scope.name = AwardsParams.getName();
+		console.log($scope.name);
+		$http({
+		  method: 'GET',
+		  url:'/Queries/Awards',
+			params: {
+			name: AwardsParams.getName()
+		}
+		}).then(function successCallback(response) {
+			console.log('success');
+			$scope.information = [];
+			for(var r in response.data) {
+			  var info = response.data[r];
+			  
+			  $scope.information.push(info);
+			  console.log(info);
+			}
+		
+		}, function errorCallback(response) {
+			alert(JSON.stringify(response))
+			var FetchErrorAlert = $ionicPopup.alert({
+				title: 'Fetch error!',
+				template: 'Unable to get data', 
+			});
+		console.log(response.data);
+		}
+	);
 
 	
     // Set Motion
@@ -331,6 +374,8 @@ angular.module('starter.controllers', [])
 	
 	console.log('Show results of Get Arrests was called');
 		$scope.information=[];
+		$scope.name = ArrestsParams.getName();
+		console.log($scope.name);
 		$http({
 		  method: 'GET',
 		  url:'/Queries/Arrests',
@@ -342,7 +387,7 @@ angular.module('starter.controllers', [])
 			$scope.information = [];
 			for(var r in response.data) {
 			  var info = response.data[r];
-			 
+			  
 			  $scope.information.push(info);
 			  console.log(info);
 			}
@@ -352,6 +397,31 @@ angular.module('starter.controllers', [])
 			var FetchErrorAlert = $ionicPopup.alert({
 				title: 'Fetch error!',
 				template: 'Unable to get data', 
+			});
+		console.log(response.data);
+		}
+	);
+	
+	//Get the image of the person:
+	$http({
+		  method: 'GET',
+		  url:'/Queries/PersonalInformation',
+			params: {
+			name: ArrestsParams.getName()
+		}
+		}).then(function successCallback(response) {
+			console.log('personal data - success');
+			$scope.personalInformation = response.data;
+			console.log('url is ' + personalInformation.photoLink);
+				if(personalInformation.photoLink == "No Photo") {
+					personalInformation.photoLink="http://www.freeiconspng.com/uploads/profile-icon-9.png";
+				}
+		
+		}, function errorCallback(response) {
+			alert(JSON.stringify(response))
+			var FetchErrorAlert = $ionicPopup.alert({
+				title: 'Fetch error!',
+				template: 'Unable to get personal data', 
 			});
 		console.log(response.data);
 		}
