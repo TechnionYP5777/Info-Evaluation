@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import infoeval.main.WikiData.Connector;
 import infoeval.main.WikiData.Extractor;
 import infoeval.main.WikiData.QueryTypes;
+import infoeval.main.WikiData.SqlTablesFiller;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -85,7 +86,12 @@ public class SqlRunner {
 		for (Row row : rows) {
 			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey());
 			String birthPlace = (String) row.row.get(1).getValue().cast(row.row.get(1).getKey());
-			Date birthDate = (java.sql.Date) row.row.get(2).getValue().cast(row.row.get(2).getKey());
+
+			Date birthDate = null;
+			if (!"".equals(row.row.get(2).getKey())) {
+				birthDate = (java.sql.Date) row.row.get(2).getValue().cast(row.row.get(2).getKey());
+			}
+
 			String photoLink = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
 			photoLink.replaceAll("'", "\'");
 			String wikiPageID = (String) row.row.get(4).getValue().cast(row.row.get(4).getKey());
@@ -190,6 +196,24 @@ public class SqlRunner {
 					+ "ON B1.spouseName = basic_info.name " + "AND basic_info.spouseName = B1.name "
 					+ "AND B1.birthPlace = basic_info.birthPlace ";
 
+			/*
+			 * final String sameBirthPlaceCouples = "" +
+			 * "SELECT SQL_CACHE B1.name AS Name, B2.name AS SpouseName, B1.birthPlace AS BirthPlace "
+			 * + "FROM basic_info AS B1 " + "LEFT JOIN basic_info AS B2 " +
+			 * "ON B1.spouseName = B2.name " + "AND B2.spouseName = B1.name " +
+			 * "AND B1.birthPlace = B2.birthPlace ";
+			 * 
+			 * /* final String sameBirthPlaceCouples = "" +
+			 * "SELECT SQL_CACHE B1.name AS Name,B2.name AS SpouseName,B1.birthPlace AS BirthPlace "
+			 * + "FROM (SELECT * FROM basic_info " +
+			 * "WHERE spouseName != 'No Spouse Name' " +
+			 * "AND birthPlace != 'No Birth Place') AS B1 " + "LEFT JOIN " +
+			 * "(SELECT * FROM basic_info " +
+			 * "WHERE spouseName != 'No Spouse Name' " +
+			 * "AND birthPlace != 'No Birth Place') AS B2 " +
+			 * "ON B1.spouseName = B2.name " + "AND B2.spouseName = B1.name " +
+			 * "AND B1.birthPlace = B2.birthPlace ";
+			 */
 
 			logger.log(Level.INFO, "same birth place couples query is being executed");
 			rows = conn.runQuery(sameBirthPlaceCouples);
@@ -197,6 +221,8 @@ public class SqlRunner {
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
 		} else {
 			serialized_id = (int) id_result.get(0).row.get(0).getKey();
+			// serialized_id = (int)
+			// id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
 			@SuppressWarnings("unchecked")
 			ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(conn, serialized_id);
 			rows.addAll(rows2);
@@ -222,7 +248,7 @@ public class SqlRunner {
 		ArrayList<Row> rows = new ArrayList<>();
 		if (id_result.isEmpty()) {
 			final String occupationBetweenYears = "SELECT SQL_CACHE filtered_info.name, filtered_info.birthDate, filtered_info.deathDate, filtered_info.photoLink, WikiID.wikiPageId "
-					+ "FROM (SELECT * FROM basic_info " + "WHERE deathDate IS NOT NULL "
+					+ "FROM (SELECT * FROM basic_info " + "WHERE birthDate IS NOT NULL AND deathDate IS NOT NULL "
 					+ "AND YEAR(birthDate) >= ? AND YEAR(deathDate) <= ? " + "AND occupation = ?) AS filtered_info "
 					+ "LEFT JOIN WikiID " + "ON WikiID.name = filtered_info.name " + "LIMIT " + LIMIT_NUM;
 
@@ -232,6 +258,7 @@ public class SqlRunner {
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
 		} else {
 			serialized_id = (int) id_result.get(0).row.get(0).getKey();
+			// id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
 			@SuppressWarnings("unchecked")
 			ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(conn, serialized_id);
 			rows.addAll(rows2);
@@ -259,7 +286,7 @@ public class SqlRunner {
 		ArrayList<Row> rows = new ArrayList<>();
 		if (id_result.isEmpty()) {
 			final String spouselessBetweenYears = "SELECT SQL_CACHE filtered_info.name, filtered_info.birthDate, filtered_info.deathDate, filtered_info.occupation, filtered_info.photoLink, WikiID.wikiPageId "
-					+ "FROM (SELECT * FROM basic_info WHERE deathDate IS NOT NULL "
+					+ "FROM (SELECT * FROM basic_info WHERE birthDate IS NOT NULL AND deathDate IS NOT NULL "
 					+ "AND YEAR(birthDate) >= ? AND YEAR(deathDate) <= ? " + "AND spouseName = 'No Spouse Name' "
 					+ ") AS filtered_info " + "LEFT JOIN WikiID " + "ON WikiID.name = filtered_info.name " + "LIMIT "
 					+ LIMIT_NUM;
@@ -288,18 +315,74 @@ public class SqlRunner {
 		}
 		return res;
 	}
-
-	@SuppressWarnings("unchecked")
-	public TableEntry getPersonalInfo(String name) throws ClassNotFoundException, SQLException, IOException {
-		Object[] inp = new Object[] { name };
+	
+	public TableEntry getPersonalInfoFromDBpedia(String name) throws ClassNotFoundException, SQLException, IOException, ParseException{
+		Object[] inp = new Object[] { name };		
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
 				+ "WHERE query_identifier LIKE CONCAT('getPersonalInfo','(',?,')')", inp);
 		int serialized_id = -1;
 		ArrayList<Row> rows = new ArrayList<>();
+		TableEntry result;
 
+		if(id_result.isEmpty()){
+			Extractor ext = new Extractor(name);
+	
+			logger.log(Level.INFO, "abstract extraction query is being executed");
+			ext.executeQuery(QueryTypes.ABSTRACT);
+			ResultSetRewindable results = ext.getResults();
+
+			results.reset();
+			QuerySolution solution = results.nextSolution();
+			RDFNode overview = solution.get("abstract");
+			String overviewStr = "No Abstract";
+			if (overview != null)
+				if (overview.isResource())
+					overviewStr = (overview.asResource() + "").split("resource/")[1];
+				else if (overview.isLiteral())
+					overviewStr = (overview.asLiteral() + "").split("@")[0];
+		
+			logger.log(Level.INFO, "basic Info By Name extraction query is being executed");
+			ext.executeQuery(QueryTypes.BASIC_INFO_BY_NAME);
+			ResultSetRewindable basicInfoByNameResults = ext.getResults();
+			basicInfoByNameResults.reset();
+		
+			SqlTablesFiller filler = new SqlTablesFiller();
+			TableEntry te = filler.getInfo(basicInfoByNameResults,name);
+			filler.close();
+		
+			result = new TableEntry(te);
+			result.setUrl("");
+			result.setOverview(overviewStr);
+		
+			Object[] toSerilaize = new Object[1];
+			toSerilaize[0] = result;
+
+			String query_identifier = "getPersonalInfo(" + name + ")";
+			resultsSer.serializeQueryResults(conn, query_identifier, toSerilaize);
+		}else {
+			serialized_id = (int) id_result.get(0).row.get(0).getKey();
+			Object[] output = (Object[]) resultsSer.deSerializeQueryResults(conn, serialized_id);
+			result = (TableEntry) output[0];
+		}
+		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public TableEntry getPersonalInfo(String name) throws ClassNotFoundException, SQLException, IOException, ParseException {
+		Object[] inp = new Object[] { name };
+		ArrayList<Row> res = conn.runQuery("SELECT name FROM basic_info WHERE name = ?", inp);
+		String newName = WordUtils.capitalize(name).replaceAll(" ", "_");
+		if(res.isEmpty()){
+			return getPersonalInfoFromDBpedia(newName);				
+		}
+		
+		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
+				+ "WHERE query_identifier LIKE CONCAT('getPersonalInfo','(',?,')')", inp);
+		int serialized_id = -1;
+		ArrayList<Row> rows = new ArrayList<>();
+		
 		String overviewStr = "";
 		if (id_result.isEmpty()) {
-			String newName = WordUtils.capitalize(name).replaceAll(" ", "_");
 			Extractor ext = new Extractor(newName);
 			logger.log(Level.INFO, "abstract extraction query is being executed");
 			ext.executeQuery(QueryTypes.ABSTRACT);
@@ -314,20 +397,21 @@ public class SqlRunner {
 					overviewStr = (overview.asResource() + "").split("resource/")[1];
 				else if (overview.isLiteral())
 					overviewStr = (overview.asLiteral() + "").split("@")[0];
-
-			final String personalInfoQuery = "SELECT SQL_CACHE filtered_info.*, WikiID.wikiPageId "
-					+ "FROM (SELECT * FROM basic_info WHERE name = ? LIMIT 1) AS filtered_info " + "LEFT JOIN WikiID "
+			
+				final String personalInfoQuery = "SELECT SQL_CACHE filtered_info.*, WikiID.wikiPageId "
+					+ "FROM (SELECT * FROM basic_info WHERE name = ?) AS filtered_info " + "LEFT JOIN WikiID "
 					+ "ON WikiID.name = filtered_info.name " + "LIMIT 1";
-			logger.log(Level.INFO, "personal info query is being executed");
-			rows = conn.runQuery(personalInfoQuery, inp);
-
+		
+				logger.log(Level.INFO, "personal info query is being executed");
+				rows = conn.runQuery(personalInfoQuery, inp);
+			
 			Object[] toSerilaize = new Object[2];
 			toSerilaize[0] = rows;
 			toSerilaize[1] = overviewStr;
 
 			String query_identifier = "getPersonalInfo(" + name + ")";
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, toSerilaize);
-		} else {
+		}else {
 			serialized_id = (int) id_result.get(0).row.get(0).getKey();
 			Object[] output = (Object[]) resultsSer.deSerializeQueryResults(conn, serialized_id);
 			rows = (ArrayList<Row>) output[0];
@@ -336,8 +420,18 @@ public class SqlRunner {
 		Row res_row = rows.get(0);
 		String birthPlace = (String) res_row.row.get(1).getValue().cast(res_row.row.get(1).getKey());
 		String deathPlace = (String) res_row.row.get(2).getValue().cast(res_row.row.get(2).getKey());
-		Date birthDate = (java.sql.Date) res_row.row.get(3).getValue().cast(res_row.row.get(3).getKey());
-		Date deathDate = (java.sql.Date) res_row.row.get(4).getValue().cast(res_row.row.get(4).getKey());
+		
+		Date birthDate = null;
+		if(!"".equals(res_row.row.get(3).getKey())){			
+			birthDate = (java.sql.Date) res_row.row.get(3).getValue().cast(res_row.row.get(3).getKey());			
+		}
+		
+		Date deathDate = null;
+		Object key = res_row.row.get(4).getKey();
+		if(!"".equals(res_row.row.get(4).getKey())){			
+			deathDate = (java.sql.Date) res_row.row.get(4).getValue().cast(res_row.row.get(4).getKey());			
+		}
+		
 		String occupation = (String) res_row.row.get(5).getValue().cast(res_row.row.get(5).getKey());
 		String spouseName = (String) res_row.row.get(6).getValue().cast(res_row.row.get(6).getKey());
 		String spouseOccupation = (String) res_row.row.get(7).getValue().cast(res_row.row.get(7).getKey());
@@ -351,6 +445,8 @@ public class SqlRunner {
 	}
 
 	public ArrayList<Row> runQuery(String s, Object[] inp) throws ClassNotFoundException, SQLException, IOException {
+		if (inp == null)
+			return conn.runQuery(s);
 		return conn.runQuery(s, inp);
 	}
 

@@ -31,6 +31,12 @@ public class TableEntry{
 		this.deathDate=null;
 		this.birthDate=null;
 	}
+	
+	public TableEntry(TableEntry te){
+		this(te.getUrl(),te.getName(),te.getBirthPlace(),te.getDeathPlace(),te.getBirthDate(),te.getDeathDate()
+				,te.getOccupation(),te.getSpouseName(),te.getSpouseOccupation(),te.getPhotoLink(),te.getOverview());
+	}
+		
 	public TableEntry(String url, String name, String birthPlace, 
 					String deathPlace, Date birthDate, Date deathDate,
 					String occupation, String spouseName, String spouseOccupation, String link, String overview){
