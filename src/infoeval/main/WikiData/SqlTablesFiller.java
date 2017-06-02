@@ -79,9 +79,8 @@ public class SqlTablesFiller {
 		ext.executeQuery(QueryTypes.BASIC_INFO);
 		ResultSetRewindable results = ext.getResults();
 		results.reset();
-		for (int i = 0; i < results.size(); ++i) {
+		for (int i = 0; i < results.size(); ++i) 
 			fillBasicInfoTable(results);
-		}
 	}
 
 	public void fillBasicInfoTable(ResultSetRewindable r)
@@ -198,7 +197,7 @@ public class SqlTablesFiller {
 		connector.runUpdate("INSERT INTO basic_info VALUES(?,?,?,?,?,?,?,?,?)", inp);
 	}
 
-	public TableEntry getInfo(ResultSetRewindable r, String name)
+	public TableEntry getInfo(ResultSetRewindable r)
 			throws ClassNotFoundException, SQLException, IOException, ParseException {
 
 		QuerySolution solution = r.nextSolution();
@@ -297,22 +296,8 @@ public class SqlTablesFiller {
 			++monthNum;
 		}
 
-		String photoLink = solution.get("photo") == null ? "No Photo" : solution.get("photo") + "";
-
-		Object[] inp = new Object[9];
-		inp[0] = name;
-		inp[1] = birthPlace;
-		inp[2] = deathPlace;
-		inp[3] = sqlBirthDate;
-		inp[4] = sqlDeathDate;
-		inp[5] = occup;
-		inp[6] = spouseName;
-		inp[7] = spouseOccupation;
-		inp[8] = photoLink;
-		// System.out.println(photoLink);
-
-		return new TableEntry("", name, birthPlace, deathPlace, sqlBirthDate, sqlDeathDate, occup, spouseName,
-				spouseOccupation, photoLink, "");
+		return new TableEntry("", "", birthPlace, deathPlace, sqlBirthDate, sqlDeathDate, occup, spouseName,
+				spouseOccupation, (solution.get("photo") == null ? "No Photo" : solution.get("photo") + ""), "");
 	}
 
 	private java.sql.Date stringToSqlDate(String stringDate, SimpleDateFormat f) throws ParseException {

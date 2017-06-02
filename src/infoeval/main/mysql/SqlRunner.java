@@ -97,8 +97,17 @@ public class SqlRunner {
 			String wikiPageID = (String) row.row.get(4).getValue().cast(row.row.get(4).getKey());
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
-			res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, "", birthDate, sqlDate, "", "", "",
-					photoLink, ""));
+
+			if (name.contains(",")) {
+				String last = name.split(",")[0];
+				String first = name.split(",")[1].substring(1);
+				String newName = first + " " + last;
+				res.add(new TableEntry(wikiURL + wikiPageID, newName, birthPlace, "", birthDate, sqlDate, "", "", "",
+						photoLink, ""));
+			} else {
+				res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, "", birthDate, sqlDate, "", "", "",
+						photoLink, ""));
+			}
 		}
 		return res;
 	}
@@ -137,8 +146,17 @@ public class SqlRunner {
 			String wikiPageID = (String) row.row.get(4).getValue().cast(row.row.get(4).getKey());
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
-			res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, deathPlace, sqlDate, sqlDate, "", "", "",
-					photoLink, ""));
+
+			if (name.contains(",")) {
+				String last = name.split(",")[0];
+				String first = name.split(",")[1].substring(1);
+				String newName = first + " " + last;
+				res.add(new TableEntry(wikiURL + wikiPageID, newName, birthPlace, deathPlace, sqlDate, sqlDate, "", "",
+						"", photoLink, ""));
+			} else {
+				res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, deathPlace, sqlDate, sqlDate, "", "", "",
+						photoLink, ""));
+			}
 			++i;
 		}
 		return res;
@@ -175,8 +193,16 @@ public class SqlRunner {
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
 
-			res.add(new TableEntry("", name, "", "", sqlDate, sqlDate, occupation, spouseName, spouseOoccupation, "",
-					""));
+			if (name.contains(",")) {
+				String last = name.split(",")[0];
+				String first = name.split(",")[1].substring(1);
+				String newName = first + " " + last;
+				res.add(new TableEntry("", newName, "", "", sqlDate, sqlDate, occupation, spouseName, spouseOoccupation,
+						"", ""));
+			} else {
+				res.add(new TableEntry("", name, "", "", sqlDate, sqlDate, occupation, spouseName, spouseOoccupation,
+						"", ""));
+			}
 		}
 		return res;
 	}
@@ -234,7 +260,15 @@ public class SqlRunner {
 			String birthPlace = (String) row.row.get(2).getValue().cast(row.row.get(2).getKey());
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
-			res.add(new TableEntry("", name, birthPlace, "", sqlDate, sqlDate, "", spouseName, "", "", ""));
+
+			if (name.contains(",")) {
+				String last = name.split(",")[0];
+				String first = name.split(",")[1].substring(1);
+				String newName = first + " " + last;
+				res.add(new TableEntry("", newName, birthPlace, "", sqlDate, sqlDate, "", spouseName, "", "", ""));
+			} else {
+				res.add(new TableEntry("", name, birthPlace, "", sqlDate, sqlDate, "", spouseName, "", "", ""));
+			}
 		}
 		return res;
 	}
@@ -271,8 +305,16 @@ public class SqlRunner {
 			String photoLink = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
 			photoLink.replaceAll("'", "\'");
 			String wikiPageID = (String) row.row.get(4).getValue().cast(row.row.get(4).getKey());
-			res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, deathDate, occupation, "", "",
-					photoLink, ""));
+			if (name.contains(",")) {
+				String last = name.split(",")[0];
+				String first = name.split(",")[1].substring(1);
+				String newName = first + " " + last;
+				res.add(new TableEntry(wikiURL + wikiPageID, newName, "", "", birthDate, deathDate, occupation, "", "",
+						photoLink, ""));
+			} else {
+				res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, deathDate, occupation, "", "",
+						photoLink, ""));
+			}
 		}
 		return res;
 	}
@@ -310,8 +352,17 @@ public class SqlRunner {
 			String photoLink = (String) row.row.get(4).getValue().cast(row.row.get(4).getKey());
 			photoLink.replaceAll("'", "\'");
 			String wikiPageID = (String) row.row.get(5).getValue().cast(row.row.get(5).getKey());
-			res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, deathDate, occupation, "", "",
-					photoLink, ""));
+
+			if (name.contains(",")) {
+				String last = name.split(",")[0];
+				String first = name.split(",")[1].substring(1);
+				String newName = first + " " + last;
+				res.add(new TableEntry(wikiURL + wikiPageID, newName, "", "", birthDate, deathDate, occupation, "", "",
+						photoLink, ""));
+			} else {
+				res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, deathDate, occupation, "", "",
+						photoLink, ""));
+			}
 		}
 		return res;
 	}
@@ -348,10 +399,12 @@ public class SqlRunner {
 		basicInfoByNameResults.reset();
 
 		SqlTablesFiller filler = new SqlTablesFiller();
-		TableEntry te = filler.getInfo(basicInfoByNameResults, name);
+		TableEntry te = filler.getInfo(basicInfoByNameResults);
 		filler.close();
 
 		result = new TableEntry(te);
+		String newName = name.replaceAll("_", " ");
+		result.setName(newName);
 		result.setUrl("");
 		result.setOverview(overviewStr);
 		String photoLink = result.getPhotoLink();
