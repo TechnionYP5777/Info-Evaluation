@@ -64,8 +64,6 @@ public class SqlTablesFiller {
 		ResultSetRewindable results = ext.getResults();
 		results.reset();
 		for (int i = 0; i < results.size(); ++i) {
-			// TODO: delete print
-			System.out.println("Wiki ID entry num " + i);
 			QuerySolution solution = results.nextSolution();
 			Object[] inp = new Object[2];
 			inp[0] = solution.getLiteral("name").getString();
@@ -83,8 +81,6 @@ public class SqlTablesFiller {
 		results.reset();
 		for (int i = 0; i < results.size(); ++i) {
 			fillBasicInfoTable(results);
-			// TODO: delete print
-			System.out.println("basic info entry num " + i);
 		}
 	}
 
