@@ -1,6 +1,7 @@
 package infoeval.test.WikiDataTest;
 
 import org.junit.Test;
+import org.junit.Ignore;
 
 import infoeval.main.WikiData.Extractor;
 import infoeval.main.WikiData.QueryTypes;
@@ -25,6 +26,7 @@ import org.apache.jena.rdf.model.RDFNode;
 public class ExtractorTest {
 	private static final int ENTRIES_NUM = 10000;
 
+	@Ignore
 	@Test
 	public void wikiIdTest() {
 		Extractor extr = new Extractor();
@@ -32,6 +34,7 @@ public class ExtractorTest {
 		assertEquals(extr.getResults().size(), ENTRIES_NUM);
 	}
 
+	@Ignore
 	@Test
 	public void basicInfoTest() {
 		Extractor extr = new Extractor();
@@ -39,6 +42,7 @@ public class ExtractorTest {
 		assertEquals(extr.getResults().size(), ENTRIES_NUM);
 	}
 
+	@Ignore
 	@Test
 	public void abstractTest() {
 		String name = "Jessica Zelinka", newName = WordUtils.capitalize(name).replaceAll(" ", "_");

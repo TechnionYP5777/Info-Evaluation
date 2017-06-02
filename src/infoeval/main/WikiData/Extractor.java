@@ -93,7 +93,7 @@ public class Extractor {
 					+ " (SAMPLE( ?birthDate) as ?bDate) "
 				+ " WHERE {"
 					+ " ?resource   a <http://dbpedia.org/ontology/Person>;  "
-					+ " dbp:name '" + name + "' ; dbp:birthPlace ?birthPlace;dbp:birthDate ?birthDate."
+					+ " dbp:name ?name" + "@en" + "; dbp:birthPlace ?birthPlace;dbp:birthDate ?birthDate."
 					+ " OPTIONAL{?resource dbo:occupation ?occupation}."
 					+ " OPTIONAL{?resource dbo:thumbnail ?photoLink}."
 					+ " OPTIONAL{?resource dbo:spouse ?spouse. ?spouse dbp:name ?spName."
@@ -104,7 +104,7 @@ public class Extractor {
 					//+ " LIMIT 1");
 
 		//abstractQuery.setIri("name","http://dbpedia.org/resorce/"+name);
-		//basicInfoByNameQuery.setLiteral("name",name);
+		basicInfoByNameQuery.setLiteral("name",name);
 		
 		queriesMap = new HashMap<QueryTypes, ParameterizedSparqlString>();
 		queriesMap.put(QueryTypes.ABSTRACT, abstractQuery);

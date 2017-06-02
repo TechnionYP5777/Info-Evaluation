@@ -353,7 +353,9 @@ public class SqlRunner {
 			result = new TableEntry(te);
 			result.setUrl("");
 			result.setOverview(overviewStr);
-
+			String photoLink = result.getPhotoLink();
+			photoLink.replaceAll("'", "\'");
+			result.setPhotoLink(photoLink);
 			Object[] toSerilaize = new Object[1];
 			toSerilaize[0] = result;
 
