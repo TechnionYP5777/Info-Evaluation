@@ -55,9 +55,7 @@ public class SqlTablesFillerTest {
 		ArrayList<Row> rows = conn.runQuery("SELECT COUNT(*) FROM basic_info");
 		Row row = rows.get(0);
 		Entry<Object, Class> col = row.row.get(0);
-		long size = (long) col.getValue().cast(col.getKey());
-		assertEquals(ENTRIES_NUM, size);
-		//conn.close();
+		assertEquals(ENTRIES_NUM, ((long) col.getValue().cast(col.getKey())));
 	}
 
 	@Ignore
@@ -67,9 +65,7 @@ public class SqlTablesFillerTest {
 		ArrayList<Row> rows = conn.runQuery("SELECT COUNT(*) FROM WikiID");
 		Row row = rows.get(0);
 		Entry<Object, Class> col = row.row.get(0);
-		long size = (long) col.getValue().cast(col.getKey());
-		assertEquals(ENTRIES_NUM, size);
-		//conn.close();
+		assertEquals(ENTRIES_NUM, ((long) col.getValue().cast(col.getKey())));
 	}
 	
 	@Ignore

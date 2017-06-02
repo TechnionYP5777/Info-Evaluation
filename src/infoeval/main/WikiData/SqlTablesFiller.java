@@ -114,15 +114,12 @@ public class SqlTablesFiller {
 			
 			RDFNode spOcuup = solution.get("spOccu");
 			String spouseOccupation = "No Spouse Occupation";
-			if (spOcuup != null){
-				if (spOcuup.isResource()){
-					if(!(spOcuup.asResource() + "").contains("resource")){
-						spouseOccupation = "No Spouse Occupation";						
-					}
-					else spouseOccupation = (spOcuup.asResource() + "").split("resource/")[1];
-				}else if (dPlace.isLiteral())
-					spouseOccupation = (spOcuup.asLiteral() + "").split("@")[0];
-			}	
+			if (spOcuup != null)
+				if (spOcuup.isResource())
+					spouseOccupation = !(spOcuup.asResource() + "").contains("resource") ? "No Spouse Occupation"
+							: (spOcuup.asResource() + "").split("resource/")[1];
+				else if (dPlace.isLiteral())
+					spouseOccupation = (spOcuup.asLiteral() + "").split("@")[0];	
 			RDFNode bDate = solution.get("bDate");
 			String birthDate = !bDate.isLiteral() ? null : bDate.asLiteral().getValue() + "";
 

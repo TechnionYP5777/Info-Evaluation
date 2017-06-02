@@ -9,7 +9,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.Ignore;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 
 /**

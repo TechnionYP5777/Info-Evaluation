@@ -92,7 +92,7 @@ public class SqlRunnerTest {
 			inp[0] = sName;
 			ArrayList<Row> res = querun.runQuery(checkBirthPlaceQuery, inp);
 			Row row = res.get(0);
-			assertEquals(te.getBirthPlace(), (String) row.row.get(0).getValue().cast(row.row.get(0).getKey()));
+			assertEquals(te.getBirthPlace(), row.row.get(0).getValue().cast(row.row.get(0).getKey()));
 		}
 	}
 

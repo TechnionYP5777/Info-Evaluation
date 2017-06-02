@@ -14,7 +14,6 @@ import org.springframework.boot.autoconfigure.*;
 //import org.springframework.stereotype.*;
 //import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -117,9 +116,7 @@ public class InfoevalServiceImp implements InfoevalService {
 		logger.log(Level.INFO, "Get Arrests was called.\n Parameters:"+"Name:"+name);
 		//Parse user's input:
 		name = name.trim().replaceAll(" ", "_");
-		SqlRunner runner = new SqlRunner();
-		TableEntry $ = runner.getPersonalInfo(name);
-		return $;
+		return (new SqlRunner()).getPersonalInfo(name);
 		
 	}
 	
