@@ -1,8 +1,8 @@
 <ion-view view-title="People who died and born in a different place">
     <ion-content ng-class="{expanded:isExpanded}" class="animate-fade-slide-in">
 		
-		<div ng-controller="Query1Entry">
-			<div ng-repeat="per in persons" >
+		<pane ng-controller="Query1Entry">
+			<div ng-repeat="per in persons | limitTo:numberOfItemsToDisplay" >
 				<div style="height:1px;font-size:1px;">&nbsp;</div>
 				<div class="card stable-bg ink-dark">            
 					<div class="item-avatar item-text-wrap">
@@ -15,7 +15,8 @@
 			 <div>
             	<li ng-show="!persons.length">No persons</li>
             </div>
-		</div>
+			<ion-infinite-scroll on-infinite="addMoreItem()" ng-if="persons.length > numberOfItemsToDisplay"></ion-infinite-scroll>
+		</pane>
         
        
     </ion-content>

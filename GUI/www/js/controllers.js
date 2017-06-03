@@ -189,6 +189,14 @@ angular.module('starter.controllers', [])
 		console.log(response.data);
 		}
 	);
+	
+		$scope.numberOfItemsToDisplay = 10; // Use it with limit to in ng-repeat
+		$scope.addMoreItem = function(done) {
+		if ($scope.persons.length > $scope.numberOfItemsToDisplay)
+			$scope.numberOfItemsToDisplay += 10; // load number of more items
+			$scope.$broadcast('scroll.infiniteScrollComplete')
+	}
+        
 		
 })
 

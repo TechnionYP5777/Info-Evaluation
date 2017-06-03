@@ -1,24 +1,5 @@
 <ion-view view-title="Results">
     <ion-content ng-class="{expanded:isExpanded}"  class="list animate-fade-slide-in">
-        
-        <!--<div ng-controller="QueryEntry">
-               
-              <div>
-            <li ng-show="!persons.length">No persons</li>
-            </div>
-                    <div ng-repeat="per in persons" >
-                            <div class="card stable-bg ink-dark">            
-                                <div class="item item-avatar item-text-wrap">
-                                    <span class="avatar" style="background-image: url('img/jon-snow.jpg');"></span>
-									<strong>{{per.name}} </strong>  born on {{per.birthDate}} in {{per.birthPlace}} . 
-                                </div>
-                                          
-                            </div>
-                        </div>
-                      
-                    
-					</div> -->
-		
 		
         <div ng-controller="QueryEntry">
 			<span ng-repeat="per in persons" >
@@ -37,23 +18,5 @@
             	<li ng-show="!persons.length">No persons</li>
             </div>
 		</div>
-		
-		
-	<!-- <div ng-controller="QueryEntry">
-			 <ion-list>
-				<div class="item card-item">
-					<ion-item ng-repeat="per in persons">
-						<div class="card stable-bg ink-dark">
-							<div class="item item-avatar item-text-wrap">
-								<span class="avatar" style="background-image: url('img/jon-snow.jpg');"></span>
-								 <strong>{{per.name}} </strong>  born on {{per.birthDate}} in {{per.birthPlace}} .  
-							</div>
-						</div>
-					</ion-item>
-				</div>
-			</ion-list>
-        </div> -->
-		
-		
     </ion-content>
 </ion-view>
