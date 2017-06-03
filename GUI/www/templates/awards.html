@@ -2,14 +2,23 @@
     <ion-content ng-class="{expanded:isExpanded}" class="animate-fade-slide-in">
       
 		
+		
         <div ng-controller="AwardsCtrl">
 			
-			 <div class="hero slide-up" style="background-image:{{personalInformation.photoLink}};">
+			<div class="hero slide-up" style="background-image: url('img/profile-bg.jpg');">
+            <div class="content">
+                <div class="avatar" style="background-image: url('img/daenerys.jpg');"></div>
+                <h3><a class="light">Awards of {{name}}</a></h3>
+				<br/>
+            </div>
+        </div>
+			
+			<!-- <div class="hero slide-up"  style="background-image:{{personalInformation.photoLink}};">
            		 <div class="content">         
                   <h4>Awards of {{name}}</h4>
             	</div>
-       		</div>
-			
+       		</div> -->
+
 			<div ng-repeat="info in information track by $index" >
 				<div class="card stable-bg ink-dark">            
 					<div class="item-avatar item-text-wrap">
