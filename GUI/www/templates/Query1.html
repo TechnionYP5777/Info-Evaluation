@@ -2,6 +2,7 @@
     <ion-content ng-class="{expanded:isExpanded}" class="animate-fade-slide-in">
 		
 		<pane ng-controller="Query1Entry">
+			<div ng-show="loading"><br/><br/><center> <img src="img/2.gif"></center></div>
 			<div ng-repeat="per in persons | limitTo:numberOfItemsToDisplay" >
 				<div style="height:1px;font-size:1px;">&nbsp;</div>
 				<div class="card stable-bg ink-dark">            
@@ -13,7 +14,7 @@
 				
 			</div>
 			 <div>
-            	<li ng-show="!persons.length">No persons</li>
+            	<li ng-show="!persons.length && !loading"><br/><br/><center><h2> No people suit query</h2></center></li>
             </div>
 			<ion-infinite-scroll on-infinite="addMoreItem()" ng-if="persons.length > numberOfItemsToDisplay"></ion-infinite-scroll>
 		</pane>

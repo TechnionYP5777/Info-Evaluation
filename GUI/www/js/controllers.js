@@ -115,6 +115,7 @@ angular.module('starter.controllers', [])
 		console.log(DataQ.getYear());
 		console.log(DataQ.getPlace());
 		$scope.persons=[];
+		$scope.loading=true;
 		$http({
 		  method: 'GET',
 		  url:'/Queries/Query2',
@@ -140,7 +141,9 @@ angular.module('starter.controllers', [])
 				console.log(person.wikiPageID);
 				console.log(person);
 				console.log(person.photoLink);
+				
 			}
+			$scope.loading=false;
 		console.log('end of success');
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response))
@@ -164,6 +167,12 @@ angular.module('starter.controllers', [])
 .controller('Query1Entry',function($scope,$http,$ionicPopup){
 		console.log('show entered fields from button clicked-query 1');
 		$scope.persons=[];
+		$scope.numberOfItemsToDisplay = 6; // Use it with limit to in ng-repeat
+
+		$scope.loading=true;
+		
+		console.log('started loading screen');
+	
 		$http({
 		  method: 'GET',
 		  url:'/Queries/Query1',
@@ -185,6 +194,7 @@ angular.module('starter.controllers', [])
 				console.log(person.deathPlace);
 				console.log(person.photoLink);
 			}
+			$scope.loading=false;
 		
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response))
@@ -196,7 +206,7 @@ angular.module('starter.controllers', [])
 		}
 	);
 	
-		$scope.numberOfItemsToDisplay = 6; // Use it with limit to in ng-repeat
+	
 		$scope.addMoreItem = function(done) {
 		if ($scope.persons.length > $scope.numberOfItemsToDisplay)
 			$scope.numberOfItemsToDisplay += 6; // load number of more items
@@ -315,6 +325,7 @@ angular.module('starter.controllers', [])
     $scope.isExpanded = false;
     $scope.$parent.setExpanded(false);
     $scope.$parent.setHeaderFab(false);
+	$scope.loading=true;
 	
 		console.log('Show results of Get Awards was called');
 		$scope.information=[];
@@ -335,6 +346,7 @@ angular.module('starter.controllers', [])
 			  $scope.information.push(info);
 			  console.log(info);
 			}
+			$scope.loading=false;
 		
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response))
@@ -385,6 +397,7 @@ angular.module('starter.controllers', [])
     $scope.isExpanded = false;
     $scope.$parent.setExpanded(false);
     $scope.$parent.setHeaderFab(false);
+	$scope.loading=true;
 	
 	console.log('Show results of Get Arrests was called');
 		$scope.information=[];
@@ -405,6 +418,7 @@ angular.module('starter.controllers', [])
 			  $scope.information.push(info);
 			  console.log(info);
 			}
+			$scope.loading=false;
 		
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response))
