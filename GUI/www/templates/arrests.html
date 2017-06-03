@@ -11,10 +11,8 @@
              </div>
             
             
-			<div ng-show="loading"><br/><br/><center> <img src="img/2.gif"></center></div>
-			<div ng-show="!loading">  </div>
 			
-            <div class="card stable-bg ink-dark">            
+                <div ng-show="!loadindPersonalInfo" class="card stable-bg ink-dark">            
 					<div class="item-avatar item-text-wrap">
                         <span class="avatar" style="background-image: {{personalInformation.photoLink}};"></span>
 						<p style="color:black;"><strong>Personal Information:</strong>  </p>
@@ -25,7 +23,10 @@
 
 				</div>
             
-			<div ng-repeat="info in information track by $index" >
+            <div ng-show="loading"><br/><br/><center> <img src="img/2.gif"></center></div>
+			
+            
+			<div ng-show="!loading" ng-repeat="info in information track by $index" >
 				<div class="card stable-bg ink-dark">            
 					<div class="item-avatar item-text-wrap">
                         <span class="avatar" style="background-image: {{personalInformation.photoLink}};"></span>

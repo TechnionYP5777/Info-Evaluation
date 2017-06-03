@@ -400,7 +400,7 @@ angular.module('starter.controllers', [])
     $scope.$parent.setExpanded(false);
     $scope.$parent.setHeaderFab(false);
 	$scope.loading=true;
-	
+	$scope.loadindPersonalInfo = true;
 	console.log('Show results of Get Arrests was called');
 		$scope.information=[];
 		$scope.name = ArrestsParams.getName();
@@ -442,13 +442,14 @@ angular.module('starter.controllers', [])
 		}).then(function successCallback(response) {
 			console.log('personal data - success');
 			$scope.personalInformation = response.data;
+			$scope.loadindPersonalInfo = false;
 			console.log('url is ' + $scope.personalInformation.photoLink);
 			console.log('name is' + name);
 			console.log('birthPlace is:'+$scope.personalInformation.birthPlace);
 				if($scope.personalInformation.photoLink == "No Photo") {
 					$scope.personalInformation.photoLink="http://www.freeiconspng.com/uploads/profile-icon-9.png";
 				}
-		
+			
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response))
 			var FetchErrorAlert = $ionicPopup.alert({
@@ -456,8 +457,10 @@ angular.module('starter.controllers', [])
 				template: 'Unable to get personal data', 
 			});
 		console.log(response.data);
+		$scope.loadindPersonalInfo = false;
 		}
 	);
+	
 
     // Set Motion
     $timeout(function() {
