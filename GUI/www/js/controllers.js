@@ -390,6 +390,8 @@ angular.module('starter.controllers', [])
 })
 
 
+
+
 .controller('ArrestsCtrl', function($scope,$http, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk,ArrestsParams) {
     // Set Header
     $scope.$parent.showHeader();
