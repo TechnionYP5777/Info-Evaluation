@@ -326,7 +326,7 @@ angular.module('starter.controllers', [])
     $scope.$parent.setExpanded(false);
     $scope.$parent.setHeaderFab(false);
 	$scope.loading=true;
-	
+	$scope.loadindPersonalInfo = true;
 		console.log('Show results of Get Awards was called');
 		$scope.information=[];
 		$scope.name = AwardsParams.getName();
@@ -355,6 +355,36 @@ angular.module('starter.controllers', [])
 				template: 'Unable to get data', 
 			});
 		console.log(response.data);
+			$scope.loading=false;
+		}
+	);
+	
+	//Get the personal data of the person:
+	$http({
+		  method: 'GET',
+		  url:'/Queries/PersonalInformation',
+			params: {
+			name: AwardsParams.getName()
+		}
+		}).then(function successCallback(response) {
+			console.log('personal data - success');
+			$scope.personalInformation = response.data;
+			$scope.loadindPersonalInfo = false;
+			console.log('url is ' + $scope.personalInformation.photoLink);
+			console.log('name is' + name);
+			console.log('birthPlace is:'+$scope.personalInformation.birthPlace);
+				if($scope.personalInformation.photoLink == "No Photo") {
+					$scope.personalInformation.photoLink="http://www.freeiconspng.com/uploads/profile-icon-9.png";
+				}
+			
+		}, function errorCallback(response) {
+			alert(JSON.stringify(response))
+			var FetchErrorAlert = $ionicPopup.alert({
+				title: 'Fetch error!',
+				template: 'Unable to get personal data', 
+			});
+		console.log(response.data);
+		$scope.loadindPersonalInfo = false;
 		}
 	);
 
@@ -432,7 +462,7 @@ angular.module('starter.controllers', [])
 		}
 	);
 	
-	//Get the image of the person:
+	//Get the personal data of the person:
 	$http({
 		  method: 'GET',
 		  url:'/Queries/PersonalInformation',
