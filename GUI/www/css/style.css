@@ -6,6 +6,10 @@ h1 {
     font-size: 42px;
 }
 
+ion-view {
+	background-image: url('../img/back.jpg')
+}
+
 
 /* Utilities
 ==================================*/
