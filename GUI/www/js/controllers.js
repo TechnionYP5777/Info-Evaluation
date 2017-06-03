@@ -115,6 +115,7 @@ angular.module('starter.controllers', [])
 		console.log(DataQ.getYear());
 		console.log(DataQ.getPlace());
 		$scope.persons=[];
+		$scope.loading=true;
 		$http({
 		  method: 'GET',
 		  url:'/Queries/Query2',
@@ -140,7 +141,9 @@ angular.module('starter.controllers', [])
 				console.log(person.wikiPageID);
 				console.log(person);
 				console.log(person.photoLink);
+				
 			}
+			$scope.loading=false;
 		console.log('end of success');
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response))
@@ -165,18 +168,7 @@ angular.module('starter.controllers', [])
 		console.log('show entered fields from button clicked-query 1');
 		$scope.persons=[];
 		$scope.numberOfItemsToDisplay = 6; // Use it with limit to in ng-repeat
-	
-		/* $scope.progressbar = ngProgressFactory.createInstance();
-              $scope.progressbar.start();*/
 
-	
-		/*console.log('before loading screen');
-		var loading_screen = pleaseWait({
-		  logo: "assets/images/pathgather.png",
-		  backgroundColor: '#f46d3b',
-		  loadingHtml: "<div class='sk-spinner sk-spinner-wave'><div class='sk-rect1'></div><div class='sk-rect2'></div><div class='sk-rect3'></div><div class='sk-rect4'></div><div class='sk-rect5'></div></div>"
-		});*/
-	
 		$scope.loading=true;
 		
 		console.log('started loading screen');
@@ -220,9 +212,6 @@ angular.module('starter.controllers', [])
 			$scope.numberOfItemsToDisplay += 6; // load number of more items
 			$scope.$broadcast('scroll.infiniteScrollComplete')
 	}
-		/*console.log('before finish screen');
-		loading_screen.finish();
-		console.log('end loading screen');*/
         
 		
 })
