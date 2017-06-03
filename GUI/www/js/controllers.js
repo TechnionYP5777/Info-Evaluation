@@ -166,12 +166,18 @@ angular.module('starter.controllers', [])
 		$scope.persons=[];
 		$scope.numberOfItemsToDisplay = 6; // Use it with limit to in ng-repeat
 	
-		console.log('before loading screen');
+		/* $scope.progressbar = ngProgressFactory.createInstance();
+              $scope.progressbar.start();*/
+
+	
+		/*console.log('before loading screen');
 		var loading_screen = pleaseWait({
 		  logo: "assets/images/pathgather.png",
 		  backgroundColor: '#f46d3b',
 		  loadingHtml: "<div class='sk-spinner sk-spinner-wave'><div class='sk-rect1'></div><div class='sk-rect2'></div><div class='sk-rect3'></div><div class='sk-rect4'></div><div class='sk-rect5'></div></div>"
-		});
+		});*/
+	
+		$scope.loading=true;
 		
 		console.log('started loading screen');
 	
@@ -196,6 +202,7 @@ angular.module('starter.controllers', [])
 				console.log(person.deathPlace);
 				console.log(person.photoLink);
 			}
+			$scope.loading=false;
 		
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response))
@@ -207,14 +214,15 @@ angular.module('starter.controllers', [])
 		}
 	);
 	
-	console.log('before finish screen');
-		loading_screen.finish();
-		console.log('end loading screen');
+	
 		$scope.addMoreItem = function(done) {
 		if ($scope.persons.length > $scope.numberOfItemsToDisplay)
 			$scope.numberOfItemsToDisplay += 6; // load number of more items
 			$scope.$broadcast('scroll.infiniteScrollComplete')
 	}
+		/*console.log('before finish screen');
+		loading_screen.finish();
+		console.log('end loading screen');*/
         
 		
 })
