@@ -164,6 +164,17 @@ angular.module('starter.controllers', [])
 .controller('Query1Entry',function($scope,$http,$ionicPopup){
 		console.log('show entered fields from button clicked-query 1');
 		$scope.persons=[];
+		$scope.numberOfItemsToDisplay = 6; // Use it with limit to in ng-repeat
+	
+		console.log('before loading screen');
+		var loading_screen = pleaseWait({
+		  logo: "assets/images/pathgather.png",
+		  backgroundColor: '#f46d3b',
+		  loadingHtml: "<div class='sk-spinner sk-spinner-wave'><div class='sk-rect1'></div><div class='sk-rect2'></div><div class='sk-rect3'></div><div class='sk-rect4'></div><div class='sk-rect5'></div></div>"
+		});
+		
+		console.log('started loading screen');
+	
 		$http({
 		  method: 'GET',
 		  url:'/Queries/Query1',
@@ -196,7 +207,9 @@ angular.module('starter.controllers', [])
 		}
 	);
 	
-		$scope.numberOfItemsToDisplay = 6; // Use it with limit to in ng-repeat
+	console.log('before finish screen');
+		loading_screen.finish();
+		console.log('end loading screen');
 		$scope.addMoreItem = function(done) {
 		if ($scope.persons.length > $scope.numberOfItemsToDisplay)
 			$scope.numberOfItemsToDisplay += 6; // load number of more items
