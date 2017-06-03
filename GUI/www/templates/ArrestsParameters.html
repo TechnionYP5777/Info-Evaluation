@@ -3,21 +3,22 @@
         <ion-nav-view>
         <div class="item card-item">  
             <div  class="card stable-bg ink ink-dark">
-                <div class="item item-avatar item-text-wrap">
+                <div class="item item-text-wrap">
                       <div>
-            <h2>Please insert the name of the Person you wish to find information about: </h2>
+            <h2 style="font-size:25px;text-align: center;">Please insert the name of the Person you wish to find information about: </h2>
              <br>
 			<br>
 			</div>
 		  <div class="item item-input-inset">
 			  <label class="item item-input-wrapper">		
 					<i class="icon ion-edit placeholder-icon"></i>
-					<input type="text" placeholder="Name of Person" ng-model="name">
+					<input type="text" style="font-size:16px;"  placeholder="Name of Person" ng-model="name">
 			  </label>
 		 </div>
+					<br/>
 		<div ng-controller="ArrestsParameters">
-			<button class="button button-block padding" ng-click="showArrestsResults(name)">
-				Show Results
+			<button style="border-radius: 50px 50px;background-color: #020626;" class="button button-block padding" ng-click="showArrestsResults(name)">
+				<p style="color:white;" >Show results </p>
 			</button>
 		</div>
     </div>

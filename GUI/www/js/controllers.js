@@ -313,10 +313,16 @@ angular.module('starter.controllers', [])
 			name: AwardsParams.getName()
 		}
 		}).then(function successCallback(response) {
-			console.log('success');
+			console.log('awards success');
 			$scope.information = [];
 			for(var r in response.data) {
 			  var info = response.data[r];
+				console.log('url is ' + info.photoLink);
+				if(info.photoLink == "No Photo") {
+					info.photoLink="http://www.freeiconspng.com/uploads/profile-icon-9.png";
+				}
+				var photoUrl= "url('"+info.photoLink+"')";
+				info.photoLink=photoUrl;
 			  
 			  $scope.information.push(info);
 			  console.log(info);
