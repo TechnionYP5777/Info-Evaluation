@@ -325,6 +325,7 @@ angular.module('starter.controllers', [])
     $scope.isExpanded = false;
     $scope.$parent.setExpanded(false);
     $scope.$parent.setHeaderFab(false);
+	$scope.loading=true;
 	
 		console.log('Show results of Get Awards was called');
 		$scope.information=[];
@@ -345,6 +346,7 @@ angular.module('starter.controllers', [])
 			  $scope.information.push(info);
 			  console.log(info);
 			}
+			$scope.loading=false;
 		
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response))
