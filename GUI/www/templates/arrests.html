@@ -3,17 +3,20 @@
       
 		
         <div ng-controller="ArrestsCtrl">
-			
-			 <div class="hero slide-up" style="background-image:{{personalInformation.photoLink}};">
-           		 <div class="content">         
-                  <h4>Arrests of {{name}}</h4>
-            	</div>
-       		</div>
-			
+            
+            
+			 <div class="hero slide-up" style="background-image: url('img/profile-bg.jpg');">
+                     <div class="content">  
+                         <div class="avatar slide-up" style="background-image: url({{personalInformation.photoLink}}) ;">  </div>
+                      <h4>Arrests of {{name}}</h4>
+                    </div>
+             </div>
+            
 			<div ng-repeat="info in information track by $index" >
 				<div class="card stable-bg ink-dark">            
 					<div class="item-avatar item-text-wrap">
-						<p style="color:black;"><strong>{{info}} </strong>  </p>
+                        <span class="avatar" style="background-image: {{personalInformation.photoLink}};"></span>
+						<p style="color:black;"><strong>{{info}}</strong>  </p>
 					</div>
 
 				</div>

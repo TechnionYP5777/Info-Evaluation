@@ -426,9 +426,11 @@ angular.module('starter.controllers', [])
 		}).then(function successCallback(response) {
 			console.log('personal data - success');
 			$scope.personalInformation = response.data;
-			console.log('url is ' + personalInformation.photoLink);
-				if(personalInformation.photoLink == "No Photo") {
-					personalInformation.photoLink="http://www.freeiconspng.com/uploads/profile-icon-9.png";
+			console.log('url is ' + $scope.personalInformation.photoLink);
+			console.log('name is' + name);
+			console.log('birthPlace is:'+$scope.personalInformation.birthPlace);
+				if($scope.personalInformation.photoLink == "No Photo") {
+					$scope.personalInformation.photoLink="http://www.freeiconspng.com/uploads/profile-icon-9.png";
 				}
 		
 		}, function errorCallback(response) {
