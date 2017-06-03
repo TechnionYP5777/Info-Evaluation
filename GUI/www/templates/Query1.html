@@ -13,9 +13,9 @@
 				</div>
 				
 			</div>
-			<!-- <div>
-            	<li ng-show="!persons.length">No persons</li>
-            </div> -->
+			 <div>
+            	<li ng-show="!persons.length && !loading"><br/><br/><center><h2> No people suit query</h2></center></li>
+            </div>
 			<ion-infinite-scroll on-infinite="addMoreItem()" ng-if="persons.length > numberOfItemsToDisplay"></ion-infinite-scroll>
 		</pane>
         
