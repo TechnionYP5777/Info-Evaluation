@@ -1,0 +1,24 @@
+<ion-view view-title="Couples who have the same occupation">
+    <ion-content ng-class="{expanded:isExpanded}" class="animate-fade-slide-in">
+		
+		<pane ng-controller="SameOccupationQuery">
+			<div ng-show="loading"><br/><br/><center> <img src="img/2.gif"></center></div>
+			<div ng-repeat="per in persons | limitTo:numberOfItemsToDisplay" >
+				<div style="height:1px;font-size:1px;">&nbsp;</div>
+				<div class="card stable-bg ink-dark">            
+					<div class="item-avatar item-text-wrap">
+						<span class="avatar" style="background-image: {{per.photoLink}};"></span>
+						<h3 style="color:black;">{{per.name}} and {{per.SpouseName}}</h3> <p style="color:black;"> &emsp; &emsp; work as {{per.occupation}} </p>
+					</div>
+				</div>
+				
+			</div>
+			 <div>
+            	<li ng-show="!persons.length && !loading"><br/><br/><center><h2> No people suit query</h2></center></li>
+            </div>
+			<ion-infinite-scroll on-infinite="addMoreItem()" ng-if="persons.length > numberOfItemsToDisplay"></ion-infinite-scroll>
+		</pane>
+        
+       
+    </ion-content>
+</ion-view>
