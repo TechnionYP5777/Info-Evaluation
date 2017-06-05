@@ -80,6 +80,17 @@ public class InfoevalServiceImp implements InfoevalService {
 	
 	}
 	
+	
+	@Override
+	@RequestMapping(path="Queries/SameOccupationCouples",method = RequestMethod.GET)
+	public ArrayList<TableEntry> getSameOccupationCouples() throws Exception {
+		logger.log(Level.INFO, "Get SameOccupationCouples was called.\n ");
+		//Parse user's input:
+		
+		return (new SqlRunner()).getSameOccupationCouples();
+		
+	}
+	
 	@Override
 	@RequestMapping(path="Queries/Arrests",method = RequestMethod.GET)
 	public LinkedList<String> getArrested(String name) throws Exception {

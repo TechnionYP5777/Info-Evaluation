@@ -1,5 +1,6 @@
 package infoeval.main.services;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,6 +23,8 @@ public interface InfoevalService {
 	TableEntry getPersonal_Information(String name) throws Exception;
 
 	LinkedList<String> getAwards(String name) throws Exception;
+
+	ArrayList<TableEntry> getSameOccupationCouples() throws Exception;
 	
 
 }
