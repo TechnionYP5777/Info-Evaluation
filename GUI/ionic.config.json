@@ -25,6 +25,11 @@
       "path": "/Queries/Awards",
       "proxyUrl": "http://localhost:8080/Queries/Awards/"
 		
+    },
+	    {
+      "path": "/Queries/SameOccupationCouples",
+      "proxyUrl": "http://localhost:8080/Queries/SameOccupationCouples/"
+		
     }
 	   
   ]
