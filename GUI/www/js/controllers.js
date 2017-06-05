@@ -216,6 +216,59 @@ angular.module('starter.controllers', [])
 		
 })
 
+
+.controller('SameOccupationQuery',function($scope,$http,$ionicPopup){
+		console.log('show entered fields from button SameOccupationQuery');
+		$scope.persons=[];
+		$scope.numberOfItemsToDisplay = 6; // Use it with limit to in ng-repeat
+
+		$scope.loading=true;
+		
+		console.log('started loading screen');
+	
+		$http({
+		  method: 'GET',
+		  url:'/Queries/SameOccupationCouples',
+		}).then(function successCallback(response) {
+			console.log('success');
+			$scope.persons = [];
+			for(var r in response.data) {
+			  var person = response.data[r];
+				console.log('url is ' + person.photoLink);
+				if(person.photoLink == "No Photo") {
+					person.photoLink="http://www.freeiconspng.com/uploads/profile-icon-9.png";
+				}
+				var photoUrl= "url('"+person.photoLink+"')";
+				person.photoLink=photoUrl;
+			 
+			  $scope.persons.push(person);
+				console.log(person.name);
+				console.log(person.birthPlace);
+				console.log(person.deathPlace);
+				console.log(person.photoLink);
+			}
+			$scope.loading=false;
+		
+		}, function errorCallback(response) {
+			alert(JSON.stringify(response))
+			var FetchErrorAlert = $ionicPopup.alert({
+				title: 'Fetch error!',
+				template: 'Unable to get data', 
+			});
+		console.log(response.data);
+		}
+	);
+	
+	
+		$scope.addMoreItem = function(done) {
+		if ($scope.persons.length > $scope.numberOfItemsToDisplay)
+			$scope.numberOfItemsToDisplay += 6; // load number of more items
+			$scope.$broadcast('scroll.infiniteScrollComplete')
+	}
+        
+		
+})
+
 .controller('FriendsCtrl', function($scope, $stateParams, $timeout, ionicMaterialInk, ionicMaterialMotion) {
     // Set Header
     $scope.$parent.showHeader();

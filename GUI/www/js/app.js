@@ -212,6 +212,23 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             }
         }
     })
+	
+	.state('app.SameOccupationResults', {
+        url: '/SameOccupationResults',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/SameOccupationCouples.html',
+                controller: ''
+            },
+            'fabContent': {
+                controller: function ($timeout) {
+                    /*$timeout(function () {
+                        document.getElementById('fab-profile').classList.toggle('on');
+                    }, 800);*/
+                }
+            }
+        }
+    })
 
     .state('app.profile', {
         url: '/Queries',
