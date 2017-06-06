@@ -1,17 +1,18 @@
 package infoeval.main.WikiData;
 
+import org.apache.tomcat.jdbc.pool.DataSource;
+import org.apache.tomcat.jdbc.pool.PoolProperties;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.InvalidPropertiesFormatException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.dbcp2.BasicDataSource;
 
 import infoeval.main.mysql.Row;
 
@@ -23,16 +24,14 @@ import infoeval.main.mysql.Row;
  */
 public class Connector {
 	private static final Logger logger = Logger.getLogger("Connector".getClass().getName());
+	private final DataSource datasource;
+	private String url;
 	private String username;
 	private String password;
-	private String driver;
-	private String server;
-	private String host;
-	private String db;
-	private static final BasicDataSource dataSource = new BasicDataSource();
 
 	public Connector() throws SQLException, ClassNotFoundException, IOException {
 		try {
+			datasource = new DataSource();
 			initializeConnectionPool();
 			logger.log(Level.INFO, "connection pool initialized");
 		} catch (Exception e) {
@@ -46,28 +45,33 @@ public class Connector {
 	}
 
 	public void initializeConnectionPool() throws IOException {
+		InputStream is = getClass().getResourceAsStream("database.properties");
 		Properties props = new Properties();
-		try {
-			props.loadFromXML(getClass().getResourceAsStream("MySQLServerConfiguration.xml"));
-		} catch (InvalidPropertiesFormatException e) {
-			throw e;
-		}
-		username = props.getProperty("jdbc.username");
-		password = props.getProperty("jdbc.password");
-		driver = props.getProperty("jdbc.driver");
-		server = props.getProperty("jdbc.server");
-		host = props.getProperty("jdbc.host");
-		db = props.getProperty("jdbc.db");
-		dataSource.setDriverClassName(driver);
-		dataSource.setUrl(server + "://" + host + "/" + db);
-		dataSource.setUsername(username);
-		dataSource.setPassword(password);
-		dataSource.setTestOnBorrow(true);
-		dataSource.setValidationQuery("SELECT 1");
+		props.load(is);
+		is.close();
+		url = props.getProperty("spring.datasource.tomcat.url");
+		username = props.getProperty("spring.datasource.tomcat.username");
+		password = props.getProperty("spring.datasource.tomcat.password");
+
+		PoolProperties p = new PoolProperties();
+		p.setUrl(url);
+		p.setUsername(username);
+		p.setPassword(password);
+		p.setDriverClassName("com.mysql.jdbc.Driver");
+		// validating the Connection from the pool before returning them to the
+		// caller
+		p.setTestOnBorrow(true);
+		// validating the Connection before borrowing it from the pool
+		p.setValidationQuery("SELECT 1");
+		// number of ms to wait before throwing an exception if no connection is
+		// available
+		p.setMaxWait(10000);
+
+		datasource.setPoolProperties(p);
 	}
 
 	public Connection getConnection() throws SQLException, IOException, ClassNotFoundException /* ,NamingException */ {
-		return dataSource.getConnection();
+		return datasource.getConnection();
 	}
 
 	public int runUpdate(final String query) throws SQLException, ClassNotFoundException, IOException {
@@ -158,9 +162,9 @@ public class Connector {
 		runUpdate("DELETE FROM WikiID");
 	}
 
-	// close all connections stored in the pool, associated with this dataSource
+	// close all connections stored in the pool, associated with this datasource
 	public void close() throws SQLException {
-		if (dataSource != null)
-			dataSource.close();
+		if (datasource != null)
+			datasource.close();
 	}
 }

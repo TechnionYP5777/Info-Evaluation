@@ -34,7 +34,7 @@ public class SqlRunner {
 
 	public SqlRunner() throws Exception {
 		conn = new Connector();
-		conn.setCaching();
+		// conn.setCaching();
 		resultsSer = new QueryResultsSerializer();
 		conn.runUpdate("CREATE TABLE IF NOT EXISTS serialized_query_results "
 				+ "(serialized_id int(30) NOT NULL AUTO_INCREMENT, " + "query_identifier VARCHAR(100) NOT NULL, "
@@ -68,7 +68,7 @@ public class SqlRunner {
 		int serialized_id = -1;
 		ArrayList<Row> rows = new ArrayList<>();
 		if (id_result.isEmpty()) {
-			final String beforeYearInPlace = "SELECT SQL_CACHE filtered_info.name, filtered_info.BirthPlace, filtered_info.BirthDate, filtered_info.photoLink, WikiID.wikiPageID "
+			final String beforeYearInPlace = "SELECT filtered_info.name, filtered_info.BirthPlace, filtered_info.BirthDate, filtered_info.photoLink, WikiID.wikiPageID "
 					+ "FROM (SELECT * FROM basic_info WHERE BirthPlace LIKE CONCAT('%',?,'%') AND YEAR(BirthDate) < ?) AS filtered_info  "
 					+ "LEFT JOIN WikiID " + "ON WikiID.name = filtered_info.name " + "LIMIT " + LIMIT_NUM;
 			logger.log(Level.INFO, "Born in place before year query is being executed");
@@ -119,7 +119,7 @@ public class SqlRunner {
 		int serialized_id = -1;
 		ArrayList<Row> rows = new ArrayList<>();
 		if (id_result.isEmpty()) {
-			final String birthDeathPlace = "SELECT SQL_CACHE filtered_info.name, filtered_info.BirthPlace, filtered_info.DeathPlace, filtered_info.photoLink, WikiID.wikiPageID "
+			final String birthDeathPlace = "SELECT filtered_info.name, filtered_info.BirthPlace, filtered_info.DeathPlace, filtered_info.photoLink, WikiID.wikiPageID "
 					+ "FROM (SELECT * FROM basic_info WHERE DeathPlace != 'No Death Place' "
 					+ " AND BirthPlace != DeathPlace) AS filtered_info  " + "LEFT JOIN WikiID "
 					+ "ON WikiID.name = filtered_info.name " + "LIMIT " + LIMIT_NUM;
@@ -169,7 +169,7 @@ public class SqlRunner {
 		int serialized_id = -1;
 		ArrayList<Row> rows = new ArrayList<>();
 		if (id_result.isEmpty()) {
-			final String sameOccupationCouples = "SELECT SQL_CACHE name,spouseName,occupation,spouseOccupation "
+			final String sameOccupationCouples = "SELECT name,spouseName,occupation,spouseOccupation "
 					+ "FROM basic_info "
 					+ "WHERE spouseName != 'No Spouse Name' AND spouseOccupation != 'No Spouse Occupation' "
 					+ "AND occupation = spouseOccupation " + "LIMIT " + LIMIT_NUM;
@@ -216,30 +216,11 @@ public class SqlRunner {
 		if (id_result.isEmpty()) {
 
 			final String sameBirthPlaceCouples = ""
-					+ "SELECT SQL_CACHE B1.name AS Name, basic_info.name AS SpouseName, B1.birthPlace AS BirthPlace "
+					+ "SELECT B1.name AS Name, basic_info.name AS SpouseName, B1.birthPlace AS BirthPlace "
 					+ "FROM (SELECT * FROM basic_info " + "WHERE spouseName != 'No Spouse Name' "
 					+ "AND birthPlace != 'No Birth Place') AS B1 " + "LEFT JOIN basic_info "
 					+ "ON B1.spouseName = basic_info.name " + "AND basic_info.spouseName = B1.name "
 					+ "AND B1.birthPlace = basic_info.birthPlace ";
-
-			/*
-			 * final String sameBirthPlaceCouples = "" +
-			 * "SELECT SQL_CACHE B1.name AS Name, B2.name AS SpouseName, B1.birthPlace AS BirthPlace "
-			 * + "FROM basic_info AS B1 " + "LEFT JOIN basic_info AS B2 " +
-			 * "ON B1.spouseName = B2.name " + "AND B2.spouseName = B1.name " +
-			 * "AND B1.birthPlace = B2.birthPlace ";
-			 * 
-			 * /* final String sameBirthPlaceCouples = "" +
-			 * "SELECT SQL_CACHE B1.name AS Name,B2.name AS SpouseName,B1.birthPlace AS BirthPlace "
-			 * + "FROM (SELECT * FROM basic_info " +
-			 * "WHERE spouseName != 'No Spouse Name' " +
-			 * "AND birthPlace != 'No Birth Place') AS B1 " + "LEFT JOIN " +
-			 * "(SELECT * FROM basic_info " +
-			 * "WHERE spouseName != 'No Spouse Name' " +
-			 * "AND birthPlace != 'No Birth Place') AS B2 " +
-			 * "ON B1.spouseName = B2.name " + "AND B2.spouseName = B1.name " +
-			 * "AND B1.birthPlace = B2.birthPlace ";
-			 */
 
 			logger.log(Level.INFO, "same birth place couples query is being executed");
 			rows = conn.runQuery(sameBirthPlaceCouples);
@@ -247,7 +228,6 @@ public class SqlRunner {
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
 		} else {
 			serialized_id = (int) id_result.get(0).row.get(0).getKey();
-			// serialized_id = (int)
 			// id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
 			@SuppressWarnings("unchecked")
 			ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(conn, serialized_id);
@@ -281,7 +261,7 @@ public class SqlRunner {
 		int serialized_id = -1;
 		ArrayList<Row> rows = new ArrayList<>();
 		if (id_result.isEmpty()) {
-			final String occupationBetweenYears = "SELECT SQL_CACHE filtered_info.name, filtered_info.birthDate, filtered_info.deathDate, filtered_info.photoLink, WikiID.wikiPageId "
+			final String occupationBetweenYears = "SELECT filtered_info.name, filtered_info.birthDate, filtered_info.deathDate, filtered_info.photoLink, WikiID.wikiPageId "
 					+ "FROM (SELECT * FROM basic_info " + "WHERE birthDate IS NOT NULL AND deathDate IS NOT NULL "
 					+ "AND YEAR(birthDate) >= ? AND YEAR(deathDate) <= ? " + "AND occupation = ?) AS filtered_info "
 					+ "LEFT JOIN WikiID " + "ON WikiID.name = filtered_info.name " + "LIMIT " + LIMIT_NUM;
@@ -327,7 +307,7 @@ public class SqlRunner {
 		int serialized_id = -1;
 		ArrayList<Row> rows = new ArrayList<>();
 		if (id_result.isEmpty()) {
-			final String spouselessBetweenYears = "SELECT SQL_CACHE filtered_info.name, filtered_info.birthDate, filtered_info.deathDate, filtered_info.occupation, filtered_info.photoLink, WikiID.wikiPageId "
+			final String spouselessBetweenYears = "SELECT filtered_info.name, filtered_info.birthDate, filtered_info.deathDate, filtered_info.occupation, filtered_info.photoLink, WikiID.wikiPageId "
 					+ "FROM (SELECT * FROM basic_info WHERE birthDate IS NOT NULL AND deathDate IS NOT NULL "
 					+ "AND YEAR(birthDate) >= ? AND YEAR(deathDate) <= ? " + "AND spouseName = 'No Spouse Name' "
 					+ ") AS filtered_info " + "LEFT JOIN WikiID " + "ON WikiID.name = filtered_info.name " + "LIMIT "
@@ -455,7 +435,7 @@ public class SqlRunner {
 				else if (overview.isLiteral())
 					overviewStr = (overview.asLiteral() + "").split("@")[0];
 
-			final String personalInfoQuery = "SELECT SQL_CACHE filtered_info.*, WikiID.wikiPageId "
+			final String personalInfoQuery = "SELECT filtered_info.*, WikiID.wikiPageId "
 					+ "FROM (SELECT * FROM basic_info WHERE name = ?) AS filtered_info " + "LEFT JOIN WikiID "
 					+ "ON WikiID.name = filtered_info.name " + "LIMIT 1";
 

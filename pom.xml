@@ -109,7 +109,11 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.5</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+			<version>8.5.11</version>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>
