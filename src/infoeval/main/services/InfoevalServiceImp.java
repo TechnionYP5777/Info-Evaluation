@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.*;
 //import org.springframework.stereotype.*;
 //import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -32,8 +33,12 @@ import java.util.logging.Logger;
 @RestController
 public class InfoevalServiceImp implements InfoevalService {
 	private static final Logger logger = Logger.getLogger("InfoevalServiceImp".getClass().getName());
-	private static final AnalyzeParagraph analyze = new AnalyzeParagraph();
+	private static AnalyzeParagraph analyze ;
 
+	public InfoevalServiceImp() throws IOException{
+		analyze = new AnalyzeParagraph();
+	}
+	
 	@Override
 	@RequestMapping(path = "Queries/Query2", method = RequestMethod.GET)
 	public ArrayList<TableEntry> getBornInPlaceYear(String place, String year) throws Exception {

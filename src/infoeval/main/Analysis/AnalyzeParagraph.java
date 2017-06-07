@@ -1,5 +1,6 @@
 package infoeval.main.Analysis;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -14,6 +15,7 @@ import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations.CollapsedDependenc
 import edu.stanford.nlp.semgraph.SemanticGraphEdge;
 import edu.stanford.nlp.simple.Sentence;
 import edu.stanford.nlp.util.CoreMap;
+import infoeval.main.WikiData.WikiParsing;
 
 /**
  * @author moshiko
@@ -27,20 +29,28 @@ public class AnalyzeParagraph {
 									// query.
 	final StanfordCoreNLP pipeLine;
 
-	public AnalyzeParagraph(Elements Paragraphs) {
+	public AnalyzeParagraph(Elements Paragraphs) throws IOException {
 		this.Paragraphs = Paragraphs;
 		this.Information = new LinkedList<String>();
 		final Properties props = new Properties();
 		props.put("annotators", "tokenize,ssplit, pos ,parse");
+	//	props.put("ner.model", "edu/stanford/nlp/models/ner/english.all.3class.distsim.crf.ser.gz");
+		//props.put("ner.model", "edu/stanford/nlp/models/ner/english.muc.7class.distsim.crf.ser.gz");
 		this.pipeLine = new StanfordCoreNLP(props);
+		LoadClassifiers();
+
 	}
 
-	public AnalyzeParagraph() {
+	public AnalyzeParagraph() throws IOException {
 		this.Paragraphs = new Elements();
 		this.Information = new LinkedList<String>();
 		final Properties props = new Properties();
 		props.put("annotators", "tokenize,ssplit, pos,parse");
+	//	props.put("ner.model", "edu/stanford/nlp/models/ner/english.all.3class.distsim.crf.ser.gz");
+	//	props.put("ner.model", "edu/stanford/nlp/models/ner/english.muc.7class.distsim.crf.ser.gz");
 		this.pipeLine = new StanfordCoreNLP(props);
+		LoadClassifiers();
+        
 	}
 
 	public void setParagraphs(Elements Paragraphs) {
@@ -49,6 +59,14 @@ public class AnalyzeParagraph {
 		this.Paragraphs = Paragraphs;
 		if (!this.Information.isEmpty())
 			this.Information.clear();
+	}
+	
+	public void LoadClassifiers() throws IOException{
+		WikiParsing wiki =  (new WikiParsing("https://en.wikipedia.org/wiki/The_Weeknd"));
+		wiki.Parse("arrested");
+        setParagraphs(wiki.getParagraphs());
+        System.out.println("Im here");
+        AnalyzeArrestsQuery();
 	}
 
 	public void AnalyzeAwardsQuery() {
