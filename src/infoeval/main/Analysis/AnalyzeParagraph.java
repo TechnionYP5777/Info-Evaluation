@@ -31,7 +31,7 @@ public class AnalyzeParagraph {
 		this.Paragraphs = Paragraphs;
 		this.Information = new LinkedList<String>();
 		final Properties props = new Properties();
-		props.put("annotators", "tokenize,ssplit, pos, regexner, parse,lemma,natlog,openie");
+		props.put("annotators", "tokenize,ssplit, pos ,parse");
 		this.pipeLine = new StanfordCoreNLP(props);
 	}
 
@@ -39,7 +39,7 @@ public class AnalyzeParagraph {
 		this.Paragraphs = new Elements();
 		this.Information = new LinkedList<String>();
 		final Properties props = new Properties();
-		props.put("annotators", "tokenize,ssplit, pos, regexner, parse,lemma,natlog,openie");
+		props.put("annotators", "tokenize,ssplit, pos,parse");
 		this.pipeLine = new StanfordCoreNLP(props);
 	}
 
