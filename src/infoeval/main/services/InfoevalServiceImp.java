@@ -32,6 +32,7 @@ import java.util.logging.Logger;
 @RestController
 public class InfoevalServiceImp implements InfoevalService {
 	private static final Logger logger = Logger.getLogger("InfoevalServiceImp".getClass().getName());
+	private static final AnalyzeParagraph analyze = new AnalyzeParagraph();
 
 	@Override
 	@RequestMapping(path="Queries/Query2",method = RequestMethod.GET)
@@ -50,29 +51,6 @@ public class InfoevalServiceImp implements InfoevalService {
 	@RequestMapping(path="Queries/Query1",method = RequestMethod.GET)
 	public ArrayList<TableEntry> differentDeathPlace() throws Exception {
 		logger.log(Level.INFO, "Born and died in different place was called");
-		
-		//ArrayList<TableEntry> $ = new ArrayList<>();
-    	//
-    	//java.sql.Date utilDate1 = java.sql.Date.valueOf( LocalDate.of(1912, 6, 23) );
-    //	java.sql.Date utilDate2 = java.sql.Date.valueOf( LocalDate.of(1954, 6, 7) );
-    	//
-	//	TableEntry entry = new TableEntry(null, "Alan Turing", "Maida Vale", "Wilmslow", utilDate1, utilDate2,"","","");
-		//$.add(entry);
-//
-		//utilDate1 = java.sql.Date.valueOf((LocalDate.of(1886, 10, 16)));
-		//utilDate2 = java.sql.Date.valueOf(LocalDate.of(1973, 12, 1));
-//
-		//entry = new TableEntry(null, "David Ben-Gurion", "plonsk", "Ramat Gan", utilDate1, utilDate2,"","","");
-		//$.add(entry);
-		//return $;
-	
-	
-	
-	//This is the code that should really run. The code above is just a stub. We don't run the actual Java code to find real resultsbecause the server is too slow for now ...
-		/*
-		 * TODO: DO NOT REMOVE THE CODE BELOW !!!! @MOSHIKO
-		 * 
-		 */
 		SqlRunner runner = new SqlRunner();
 	ArrayList<TableEntry> $ = runner.getDifferentDeathPlace();
 	logger.log(Level.INFO, "list size:"+$.size());
@@ -100,7 +78,8 @@ public class InfoevalServiceImp implements InfoevalService {
 		
 		WikiParsing wiki =  (new WikiParsing("https://en.wikipedia.org/wiki/"+name));
 		wiki.Parse("arrested");
-		AnalyzeParagraph analyze = new AnalyzeParagraph(wiki.getParagraphs());
+		//AnalyzeParagraph analyze = new AnalyzeParagraph(wiki.getParagraphs());
+		analyze.setParagraphs(wiki.getParagraphs());
 		analyze.AnalyzeArrestsQuery();
 		//LinkedList<String> results = analyze.getInformation();
 		return analyze.RefineResults(2);
@@ -115,21 +94,23 @@ public class InfoevalServiceImp implements InfoevalService {
 		
 		WikiParsing wiki =  (new WikiParsing("https://en.wikipedia.org/wiki/"+name));
 		wiki.Parse("won");
-		AnalyzeParagraph analyze = new AnalyzeParagraph(wiki.getParagraphs());
+		//AnalyzeParagraph analyze = new AnalyzeParagraph();
+		analyze.setParagraphs(wiki.getParagraphs());
 		analyze.AnalyzeAwardsQuery();
-		//LinkedList<String> results = analyze.getInformation();
 		return analyze.RefineResults(2);
 	}
 	
 	@Override
 	@RequestMapping(path="Queries/PersonalInformation",method = RequestMethod.GET)
 	public TableEntry getPersonal_Information(String name) throws Exception {
-		logger.log(Level.INFO, "Get Arrests was called.\n Parameters:"+"Name:"+name);
+		logger.log(Level.INFO, "Get personal information was called.\n Parameters:"+"Name:"+name);
 		//Parse user's input:
 		name = name.trim().replaceAll(" ", "_");
 		return (new SqlRunner()).getPersonalInfo(name);
 		
 	}
+	
+	
 	
 
 	public static void main(String[] args) throws Exception {

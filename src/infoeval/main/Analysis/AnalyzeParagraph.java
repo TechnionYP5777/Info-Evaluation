@@ -24,10 +24,29 @@ import edu.stanford.nlp.util.CoreMap;
 public class AnalyzeParagraph {
  Elements Paragraphs;
  LinkedList<String> Information; // will hold the information about the query.
- 
+ final StanfordCoreNLP pipeLine;
  public AnalyzeParagraph(Elements Paragraphs){
 	 this.Paragraphs = Paragraphs;
 	 this.Information = new LinkedList<String>();
+	 final Properties props = new Properties();
+		props.put("annotators", "tokenize,ssplit, pos, regexner, parse,lemma,natlog,openie");
+		this.pipeLine = new StanfordCoreNLP(props);
+ }
+ 
+ public AnalyzeParagraph(){
+	 this.Paragraphs = new Elements();
+	 this.Information = new LinkedList<String>();
+	 final Properties props = new Properties();
+		props.put("annotators", "tokenize,ssplit, pos, regexner, parse,lemma,natlog,openie");
+		this.pipeLine = new StanfordCoreNLP(props);
+ }
+ 
+ public void setParagraphs(Elements Paragraphs){
+	 if(!this.Paragraphs.isEmpty())
+		 this.Paragraphs.empty();
+	 this.Paragraphs = Paragraphs;
+	 if(!this.Information.isEmpty())
+	 this.Information.clear();
  }
  
  public void AnalyzeAwardsQuery(){
@@ -83,7 +102,7 @@ public class AnalyzeParagraph {
 		 * customized the pipeline initialization to contains only the models
 		 * you need
 		 */
-		final Properties props = new Properties();
+		//final Properties props = new Properties();
 
 		/*
 		 * The "annotators" property key tells the pipeline which entities
@@ -92,8 +111,8 @@ public class AnalyzeParagraph {
 		 * reference to the "annotators" values you can set here and what they
 		 * will contribute to the analyzing process
 		 */
-		props.put("annotators", "tokenize,ssplit, pos, regexner, parse,lemma,natlog,openie");
-		final StanfordCoreNLP pipeLine = new StanfordCoreNLP(props);
+		//props.put("annotators", "tokenize,ssplit, pos, regexner, parse,lemma,natlog,openie");
+		//final StanfordCoreNLP pipeLine = new StanfordCoreNLP(props);
 
 		// inputText will be the text to evaluate in this example
 		int index = 0;
