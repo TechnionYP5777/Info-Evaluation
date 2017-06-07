@@ -35,88 +35,83 @@ public class InfoevalServiceImp implements InfoevalService {
 	private static final AnalyzeParagraph analyze = new AnalyzeParagraph();
 
 	@Override
-	@RequestMapping(path="Queries/Query2",method = RequestMethod.GET)
-	public ArrayList<TableEntry> getBornInPlaceYear(String place ,String year) throws Exception {
+	@RequestMapping(path = "Queries/Query2", method = RequestMethod.GET)
+	public ArrayList<TableEntry> getBornInPlaceYear(String place, String year) throws Exception {
 
 		SqlRunner runner = new SqlRunner();
 		ArrayList<TableEntry> $ = runner.getBornInPlaceBeforeYear(place, year);
-		logger.log(Level.INFO, "Born in place before year was called.\n Parameters:"+"Place:"+place+", Year:"+year);
-		logger.log(Level.INFO, "list size:"+$.size());
-		
+		logger.log(Level.INFO,
+				"Born in place before year was called.\n Parameters:" + "Place:" + place + ", Year:" + year);
+		logger.log(Level.INFO, "list size:" + $.size());
+
 		return $;
 	}
 
-
 	@Override
-	@RequestMapping(path="Queries/Query1",method = RequestMethod.GET)
+	@RequestMapping(path = "Queries/Query1", method = RequestMethod.GET)
 	public ArrayList<TableEntry> differentDeathPlace() throws Exception {
 		logger.log(Level.INFO, "Born and died in different place was called");
 		SqlRunner runner = new SqlRunner();
-	ArrayList<TableEntry> $ = runner.getDifferentDeathPlace();
-	logger.log(Level.INFO, "list size:"+$.size());
-	return $;
-	
+		ArrayList<TableEntry> $ = runner.getDifferentDeathPlace();
+		logger.log(Level.INFO, "list size:" + $.size());
+		return $;
+
 	}
-	
-	
+
 	@Override
-	@RequestMapping(path="Queries/SameOccupationCouples",method = RequestMethod.GET)
+	@RequestMapping(path = "Queries/SameOccupationCouples", method = RequestMethod.GET)
 	public ArrayList<TableEntry> getSameOccupationCouples() throws Exception {
 		logger.log(Level.INFO, "Get SameOccupationCouples was called.\n ");
-		//Parse user's input:
-		
+		// Parse user's input:
+
 		return (new SqlRunner()).getSameOccupationCouples();
-		
+
 	}
-	
+
 	@Override
-	@RequestMapping(path="Queries/Arrests",method = RequestMethod.GET)
+	@RequestMapping(path = "Queries/Arrests", method = RequestMethod.GET)
 	public LinkedList<String> getArrested(String name) throws Exception {
-		logger.log(Level.INFO, "Get Arrests was called.\n Parameters:"+"Name:"+name);
-		//Parse user's input:
+		logger.log(Level.INFO, "Get Arrests was called.\n Parameters:" + "Name:" + name);
+		// Parse user's input:
 		name = name.trim().replaceAll(" ", "_");
-		
-		WikiParsing wiki =  (new WikiParsing("https://en.wikipedia.org/wiki/"+name));
+
+		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + name));
 		wiki.Parse("arrested");
-		//AnalyzeParagraph analyze = new AnalyzeParagraph(wiki.getParagraphs());
+		// AnalyzeParagraph analyze = new
+		// AnalyzeParagraph(wiki.getParagraphs());
 		analyze.setParagraphs(wiki.getParagraphs());
 		analyze.AnalyzeArrestsQuery();
-		//LinkedList<String> results = analyze.getInformation();
+		// LinkedList<String> results = analyze.getInformation();
 		return analyze.RefineResults(2);
 	}
-	
+
 	@Override
-	@RequestMapping(path="Queries/Awards",method = RequestMethod.GET)
+	@RequestMapping(path = "Queries/Awards", method = RequestMethod.GET)
 	public LinkedList<String> getAwards(String name) throws Exception {
-		logger.log(Level.INFO, "Get Awards was called.\n Parameters:"+"Name:"+name);
-		//Parse user's input:
+		logger.log(Level.INFO, "Get Awards was called.\n Parameters:" + "Name:" + name);
+		// Parse user's input:
 		name = name.trim().replaceAll(" ", "_");
-		
-		WikiParsing wiki =  (new WikiParsing("https://en.wikipedia.org/wiki/"+name));
+
+		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + name));
 		wiki.Parse("won");
-		//AnalyzeParagraph analyze = new AnalyzeParagraph();
+		// AnalyzeParagraph analyze = new AnalyzeParagraph();
 		analyze.setParagraphs(wiki.getParagraphs());
 		analyze.AnalyzeAwardsQuery();
 		return analyze.RefineResults(2);
 	}
-	
+
 	@Override
-	@RequestMapping(path="Queries/PersonalInformation",method = RequestMethod.GET)
+	@RequestMapping(path = "Queries/PersonalInformation", method = RequestMethod.GET)
 	public TableEntry getPersonal_Information(String name) throws Exception {
-		logger.log(Level.INFO, "Get personal information was called.\n Parameters:"+"Name:"+name);
-		//Parse user's input:
+		logger.log(Level.INFO, "Get personal information was called.\n Parameters:" + "Name:" + name);
+		// Parse user's input:
 		name = name.trim().replaceAll(" ", "_");
 		return (new SqlRunner()).getPersonalInfo(name);
-		
+
 	}
-	
-	
-	
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(InfoevalServiceImp.class, args);
 	}
-	
-	
 
 }

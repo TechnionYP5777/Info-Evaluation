@@ -79,7 +79,7 @@ public class SqlTablesFiller {
 		ext.executeQuery(QueryTypes.BASIC_INFO);
 		ResultSetRewindable results = ext.getResults();
 		results.reset();
-		for (int i = 0; i < results.size(); ++i) 
+		for (int ¢ = 0; ¢ < results.size(); ++¢) 
 			fillBasicInfoTable(results);
 	}
 
