@@ -89,13 +89,9 @@ public class AnalyzeParagraph {
         keywords.add(query);
 		 Annotation doc = new Annotation(query);
 		 this.pipeLine.annotate(doc);
-	        for(CoreMap sentence: doc.get(SentencesAnnotation.class)) {
-	            // Iterate over all tokens in a sentence
-	            for (CoreLabel token: sentence.get(TokensAnnotation.class)) {
-	                // Retrieve and add the lemma for each word into the list of lemmas
-	            	keywords.add(token.get(LemmaAnnotation.class));
-	            }
-	        }
+	        for(CoreMap sentence: doc.get(SentencesAnnotation.class))
+				for (CoreLabel token : sentence.get(TokensAnnotation.class))
+					keywords.add(token.get(LemmaAnnotation.class));
 
 		//The query itself
 		for (final Element paragraph : this.Paragraphs)
