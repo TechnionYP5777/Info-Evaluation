@@ -39,7 +39,7 @@ public class InfoevalServiceImp implements InfoevalService {
 		analyze = new AnalyzeParagraph();
 		//Pre-Loading the classifiers used by NLP and openIE to enhance performance.
 		analyze.LoadNLPClassifiers();
-		analyze.LoadIEClassifiers();
+		//analyze.LoadIEClassifiers();
 	}
 
 	@Override

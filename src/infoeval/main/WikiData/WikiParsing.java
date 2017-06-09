@@ -24,8 +24,7 @@ ArrayList<String> names;
 
 public WikiParsing(String URL){
 	this.url = URL;
-	this.parsedText="";
-	this.parsedDoc="";
+	this.parsedDoc=this.parsedText = "";
 	this.names=new ArrayList<>();
 }
 
@@ -57,21 +56,15 @@ public String Parse(String filter) throws IOException{
 	 
 	 Elements elements =doc.select("p ~ ul a:eq(0)");
 
-	 for (Element elem : elements) {
-	     		
-	            names.add(elem.text());
-	             
-	         }
+	 for (Element ¢ : elements)
+		names.add(¢.text());
 	     
 	 
 	 return this.parsedText = this.parsedParagraphs.text() + "";
 	
 }
 public boolean isConflictedName(){
-	if(this.parsedDoc.contains("Human name disambiguation pages")){
-		return true;
-	}
-	return false;
+	return this.parsedDoc.contains("Human name disambiguation pages");
 }
 
 }

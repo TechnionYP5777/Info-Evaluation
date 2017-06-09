@@ -4,7 +4,6 @@ import infoeval.main.WikiData.Connector;
 import infoeval.main.mysql.TableEntry;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -4,8 +4,6 @@ import org.apache.jena.query.ParameterizedSparqlString;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.ResultSetFactory;
 import org.apache.jena.query.ResultSetRewindable;
-import org.apache.jena.sparql.engine.http.QueryEngineHTTP;
-
 import java.util.Map;
 import java.util.HashMap;
 import infoeval.main.WikiData.QueryTypes;
