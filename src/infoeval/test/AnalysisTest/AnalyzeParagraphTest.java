@@ -16,42 +16,42 @@ import infoeval.main.WikiData.WikiParsing;
 
 public class AnalyzeParagraphTest {
 
-	@Test
-	public void Test1() throws IOException {
-		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/Axl_Rose"));
-		wiki.Parse("arrested");
-		(new AnalyzeParagraph(wiki.getParagraphs())).AnalyzeArrestsQuery();
-
-	}
-
-	@Test
-	public void Test2() throws IOException {
-		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/The_Weeknd"));
-		wiki.Parse("arrested");
-		(new AnalyzeParagraph(wiki.getParagraphs())).AnalyzeArrestsQuery();
-
-	}
-
-	// DO NOT DELETE THIS COMMENT - IT FAILS TRAVIS BECAUSE IT CONSUMES A LOT OF
-	// MEMORY, SO IT COMMENTED IT OUT.
-	// @Test
-	// public void Test3() throws IOException{
-	// WikiParsing wiki = (new
-	// WikiParsing("https://en.wikipedia.org/wiki/Shia_LaBeouf"));
-	// wiki.Parse("arrested");
-	// (new AnalyzeParagraph(wiki.getParagraphs())).AnalyzeArrestsQuery();
-	//
-	// }
-
-	@Test
-	public void Test4() throws IOException {
-		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/Adele"));
-		wiki.Parse("won");
-		AnalyzeParagraph an = new AnalyzeParagraph(wiki.getParagraphs());
-		an.AnalyzeAwardsQuery();
-		for (final String ¢ : an.getInformation())
-			System.out.println(¢);
-	}
+//	@Test
+//	public void Test1() throws IOException {
+//		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/Axl_Rose"));
+//		wiki.Parse("arrested");
+//		(new AnalyzeParagraph(wiki.getParagraphs())).AnalyzeArrestsQuery();
+//
+//	}
+//
+//	@Test
+//	public void Test2() throws IOException {
+//		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/The_Weeknd"));
+//		wiki.Parse("arrested");
+//		(new AnalyzeParagraph(wiki.getParagraphs())).AnalyzeArrestsQuery();
+//
+//	}
+//
+//	// DO NOT DELETE THIS COMMENT - IT FAILS TRAVIS BECAUSE IT CONSUMES A LOT OF
+//	// MEMORY, SO IT COMMENTED IT OUT.
+//	// @Test
+//	// public void Test3() throws IOException{
+//	// WikiParsing wiki = (new
+//	// WikiParsing("https://en.wikipedia.org/wiki/Shia_LaBeouf"));
+//	// wiki.Parse("arrested");
+//	// (new AnalyzeParagraph(wiki.getParagraphs())).AnalyzeArrestsQuery();
+//	//
+//	// }
+//
+//	@Test
+//	public void Test4() throws IOException {
+//		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/Adele"));
+//		wiki.Parse("won");
+//		AnalyzeParagraph an = new AnalyzeParagraph(wiki.getParagraphs());
+//		an.AnalyzeAwardsQuery();
+//		for (final String ¢ : an.getInformation())
+//			System.out.println(¢);
+//	}
 
 	// This test is for the new method of awards query.(see issue #224)
 	@Test

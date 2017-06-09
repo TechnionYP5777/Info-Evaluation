@@ -97,17 +97,24 @@ public class AnalyzeParagraph {
 		System.out.println("Started analyzing awards query");
 		// Annotate an example document.
 		for (final Element paragraph : this.Paragraphs) {
-			Annotation doc = new Annotation(paragraph.text() + "");
+			for(final String sent : paragraph.text().split("\\.")){
+				if(!(sent.contains("won") || sent.contains("award") || sent.contains("awarded") || sent.equals("recieved")))
+					continue;
+					
+			Annotation doc = new Annotation(sent);
 			pipeLine.annotate(doc);
-
 			// Loop over sentences in the document
 			for (CoreMap sentence : doc.get(CoreAnnotations.SentencesAnnotation.class))
+				//Information.add(sentence.toShorterString("PartOfSpeech"));
 				for (RelationTriple ¢ : sentence.get(NaturalLogicAnnotations.RelationTriplesAnnotation.class)) {
 					String rel = ¢.relationLemmaGloss();
-					if (rel.contains("award") || rel.contains("win") || ¢.objectLemmaGloss().contains("award"))
-						Information.add(¢.confidence + "\t" + ¢.subjectLemmaGloss() + "\t" + ¢.relationLemmaGloss()
-								+ "\t" + ¢.objectLemmaGloss());
+					if (rel.contains("award") || rel.contains("win") || ¢.objectLemmaGloss().contains("award")){
+						Information.add(¢.confidence + "\t" + ¢.subjectGloss() + "\t" + ¢.relationGloss()
+								+ "\t" + ¢.objectGloss());
+					break;
+					}
 				}
+		}
 		}
 	}
 
