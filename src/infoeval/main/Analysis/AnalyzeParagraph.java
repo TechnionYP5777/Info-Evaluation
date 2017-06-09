@@ -70,11 +70,6 @@ public class AnalyzeParagraph {
 		AwardsQuery();
 	}
 
-	public void AnalyzeAwardsQuery() {
-		AwardsQuery aw = new AwardsQuery(this.Paragraphs);
-		aw.analyze();
-		this.Information = aw.getInformation();
-	}
 
 	public void AwardsQuery() {
 		System.out.println("Started analyzing awards query");
