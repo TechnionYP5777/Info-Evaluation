@@ -212,10 +212,18 @@ angular.module('starter.controllers', [])
 			$scope.numberOfItemsToDisplay += 6; // load number of more items
 			$scope.$broadcast('scroll.infiniteScrollComplete')
 	}
+		
+		$scope.showExtraInfo = function(name){
+			Query1ExtraInfo.setName(name)
+			$state.go('app.extraInfo');
+	};
         
 		
 })
 
+.controller('ExtraInfo1',function($scope,$http,$ionicPopup){
+	
+})
 
 .controller('SameOccupationQuery',function($scope,$http,$ionicPopup){
 		console.log('show entered fields from button SameOccupationQuery');

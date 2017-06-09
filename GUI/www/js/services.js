@@ -50,6 +50,31 @@ angular.module('starter.services', [])
 	};
 })
 
+.factory('Query1ExtraInfo', function () {
+	var name={};
+	return {
+		getName: function () {
+			return name.toString();
+		},
+		setName: function (nameParameter) {
+			name = nameParameter;
+		}
+	};
+})
+
+
+.factory('Query2ExtraInfo', function () {
+	var name={};
+	return {
+		getName: function () {
+			return name.toString();
+		},
+		setName: function (nameParameter) {
+			name = nameParameter;
+		}
+	};
+})
+
 //EOF
 ;
 

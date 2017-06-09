@@ -82,19 +82,19 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
     })
 
-    .state('app.friends', {
-        url: '/friends',
+    .state('app.extraInfo', {
+        url: '/extraInfo',
         views: {
             'menuContent': {
-                templateUrl: 'templates/friends.html',
-                controller: 'FriendsCtrl'
+                templateUrl: 'templates/extraInfo.html',
+                controller: 'ExtraInfo1'
             },
             'fabContent': {
-                template: '<button id="fab-friends" class="button button-fab button-fab-top-left expanded button-energized-900 spin"><i class="icon ion-chatbubbles"></i></button>',
+                template: '',
                 controller: function ($timeout) {
-                    $timeout(function () {
-                        document.getElementById('fab-friends').classList.toggle('on');
-                    }, 900);
+                   $timeout(function () {
+                        document.getElementById('fab-activity').classList.toggle('on');
+                    }, 200);
                 }
             }
         }
