@@ -45,7 +45,7 @@ public class AnalyzeParagraph {
 		// props.put("ner.model",
 		// "edu/stanford/nlp/models/ner/english.muc.7class.distsim.crf.ser.gz");
 		this.pipeLine = new StanfordCoreNLP(props);
-		LoadClassifiers();
+		//LoadClassifiers();
 
 	}
 
@@ -59,7 +59,7 @@ public class AnalyzeParagraph {
 		// props.put("ner.model",
 		// "edu/stanford/nlp/models/ner/english.muc.7class.distsim.crf.ser.gz");
 		this.pipeLine = new StanfordCoreNLP(props);
-		LoadClassifiers();
+		//LoadClassifiers();
 
 	}
 
@@ -71,12 +71,20 @@ public class AnalyzeParagraph {
 			this.Information.clear();
 	}
 
-	public void LoadClassifiers() throws IOException {
+	public void LoadNLPClassifiers() throws IOException {
+		//Load coreNLP classifiers
 		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/The_Weeknd"));
 		wiki.Parse("arrested");
 		setParagraphs(wiki.getParagraphs());
-		System.out.println("Im here");
 		AnalyzeArrestsQuery();
+	}
+	
+	public void LoadIEClassifiers() throws IOException{
+		//Load openIE classifiers
+		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/Adele"));
+		wiki.Parse("won");
+		setParagraphs(wiki.getParagraphs());
+		AwardsQuery();
 	}
 
 	public void AnalyzeAwardsQuery() {
@@ -101,21 +109,6 @@ public class AnalyzeParagraph {
 								+ "\t" + ¢.objectLemmaGloss());
 				}
 		}
-		// Create a CoreNLP document
-		// Iterate over the sentences in the document
-		// for (final Element paragraph : this.Paragraphs)
-		// for (Sentence sent : (new Document((paragraph.text() +
-		// ""))).sentences())
-		// for (RelationTriple ¢ : sent.openieTriples()){
-		// String rel = ¢.relationLemmaGloss();
-		// if (rel.contains("award") || rel.contains("win") ||
-		// ¢.objectLemmaGloss().contains("award"))
-		// Information.add(¢.confidence + "\t" + ¢.subjectLemmaGloss() + "\t" +
-		// ¢.relationLemmaGloss()
-		// + "\t" + ¢.objectLemmaGloss());
-		// }
-		//
-
 	}
 
 	private String ArrestPenalty(Sentence s) {

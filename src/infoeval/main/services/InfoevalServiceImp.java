@@ -37,6 +37,9 @@ public class InfoevalServiceImp implements InfoevalService {
 
 	public InfoevalServiceImp() throws IOException {
 		analyze = new AnalyzeParagraph();
+		//Pre-Loading the classifiers used by NLP and openIE to enhance performance.
+		analyze.LoadNLPClassifiers();
+		analyze.LoadIEClassifiers();
 	}
 
 	@Override
@@ -82,11 +85,8 @@ public class InfoevalServiceImp implements InfoevalService {
 
 		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + name));
 		wiki.Parse("arrested");
-		// AnalyzeParagraph analyze = new
-		// AnalyzeParagraph(wiki.getParagraphs());
 		analyze.setParagraphs(wiki.getParagraphs());
 		analyze.AnalyzeArrestsQuery();
-		// LinkedList<String> results = analyze.getInformation();
 		return analyze.RefineResults(10);
 	}
 
@@ -96,10 +96,8 @@ public class InfoevalServiceImp implements InfoevalService {
 		logger.log(Level.INFO, "Get Awards was called.\n Parameters:" + "Name:" + name);
 		// Parse user's input:
 		name = name.trim().replaceAll(" ", "_");
-
 		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + name));
 		wiki.Parse("won");
-		// AnalyzeParagraph analyze = new AnalyzeParagraph();
 		analyze.setParagraphs(wiki.getParagraphs());
 		analyze.AwardsQuery();
 		return analyze.RefineResults(10);
