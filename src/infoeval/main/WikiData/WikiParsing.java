@@ -4,41 +4,67 @@ import java.io.IOException;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
  * 
  * @author moshiko
- * @since 05-04-2017
+ * @since  05-04-2017
  * 
  * 
  */
 public class WikiParsing {
-	String url;
-	String parsedText;
-	Elements parsedParagraphs;
+String url;
+String parsedText;
+Elements parsedParagraphs;
+String parsedDoc;
 
-	public WikiParsing(String URL) {
-		this.url = URL;
-		this.parsedText = "";
-	}
+public WikiParsing(String URL){
+	this.url = URL;
+	this.parsedText="";
+	this.parsedDoc="";
+}
 
-	public String getURL() {
-		return this.url;
-	}
+public String getURL(){
+	return this.url;
+}
+public String getParsedDoc(){
+	return this.parsedDoc;
+}
 
-	public String getText() {
-		return this.parsedText;
-	}
+public String getText(){
+	return this.parsedText;
+}
 
-	public Elements getParagraphs() {
-		return this.parsedParagraphs;
-	}
 
-	public String Parse(String filter) throws IOException {
-		Document doc = Jsoup.connect(this.url).get();
-		this.parsedParagraphs = doc.select("p:contains" + "(" + filter + ")");
-		return this.parsedText = this.parsedParagraphs.text() + "";
+public Elements getParagraphs(){
+	return this.parsedParagraphs;
+}
+
+public String Parse(String filter) throws IOException{
+	Document doc = Jsoup.connect(this.url).get();
+	 this.parsedParagraphs = doc.select("p:contains"+"("+filter+")");
+	
+	 Element contentDiv = doc.select("div[id=content]").first();
+	 this.parsedDoc=contentDiv.text();
+	 
+	 Elements elements =doc.select("p ~ ul a:eq(0)");
+
+	 for (Element elem : elements) {
+	     
+	             System.out.println(elem.text());
+	         }
+	     
+	 
+	 return this.parsedText = this.parsedParagraphs.text() + "";
+	
+}
+public boolean isConflictedName(){
+	if(this.parsedDoc.contains("Human name disambiguation pages")){
+		return true;
 	}
+	return false;
+}
 
 }
