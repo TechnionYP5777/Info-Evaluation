@@ -1,6 +1,7 @@
 package infoeval.main.WikiData;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -19,11 +20,13 @@ String url;
 String parsedText;
 Elements parsedParagraphs;
 String parsedDoc;
+ArrayList<String> names;
 
 public WikiParsing(String URL){
 	this.url = URL;
 	this.parsedText="";
 	this.parsedDoc="";
+	this.names=new ArrayList<>();
 }
 
 public String getURL(){
@@ -41,6 +44,9 @@ public String getText(){
 public Elements getParagraphs(){
 	return this.parsedParagraphs;
 }
+public ArrayList<String> getNames(){
+	return this.names;
+}
 
 public String Parse(String filter) throws IOException{
 	Document doc = Jsoup.connect(this.url).get();
@@ -52,8 +58,9 @@ public String Parse(String filter) throws IOException{
 	 Elements elements =doc.select("p ~ ul a:eq(0)");
 
 	 for (Element elem : elements) {
-	     
-	             System.out.println(elem.text());
+	     		
+	            names.add(elem.text());
+	             
 	         }
 	     
 	 
