@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
@@ -17,24 +18,25 @@ public class WikiParsing {
 String url;
 String parsedText;
 Elements parsedParagraphs;
-String doc;
+String parsedDoc;
 
 public WikiParsing(String URL){
 	this.url = URL;
 	this.parsedText="";
-	this.doc="";
+	this.parsedDoc="";
 }
 
 public String getURL(){
 	return this.url;
 }
+public String getParsedDoc(){
+	return this.parsedDoc;
+}
 
 public String getText(){
 	return this.parsedText;
 }
-public String getDoc(){
-	return this.doc;
-}
+
 
 public Elements getParagraphs(){
 	return this.parsedParagraphs;
@@ -43,12 +45,23 @@ public Elements getParagraphs(){
 public String Parse(String filter) throws IOException{
 	Document doc = Jsoup.connect(this.url).get();
 	 this.parsedParagraphs = doc.select("p:contains"+"("+filter+")");
-	 this.doc=doc.toString();
+	
+	 Element contentDiv = doc.select("div[id=content]").first();
+	 this.parsedDoc=contentDiv.text();
+	 
+	 Elements elements =doc.select("p ~ ul a:eq(0)");
+
+	 for (Element elem : elements) {
+	     
+	             System.out.println(elem.text());
+	         }
+	     
+	 
 	 return this.parsedText = this.parsedParagraphs.text() + "";
 	
 }
 public boolean isConflictedName(){
-	if(this.doc.contains("Human name disambiguation pages")){
+	if(this.parsedDoc.contains("Human name disambiguation pages")){
 		return true;
 	}
 	return false;
