@@ -33,12 +33,12 @@ import java.util.logging.Logger;
 @RestController
 public class InfoevalServiceImp implements InfoevalService {
 	private static final Logger logger = Logger.getLogger("InfoevalServiceImp".getClass().getName());
-	private static AnalyzeParagraph analyze ;
+	private static AnalyzeParagraph analyze;
 
-	public InfoevalServiceImp() throws IOException{
+	public InfoevalServiceImp() throws IOException {
 		analyze = new AnalyzeParagraph();
 	}
-	
+
 	@Override
 	@RequestMapping(path = "Queries/Query2", method = RequestMethod.GET)
 	public ArrayList<TableEntry> getBornInPlaceYear(String place, String year) throws Exception {
@@ -87,7 +87,7 @@ public class InfoevalServiceImp implements InfoevalService {
 		analyze.setParagraphs(wiki.getParagraphs());
 		analyze.AnalyzeArrestsQuery();
 		// LinkedList<String> results = analyze.getInformation();
-		return analyze.RefineResults(2);
+		return analyze.RefineResults(10);
 	}
 
 	@Override
@@ -101,8 +101,8 @@ public class InfoevalServiceImp implements InfoevalService {
 		wiki.Parse("won");
 		// AnalyzeParagraph analyze = new AnalyzeParagraph();
 		analyze.setParagraphs(wiki.getParagraphs());
-		analyze.AnalyzeAwardsQuery();
-		return analyze.RefineResults(2);
+		analyze.AwardsQuery();
+		return analyze.RefineResults(10);
 	}
 
 	@Override

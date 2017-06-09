@@ -1,18 +1,24 @@
 package infoeval.main.Analysis;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
+import edu.stanford.nlp.ie.util.RelationTriple;
 import edu.stanford.nlp.ling.IndexedWord;
+import edu.stanford.nlp.naturalli.NaturalLogicAnnotations;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.semgraph.SemanticGraph;
 import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations.CollapsedDependenciesAnnotation;
 import edu.stanford.nlp.semgraph.SemanticGraphEdge;
+import edu.stanford.nlp.simple.Document;
 import edu.stanford.nlp.simple.Sentence;
 import edu.stanford.nlp.util.CoreMap;
 import infoeval.main.WikiData.WikiParsing;
@@ -33,9 +39,11 @@ public class AnalyzeParagraph {
 		this.Paragraphs = Paragraphs;
 		this.Information = new LinkedList<String>();
 		final Properties props = new Properties();
-		props.put("annotators", "tokenize,ssplit, pos ,parse");
-	//	props.put("ner.model", "edu/stanford/nlp/models/ner/english.all.3class.distsim.crf.ser.gz");
-		//props.put("ner.model", "edu/stanford/nlp/models/ner/english.muc.7class.distsim.crf.ser.gz");
+		props.put("annotators", "tokenize,ssplit, pos ,parse,lemma,natlog,openie");
+		// props.put("ner.model",
+		// "edu/stanford/nlp/models/ner/english.all.3class.distsim.crf.ser.gz");
+		// props.put("ner.model",
+		// "edu/stanford/nlp/models/ner/english.muc.7class.distsim.crf.ser.gz");
 		this.pipeLine = new StanfordCoreNLP(props);
 		LoadClassifiers();
 
@@ -45,12 +53,14 @@ public class AnalyzeParagraph {
 		this.Paragraphs = new Elements();
 		this.Information = new LinkedList<String>();
 		final Properties props = new Properties();
-		props.put("annotators", "tokenize,ssplit, pos,parse");
-	//	props.put("ner.model", "edu/stanford/nlp/models/ner/english.all.3class.distsim.crf.ser.gz");
-	//	props.put("ner.model", "edu/stanford/nlp/models/ner/english.muc.7class.distsim.crf.ser.gz");
+		props.put("annotators", "tokenize,ssplit, pos,parse,lemma,natlog,openie");
+		// props.put("ner.model",
+		// "edu/stanford/nlp/models/ner/english.all.3class.distsim.crf.ser.gz");
+		// props.put("ner.model",
+		// "edu/stanford/nlp/models/ner/english.muc.7class.distsim.crf.ser.gz");
 		this.pipeLine = new StanfordCoreNLP(props);
 		LoadClassifiers();
-        
+
 	}
 
 	public void setParagraphs(Elements Paragraphs) {
@@ -60,19 +70,52 @@ public class AnalyzeParagraph {
 		if (!this.Information.isEmpty())
 			this.Information.clear();
 	}
-	
-	public void LoadClassifiers() throws IOException{
-		WikiParsing wiki =  (new WikiParsing("https://en.wikipedia.org/wiki/The_Weeknd"));
+
+	public void LoadClassifiers() throws IOException {
+		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/The_Weeknd"));
 		wiki.Parse("arrested");
-        setParagraphs(wiki.getParagraphs());
-        System.out.println("Im here");
-        AnalyzeArrestsQuery();
+		setParagraphs(wiki.getParagraphs());
+		System.out.println("Im here");
+		AnalyzeArrestsQuery();
 	}
 
 	public void AnalyzeAwardsQuery() {
 		AwardsQuery aw = new AwardsQuery(this.Paragraphs);
 		aw.analyze();
 		this.Information = aw.getInformation();
+	}
+
+	public void AwardsQuery() {
+		System.out.println("Started analyzing awards query");
+		// Annotate an example document.
+		for (final Element paragraph : this.Paragraphs) {
+			Annotation doc = new Annotation(paragraph.text() + "");
+			pipeLine.annotate(doc);
+
+			// Loop over sentences in the document
+			for (CoreMap sentence : doc.get(CoreAnnotations.SentencesAnnotation.class))
+				for (RelationTriple ¢ : sentence.get(NaturalLogicAnnotations.RelationTriplesAnnotation.class)) {
+					String rel = ¢.relationLemmaGloss();
+					if (rel.contains("award") || rel.contains("win") || ¢.objectLemmaGloss().contains("award"))
+						Information.add(¢.confidence + "\t" + ¢.subjectLemmaGloss() + "\t" + ¢.relationLemmaGloss()
+								+ "\t" + ¢.objectLemmaGloss());
+				}
+		}
+		// Create a CoreNLP document
+		// Iterate over the sentences in the document
+		// for (final Element paragraph : this.Paragraphs)
+		// for (Sentence sent : (new Document((paragraph.text() +
+		// ""))).sentences())
+		// for (RelationTriple ¢ : sent.openieTriples()){
+		// String rel = ¢.relationLemmaGloss();
+		// if (rel.contains("award") || rel.contains("win") ||
+		// ¢.objectLemmaGloss().contains("award"))
+		// Information.add(¢.confidence + "\t" + ¢.subjectLemmaGloss() + "\t" +
+		// ¢.relationLemmaGloss()
+		// + "\t" + ¢.objectLemmaGloss());
+		// }
+		//
+
 	}
 
 	private String ArrestPenalty(Sentence s) {
