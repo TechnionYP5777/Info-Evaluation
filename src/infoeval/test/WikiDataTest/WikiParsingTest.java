@@ -33,5 +33,12 @@ public class WikiParsingTest {
 		assert wp.isConflictedName();
 
 	}
+	@Test
+	public void test4() throws IOException{
+		WikiParsing wp=new WikiParsing("https://en.wikipedia.org/wiki/Michael_Jackson");
+		wp.Parse("refer");
+		assert !wp.isConflictedName();
+
+	}
 
 }
