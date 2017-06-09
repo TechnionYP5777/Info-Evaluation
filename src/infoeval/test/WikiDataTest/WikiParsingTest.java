@@ -26,5 +26,12 @@ public class WikiParsingTest {
 	public void test2() throws IOException {
 		System.out.print((new WikiParsing("https://en.wikipedia.org/wiki/Justin_Timberlake")).Parse("awarded"));
 	}
+	@Test
+	public void test3() throws IOException{
+		WikiParsing wp=new WikiParsing("https://en.wikipedia.org/wiki/Michelle_Williams");
+		wp.Parse("refer");
+		assert wp.isConflictedName();
+
+	}
 
 }
