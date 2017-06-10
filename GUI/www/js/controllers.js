@@ -164,7 +164,7 @@ angular.module('starter.controllers', [])
 		
 })
 
-.controller('Query1Entry',function($scope,$http,$ionicPopup,Query1ExtraInfo){
+.controller('Query1Entry',function($scope,$http,$ionicPopup,Query1ExtraInfo,$state){
 		console.log('show entered fields from button clicked-query 1');
 		$scope.persons=[];
 		$scope.numberOfItemsToDisplay = 6; // Use it with limit to in ng-repeat
@@ -213,8 +213,9 @@ angular.module('starter.controllers', [])
 			$scope.$broadcast('scroll.infiniteScrollComplete')
 	}
 		
-		$scope.showExtraInfo = function(name){
-			Query1ExtraInfo.setName(name)
+		$scope.showExtraInfo = function(per){
+			console.log('217 name is ' + per.name);
+			Query1ExtraInfo.setName(per.name)
 			$state.go('app.extraInfo');
 	};
         
@@ -223,6 +224,10 @@ angular.module('starter.controllers', [])
 
 .controller('ExtraInfo1',function($scope,$http,$ionicPopup,Query1ExtraInfo){
 		//Get the personal data of the person:
+	//var perName = $stateParams.name;
+	console.log('227 name is ' + Query1ExtraInfo.getName());
+	console.log('229 in extra info');
+	
 	$http({
 		  method: 'GET',
 		  url:'/Queries/PersonalInformation',
@@ -415,36 +420,36 @@ angular.module('starter.controllers', [])
     $scope.$parent.setHeaderFab(false);
 	$scope.loading=true;
 	$scope.loadindPersonalInfo = true;
-		console.log('Show results of Get Awards was called');
-		$scope.information=[];
-		$scope.name = AwardsParams.getName();
-		console.log($scope.name);
-		$http({
-		  method: 'GET',
-		  url:'/Queries/Awards',
-			params: {
-			name: AwardsParams.getName()
+	console.log('Show results of Get Awards was called');
+	$scope.information=[];
+	$scope.name = AwardsParams.getName();
+	console.log($scope.name);
+	$http({
+	  method: 'GET',
+	  url:'/Queries/Awards',
+		params: {
+		name: AwardsParams.getName()
+	}
+	}).then(function successCallback(response) {
+		console.log('awards success');
+		$scope.information = [];
+		for(var r in response.data) {
+		  var info = response.data[r];
+
+		  $scope.information.push(info);
+		  console.log(info);
 		}
-		}).then(function successCallback(response) {
-			console.log('awards success');
-			$scope.information = [];
-			for(var r in response.data) {
-			  var info = response.data[r];
-				
-			  $scope.information.push(info);
-			  console.log(info);
-			}
-			$scope.loading=false;
-		
-		}, function errorCallback(response) {
-			alert(JSON.stringify(response))
-			var FetchErrorAlert = $ionicPopup.alert({
-				title: 'Fetch error!',
-				template: 'Unable to get data', 
-			});
-		console.log(response.data);
-			$scope.loading=false;
-		}
+		$scope.loading=false;
+
+	}, function errorCallback(response) {
+		alert(JSON.stringify(response))
+		var FetchErrorAlert = $ionicPopup.alert({
+			title: 'Fetch error!',
+			template: 'Unable to get data', 
+		});
+	console.log(response.data);
+		$scope.loading=false;
+	}
 	);
 	
 	//Get the personal data of the person:
