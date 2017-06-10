@@ -1,0 +1,44 @@
+<ion-view view-title="Arrests">
+    <ion-content ng-class="{expanded:isExpanded}" class="animate-fade-slide-in">
+      
+		
+        <div ng-controller="DynamicQueryCtrl">
+            <div class="hero slide-up" style="background-image: url('img/profile-bg.jpg');">
+                     <div class="content">  
+                         <div class="avatar slide-up" style="background-image: url({{personalInformation.photoLink}}) ;">  </div>
+                      <h4>{{queryName}} for {{name}}</h4>
+                    </div>
+             </div>
+            
+            
+			
+                <div ng-show="!loadindPersonalInfo" class="card stable-bg ink-dark">            
+					<div class="item-avatar item-text-wrap">
+                        <span class="avatar" style="background-image: {{personalInformation.photoLink}};"></span>
+						<p style="color:black;"><strong>Personal Information:</strong>  </p>
+                        <p style="color:black;"><strong>Full Name:</strong>{{personalInformation.name}}  </p> 
+                        <p style="color:black;"><strong>Date of Birth:</strong>{{personalInformation.birthDate}}  </p> 
+                         <p style="color:black;"><strong>Place of Birth:</strong>{{personalInformation.birthPlace}}  </p> 
+					</div>
+
+				</div>
+            
+            <div ng-show="loading"><br/><br/><center> <img src="img/2.gif"></center></div>
+			
+            
+			<div ng-show="!loading" ng-repeat="info in information track by $index" >
+				<div class="card stable-bg ink-dark">            
+					<div class="item-avatar item-text-wrap">
+                        <span class="avatar" style="background-image: {{personalInformation.photoLink}};"></span>
+						<p style="color:black;"><strong>{{info}}</strong>  </p>
+					</div>
+
+				</div>
+			</div>
+			
+			
+			
+		</div> 
+       
+    </ion-content>
+</ion-view>

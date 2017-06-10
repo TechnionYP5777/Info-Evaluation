@@ -378,7 +378,7 @@ angular.module('starter.controllers', [])
     ionicMaterialInk.displayEffect();
 })
 
-.controller('AddQueryCtrl', function($scope, $ionicPopup) {
+.controller('AddQueryCtrl', function($scope,$state, $ionicPopup,DynamicParams) {
 
    $scope.searchPopUp = function() {
 	
@@ -392,11 +392,102 @@ angular.module('starter.controllers', [])
       promptPopup.then(function(res) {
          console.log("A Query was added:");
          console.log(res);
+		  DynamicParams.setName(res);
+		  $state.go('app.dynamicQueryResults');
       });
 		
    };
 
 })
+
+.controller('DynamicQueryCtrl', function($scope,$http, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk,DynamicParams) {
+    // Set Header
+    $scope.$parent.showHeader();
+    $scope.$parent.clearFabs();
+    $scope.isExpanded = false;
+    $scope.$parent.setExpanded(false);
+    $scope.$parent.setHeaderFab(false);
+	$scope.loading=true;
+	$scope.loadindPersonalInfo = true;
+	console.log('Show results of Get dynamic query was called');
+	$scope.information=[];
+	$scope.name = DynamicParams.getName();
+	console.log($scope.name);
+	$http({
+	  method: 'GET',
+	  url:'/Queries/Dynamic',
+		params: {
+		name: DynamicParams.getName()
+	}
+	}).then(function successCallback(response) {
+		console.log('awards success');
+		$scope.information = [];
+		for(var r in response.data) {
+		  var info = response.data[r];
+
+		  $scope.information.push(info);
+		  console.log(info);
+		}
+		$scope.loading=false;
+
+	}, function errorCallback(response) {
+		alert(JSON.stringify(response))
+		var FetchErrorAlert = $ionicPopup.alert({
+			title: 'Fetch error!',
+			template: 'Unable to get data', 
+		});
+	console.log(response.data);
+		$scope.loading=false;
+	}
+	);
+	
+	//Get the personal data of the person:
+	$http({
+		  method: 'GET',
+		  url:'/Queries/PersonalInformation',
+			params: {
+			name: DynamicParams.getName()
+		}
+		}).then(function successCallback(response) {
+			console.log('personal data - success');
+			$scope.personalInformation = response.data;
+			$scope.loadindPersonalInfo = false;
+			console.log('url is ' + $scope.personalInformation.photoLink);
+			console.log('name is' + name);
+			console.log('birthPlace is:'+$scope.personalInformation.birthPlace);
+				if($scope.personalInformation.photoLink == "No Photo") {
+					$scope.personalInformation.photoLink="http://www.freeiconspng.com/uploads/profile-icon-9.png";
+				}
+			
+		}, function errorCallback(response) {
+			alert(JSON.stringify(response))
+			var FetchErrorAlert = $ionicPopup.alert({
+				title: 'Fetch error!',
+				template: 'Unable to get personal data', 
+			});
+		console.log(response.data);
+		$scope.loadindPersonalInfo = false;
+		}
+	);
+
+	
+    // Set Motion
+    $timeout(function() {
+        ionicMaterialMotion.slideUp({
+            selector: '.slide-up'
+        });
+    }, 300);
+
+    $timeout(function() {
+        ionicMaterialMotion.fadeSlideInRight({
+            startVelocity: 3000
+        });
+    }, 700);
+
+    // Set Ink
+    ionicMaterialInk.displayEffect();
+})
+
 
 .controller('AwardsParameters',function($scope,$state,AwardsParams){
 	$scope.showAwardsResults = function(name){
@@ -404,7 +495,7 @@ angular.module('starter.controllers', [])
 			alert('Please Insert a Name!')
 		}
 		else{
-		console.log('Sending params for Arrests query ');
+		console.log('Sending params for Awards query ');
 		AwardsParams.setName(name)
 		$state.go('app.AwardsResults');
 		}

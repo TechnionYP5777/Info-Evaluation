@@ -50,6 +50,18 @@ angular.module('starter.services', [])
 	};
 })
 
+.factory('DynamicParams', function () {
+	var name={};
+	return {
+		getName: function () {
+			return name.toString();
+		},
+		setName: function (nameParameter) {
+			name = nameParameter;
+		}
+	};
+})
+
 .factory('Query1ExtraInfo', function () {
 	var name={};
 	return {
