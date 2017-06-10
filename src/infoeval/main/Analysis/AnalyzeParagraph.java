@@ -1,13 +1,18 @@
 package infoeval.main.Analysis;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import edu.stanford.nlp.ling.CoreAnnotations;
+import edu.stanford.nlp.ling.CoreAnnotations.LemmaAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
+import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
+import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.IndexedWord;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
@@ -34,7 +39,7 @@ public class AnalyzeParagraph {
 		this.Paragraphs = Paragraphs;
 		this.Information = new LinkedList<String>();
 		final Properties props = new Properties();
-		props.put("annotators", "tokenize,ssplit, pos ,parse");	
+		props.put("annotators", "tokenize,ssplit, pos ,parse,lemma");	
 		this.pipeLine = new StanfordCoreNLP(props);	
 	}
 
@@ -42,7 +47,7 @@ public class AnalyzeParagraph {
 		this.Paragraphs = new Elements();
 		this.Information = new LinkedList<String>();
 		final Properties props = new Properties();
-		props.put("annotators", "tokenize,ssplit, pos,parse");	
+		props.put("annotators", "tokenize,ssplit, pos,parse,lemma");	
 		this.pipeLine = new StanfordCoreNLP(props);
 	}
 
@@ -69,11 +74,39 @@ public class AnalyzeParagraph {
 		setParagraphs(wiki.getParagraphs());
 		AwardsQuery();
 	}
+	
+	public static boolean containsItemFromArray(String inputString, String[] items) {
+	    // Convert the array of String items as a Stream
+	    // For each element of the Stream call inputString.contains(element)
+	    // If you have any match returns true, false otherwise
+	    return Arrays.stream(items).anyMatch(inputString::contains);
+	}
+	
+	
+	public void dynamicQuery(String query){
+		//Prepare list of similar words to the query
+        List<String> keywords = new LinkedList<String>();
+        keywords.add(query);
+		 Annotation doc = new Annotation(query);
+		 this.pipeLine.annotate(doc);
+	        for(CoreMap sentence: doc.get(SentencesAnnotation.class))
+				for (CoreLabel token : sentence.get(TokensAnnotation.class))
+					keywords.add(token.get(LemmaAnnotation.class));
+
+		//The query itself
+		for (final Element paragraph : this.Paragraphs)
+			for (String sent : paragraph.text().split("\\.")) {
+				if (!containsItemFromArray(sent,keywords.toArray(new String[keywords.size()])))
+					continue;
+				
+				sent = sent.replaceAll("\\[\\d+\\]", "");
+				Information.add(sent);
+			}
+	}
 
 
 	public void AwardsQuery() {
 		System.out.println("Started analyzing awards query");
-		// Annotate an example document.
 		for (final Element paragraph : this.Paragraphs)
 			for (String sent : paragraph.text().split("\\.")) {
 				if (!sent.contains("won") && !sent.contains("award") && !sent.contains("awarded")
