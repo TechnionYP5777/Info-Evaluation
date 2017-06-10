@@ -87,7 +87,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         views: {
             'menuContent': {
                 templateUrl: 'templates/extraInfo.html',
-                controller: 'ExtraInfo1'
+                controller: ''
             },
             'fabContent': {
                 template: '',
