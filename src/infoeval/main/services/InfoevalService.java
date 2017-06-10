@@ -26,4 +26,6 @@ public interface InfoevalService {
 
 	ArrayList<TableEntry> getSameOccupationCouples() throws Exception;
 
+	LinkedList<String> getDynamic(String name, String query) throws Exception;
+
 }
