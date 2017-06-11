@@ -85,6 +85,11 @@ public class InfoevalServiceImp implements InfoevalService {
 
 		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + name));
 		wiki.Parse("arrested");
+		ArrayList<String> names= new ArrayList<>();
+		boolean flag=wiki.isConflictedName();
+		if(flag){
+			names=wiki.getNames();
+		}
 		analyze.setParagraphs(wiki.getParagraphs());
 		analyze.AnalyzeArrestsQuery();
 		return analyze.RefineResults(10);
@@ -98,6 +103,11 @@ public class InfoevalServiceImp implements InfoevalService {
 		name = name.trim().replaceAll(" ", "_");
 		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + name));
 		wiki.Parse("won");
+		ArrayList<String> names= new ArrayList<>();
+		boolean flag=wiki.isConflictedName();
+		if(flag){
+			names=wiki.getNames();
+		}
 		analyze.setParagraphs(wiki.getParagraphs());
 		analyze.AwardsQuery();
 		return analyze.RefineResults(10);
