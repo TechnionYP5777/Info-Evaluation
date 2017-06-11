@@ -34,7 +34,6 @@ public class SqlRunner {
 
 	public SqlRunner() throws Exception {
 		conn = new Connector();
-		// conn.setCaching();
 		resultsSer = new QueryResultsSerializer();
 		conn.runUpdate("CREATE TABLE IF NOT EXISTS serialized_query_results "
 				+ "(serialized_id int(30) NOT NULL AUTO_INCREMENT, " + "query_identifier VARCHAR(100) NOT NULL, "
@@ -349,15 +348,6 @@ public class SqlRunner {
 
 	public TableEntry getPersonalInfoFromDBpedia(String name)
 			throws ClassNotFoundException, SQLException, IOException, ParseException {
-		// Object[] inp = new Object[] { name };
-		// ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " +
-		// "FROM serialized_query_results "
-		// + "WHERE query_identifier LIKE CONCAT('getPersonalInfo','(',?,')')",
-		// inp);
-		// int serialized_id = -1;
-		TableEntry result;
-
-		// if (id_result.isEmpty()) {
 		Extractor ext = new Extractor(name);
 		logger.log(Level.INFO, "abstract extraction query is being executed");
 		ext.executeQuery(QueryTypes.ABSTRACT);
@@ -372,9 +362,12 @@ public class SqlRunner {
 				overviewStr = (overview.asResource() + "").split("resource/")[1];
 			else if (overview.isLiteral())
 				overviewStr = (overview.asLiteral() + "").split("@")[0];
-
-		logger.log(Level.INFO, "basic Info By Name extraction query is being executed");
-		ext.executeQuery(QueryTypes.BASIC_INFO_BY_NAME);
+		QueryTypes queryType = QueryTypes.BASIC_INFO_BY_NAME;
+		if (name.contains("(")){
+			queryType = QueryTypes.BASIC_INFO_BRACKETS_NAME;			
+		}
+		logger.log(Level.INFO, queryType.toString()+" extraction query is being executed");
+		ext.executeQuery(queryType);
 		ResultSetRewindable basicInfoByNameResults = ext.getResults();
 		basicInfoByNameResults.reset();
 
@@ -382,7 +375,7 @@ public class SqlRunner {
 		TableEntry te = filler.getInfo(basicInfoByNameResults);
 		filler.close();
 
-		result = new TableEntry(te);
+		TableEntry result = new TableEntry(te);
 		String newName = name.replaceAll("_", " ");
 		result.setName(newName);
 		result.setUrl("");
@@ -390,16 +383,6 @@ public class SqlRunner {
 		String photoLink = result.getPhotoLink();
 		photoLink.replaceAll("'", "\'");
 		result.setPhotoLink(photoLink);
-		Object[] toSerilaize = new Object[1];
-		toSerilaize[0] = result;
-		/*
-		 * String query_identifier = "getPersonalInfo(" + name + ")";
-		 * resultsSer.serializeQueryResults(conn, query_identifier,
-		 * toSerilaize); } else { serialized_id = (int)
-		 * id_result.get(0).row.get(0).getKey(); Object[] output = (Object[])
-		 * resultsSer.deSerializeQueryResults(conn, serialized_id); result =
-		 * (TableEntry) output[0]; }
-		 */
 		return result;
 	}
 
