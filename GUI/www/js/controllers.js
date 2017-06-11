@@ -227,6 +227,7 @@ angular.module('starter.controllers', [])
 	//var perName = $stateParams.name;
 	console.log('227 name is ' + Query1ExtraInfo.getName());
 	console.log('229 in extra info');
+	$scope.loadind=true;
 	
 	$http({
 		  method: 'GET',
@@ -241,9 +242,10 @@ angular.module('starter.controllers', [])
 			console.log('url is ' + $scope.personalInformation.photoLink);
 			console.log('name is' + name);
 			console.log('birthPlace is:'+$scope.personalInformation.birthPlace);
-				if($scope.personalInformation.photoLink == "No Photo") {
-					$scope.personalInformation.photoLink="http://www.freeiconspng.com/uploads/profile-icon-9.png";
-				}
+			if($scope.personalInformation.photoLink == "No Photo") {
+				$scope.personalInformation.photoLink="http://www.freeiconspng.com/uploads/profile-icon-9.png";
+			}
+			$scope.loadind=false;
 			
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response))
