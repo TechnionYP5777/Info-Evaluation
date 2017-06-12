@@ -395,8 +395,8 @@ $scope.searchPopUp = function() {
 
   // An elaborate, custom popup
   var myPopup = $ionicPopup.show({
-    template: '<input type="text" ng-model="dynamicData.query" placeholder="Your Query here" >'
-	  +'</br> <input type="text" ng-model="dynamicData.personName"  placeholder="Person\'s name">',
+    template: '<input type="text" ng-model="dynamicData.query" placeholder="Your Query here"; white-space:normal; >'
+	  +'</br> <input type="text" ng-model="dynamicData.personName"  placeholder="Person\'s name ; white-space:normal;">',
     title: 'Enter the Query name you wish to look for',
     subTitle: 'Please describe in one word',
     scope: $scope,
@@ -406,11 +406,11 @@ $scope.searchPopUp = function() {
         text: '<b>Search</b>',
         type: 'button-positive',
         onTap: function(e) {
-          if (!$scope.dynamicData.wifi) {
-            //don't allow the user to close unless he enters wifi password
+          if (!($scope.dynamicData.query && $scope.dynamicData.personName)) {
+            //don't allow the user search unless he enters all inputs
             e.preventDefault();
           } else {
-            return $scope.data.wifi;
+            return $scope.dynamicData;
           }
         }
       }
@@ -418,12 +418,10 @@ $scope.searchPopUp = function() {
   });
 
   myPopup.then(function(res) {
-    console.log('Tapped!', res);
+    console.log('Query wad added: '+ $scope.dynamicData.query);
+	console.log('Person to look for in query: '+ $scope.dynamicData.personName); 
   });
 
-  $timeout(function() {
-     myPopup.close(); //close the popup after 3 seconds for some reason
-  }, 3000);
  };
         
     
