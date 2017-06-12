@@ -6,33 +6,34 @@
         <div ng-controller="AwardsCtrl">
 		
 				
-				<div class="hero slide-up" style="background-image: url('img/profile-bg.jpg');">
+				<div class="hero slide-up" style="background-image: url('img/awardsback.jpg');">
 					<div class="content">
 						<div class="avatar" style="background-image: url({{personalInformation.photoLink}});"></div>
-						<h4><a class="light">Awards of {{name}}</a></h4>
+						<h4 style="color:black;">Awards of {{name}}</h4>
 						<br/>
 					</div>
 				</div>
 			
 			
 			 <div ng-show="!loadindPersonalInfo" class="card stable-bg ink-dark">            
-					<div class="item-avatar item-text-wrap">
-						<p style="color:black;"><strong>Personal Information:</strong>  </p>
-                        <p style="color:black;"><strong>Full Name:</strong>{{personalInformation.name}}  </p> 
-                        <p style="color:black;"><strong>Date of Birth:</strong>{{personalInformation.birthDate}}  </p> 
-                         <p style="color:black;"><strong>Place of Birth:</strong>{{personalInformation.birthPlace}}  </p> 
+					<div class="item-text-wrap">
+						<h2 style="color:black; margin-left: 10px;"><u>Personal Information</u></h2>
+                        <h3 class="tab25">Full Name:</h3><p class="tab40 paragraphInfo">{{personalInformation.name}} </p>
+                        <h3 class="tab25">Date of Birth:</h3> <p class="tab40 paragraphInfo "> {{personalInformation.birthDate}} </p>
+                        <h3 class="tab25">Place of Birth:</h3> <p class="tab40 paragraphInfo "> {{personalInformation.birthPlace}}  </p>
 					</div>
 
 				</div>
-			<div ng-show="loading"><br/><br/><center> <img src="img/2.gif"></center></div>
+			<div ng-show="loading || loadindPersonalInfo"><br/><br/><center> <img src="img/2.gif"></center></div>
 			
 			<div ng-show="!loading">
 			<div ng-repeat="info in information track by $index" >
+				<div style="height:1px;font-size:1px;">&nbsp;</div>
 				<div class="card stable-bg ink-dark">            
-					<div class="item-avatar item-text-wrap">
-						<p style="color:black;"><strong>{{info}} </strong>  </p>
+					<div class="item-text-wrap">
+						<br>
+						<p class="tab40 paragraphInfo">{{info}} </p>
 					</div>
-
 				</div>
 			</div>
 			</div>

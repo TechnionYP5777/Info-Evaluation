@@ -27,6 +27,16 @@ p {
     height: 100%;
 }
 
+.tab25 { margin-left: 25px; }
+.tab40 { 
+	margin-left: 40px; 
+	margin-right: 40px; 
+}
+
+.paragraphInfo {
+	color:black; font-size:16px;
+}
+
 
 /* Menu
 ==================================*/

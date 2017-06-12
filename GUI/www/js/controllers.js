@@ -110,7 +110,7 @@ angular.module('starter.controllers', [])
 	};
 })
 
-.controller('QueryEntry',function($scope,$http,$ionicPopup,DataQ){
+.controller('QueryEntry',function($scope,$http,$ionicPopup,DataQ, Query1ExtraInfo, $state){
 		console.log('show entered fields from button clicked-query 2');
 		console.log(DataQ.getYear());
 		console.log(DataQ.getPlace());
@@ -162,6 +162,11 @@ angular.module('starter.controllers', [])
 			$scope.$broadcast('scroll.infiniteScrollComplete')
 	}
 		
+		$scope.showExtraInfo = function(per){
+			Query1ExtraInfo.setName(per.name)
+			$state.go('app.extraInfo');
+		};
+		
 })
 
 .controller('Query1Entry',function($scope,$http,$ionicPopup,Query1ExtraInfo,$state){
@@ -211,13 +216,13 @@ angular.module('starter.controllers', [])
 		if ($scope.persons.length > $scope.numberOfItemsToDisplay)
 			$scope.numberOfItemsToDisplay += 6; // load number of more items
 			$scope.$broadcast('scroll.infiniteScrollComplete')
-	}
+		}
 		
 		$scope.showExtraInfo = function(per){
 			console.log('217 name is ' + per.name);
 			Query1ExtraInfo.setName(per.name)
 			$state.go('app.extraInfo');
-	};
+		};
         
 		
 })
@@ -227,6 +232,7 @@ angular.module('starter.controllers', [])
 	//var perName = $stateParams.name;
 	console.log('227 name is ' + Query1ExtraInfo.getName());
 	console.log('229 in extra info');
+	$scope.loadind=true;
 	
 	$http({
 		  method: 'GET',
@@ -241,9 +247,10 @@ angular.module('starter.controllers', [])
 			console.log('url is ' + $scope.personalInformation.photoLink);
 			console.log('name is' + name);
 			console.log('birthPlace is:'+$scope.personalInformation.birthPlace);
-				if($scope.personalInformation.photoLink == "No Photo") {
-					$scope.personalInformation.photoLink="http://www.freeiconspng.com/uploads/profile-icon-9.png";
-				}
+			if($scope.personalInformation.photoLink == "No Photo") {
+				$scope.personalInformation.photoLink="http://www.freeiconspng.com/uploads/profile-icon-9.png";
+			}
+			$scope.loadind=false;
 			
 		}, function errorCallback(response) {
 			alert(JSON.stringify(response))

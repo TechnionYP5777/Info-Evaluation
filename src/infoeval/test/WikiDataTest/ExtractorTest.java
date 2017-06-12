@@ -5,8 +5,12 @@ import org.junit.Ignore;
 
 import infoeval.main.WikiData.Extractor;
 import infoeval.main.WikiData.QueryTypes;
+import infoeval.main.WikiData.SqlTablesFiller;
+import infoeval.main.mysql.TableEntry;
 
 import static org.junit.Assert.*;
+
+import java.sql.Date;
 
 import org.apache.commons.lang3.text.WordUtils;
 import org.apache.jena.query.QuerySolution;
@@ -45,14 +49,13 @@ public class ExtractorTest {
 	@Ignore
 	@Test
 	public void abstractTest() {
-		String name = "Jessica Zelinka", newName = WordUtils.capitalize(name).replaceAll(" ", "_");
+		String name = "michelle williams (actress)", newName = WordUtils.capitalize(name).replaceAll(" ", "_");
 		Extractor extr = new Extractor(newName);
 		extr.executeQuery(QueryTypes.ABSTRACT);
 		ResultSetRewindable results = extr.getResults();
 		results.reset();
 
-		QuerySolution solution = results.nextSolution();
-		RDFNode overview = solution.get("abstract");
+		RDFNode overview = results.nextSolution().get("abstract");
 		String overviewStr = "No Abstract";
 		if (overview != null)
 			if (overview.isResource())
@@ -61,6 +64,40 @@ public class ExtractorTest {
 				overviewStr = (overview.asLiteral() + "").split("@")[0];
 
 		assertEquals(overviewStr,
-				"Jessica Zelinka (born September 3, 1981 in London, Ontario) is a Canadian pentathlete, heptathlete, and 100 m hurdler. Her personal best score is 6599 points for the heptathlon. She was the gold medalist at the 2007 Pan American Games. Zelinka won silver at the 2010 Commonwealth Games and repeated her silver medal at the 2014 Commonwealth Games. At the 2012 Summer Olympics Zelinka finished in 7th overall in both the heptathlon and 100 m hurdles.");
+				"Michelle Ingrid Williams (born September 9, 1980) is an American actress. She began her career with television guest appearances, and made her feature film debut in Lassie (1994), which earned her a Youth in Film nomination. She is known for her role as Jen Lindley on the The WB series Dawson's Creek, from 1998 to 2003. Williams received critical acclaim for her role as the wife of Ennis Del Mar in Brokeback Mountain (2005), for which she won a Broadcast Film Critics Association Award and was nominated for the SAG Award, BAFTA Award, Golden Globe, and Academy Award for Best Supporting Actress. She followed this with films such as Martin Scorsese's Shutter Island (2010). Williams' performance as a drifter in 2008's Wendy and Lucy earned her a Independent Spirit Award nomination, and her work in Blue Valentine (2010) garnered her nominations for the Golden Globe Award and the Academy Award for Best Actress. She won a Golden Globe and an Independent Spirit Award for her portrayal of Marilyn Monroe in My Week with Marilyn (2011), which also garnered her BAFTA, SAG, and Academy Award nominations. In 2014, she made her Broadway debut in a revival of Cabaret as Sally Bowles. She returned to Broadway in 2016 in a production of Blackbird alongside Jeff Daniels.");
+	}
+
+	@Ignore
+	@Test
+	public void basicInfoBracketsNameTest() throws Exception {
+		String name = "Michelle_Williams_(singer)";
+		Extractor extr = new Extractor(name);
+		extr.executeQuery(QueryTypes.BASIC_INFO_BRACKETS_NAME);
+		ResultSetRewindable results = extr.getResults();
+		results.reset();
+
+		SqlTablesFiller filler = new SqlTablesFiller();
+		TableEntry te = filler.getInfo(results);
+		filler.close();
+
+		System.out.println("Birth Place is " + te.getBirthPlace());
+
+		System.out.println("Birth Place is " + te.getDeathPlace());
+
+		Date birthDate = te.getBirthDate();
+		if (birthDate != null)
+			System.out.println("Birth Date is " + birthDate);
+
+		Date deathDate = te.getDeathDate();
+		if (deathDate != null)
+			System.out.println("Death Date is " + deathDate);
+
+		System.out.println("Occupation is " + te.getOccupation());
+
+		System.out.println("Spouse Name is " + te.getSpouseName());
+
+		System.out.println("Spouse Occupation is " + te.getSpouseOccupation());
+
+		System.out.println("PhotoLink is " + te.getPhotoLink());
 	}
 }

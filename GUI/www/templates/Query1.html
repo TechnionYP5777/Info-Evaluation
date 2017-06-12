@@ -3,19 +3,18 @@
 		
 		<pane ng-controller="Query1Entry">
 			<div ng-show="loading"><br/><br/><center> <img src="img/2.gif"></center></div>
-			<div ng-repeat="per in persons | limitTo:numberOfItemsToDisplay">
+			<div ng-repeat="per in persons | limitTo:numberOfItemsToDisplay" ng-click="showExtraInfo(per)" style="cursor: pointer;">
 				<div style="height:1px;font-size:1px;">&nbsp;</div>
 				<div class="card stable-bg ink-dark">            
 					<div class="item-avatar item-text-wrap item-icon-right">
 						<span class="avatar" style="background-image: {{per.photoLink}};"></span>
 						<h3 style="color:black;">{{per.name}}</h3> <p style="color:black;"> &emsp; &emsp; Was born in {{per.birthPlace}}, died in {{per.deathPlace}}. </p>
-						<i class="icon ion-chatbubble positive" style="font-size:50px;" ng-click="showExtraInfo(per)"></i> 
 					</div>
 				</div>
 				
 			</div>
 			 <div>
-            	<li ng-show="!persons.length && !loading"><br/><br/><center><h2> No people suit query</h2></center></li>
+            	<li ng-show="!persons.length && !loading" style="color:white;"><br/><br/><center><h2> No people suit query</h2></center></li>
             </div>
 			<ion-infinite-scroll on-infinite="addMoreItem()" ng-if="persons.length > numberOfItemsToDisplay"></ion-infinite-scroll>
 		</pane>

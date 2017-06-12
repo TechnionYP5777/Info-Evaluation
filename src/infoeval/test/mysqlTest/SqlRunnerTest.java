@@ -17,7 +17,6 @@ import java.util.ArrayList;
 /**
  * 
  * @author Moshe
- * 
  * @author osherh
  * @Since 12-05-2017
  *
@@ -64,10 +63,7 @@ public class SqlRunnerTest {
 		for (TableEntry te : querun.getBornInPlaceBeforeYear("Canada", "1970")) {
 			java.sql.Date birthDate = te.getBirthDate();
 			String birthPlace = te.getBirthPlace();
-			SimpleDateFormat formatYear = new SimpleDateFormat("yyyy");
-			String birthYear = formatYear.format(birthDate);
-			int bYear = Integer.parseInt(birthYear);
-			assert bYear < 1970;
+			assert Integer.parseInt(new SimpleDateFormat("yyyy").format(birthDate)) < 1970;
 			assert birthPlace.contains("Canada");
 		}
 	}
@@ -94,8 +90,7 @@ public class SqlRunnerTest {
 					checkBirthPlaceQuery = "SELECT birthPlace FROM basic_info WHERE name=? LIMIT 1";
 			Object[] inp = new Object[1];
 			inp[0] = sName;
-			ArrayList<Row> res = querun.runQuery(checkBirthPlaceQuery, inp);
-			Row row = res.get(0);
+			Row row = querun.runQuery(checkBirthPlaceQuery, inp).get(0);
 			assertEquals(te.getBirthPlace(), row.row.get(0).getValue().cast(row.row.get(0).getKey()));
 		}
 	}
@@ -108,10 +103,8 @@ public class SqlRunnerTest {
 			java.sql.Date birthDate = te.getBirthDate();
 			SimpleDateFormat formatYear = new SimpleDateFormat("yyyy");
 			String birthYear = formatYear.format(birthDate);
-			int bYear = Integer.parseInt(birthYear);
-			assert bYear >= 1840;
-			java.sql.Date deathDate = te.getDeathDate();
-			formatYear.format(deathDate);
+			assert Integer.parseInt(birthYear) >= 1840;
+			formatYear.format(te.getDeathDate());
 			assert Integer.parseInt(birthYear) <= 1920;
 		}
 	}
@@ -126,8 +119,7 @@ public class SqlRunnerTest {
 	@Ignore
 	@Test
 	public void getPersonalInfoTest() throws Exception {
-		String name = "yasuhiro takato";
-		TableEntry te = querun.getPersonalInfo(name);
+		TableEntry te = querun.getPersonalInfo("yasuhiro takato");
 
 		System.out.println("Name is " + te.getName());
 
@@ -155,12 +147,11 @@ public class SqlRunnerTest {
 
 	}
 
-	@Ignore
+	// @Ignore
 	@Test
 	public void getPersonalInfoNotInDBTest() throws Exception {
 
-		String name = "james brown";
-		TableEntry te = querun.getPersonalInfo(name);
+		TableEntry te = querun.getPersonalInfo("Michelle_Williams_(singer)");
 
 		System.out.println("Name is " + te.getName());
 
