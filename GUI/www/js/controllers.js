@@ -418,8 +418,12 @@ $scope.searchPopUp = function() {
   });
 
   myPopup.then(function(res) {
-    console.log('Query wad added: '+ $scope.dynamicData.query);
-	console.log('Person to look for in query: '+ $scope.dynamicData.personName); 
+    console.log('Query wad added: '+ res.query);
+	console.log('Person to look for in query: '+ res.personName); 
+	  DynamicParams.setName(res.personName);
+	  DynamicParams.setQuery(res.query);
+ 	  $state.go('app.dynamicQueryResults');
+	
   });
 
  };
