@@ -387,25 +387,46 @@ angular.module('starter.controllers', [])
 
 .controller('AddQueryCtrl', function($scope,$state, $ionicPopup,DynamicParams) {
 
-   $scope.searchPopUp = function() {
-	
-      var promptPopup = $ionicPopup.prompt({
-         title: 'Add a Query',
-         template: 'Enter your query please:',
-         inputType: 'text',
-         inputPlaceholder: 'Your Query',
-		 inputType: 'text',
-		 inputPlaceholder2: 'Name of person to look for'
-      });
+   
+	   
+	   // Triggered on a button click, or some other target
+$scope.searchPopUp = function() {
+  $scope.dynamicData = {};
+
+  // An elaborate, custom popup
+  var myPopup = $ionicPopup.show({
+    template: '<input type="text" ng-model="dynamicData.query" placeholder="Your Query here" >'
+	  +'</br> <input type="text" ng-model="dynamicData.personName"  placeholder="Person\'s name">',
+    title: 'Enter the Query name you wish to look for',
+    subTitle: 'Please describe in one word',
+    scope: $scope,
+    buttons: [
+      { text: 'Cancel' },
+      {
+        text: '<b>Search</b>',
+        type: 'button-positive',
+        onTap: function(e) {
+          if (!$scope.dynamicData.wifi) {
+            //don't allow the user to close unless he enters wifi password
+            e.preventDefault();
+          } else {
+            return $scope.data.wifi;
+          }
+        }
+      }
+    ]
+  });
+
+  myPopup.then(function(res) {
+    console.log('Tapped!', res);
+  });
+
+  $timeout(function() {
+     myPopup.close(); //close the popup after 3 seconds for some reason
+  }, 3000);
+ };
         
-      promptPopup.then(function(res) {
-         console.log("A Query was added:");
-         console.log(res);
-		  DynamicParams.setName(res);
-		  $state.go('app.dynamicQueryResults');
-      });
-		
-   };
+    
 
 })
 
