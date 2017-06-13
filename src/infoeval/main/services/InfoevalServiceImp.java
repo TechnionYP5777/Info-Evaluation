@@ -127,7 +127,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	public TableEntry getPersonal_Information(String name) throws Exception {
 		logger.log(Level.INFO, "Get personal information was called.\n Parameters:" + "Name:" + name);
 		// Parse user's input:
-		name = name.trim().replaceAll(" ", "_");
+		name = name.trim().replaceAll(" ", "_").toLowerCase();
 		return (new SqlRunner()).getPersonalInfo(name);
 
 	}
