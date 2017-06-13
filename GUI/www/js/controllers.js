@@ -8,6 +8,7 @@ angular.module('starter.controllers', [])
   url: 'http://localhost:8100/api'
 })
 
+
 .controller('AppCtrl', function($scope, $ionicModal, $ionicPopover, $timeout) {
     // Form data for the login modal
     $scope.loginData = {};
@@ -101,12 +102,53 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('ShowResultsButtonCtrl',function($scope,$state,DataQ){
+.controller('ShowResultsButtonCtrl',function($scope,$state,DataQ,$ionicPopup){
+	
+	$scope.isNumber = function(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+	};	
+
 	$scope.showSecondQueryResults = function(place,year){
 		console.log('show results button was clicked-query 2');
+		 return $scope.validateInput(place,year).then(function(place,year){
+			 if($scope.legalInput=true){
 		DataQ.setYear(year);
 		DataQ.setPlace(place);
 		$state.go('app.Query2Results');
+			 }
+		});
+	};
+	
+	
+		$scope.validateInput = function(place,year){
+		$scope.legalInput=true;
+		 if (!(year && place)) {
+            //don't allow the user search unless he enters all inputs
+           
+			var InputErrorAlert = $ionicPopup.alert({
+				title: 'Input error!',
+				template: 'Missing Input. Please insert valid Place and Year', 
+			});
+          } 
+		else{
+			//Input is set, but check that it is legal.
+			if( !$scope.isNumber(year)){
+				var InputErrorAlert = $ionicPopup.alert({
+				title: 'Input error!',
+				template: 'Illegal Input. Please insert a valid Year', 
+			});
+				$scope.legalInput=false;
+			}
+		}
+			
+	};
+	
+	$scope.setParams = function(place,year){
+		if($scope.legalInput=true){
+		DataQ.setYear(year);
+		DataQ.setPlace(place);
+		$state.go('app.Query2Results');
+		}
 	};
 })
 
@@ -492,6 +534,7 @@ $scope.searchPopUp = function() {
 			$scope.loadindPersonalInfo = false;
 			console.log('url is ' + $scope.personalInformation.photoLink);
 			console.log('name is' + name);
+			$scope.name = $scope.personalInformation.name;
 			console.log('birthPlace is:'+$scope.personalInformation.birthPlace);
 				if($scope.personalInformation.photoLink == "No Photo") {
 					$scope.personalInformation.photoLink="http://www.freeiconspng.com/uploads/profile-icon-9.png";
@@ -596,6 +639,7 @@ $scope.searchPopUp = function() {
 			$scope.loadindPersonalInfo = false;
 			console.log('url is ' + $scope.personalInformation.photoLink);
 			console.log('name is' + name);
+			$scope.name = $scope.personalInformation.name;
 			console.log('birthPlace is:'+$scope.personalInformation.birthPlace);
 				if($scope.personalInformation.photoLink == "No Photo") {
 					$scope.personalInformation.photoLink="http://www.freeiconspng.com/uploads/profile-icon-9.png";
@@ -645,7 +689,7 @@ $scope.searchPopUp = function() {
 
 
 
-.controller('ArrestsCtrl', function($scope,$http, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk,ArrestsParams) {
+.controller('ArrestsCtrl', function($scope,$http, $state, $timeout,$ionicPopup, ionicMaterialMotion, ionicMaterialInk,ArrestsParams) {
     // Set Header
     $scope.$parent.showHeader();
     $scope.$parent.clearFabs();
@@ -654,6 +698,7 @@ $scope.searchPopUp = function() {
     $scope.$parent.setHeaderFab(false);
 	$scope.loading=true;
 	$scope.loadindPersonalInfo = true;
+	$scope.failed=false;
 	console.log('Show results of Get Arrests was called');
 		$scope.information=[];
 		$scope.name = ArrestsParams.getName();
@@ -676,16 +721,20 @@ $scope.searchPopUp = function() {
 			$scope.loading=false;
 		
 		}, function errorCallback(response) {
-			alert(JSON.stringify(response))
+			
 			var FetchErrorAlert = $ionicPopup.alert({
 				title: 'Fetch error!',
-				template: 'Unable to get data', 
+				template: 'Unable to get data - Person does not exist', 
 			});
 		console.log(response.data);
+			$scope.failed=true;
+			$state.go('app.InteractiveSearch');	
 		}
 	);
 	
 	//Get the personal data of the person:
+	if($scope.failed == false && $scope.loading == false) 
+	{
 	$http({
 		  method: 'GET',
 		  url:'/Queries/PersonalInformation',
@@ -704,16 +753,15 @@ $scope.searchPopUp = function() {
 				}
 			
 		}, function errorCallback(response) {
-			alert(JSON.stringify(response))
 			var FetchErrorAlert = $ionicPopup.alert({
 				title: 'Fetch error!',
-				template: 'Unable to get personal data', 
+				template: 'Unable to get Extra personal Information', 
 			});
 		console.log(response.data);
 		$scope.loadindPersonalInfo = false;
 		}
 	);
-	
+	}
 
     // Set Motion
     $timeout(function() {
