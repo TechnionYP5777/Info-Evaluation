@@ -89,9 +89,8 @@ public class InfoevalServiceImp implements InfoevalService {
 		wiki.Parse("arrested");
 		ArrayList<String> names= new ArrayList<>();
 		boolean flag=wiki.isConflictedName();
-		if(flag){
-			names=wiki.getNames();
-		}
+		if(flag)
+			names = wiki.getNames();
 		analyze.setParagraphs(wiki.getParagraphs());
 		analyze.AnalyzeArrestsQuery();
 		return analyze.RefineResults(10);
@@ -107,9 +106,8 @@ public class InfoevalServiceImp implements InfoevalService {
 		wiki.Parse("won");
 		ArrayList<String> names= new ArrayList<>();
 		boolean flag=wiki.isConflictedName();
-		if(flag){
-			names=wiki.getNames();
-		}
+		if(flag)
+			names = wiki.getNames();
 		analyze.setParagraphs(wiki.getParagraphs());
 		analyze.AwardsQuery();
 		return analyze.RefineResults(10);
@@ -121,7 +119,7 @@ public class InfoevalServiceImp implements InfoevalService {
 		logger.log(Level.INFO, "Get dynamic query results was called.\n Parameters:" + "Name:" + name+ " Query:"+query);
 		// Parse user's input:
 		analyze.dynamicQuery(name, query);
-		return analyze.RefineResults(10);
+		return analyze.getInformation();
 	}
 
 	@Override
@@ -130,8 +128,6 @@ public class InfoevalServiceImp implements InfoevalService {
 		logger.log(Level.INFO, "Get personal information was called.\n Parameters:" + "Name:" + name);
 		// Parse user's input:
 		name = name.trim().replaceAll(" ", "_");
-		Document doc = Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles="+name+"&prop=pageimages&format=xml&pithumbsize=350").get();
-		String pageId=doc.toString().split("pageid=\"")[1].split("\"")[0];
 		return (new SqlRunner()).getPersonalInfo(name);
 
 	}
