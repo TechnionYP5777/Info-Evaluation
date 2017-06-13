@@ -432,7 +432,7 @@ $scope.searchPopUp = function() {
 
 })
 
-.controller('DynamicQueryCtrl', function($scope,$http, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk,DynamicParams) {
+.controller('DynamicQueryCtrl', function($scope,$http, $state, $timeout, ionicMaterialMotion, ionicMaterialInk,DynamicParams) {
     // Set Header
     $scope.$parent.showHeader();
     $scope.$parent.clearFabs();
@@ -441,6 +441,7 @@ $scope.searchPopUp = function() {
     $scope.$parent.setHeaderFab(false);
 	$scope.loading=true;
 	$scope.loadindPersonalInfo = true;
+	$scope.failed=false;
 	console.log('Show results of Get dynamic query was called');
 	$scope.information=[];
 	$scope.name = DynamicParams.getName();
@@ -455,6 +456,11 @@ $scope.searchPopUp = function() {
 	}).then(function successCallback(response) {
 		console.log('awards success');
 		$scope.information = [];
+		if(response.data == null)
+		{
+			$scope.loading=false;
+		}
+		else{
 		for(var r in response.data) {
 		  var info = response.data[r];
 
@@ -462,19 +468,17 @@ $scope.searchPopUp = function() {
 		  console.log(info);
 		}
 		$scope.loading=false;
+		}
 
 	}, function errorCallback(response) {
-		alert(JSON.stringify(response))
-		var FetchErrorAlert = $ionicPopup.alert({
-			title: 'Fetch error!',
-			template: 'Unable to get data', 
-		});
-	console.log(response.data);
-		$scope.loading=false;
+		alert('Unable to get data - Person does not exist.')
+		$scope.failed=true;
+		$state.go('app.InteractiveSearch');	
 	}
 	);
 	
 	//Get the personal data of the person:
+	if($scope.failed == false){
 	$http({
 		  method: 'GET',
 		  url:'/Queries/PersonalInformation',
@@ -493,16 +497,13 @@ $scope.searchPopUp = function() {
 				}
 			
 		}, function errorCallback(response) {
-			alert(JSON.stringify(response))
-			var FetchErrorAlert = $ionicPopup.alert({
-				title: 'Fetch error!',
-				template: 'Unable to get personal data', 
-			});
+			alert(JSON.stringify('Unable to find Extra personal Information'))
+		
 		console.log(response.data);
 		$scope.loadindPersonalInfo = false;
 		}
 	);
-
+	}
 	
     // Set Motion
     $timeout(function() {

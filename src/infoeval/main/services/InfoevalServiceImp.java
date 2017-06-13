@@ -118,8 +118,13 @@ public class InfoevalServiceImp implements InfoevalService {
 	public LinkedList<String> getDynamic(String name,String query) throws Exception {
 		logger.log(Level.INFO, "Get dynamic query results was called.\n Parameters:" + "Name:" + name+ " Query:"+query);
 		// Parse user's input:
+		try{
 		analyze.dynamicQuery(name, query);
 		return analyze.getInformation();
+		}
+		catch (Exception e){
+			throw e;
+		}
 	}
 
 	@Override
@@ -127,7 +132,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	public TableEntry getPersonal_Information(String name) throws Exception {
 		logger.log(Level.INFO, "Get personal information was called.\n Parameters:" + "Name:" + name);
 		// Parse user's input:
-		name = name.trim().replaceAll(" ", "_").toLowerCase();
+		name = name.trim().replaceAll(" ", "_");
 		return (new SqlRunner()).getPersonalInfo(name);
 
 	}

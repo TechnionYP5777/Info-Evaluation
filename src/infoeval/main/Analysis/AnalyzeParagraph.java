@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
+
+import org.jsoup.HttpStatusException;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -83,7 +85,8 @@ public class AnalyzeParagraph {
 	}
 	
 	
-	public void dynamicQuery(String name,String query) throws IOException{
+	public void dynamicQuery(String name,String query) throws Exception{
+		try{
 		//Prepare list of similar words to the query
         List<String> keywords = new LinkedList<String>();
         keywords.add(query);
@@ -93,6 +96,8 @@ public class AnalyzeParagraph {
 		wiki.Parse(query);
 		System.out.println(wiki.getParagraphs().text());
 		setParagraphs(wiki.getParagraphs());
+		
+		
 		 Annotation doc = new Annotation(query);
 		 this.pipeLine.annotate(doc);
 	        for(CoreMap sentence: doc.get(SentencesAnnotation.class))
@@ -104,13 +109,12 @@ public class AnalyzeParagraph {
 			for (String sent : paragraph.text().split("\\.")) { // Split to sentences.
 				
 				boolean hasTerm = false;
-				for (String word : sent.split("\\s+")) {
-					for(String keyword : keywords)
-					  if (word.equals(keyword)) {
-					    hasTerm = true;
-					    break;
-					  }
-				}
+				for (String word : sent.split("\\s+"))
+					for (String keyword : keywords)
+						if (word.equals(keyword)) {
+							hasTerm = true;
+							break;
+						}
 				
 				
 				if (!hasTerm)
@@ -119,6 +123,10 @@ public class AnalyzeParagraph {
 				sent = sent.replaceAll("\\[\\d+\\]", "");
 				Information.add(sent);
 			}
+		}
+		catch (Exception e) {
+			throw e;
+		}
 	}
 
 

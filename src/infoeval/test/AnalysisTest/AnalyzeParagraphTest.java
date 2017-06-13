@@ -47,7 +47,7 @@ public class AnalyzeParagraphTest {
 	
 	//Test for dynamic query:
 	@Test
-	public void Test4() throws IOException{
+	public void Test4() throws Exception{
 
 		AnalyzeParagraph analyze = new AnalyzeParagraph();
 		analyze.dynamicQuery("Donald Trump", "married");
