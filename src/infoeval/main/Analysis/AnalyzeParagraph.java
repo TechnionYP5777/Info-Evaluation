@@ -87,7 +87,7 @@ public class AnalyzeParagraph {
 		//Prepare list of similar words to the query
         List<String> keywords = new LinkedList<String>();
         keywords.add(query);
-        name = name.trim().replaceAll(" ", "_");
+        name = name.trim().replaceAll(" ", "_").toLowerCase();
 		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + name));
 		System.out.println("https://en.wikipedia.org/wiki/" + name);
 		wiki.Parse(query);
@@ -101,8 +101,19 @@ public class AnalyzeParagraph {
 
 		//The query itself
 		for (final Element paragraph : this.Paragraphs)
-			for (String sent : paragraph.text().split("\\.")) {
-				if (!containsItemFromArray(sent,keywords.toArray(new String[keywords.size()])))
+			for (String sent : paragraph.text().split("\\.")) { // Split to sentences.
+				
+				boolean hasTerm = false;
+				for (String word : sent.split("\\s+")) {
+					for(String keyword : keywords)
+					  if (word.equals(keyword)) {
+					    hasTerm = true;
+					    break;
+					  }
+				}
+				
+				
+				if (!hasTerm)
 					continue;
 				
 				sent = sent.replaceAll("\\[\\d+\\]", "");

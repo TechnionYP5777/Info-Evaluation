@@ -83,7 +83,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	public LinkedList<String> getArrested(String name) throws Exception {
 		logger.log(Level.INFO, "Get Arrests was called.\n Parameters:" + "Name:" + name);
 		// Parse user's input:
-		name = name.trim().replaceAll(" ", "_");
+		name = name.trim().replaceAll(" ", "_").toLowerCase();
 
 		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + name));
 		wiki.Parse("arrested");
@@ -101,7 +101,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	public LinkedList<String> getAwards(String name) throws Exception {
 		logger.log(Level.INFO, "Get Awards was called.\n Parameters:" + "Name:" + name);
 		// Parse user's input:
-		name = name.trim().replaceAll(" ", "_");
+		name = name.trim().replaceAll(" ", "_").toLowerCase();
 		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + name));
 		wiki.Parse("won");
 		ArrayList<String> names= new ArrayList<>();
