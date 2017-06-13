@@ -84,7 +84,7 @@ public class InfoevalServiceImp implements InfoevalService {
 		logger.log(Level.INFO, "Get Arrests was called.\n Parameters:" + "Name:" + name);
 		// Parse user's input:
 		name = name.trim().replaceAll(" ", "_").toLowerCase();
-
+		try{
 		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + name));
 		wiki.Parse("arrested");
 		ArrayList<String> names= new ArrayList<>();
@@ -93,7 +93,10 @@ public class InfoevalServiceImp implements InfoevalService {
 			names = wiki.getNames();
 		analyze.setParagraphs(wiki.getParagraphs());
 		analyze.AnalyzeArrestsQuery();
-		return analyze.RefineResults(10);
+		return analyze.RefineResults(10);}
+		catch (Exception e){
+			throw e;
+		}
 	}
 
 	@Override
@@ -101,6 +104,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	public LinkedList<String> getAwards(String name) throws Exception {
 		logger.log(Level.INFO, "Get Awards was called.\n Parameters:" + "Name:" + name);
 		// Parse user's input:
+		try{
 		name = name.trim().replaceAll(" ", "_").toLowerCase();
 		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + name));
 		wiki.Parse("won");
@@ -111,6 +115,11 @@ public class InfoevalServiceImp implements InfoevalService {
 		analyze.setParagraphs(wiki.getParagraphs());
 		analyze.AwardsQuery();
 		return analyze.RefineResults(10);
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
 	}
 	
 	@Override

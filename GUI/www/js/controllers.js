@@ -432,7 +432,7 @@ $scope.searchPopUp = function() {
 
 })
 
-.controller('DynamicQueryCtrl', function($scope,$http, $state, $timeout, ionicMaterialMotion, ionicMaterialInk,DynamicParams) {
+.controller('DynamicQueryCtrl', function($scope,$http, $state, $timeout,$ionicPopup, ionicMaterialMotion, ionicMaterialInk,DynamicParams) {
     // Set Header
     $scope.$parent.showHeader();
     $scope.$parent.clearFabs();
@@ -445,6 +445,7 @@ $scope.searchPopUp = function() {
 	console.log('Show results of Get dynamic query was called');
 	$scope.information=[];
 	$scope.name = DynamicParams.getName();
+	$scope.queryName = DynamicParams.getQuery();
 	console.log($scope.name);
 	$http({
 	  method: 'GET',
@@ -497,8 +498,10 @@ $scope.searchPopUp = function() {
 				}
 			
 		}, function errorCallback(response) {
-			alert(JSON.stringify('Unable to find Extra personal Information'))
-		
+			var FetchErrorAlert = $ionicPopup.alert({
+				title: 'Fetch error!',
+				template: 'Unable to get Extra personal Information', 
+			});
 		console.log(response.data);
 		$scope.loadindPersonalInfo = false;
 		}
@@ -536,7 +539,7 @@ $scope.searchPopUp = function() {
 	};
 })
 
-.controller('AwardsCtrl', function($scope,$http, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk,AwardsParams) {
+.controller('AwardsCtrl', function($scope,$http, $state, $timeout,$ionicPopup, ionicMaterialMotion, ionicMaterialInk,AwardsParams) {
     // Set Header
     $scope.$parent.showHeader();
     $scope.$parent.clearFabs();
@@ -545,6 +548,7 @@ $scope.searchPopUp = function() {
     $scope.$parent.setHeaderFab(false);
 	$scope.loading=true;
 	$scope.loadindPersonalInfo = true;
+	$scope.failed=false;
 	console.log('Show results of Get Awards was called');
 	$scope.information=[];
 	$scope.name = AwardsParams.getName();
@@ -567,17 +571,19 @@ $scope.searchPopUp = function() {
 		$scope.loading=false;
 
 	}, function errorCallback(response) {
-		alert(JSON.stringify(response))
 		var FetchErrorAlert = $ionicPopup.alert({
 			title: 'Fetch error!',
-			template: 'Unable to get data', 
+			template: 'Unable to get data - Person does not exist', 
 		});
 	console.log(response.data);
 		$scope.loading=false;
+		$scope.failed=true;
+		$state.go('app.InteractiveSearch');	
 	}
 	);
 	
 	//Get the personal data of the person:
+	if($scope.failed == false){
 	$http({
 		  method: 'GET',
 		  url:'/Queries/PersonalInformation',
@@ -596,16 +602,15 @@ $scope.searchPopUp = function() {
 				}
 			
 		}, function errorCallback(response) {
-			alert(JSON.stringify(response))
 			var FetchErrorAlert = $ionicPopup.alert({
 				title: 'Fetch error!',
-				template: 'Unable to get personal data', 
+				template: 'Unable to get Extra personal Information', 
 			});
 		console.log(response.data);
 		$scope.loadindPersonalInfo = false;
 		}
 	);
-
+	}
 	
     // Set Motion
     $timeout(function() {
