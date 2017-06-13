@@ -9,6 +9,8 @@ import infoeval.main.Analysis.AnalyzeParagraph;
 import infoeval.main.WikiData.WikiParsing;
 import infoeval.main.mysql.SqlRunner;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.*;
 //import org.springframework.stereotype.*;
@@ -128,6 +130,8 @@ public class InfoevalServiceImp implements InfoevalService {
 		logger.log(Level.INFO, "Get personal information was called.\n Parameters:" + "Name:" + name);
 		// Parse user's input:
 		name = name.trim().replaceAll(" ", "_");
+		Document doc = Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles="+name+"&prop=pageimages&format=xml&pithumbsize=350").get();
+		String pageId=doc.toString().split("pageid=\"")[1].split("\"")[0];
 		return (new SqlRunner()).getPersonalInfo(name);
 
 	}

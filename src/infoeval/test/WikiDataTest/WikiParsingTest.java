@@ -13,13 +13,14 @@ import java.io.IOException;
 import org.junit.Test;
 
 import infoeval.main.WikiData.WikiParsing;
+import infoeval.main.services.InfoevalServiceImp;
 
 public class WikiParsingTest {
 	@Test
-	public void test1() throws IOException {
+	public void test1() throws Exception {
 
 		System.out.println((new WikiParsing("https://en.wikipedia.org/wiki/Shia_LaBeouf")).Parse("arrested"));
-
+		
 	}
 
 	@Test
