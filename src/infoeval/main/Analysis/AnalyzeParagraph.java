@@ -89,7 +89,9 @@ public class AnalyzeParagraph {
         keywords.add(query);
         name = name.trim().replaceAll(" ", "_");
 		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + name));
+		System.out.println("https://en.wikipedia.org/wiki/" + name);
 		wiki.Parse(query);
+		System.out.println(wiki.getParagraphs().text());
 		setParagraphs(wiki.getParagraphs());
 		 Annotation doc = new Annotation(query);
 		 this.pipeLine.annotate(doc);

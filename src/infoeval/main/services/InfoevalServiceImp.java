@@ -118,9 +118,9 @@ public class InfoevalServiceImp implements InfoevalService {
 	@Override
 	@RequestMapping(path = "Queries/Dynamic", method = RequestMethod.GET)
 	public LinkedList<String> getDynamic(String name,String query) throws Exception {
-		logger.log(Level.INFO, "Get dynamic query results was called.\n Parameters:" + "Name:" + name);
+		logger.log(Level.INFO, "Get dynamic query results was called.\n Parameters:" + "Name:" + name+ " Query:"+query);
 		// Parse user's input:
-		analyze.dynamicQuery(name, query);;
+		analyze.dynamicQuery(name, query);
 		return analyze.RefineResults(10);
 	}
 

@@ -60,7 +60,7 @@ angular.module('starter.services', [])
 		setName: function (nameParameter) {
 			name = nameParameter;
 		},
-		getQuery: function (queryParameter) {
+		getQuery: function () {
 			return query.toString();
 		},
 		setQuery: function (queryParameter) {

@@ -449,7 +449,8 @@ $scope.searchPopUp = function() {
 	  method: 'GET',
 	  url:'/Queries/Dynamic',
 		params: {
-		name: DynamicParams.getName()
+		name: DynamicParams.getName(),
+	    query: DynamicParams.getQuery()
 	}
 	}).then(function successCallback(response) {
 		console.log('awards success');
