@@ -38,9 +38,9 @@ public class InfoevalServiceImp implements InfoevalService {
 	private static AnalyzeParagraph analyze;
 
 	public InfoevalServiceImp() throws IOException {
-		analyze = new AnalyzeParagraph();
+	//	analyze = new AnalyzeParagraph();
 		//Pre-Loading the classifiers used by NLP and openIE to enhance performance.
-		analyze.LoadNLPClassifiers();
+	//	analyze.LoadNLPClassifiers();
 		//analyze.LoadIEClassifiers();
 	}
 
@@ -83,9 +83,9 @@ public class InfoevalServiceImp implements InfoevalService {
 	public LinkedList<String> getArrested(String name) throws Exception {
 		logger.log(Level.INFO, "Get Arrests was called.\n Parameters:" + "Name:" + name);
 		// Parse user's input:
-		name = name.trim().replaceAll(" ", "_").toLowerCase();
+		String UpdatedName=updteName(name);
 		try{
-		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + name));
+		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + UpdatedName));
 		wiki.Parse("arrested");
 		ArrayList<String> names= new ArrayList<>();
 		boolean flag=wiki.isConflictedName();
@@ -105,8 +105,8 @@ public class InfoevalServiceImp implements InfoevalService {
 		logger.log(Level.INFO, "Get Awards was called.\n Parameters:" + "Name:" + name);
 		// Parse user's input:
 		try{
-		name = name.trim().replaceAll(" ", "_").toLowerCase();
-		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + name));
+			String UpdatedName=updteName(name);
+		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + UpdatedName));
 		wiki.Parse("won");
 		ArrayList<String> names= new ArrayList<>();
 		boolean flag=wiki.isConflictedName();
@@ -141,11 +141,36 @@ public class InfoevalServiceImp implements InfoevalService {
 	public TableEntry getPersonal_Information(String name) throws Exception {
 		logger.log(Level.INFO, "Get personal information was called.\n Parameters:" + "Name:" + name);
 		// Parse user's input:
-		name = name.trim().replaceAll(" ", "_");
-		return (new SqlRunner()).getPersonalInfo(name);
+		
+			
+			String UpdatedName=updteName(name);
+			System.out.println(UpdatedName);
+			try{
+			Document doc = Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles="+UpdatedName+"&prop=pageimages&format=xml&pithumbsize=350").get();
+			 String pageId=doc.toString().split("pageid=\"")[1].split("\"")[0];}
+			catch (Exception e) {
+				throw e;
+				// TODO: Inform user that page does not exist
+			}
+			
+	;
+		return (new SqlRunner()).getPersonalInfo(UpdatedName);
 
 	}
-
+	public String updteName(String name){
+		String[] parts=name.split(" ");
+		String UpdatedName="";
+		for(String part:parts){
+			part=part.toLowerCase();
+			if(!part.split("")[0].equals("("))
+			part=part.replaceFirst(part.split("")[0], part.split("")[0].toUpperCase());
+			UpdatedName+=part+"_";
+			
+		}
+		
+		UpdatedName=UpdatedName.substring(0, UpdatedName.length()-1);
+		return UpdatedName;
+	}
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(InfoevalServiceImp.class, args);
 	}
