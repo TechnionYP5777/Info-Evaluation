@@ -40,11 +40,11 @@ public class InfoevalServiceImp implements InfoevalService {
 	
 
 	public InfoevalServiceImp() throws Exception {
-		// analyze = new AnalyzeParagraph();
+		 analyze = new AnalyzeParagraph();
 		// Pre-Loading the classifiers used by NLP and openIE to enhance
 		// performance.
-		// analyze.LoadNLPClassifiers();
-		// analyze.LoadIEClassifiers();
+		 analyze.LoadNLPClassifiers();
+		 analyze.LoadIEClassifiers();
 		runner=new SqlRunner();
 	}
 
@@ -113,6 +113,7 @@ public class InfoevalServiceImp implements InfoevalService {
 			wiki.isConflictedName();
 			wiki.getNames();
 			new ArrayList<>();
+			System.out.println(wiki.getParagraphs().text());
 			analyze.setParagraphs(wiki.getParagraphs());
 			analyze.AwardsQuery();
 			return analyze.RefineResults(10);

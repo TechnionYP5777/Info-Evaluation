@@ -38,7 +38,8 @@ public class AnalyzeParagraph {
 	final StanfordCoreNLP pipeLine;
 
 	public AnalyzeParagraph(Elements Paragraphs) throws IOException {
-		this.Paragraphs = Paragraphs;
+		this.Paragraphs = new Elements();
+		this.Paragraphs=Paragraphs;
 		this.Information = new LinkedList<String>();
 		final Properties props = new Properties();
 		props.put("annotators", "tokenize,ssplit, pos ,parse,lemma");	
