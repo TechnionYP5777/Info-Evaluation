@@ -9,6 +9,8 @@ import infoeval.main.Analysis.AnalyzeParagraph;
 import infoeval.main.WikiData.WikiParsing;
 import infoeval.main.mysql.SqlRunner;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.*;
 //import org.springframework.stereotype.*;
@@ -36,20 +38,20 @@ public class InfoevalServiceImp implements InfoevalService {
 	private static AnalyzeParagraph analyze;
 
 	public InfoevalServiceImp() throws IOException {
-		analyze = new AnalyzeParagraph();
-		//Pre-Loading the classifiers used by NLP and openIE to enhance performance.
-		analyze.LoadNLPClassifiers();
-		//analyze.LoadIEClassifiers();
+		// analyze = new AnalyzeParagraph();
+		// Pre-Loading the classifiers used by NLP and openIE to enhance
+		// performance.
+		// analyze.LoadNLPClassifiers();
+		// analyze.LoadIEClassifiers();
 	}
 
 	@Override
 	@RequestMapping(path = "Queries/Query2", method = RequestMethod.GET)
 	public ArrayList<TableEntry> getBornInPlaceYear(String place, String year) throws Exception {
 
-		SqlRunner runner = new SqlRunner();
-		ArrayList<TableEntry> $ = runner.getBornInPlaceBeforeYear(place, year);
+		ArrayList<TableEntry> $ = new SqlRunner().getBornInPlaceBeforeYear(place, year);
 		logger.log(Level.INFO,
-				"Born in place before year was called.\n Parameters:" + "Place:" + place + ", Year:" + year);
+				"Born in place before year was called.\n Parameters:Place:" + place + ", Year:" + year);
 		logger.log(Level.INFO, "list size:" + $.size());
 
 		return $;
@@ -59,8 +61,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	@RequestMapping(path = "Queries/Query1", method = RequestMethod.GET)
 	public ArrayList<TableEntry> differentDeathPlace() throws Exception {
 		logger.log(Level.INFO, "Born and died in different place was called");
-		SqlRunner runner = new SqlRunner();
-		ArrayList<TableEntry> $ = runner.getDifferentDeathPlace();
+		ArrayList<TableEntry> $ = new SqlRunner().getDifferentDeathPlace();
 		logger.log(Level.INFO, "list size:" + $.size());
 		return $;
 
@@ -79,57 +80,88 @@ public class InfoevalServiceImp implements InfoevalService {
 	@Override
 	@RequestMapping(path = "Queries/Arrests", method = RequestMethod.GET)
 	public LinkedList<String> getArrested(String name) throws Exception {
-		logger.log(Level.INFO, "Get Arrests was called.\n Parameters:" + "Name:" + name);
+		logger.log(Level.INFO, "Get Arrests was called.\n Parameters:Name:" + name);
 		// Parse user's input:
-		name = name.trim().replaceAll(" ", "_");
-
-		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + name));
-		wiki.Parse("arrested");
-		ArrayList<String> names= new ArrayList<>();
-		boolean flag=wiki.isConflictedName();
-		if(flag){
-			names=wiki.getNames();
+		String UpdatedName = updteName(name);
+		try {
+			WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + UpdatedName));
+			wiki.Parse("arrested");
+			wiki.isConflictedName();
+			wiki.getNames();
+			new ArrayList<>();
+			analyze.setParagraphs(wiki.getParagraphs());
+			analyze.AnalyzeArrestsQuery();
+			return analyze.RefineResults(10);
+		} catch (Exception e) {
+			throw e;
 		}
-		analyze.setParagraphs(wiki.getParagraphs());
-		analyze.AnalyzeArrestsQuery();
-		return analyze.RefineResults(10);
 	}
 
 	@Override
 	@RequestMapping(path = "Queries/Awards", method = RequestMethod.GET)
 	public LinkedList<String> getAwards(String name) throws Exception {
-		logger.log(Level.INFO, "Get Awards was called.\n Parameters:" + "Name:" + name);
+		logger.log(Level.INFO, "Get Awards was called.\n Parameters:Name:" + name);
 		// Parse user's input:
-		name = name.trim().replaceAll(" ", "_");
-		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + name));
-		wiki.Parse("won");
-		ArrayList<String> names= new ArrayList<>();
-		boolean flag=wiki.isConflictedName();
-		if(flag){
-			names=wiki.getNames();
+		try {
+			String UpdatedName = updteName(name);
+			WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + UpdatedName));
+			wiki.Parse("won");
+			wiki.isConflictedName();
+			wiki.getNames();
+			new ArrayList<>();
+			analyze.setParagraphs(wiki.getParagraphs());
+			analyze.AwardsQuery();
+			return analyze.RefineResults(10);
+		} catch (Exception e) {
+			throw e;
 		}
-		analyze.setParagraphs(wiki.getParagraphs());
-		analyze.AwardsQuery();
-		return analyze.RefineResults(10);
 	}
-	
+
 	@Override
 	@RequestMapping(path = "Queries/Dynamic", method = RequestMethod.GET)
-	public LinkedList<String> getDynamic(String name,String query) throws Exception {
-		logger.log(Level.INFO, "Get dynamic query results was called.\n Parameters:" + "Name:" + name);
+	public LinkedList<String> getDynamic(String name, String query) throws Exception {
+		logger.log(Level.INFO,
+				"Get dynamic query results was called.\n Parameters:Name:" + name + " Query:" + query);
 		// Parse user's input:
-		analyze.dynamicQuery(name, query);;
-		return analyze.RefineResults(10);
+		try {
+			analyze.dynamicQuery(name, query);
+			return analyze.getInformation();
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	@Override
 	@RequestMapping(path = "Queries/PersonalInformation", method = RequestMethod.GET)
 	public TableEntry getPersonal_Information(String name) throws Exception {
-		logger.log(Level.INFO, "Get personal information was called.\n Parameters:" + "Name:" + name);
+		logger.log(Level.INFO, "Get personal information was called.\n Parameters:Name:" + name);
 		// Parse user's input:
-		name = name.trim().replaceAll(" ", "_");
-		return (new SqlRunner()).getPersonalInfo(name);
 
+		String pageId = "", UpdatedName = updteName(name);
+		System.out.println(UpdatedName);
+		try {
+			pageId = Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles=" + UpdatedName
+					+ "&prop=pageimages&format=xml&pithumbsize=350").get().toString().split("pageid=\"")[1]
+							.split("\"")[0];
+		} catch (Exception e) {
+			throw e;
+			// TODO: Inform user that page does not exist
+		}
+		return (new SqlRunner()).getPersonalInfo(Integer.parseInt(pageId));
+	}
+
+	public String updteName(String name) {
+		String[] parts = name.split(" ");
+		String UpdatedName = "";
+		for (String part : parts) {
+			part = part.toLowerCase();
+			if (!"(".equals(part.split("")[0]))
+				part = part.replaceFirst(part.split("")[0], part.split("")[0].toUpperCase());
+			UpdatedName += part + "_";
+
+		}
+
+		return UpdatedName = UpdatedName.substring(0, UpdatedName.length() - 1);
 	}
 
 	public static void main(String[] args) throws Exception {

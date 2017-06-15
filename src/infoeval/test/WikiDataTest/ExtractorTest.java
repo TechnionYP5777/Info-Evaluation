@@ -16,6 +16,8 @@ import org.apache.commons.lang3.text.WordUtils;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSetRewindable;
 import org.apache.jena.rdf.model.RDFNode;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 //import org.apache.jena.query.ResultSetFormatter;
 
@@ -82,7 +84,7 @@ public class ExtractorTest {
 
 		System.out.println("Birth Place is " + te.getBirthPlace());
 
-		System.out.println("Birth Place is " + te.getDeathPlace());
+		System.out.println("Death Place is " + te.getDeathPlace());
 
 		Date birthDate = te.getBirthDate();
 		if (birthDate != null)
@@ -99,5 +101,60 @@ public class ExtractorTest {
 		System.out.println("Spouse Occupation is " + te.getSpouseOccupation());
 
 		System.out.println("PhotoLink is " + te.getPhotoLink());
+	}
+
+	@Ignore
+	@Test
+	public void basicInfoByIDTest() throws Exception {
+		int wikiPageID = Integer.parseInt(Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles=Shakira&prop=pageimages&format=xml&pithumbsize=350").get().toString().split("pageid=\"")[1].split("\"")[0]);
+
+		Extractor extr = new Extractor(wikiPageID);
+		extr.executeQuery(QueryTypes.BASIC_INFO_BY_WIKI_PAGE_ID);
+		ResultSetRewindable results = extr.getResults();
+		results.reset();
+
+		SqlTablesFiller filler = new SqlTablesFiller();
+		TableEntry te = filler.getInfo(results);
+		filler.close();
+
+		System.out.println("Birth Place is " + te.getBirthPlace());
+
+		System.out.println("Death Place is " + te.getDeathPlace());
+
+		Date birthDate = te.getBirthDate();
+		if (birthDate != null)
+			System.out.println("Birth Date is " + birthDate);
+
+		Date deathDate = te.getDeathDate();
+		if (deathDate != null)
+			System.out.println("Death Date is " + deathDate);
+
+		System.out.println("Occupation is " + te.getOccupation());
+
+		System.out.println("Spouse Name is " + te.getSpouseName());
+
+		System.out.println("Spouse Occupation is " + te.getSpouseOccupation());
+
+		System.out.println("PhotoLink is " + te.getPhotoLink());
+	}
+
+	@Ignore
+	@Test
+	public void abstractByWikiPageIdTest() throws Exception {
+		int wikiPageID = Integer.parseInt(Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles=Shakira&prop=pageimages&format=xml&pithumbsize=350").get().toString().split("pageid=\"")[1].split("\"")[0]);
+		Extractor extr = new Extractor(wikiPageID);
+		extr.executeQuery(QueryTypes.ABSTRACT_BY_WIKI_PAGE_ID);
+		ResultSetRewindable results = extr.getResults();
+		results.reset();
+
+		RDFNode overview = results.nextSolution().get("abstract");
+		String overviewStr = "No Abstract";
+		if (overview != null)
+			if (overview.isResource())
+				overviewStr = (overview.asResource() + "").split("resource/")[1];
+			else if (overview.isLiteral())
+				overviewStr = (overview.asLiteral() + "").split("@")[0];
+
+		System.out.println("Abstract is " + overviewStr);
 	}
 }

@@ -30,6 +30,11 @@
       "path": "/Queries/SameOccupationCouples",
       "proxyUrl": "http://localhost:8080/Queries/SameOccupationCouples/"
 		
+    },
+	    {
+      "path": "/Queries/Dynamic",
+      "proxyUrl": "http://localhost:8080/Queries/Dynamic/"
+		
     }
 	   
   ]

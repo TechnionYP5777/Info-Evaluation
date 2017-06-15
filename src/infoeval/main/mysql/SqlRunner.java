@@ -14,7 +14,6 @@ import infoeval.main.WikiData.SqlTablesFiller;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang3.text.WordUtils;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSetRewindable;
 import org.apache.jena.rdf.model.RDFNode;
@@ -346,11 +345,11 @@ public class SqlRunner {
 		return res;
 	}
 
-	public TableEntry getPersonalInfoFromDBpedia(String name)
+	public TableEntry getPersonalInfoFromDBpedia(int wikiPageID)
 			throws ClassNotFoundException, SQLException, IOException, ParseException {
-		Extractor ext = new Extractor(name);
+		Extractor ext = new Extractor(wikiPageID);
 		logger.log(Level.INFO, "abstract extraction query is being executed");
-		ext.executeQuery(QueryTypes.ABSTRACT);
+		ext.executeQuery(QueryTypes.ABSTRACT_BY_WIKI_PAGE_ID);
 		ResultSetRewindable results = ext.getResults();
 
 		results.reset();
@@ -362,12 +361,9 @@ public class SqlRunner {
 				overviewStr = (overview.asResource() + "").split("resource/")[1];
 			else if (overview.isLiteral())
 				overviewStr = (overview.asLiteral() + "").split("@")[0];
-		QueryTypes queryType = QueryTypes.BASIC_INFO_BY_NAME;
-		if (name.contains("(")){
-			queryType = QueryTypes.BASIC_INFO_BRACKETS_NAME;			
-		}
-		logger.log(Level.INFO, queryType.toString()+" extraction query is being executed");
-		ext.executeQuery(queryType);
+
+		logger.log(Level.INFO, "Basic Info By Wiki Page ID extraction query is being executed");
+		ext.executeQuery(QueryTypes.BASIC_INFO_BY_WIKI_PAGE_ID);
 		ResultSetRewindable basicInfoByNameResults = ext.getResults();
 		basicInfoByNameResults.reset();
 
@@ -376,24 +372,29 @@ public class SqlRunner {
 		filler.close();
 
 		TableEntry result = new TableEntry(te);
+		String name = result.getName();
 		String newName = name.replaceAll("_", " ");
 		result.setName(newName);
+
 		result.setUrl("");
+
 		result.setOverview(overviewStr);
+
 		String photoLink = result.getPhotoLink();
 		photoLink.replaceAll("'", "\'");
 		result.setPhotoLink(photoLink);
+
 		return result;
 	}
 
 	@SuppressWarnings("unchecked")
-	public TableEntry getPersonalInfo(String name)
+	public TableEntry getPersonalInfo(int wikiPageID)
 			throws ClassNotFoundException, SQLException, IOException, ParseException {
-		Object[] inp = new Object[] { name };
-		ArrayList<Row> res = conn.runQuery("SELECT name FROM basic_info WHERE name = ?", inp);
-		String newName = WordUtils.capitalize(name).replaceAll(" ", "_");
+		Object[] inp = new Object[] { wikiPageID };
+		ArrayList<Row> res = conn.runQuery("SELECT wikiPageID FROM WikiID WHERE wikiPageID = ?", inp);
+		// String newName = WordUtils.capitalize(name).replaceAll(" ", "_");
 		if (res.isEmpty()) {
-			return getPersonalInfoFromDBpedia(newName);
+			return getPersonalInfoFromDBpedia(wikiPageID);
 		}
 
 		ArrayList<Row> id_result = conn.runQuery("SELECT serialized_id " + "FROM serialized_query_results "
@@ -403,7 +404,7 @@ public class SqlRunner {
 
 		String overviewStr = "";
 		if (id_result.isEmpty()) {
-			Extractor ext = new Extractor(newName);
+			Extractor ext = new Extractor(wikiPageID);
 			logger.log(Level.INFO, "abstract extraction query is being executed");
 			ext.executeQuery(QueryTypes.ABSTRACT);
 			ResultSetRewindable results = ext.getResults();
@@ -429,7 +430,7 @@ public class SqlRunner {
 			toSerilaize[0] = rows;
 			toSerilaize[1] = overviewStr;
 
-			String query_identifier = "getPersonalInfo(" + name + ")";
+			String query_identifier = "getPersonalInfo(" + wikiPageID + ")";
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, toSerilaize);
 		} else {
 			serialized_id = (int) id_result.get(0).row.get(0).getKey();
@@ -438,6 +439,7 @@ public class SqlRunner {
 			overviewStr = (String) output[1];
 		}
 		Row res_row = rows.get(0);
+		String name = (String) res_row.row.get(0).getValue().cast(res_row.row.get(0).getKey());
 		String birthPlace = (String) res_row.row.get(1).getValue().cast(res_row.row.get(1).getKey());
 		String deathPlace = (String) res_row.row.get(2).getValue().cast(res_row.row.get(2).getKey());
 
@@ -456,10 +458,11 @@ public class SqlRunner {
 		String spouseOccupation = (String) res_row.row.get(7).getValue().cast(res_row.row.get(7).getKey());
 		String photoLink = (String) res_row.row.get(8).getValue().cast(res_row.row.get(8).getKey());
 		photoLink.replaceAll("'", "\'");
-		String wikiPageID = (String) res_row.row.get(9).getValue().cast(res_row.row.get(9).getKey());
+		// String wikiPageID = (String)
+		// res_row.row.get(9).getValue().cast(res_row.row.get(9).getKey());
 
-		TableEntry te = new TableEntry(wikiURL + wikiPageID, name, birthPlace, deathPlace, birthDate, deathDate,
-				occupation, spouseName, spouseOccupation, photoLink, overviewStr);
+		TableEntry te = new TableEntry("", name, birthPlace, deathPlace, birthDate, deathDate, occupation, spouseName,
+				spouseOccupation, photoLink, overviewStr);
 		return te;
 	}
 

@@ -52,13 +52,21 @@ angular.module('starter.services', [])
 
 .factory('DynamicParams', function () {
 	var name={};
+	var query={};
 	return {
 		getName: function () {
 			return name.toString();
 		},
 		setName: function (nameParameter) {
 			name = nameParameter;
+		},
+		getQuery: function () {
+			return query.toString();
+		},
+		setQuery: function (queryParameter) {
+			query = queryParameter;
 		}
+		
 	};
 })
 

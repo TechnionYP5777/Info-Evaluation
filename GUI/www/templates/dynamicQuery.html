@@ -1,4 +1,4 @@
-<ion-view view-title="Arrests">
+<ion-view view-title="Your Query">
     <ion-content ng-class="{expanded:isExpanded}" class="animate-fade-slide-in">
       
 		
@@ -14,7 +14,7 @@
 			
                 <div ng-show="!loadindPersonalInfo" class="card stable-bg ink-dark">            
 					<div class="item-avatar item-text-wrap">
-                        <span class="avatar" style="background-image: {{personalInformation.photoLink}};"></span>
+                        <span class="avatar" style="background-image: url{{personalInformation.photoLink}};"></span>
 						<p style="color:black;"><strong>Personal Information:</strong>  </p>
                         <p style="color:black;"><strong>Full Name:</strong>{{personalInformation.name}}  </p> 
                         <p style="color:black;"><strong>Date of Birth:</strong>{{personalInformation.birthDate}}  </p> 

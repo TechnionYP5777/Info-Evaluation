@@ -8,11 +8,11 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.Ignore;
 import org.junit.BeforeClass;
+import org.jsoup.Jsoup;
 import org.junit.AfterClass;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 
 /**
  * 
@@ -119,9 +119,12 @@ public class SqlRunnerTest {
 	@Ignore
 	@Test
 	public void getPersonalInfoTest() throws Exception {
-		TableEntry te = querun.getPersonalInfo("yasuhiro takato");
-
-		System.out.println("Name is " + te.getName());
+		TableEntry te = querun
+				.getPersonalInfo(
+						Integer.parseInt(Jsoup
+								.connect("https://en.wikipedia.org/w/api.php?action=query&titles=Yasuhiro_Takato"
+										+ "&prop=pageimages&format=xml&pithumbsize=350")
+								.get().toString().split("pageid=\"")[1].split("\"")[0]));
 
 		System.out.println("Birth Place is " + te.getBirthPlace());
 
@@ -147,13 +150,13 @@ public class SqlRunnerTest {
 
 	}
 
-	// @Ignore
+	@Ignore
 	@Test
 	public void getPersonalInfoNotInDBTest() throws Exception {
-
-		TableEntry te = querun.getPersonalInfo("Michelle_Williams_(singer)");
-
-		System.out.println("Name is " + te.getName());
+		TableEntry te = querun.getPersonalInfo(Integer.parseInt(Jsoup
+				.connect(
+						"https://en.wikipedia.org/w/api.php?action=query&titles=Shakira&prop=pageimages&format=xml&pithumbsize=350")
+				.get().toString().split("pageid=\"")[1].split("\"")[0]));
 
 		System.out.println("Birth Place is " + te.getBirthPlace());
 

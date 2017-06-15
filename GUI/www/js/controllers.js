@@ -8,6 +8,7 @@ angular.module('starter.controllers', [])
   url: 'http://localhost:8100/api'
 })
 
+
 .controller('AppCtrl', function($scope, $ionicModal, $ionicPopover, $timeout) {
     // Form data for the login modal
     $scope.loginData = {};
@@ -101,12 +102,53 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('ShowResultsButtonCtrl',function($scope,$state,DataQ){
+.controller('ShowResultsButtonCtrl',function($scope,$state,DataQ,$ionicPopup){
+	
+	$scope.isNumber = function(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+	};	
+
 	$scope.showSecondQueryResults = function(place,year){
 		console.log('show results button was clicked-query 2');
+		 return $scope.validateInput(place,year).then(function(place,year){
+			 if($scope.legalInput=true){
 		DataQ.setYear(year);
 		DataQ.setPlace(place);
 		$state.go('app.Query2Results');
+			 }
+		});
+	};
+	
+	
+		$scope.validateInput = function(place,year){
+		$scope.legalInput=true;
+		 if (!(year && place)) {
+            //don't allow the user search unless he enters all inputs
+           
+			var InputErrorAlert = $ionicPopup.alert({
+				title: 'Input error!',
+				template: 'Missing Input. Please insert valid Place and Year', 
+			});
+          } 
+		else{
+			//Input is set, but check that it is legal.
+			if( !$scope.isNumber(year)){
+				var InputErrorAlert = $ionicPopup.alert({
+				title: 'Input error!',
+				template: 'Illegal Input. Please insert a valid Year', 
+			});
+				$scope.legalInput=false;
+			}
+		}
+			
+	};
+	
+	$scope.setParams = function(place,year){
+		if($scope.legalInput=true){
+		DataQ.setYear(year);
+		DataQ.setPlace(place);
+		$state.go('app.Query2Results');
+		}
 	};
 })
 
@@ -387,27 +429,52 @@ angular.module('starter.controllers', [])
 
 .controller('AddQueryCtrl', function($scope,$state, $ionicPopup,DynamicParams) {
 
-   $scope.searchPopUp = function() {
+   
+	   
+	   // Triggered on a button click, or some other target
+$scope.searchPopUp = function() {
+  $scope.dynamicData = {};
+
+  // An elaborate, custom popup
+  var myPopup = $ionicPopup.show({
+    template: '<input type="text" ng-model="dynamicData.query" placeholder="Your Query here"; white-space:normal; >'
+	  +'</br> <input type="text" ng-model="dynamicData.personName"  placeholder="Person\'s name ; white-space:normal;">',
+    title: 'Enter the Query name you wish to look for',
+    subTitle: 'Please describe in one word',
+    scope: $scope,
+    buttons: [
+      { text: 'Cancel' },
+      {
+        text: '<b>Search</b>',
+        type: 'button-positive',
+        onTap: function(e) {
+          if (!($scope.dynamicData.query && $scope.dynamicData.personName)) {
+            //don't allow the user search unless he enters all inputs
+            e.preventDefault();
+          } else {
+            return $scope.dynamicData;
+          }
+        }
+      }
+    ]
+  });
+
+  myPopup.then(function(res) {
+    console.log('Query wad added: '+ res.query);
+	console.log('Person to look for in query: '+ res.personName); 
+	  DynamicParams.setName(res.personName);
+	  DynamicParams.setQuery(res.query);
+ 	  $state.go('app.dynamicQueryResults');
 	
-      var promptPopup = $ionicPopup.prompt({
-         title: 'Add a Query',
-         template: 'Enter your query please:',
-         inputType: 'text',
-         inputPlaceholder: 'Your Query'
-      });
+  });
+
+ };
         
-      promptPopup.then(function(res) {
-         console.log("A Query was added:");
-         console.log(res);
-		  DynamicParams.setName(res);
-		  $state.go('app.dynamicQueryResults');
-      });
-		
-   };
+    
 
 })
 
-.controller('DynamicQueryCtrl', function($scope,$http, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk,DynamicParams) {
+.controller('DynamicQueryCtrl', function($scope,$http, $state, $timeout,$ionicPopup, ionicMaterialMotion, ionicMaterialInk,DynamicParams) {
     // Set Header
     $scope.$parent.showHeader();
     $scope.$parent.clearFabs();
@@ -416,19 +483,27 @@ angular.module('starter.controllers', [])
     $scope.$parent.setHeaderFab(false);
 	$scope.loading=true;
 	$scope.loadindPersonalInfo = true;
+	$scope.failed=false;
 	console.log('Show results of Get dynamic query was called');
 	$scope.information=[];
 	$scope.name = DynamicParams.getName();
+	$scope.queryName = DynamicParams.getQuery();
 	console.log($scope.name);
 	$http({
 	  method: 'GET',
 	  url:'/Queries/Dynamic',
 		params: {
-		name: DynamicParams.getName()
+		name: DynamicParams.getName(),
+	    query: DynamicParams.getQuery()
 	}
 	}).then(function successCallback(response) {
 		console.log('awards success');
 		$scope.information = [];
+		if(response.data == null)
+		{
+			$scope.loading=false;
+		}
+		else{
 		for(var r in response.data) {
 		  var info = response.data[r];
 
@@ -436,19 +511,17 @@ angular.module('starter.controllers', [])
 		  console.log(info);
 		}
 		$scope.loading=false;
+		}
 
 	}, function errorCallback(response) {
-		alert(JSON.stringify(response))
-		var FetchErrorAlert = $ionicPopup.alert({
-			title: 'Fetch error!',
-			template: 'Unable to get data', 
-		});
-	console.log(response.data);
-		$scope.loading=false;
+		alert('Unable to get data - Person does not exist.')
+		$scope.failed=true;
+		$state.go('app.InteractiveSearch');	
 	}
 	);
 	
 	//Get the personal data of the person:
+	if($scope.failed == false){
 	$http({
 		  method: 'GET',
 		  url:'/Queries/PersonalInformation',
@@ -461,22 +534,22 @@ angular.module('starter.controllers', [])
 			$scope.loadindPersonalInfo = false;
 			console.log('url is ' + $scope.personalInformation.photoLink);
 			console.log('name is' + name);
+			$scope.name = $scope.personalInformation.name;
 			console.log('birthPlace is:'+$scope.personalInformation.birthPlace);
 				if($scope.personalInformation.photoLink == "No Photo") {
 					$scope.personalInformation.photoLink="http://www.freeiconspng.com/uploads/profile-icon-9.png";
 				}
 			
 		}, function errorCallback(response) {
-			alert(JSON.stringify(response))
 			var FetchErrorAlert = $ionicPopup.alert({
 				title: 'Fetch error!',
-				template: 'Unable to get personal data', 
+				template: 'Unable to get Extra personal Information', 
 			});
 		console.log(response.data);
 		$scope.loadindPersonalInfo = false;
 		}
 	);
-
+	}
 	
     // Set Motion
     $timeout(function() {
@@ -509,7 +582,7 @@ angular.module('starter.controllers', [])
 	};
 })
 
-.controller('AwardsCtrl', function($scope,$http, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk,AwardsParams) {
+.controller('AwardsCtrl', function($scope,$http, $state, $timeout,$ionicPopup, ionicMaterialMotion, ionicMaterialInk,AwardsParams) {
     // Set Header
     $scope.$parent.showHeader();
     $scope.$parent.clearFabs();
@@ -518,6 +591,7 @@ angular.module('starter.controllers', [])
     $scope.$parent.setHeaderFab(false);
 	$scope.loading=true;
 	$scope.loadindPersonalInfo = true;
+	$scope.failed=false;
 	console.log('Show results of Get Awards was called');
 	$scope.information=[];
 	$scope.name = AwardsParams.getName();
@@ -540,17 +614,19 @@ angular.module('starter.controllers', [])
 		$scope.loading=false;
 
 	}, function errorCallback(response) {
-		alert(JSON.stringify(response))
 		var FetchErrorAlert = $ionicPopup.alert({
 			title: 'Fetch error!',
-			template: 'Unable to get data', 
+			template: 'Unable to get data - Person does not exist', 
 		});
 	console.log(response.data);
 		$scope.loading=false;
+		$scope.failed=true;
+		$state.go('app.InteractiveSearch');	
 	}
 	);
 	
 	//Get the personal data of the person:
+	if($scope.failed == false){
 	$http({
 		  method: 'GET',
 		  url:'/Queries/PersonalInformation',
@@ -563,22 +639,22 @@ angular.module('starter.controllers', [])
 			$scope.loadindPersonalInfo = false;
 			console.log('url is ' + $scope.personalInformation.photoLink);
 			console.log('name is' + name);
+			$scope.name = $scope.personalInformation.name;
 			console.log('birthPlace is:'+$scope.personalInformation.birthPlace);
 				if($scope.personalInformation.photoLink == "No Photo") {
 					$scope.personalInformation.photoLink="http://www.freeiconspng.com/uploads/profile-icon-9.png";
 				}
 			
 		}, function errorCallback(response) {
-			alert(JSON.stringify(response))
 			var FetchErrorAlert = $ionicPopup.alert({
 				title: 'Fetch error!',
-				template: 'Unable to get personal data', 
+				template: 'Unable to get Extra personal Information', 
 			});
 		console.log(response.data);
 		$scope.loadindPersonalInfo = false;
 		}
 	);
-
+	}
 	
     // Set Motion
     $timeout(function() {
@@ -613,7 +689,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('ArrestsCtrl', function($scope,$http, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk,ArrestsParams) {
+.controller('ArrestsCtrl', function($scope,$http, $state, $timeout,$ionicPopup, ionicMaterialMotion, ionicMaterialInk,ArrestsParams) {
     // Set Header
     $scope.$parent.showHeader();
     $scope.$parent.clearFabs();
@@ -622,6 +698,7 @@ angular.module('starter.controllers', [])
     $scope.$parent.setHeaderFab(false);
 	$scope.loading=true;
 	$scope.loadindPersonalInfo = true;
+	$scope.failed=false;
 	console.log('Show results of Get Arrests was called');
 		$scope.information=[];
 		$scope.name = ArrestsParams.getName();
@@ -644,16 +721,20 @@ angular.module('starter.controllers', [])
 			$scope.loading=false;
 		
 		}, function errorCallback(response) {
-			alert(JSON.stringify(response))
+			
 			var FetchErrorAlert = $ionicPopup.alert({
 				title: 'Fetch error!',
-				template: 'Unable to get data', 
+				template: 'Unable to get data - Person does not exist', 
 			});
 		console.log(response.data);
+			$scope.failed=true;
+			$state.go('app.InteractiveSearch');	
 		}
 	);
 	
 	//Get the personal data of the person:
+	if($scope.failed == false && $scope.loading == false) 
+	{
 	$http({
 		  method: 'GET',
 		  url:'/Queries/PersonalInformation',
@@ -672,16 +753,15 @@ angular.module('starter.controllers', [])
 				}
 			
 		}, function errorCallback(response) {
-			alert(JSON.stringify(response))
 			var FetchErrorAlert = $ionicPopup.alert({
 				title: 'Fetch error!',
-				template: 'Unable to get personal data', 
+				template: 'Unable to get Extra personal Information', 
 			});
 		console.log(response.data);
 		$scope.loadindPersonalInfo = false;
 		}
 	);
-	
+	}
 
     // Set Motion
     $timeout(function() {
