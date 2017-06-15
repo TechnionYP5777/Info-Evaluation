@@ -569,10 +569,13 @@ $scope.searchPopUp = function() {
 })
 
 
-.controller('AwardsParameters',function($scope,$state,AwardsParams){
+.controller('AwardsParameters',function($scope,$state,$ionicPopup,AwardsParams){
 	$scope.showAwardsResults = function(name){
 		if(name == null ||  name.trim().length == 0){
-			alert('Please Insert a Name!')
+			var FetchErrorAlert = $ionicPopup.alert({
+				title: 'Input error!',
+				template: 'Please enter a name of a person you wish to look for.', 
+			});
 		}
 		else{
 		console.log('Sending params for Awards query ');
@@ -673,10 +676,13 @@ $scope.searchPopUp = function() {
     ionicMaterialInk.displayEffect();
 })
 
-.controller('ArrestsParameters',function($scope,$state,ArrestsParams){
+.controller('ArrestsParameters',function($scope,$state,$ionicPopup,ArrestsParams){
 	$scope.showArrestsResults = function(name){
 		if(name == null ||  name.trim().length == 0){
-			alert('Please Insert a Name!')
+			var FetchErrorAlert = $ionicPopup.alert({
+				title: 'Input error!',
+				template: 'Please enter a name of a person you wish to look for.', 
+			});
 		}
 		else{
 		console.log('Sending params for Arrests query ');
