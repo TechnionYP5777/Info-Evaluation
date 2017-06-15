@@ -373,15 +373,16 @@ public class SqlRunner {
 
 		TableEntry result = new TableEntry(te);
 		String name = result.getName();
-		String newName = name.replaceAll("_", " ");
-		result.setName(newName);
+		System.out.println(name);
+		//String newName = name.replaceAll("_", " ");
+		result.setName(name);
 
 		result.setUrl("");
 
 		result.setOverview(overviewStr);
 
 		String photoLink = result.getPhotoLink();
-		photoLink.replaceAll("'", "\'");
+		//photoLink.replaceAll("'", "\'");
 		result.setPhotoLink(photoLink);
 
 		return result;

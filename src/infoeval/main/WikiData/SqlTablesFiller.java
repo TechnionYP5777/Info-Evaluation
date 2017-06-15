@@ -200,7 +200,10 @@ public class SqlTablesFiller {
 			throws ClassNotFoundException, SQLException, IOException, ParseException {
 
 		QuerySolution solution = r.nextSolution();
-
+		
+		RDFNode name = solution.get("name");
+		String personalName =  name == null || !name.isLiteral() ? "No Name" : name.asLiteral().getString() + "";
+		
 		RDFNode sName = solution.get("sname");
 		String spouseName = sName == null || !sName.isLiteral() ? "No Spouse" : sName.asLiteral().getString() + "";
 
@@ -295,7 +298,7 @@ public class SqlTablesFiller {
 			++monthNum;
 		}
 
-		return new TableEntry("", "", birthPlace, deathPlace, sqlBirthDate, sqlDeathDate, occup, spouseName,
+		return new TableEntry("", personalName, birthPlace, deathPlace, sqlBirthDate, sqlDeathDate, occup, spouseName,
 				spouseOccupation, (solution.get("photo") == null ? "No Photo" : solution.get("photo") + ""), "");
 	}
 
