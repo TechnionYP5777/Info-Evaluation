@@ -205,7 +205,7 @@ angular.module('starter.controllers', [])
 	}
 		
 		$scope.showExtraInfo = function(per){
-			Query1ExtraInfo.setName(per.name)
+			Query1ExtraInfo.setPerson(per);
 			$state.go('app.extraInfo');
 		};
 		
@@ -262,7 +262,7 @@ angular.module('starter.controllers', [])
 		
 		$scope.showExtraInfo = function(per){
 			console.log('217 name is ' + per.name);
-			Query1ExtraInfo.setPerson(per)
+			Query1ExtraInfo.setPerson(per);
 			$state.go('app.extraInfo');
 		};
         
