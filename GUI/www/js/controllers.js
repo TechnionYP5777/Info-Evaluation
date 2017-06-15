@@ -243,7 +243,7 @@ angular.module('starter.controllers', [])
 		}).then(function successCallback(response) {
 			console.log('personal data - success');
 			$scope.personalInformation = response.data;
-			$scope.loadindPersonalInfo = false;
+			$scope.loadindPersonalInfo = true;
 			console.log('url is ' + $scope.personalInformation.photoLink);
 			console.log('name is' + name);
 			console.log('birthPlace is:'+$scope.personalInformation.birthPlace);
