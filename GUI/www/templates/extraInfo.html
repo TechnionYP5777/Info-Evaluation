@@ -20,7 +20,16 @@
                         <h3 class="tab25">Full Name:</h3><p class="tab40 paragraphInfo">{{personalInformation.name}} </p>
                         <h3 class="tab25">Date of Birth:</h3> <p class="tab40 paragraphInfo "> {{personalInformation.birthDate}} </p>
                         <h3 class="tab25">Place of Birth:</h3> <p class="tab40 paragraphInfo "> {{personalInformation.birthPlace}}  </p>
-                        <h3 class="tab25">Short overview:</h3> <p class="tab40 paragraphInfo "> {{personalInformation.overview}} </p>
+						
+						<div ng-show="stateShow" >
+							<button style="border-radius: 50px 50px;background-color: #020626;" class="button button-block w3-black" ng-click="showMoreInfo()">
+								<p style="color:white;" >Show more info </p>
+							</button>
+						</div>
+						
+						<div ng-show="!stateShow" >
+							<h3 class="tab25">Short overview:</h3> <p class="tab40 paragraphInfo "> {{personalInformation.overview}} </p>
+						</div>
 					</div>
 			</div>
 		</div>

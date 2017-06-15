@@ -274,8 +274,12 @@ angular.module('starter.controllers', [])
 	//var perName = $stateParams.name;
 	console.log('229 in extra info');
 	$scope.loadind=false;
+	$scope.stateShow=true;
 	$scope.personalInformation=Query1ExtraInfo.getPerson();
-	
+	$scope.showMoreInfo = function(){
+			$scope.stateShow=false;
+		console.log('281 in on click more info');
+		};
 	/*$http({
 		  method: 'GET',
 		  url:'/Queries/PersonalInformation',
