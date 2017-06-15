@@ -36,20 +36,23 @@ import java.util.logging.Logger;
 public class InfoevalServiceImp implements InfoevalService {
 	private static final Logger logger = Logger.getLogger("InfoevalServiceImp".getClass().getName());
 	private static AnalyzeParagraph analyze;
+	SqlRunner runner;
+	
 
-	public InfoevalServiceImp() throws IOException {
+	public InfoevalServiceImp() throws Exception {
 		// analyze = new AnalyzeParagraph();
 		// Pre-Loading the classifiers used by NLP and openIE to enhance
 		// performance.
 		// analyze.LoadNLPClassifiers();
 		// analyze.LoadIEClassifiers();
+		runner=new SqlRunner();
 	}
 
 	@Override
 	@RequestMapping(path = "Queries/Query2", method = RequestMethod.GET)
 	public ArrayList<TableEntry> getBornInPlaceYear(String place, String year) throws Exception {
 
-		ArrayList<TableEntry> $ = new SqlRunner().getBornInPlaceBeforeYear(place, year);
+		ArrayList<TableEntry> $ =runner.getBornInPlaceBeforeYear(place, year);
 		logger.log(Level.INFO,
 				"Born in place before year was called.\n Parameters:Place:" + place + ", Year:" + year);
 		logger.log(Level.INFO, "list size:" + $.size());
@@ -61,7 +64,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	@RequestMapping(path = "Queries/Query1", method = RequestMethod.GET)
 	public ArrayList<TableEntry> differentDeathPlace() throws Exception {
 		logger.log(Level.INFO, "Born and died in different place was called");
-		ArrayList<TableEntry> $ = new SqlRunner().getDifferentDeathPlace();
+		ArrayList<TableEntry> $ = runner.getDifferentDeathPlace();
 		logger.log(Level.INFO, "list size:" + $.size());
 		return $;
 
@@ -73,7 +76,7 @@ public class InfoevalServiceImp implements InfoevalService {
 		logger.log(Level.INFO, "Get SameOccupationCouples was called.\n ");
 		// Parse user's input:
 
-		return (new SqlRunner()).getSameOccupationCouples();
+		return runner.getSameOccupationCouples();
 
 	}
 
@@ -105,6 +108,7 @@ public class InfoevalServiceImp implements InfoevalService {
 		try {
 			String UpdatedName = updteName(name);
 			WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + UpdatedName));
+			logger.log(Level.INFO, "111 Get Arrests was called.\n url:" + wiki.getURL());
 			wiki.Parse("won");
 			wiki.isConflictedName();
 			wiki.getNames();
@@ -147,7 +151,7 @@ public class InfoevalServiceImp implements InfoevalService {
 			throw e;
 			// TODO: Inform user that page does not exist
 		}
-		return (new SqlRunner()).getPersonalInfo(Integer.parseInt(pageId));
+		return runner.getPersonalInfo(Integer.parseInt(pageId));
 	}
 
 	public String updteName(String name) {
