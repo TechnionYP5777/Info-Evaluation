@@ -71,13 +71,14 @@ angular.module('starter.services', [])
 })
 
 .factory('Query1ExtraInfo', function () {
-	var name={};
+	var person={};
+	
 	return {
-		getName: function () {
-			return name.toString();
+		getPerson: function () {
+			return person;
 		},
-		setName: function (nameParameter) {
-			name = nameParameter;
+		setPerson: function (perParameter) {
+			person = perParameter;
 		}
 	};
 })

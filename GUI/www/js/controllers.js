@@ -262,7 +262,7 @@ angular.module('starter.controllers', [])
 		
 		$scope.showExtraInfo = function(per){
 			console.log('217 name is ' + per.name);
-			Query1ExtraInfo.setName(per.name)
+			Query1ExtraInfo.setPerson(per)
 			$state.go('app.extraInfo');
 		};
         
@@ -272,11 +272,11 @@ angular.module('starter.controllers', [])
 .controller('ExtraInfo1',function($scope,$http,$ionicPopup,Query1ExtraInfo){
 		//Get the personal data of the person:
 	//var perName = $stateParams.name;
-	console.log('227 name is ' + Query1ExtraInfo.getName());
 	console.log('229 in extra info');
-	$scope.loadind=true;
+	$scope.loadind=false;
+	$scope.personalInformation=Query1ExtraInfo.getPerson();
 	
-	$http({
+	/*$http({
 		  method: 'GET',
 		  url:'/Queries/PersonalInformation',
 			params: {
@@ -303,7 +303,7 @@ angular.module('starter.controllers', [])
 		console.log(response.data);
 		$scope.loadindPersonalInfo = false;
 		}
-	);
+	);*/
 })
 
 .controller('SameOccupationQuery',function($scope,$http,$ionicPopup){
@@ -621,7 +621,7 @@ $scope.searchPopUp = function() {
 	console.log(response.data);
 		$scope.loading=false;
 		$scope.failed=true;
-		$state.go('app.InteractiveSearch');	
+		//$state.go('app.InteractiveSearch');	
 	}
 	);
 	
