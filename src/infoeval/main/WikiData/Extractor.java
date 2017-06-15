@@ -122,20 +122,20 @@ public class Extractor {
 						+ " PREFIX  dbo:  <http://dbpedia.org/ontology/>"
 						+ " PREFIX  dbp:  <http://dbpedia.org/property/>"
 						+ " PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
-						+ " SELECT name (SAMPLE (?photoLink) as ?photo) (SAMPLE (?occupation) as ?occup)"
+						+ " SELECT ?name (SAMPLE (?photoLink) as ?photo) (SAMPLE (?occupation) as ?occup)"
 						+ " (SAMPLE (?spouse) as ?spouses) (SAMPLE (?spName) as ?sname)"
 						+ " (SAMPLE (?spOccupation) as ?spOccu) (SAMPLE (?deathPlace) as ?death)"
 						+ " (SAMPLE(?birthPlace) as ?birth) (SAMPLE(?deathDate) as ?dDate) "
 						+ " (SAMPLE( ?birthDate) as ?bDate)  {  VALUES ?wikiPageID { " + wikiPageID
 						+ " } ?res a dbo:Person. "
-						+ " ?res dbp:name ?name"
+						+ " ?res dbp:name ?name."
 						+ " ?res dbo:wikiPageID ?wikiPageID. ?res dbp:birthPlace ?birthPlace. "
 						+ " ?res dbp:birthDate ?birthDate. OPTIONAL{?res dbo:occupation ?occupation}."
 						+ " OPTIONAL{?res dbo:thumbnail ?photoLink}."
 						+ " OPTIONAL{?res dbo:spouse ?spouse. ?spouse dbp:name ?spName."
 						+ " ?spouse dbo:occupation ?spOccupation}. "
-						+ " OPTIONAL{?res dbp:deathDate ?deathDate. ?res dbp:deathPlace ?deathPlace}. } ");
-
+						+ " OPTIONAL{?res dbp:deathDate ?deathDate. ?res dbp:deathPlace ?deathPlace}. } "
+						+ " GROUP BY (?name)");
 		abstractByWikiPageID = new ParameterizedSparqlString(" PREFIX  dbo:  <http://dbpedia.org/ontology/> SELECT ?abstract { VALUES ?wikiPageID { " + wikiPageID
 				+ " } ?res a dbo:Person. ?res dbo:wikiPageID ?wikiPageID. ?res dbo:abstract ?abstract."
 				+ " FILTER (lang(?abstract) = 'en') }");

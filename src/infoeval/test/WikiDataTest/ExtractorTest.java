@@ -117,6 +117,8 @@ public class ExtractorTest {
 		TableEntry te = filler.getInfo(results);
 		filler.close();
 
+		System.out.println("Name is " + te.getName());
+		
 		System.out.println("Birth Place is " + te.getBirthPlace());
 
 		System.out.println("Death Place is " + te.getDeathPlace());

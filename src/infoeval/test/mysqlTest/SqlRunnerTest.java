@@ -155,9 +155,13 @@ public class SqlRunnerTest {
 	public void getPersonalInfoNotInDBTest() throws Exception {
 		TableEntry te = querun.getPersonalInfo(Integer.parseInt(Jsoup
 				.connect(
-						"https://en.wikipedia.org/w/api.php?action=query&titles=Shakira&prop=pageimages&format=xml&pithumbsize=350")
+						"https://en.wikipedia.org/w/api.php?action=query&titles=Enrique_Iglesias&prop=pageimages&format=xml&pithumbsize=350")
 				.get().toString().split("pageid=\"")[1].split("\"")[0]));
 
+		System.out.println("Wikipedia URL is " + te.getUrl());		
+		
+		System.out.println("Name is " + te.getName());
+		
 		System.out.println("Birth Place is " + te.getBirthPlace());
 
 		System.out.println("Death Place is " + te.getDeathPlace());

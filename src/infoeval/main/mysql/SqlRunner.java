@@ -385,6 +385,8 @@ public class SqlRunner {
 		//photoLink.replaceAll("'", "\'");
 		result.setPhotoLink(photoLink);
 
+		result.setUrl(wikiURL+wikiPageID);
+		
 		return result;
 	}
 
@@ -462,7 +464,7 @@ public class SqlRunner {
 		// String wikiPageID = (String)
 		// res_row.row.get(9).getValue().cast(res_row.row.get(9).getKey());
 
-		TableEntry te = new TableEntry("", name, birthPlace, deathPlace, birthDate, deathDate, occupation, spouseName,
+		TableEntry te = new TableEntry(wikiURL+wikiPageID, name, birthPlace, deathPlace, birthDate, deathDate, occupation, spouseName,
 				spouseOccupation, photoLink, overviewStr);
 		return te;
 	}
