@@ -23,6 +23,8 @@ public class Extractor {
 	private ParameterizedSparqlString abstractQuery;
 	private ParameterizedSparqlString basicInfoByNameQuery;
 	private ParameterizedSparqlString basicInfoByBracketsNameQuery;
+	private ParameterizedSparqlString basicInfoByWikiPageID;
+	private ParameterizedSparqlString abstractByWikiPageID;
 	private ResultSetRewindable results;
 	private Map<QueryTypes, ParameterizedSparqlString> queriesMap;
 	private static final int ENTRIES_NUM = 10000;
@@ -112,6 +114,34 @@ public class Extractor {
 		queriesMap.put(QueryTypes.ABSTRACT, abstractQuery);
 		queriesMap.put(QueryTypes.BASIC_INFO_BY_NAME, basicInfoByNameQuery);
 		queriesMap.put(QueryTypes.BASIC_INFO_BRACKETS_NAME, basicInfoByBracketsNameQuery);
+	}
+
+	public Extractor(int wikiPageID) {
+		basicInfoByWikiPageID = new ParameterizedSparqlString(
+				" PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+						+ " PREFIX  dbo:  <http://dbpedia.org/ontology/>"
+						+ " PREFIX  dbp:  <http://dbpedia.org/property/>"
+						+ " PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
+						+ " SELECT (SAMPLE (?photoLink) as ?photo) (SAMPLE (?occupation) as ?occup)"
+						+ " (SAMPLE (?spouse) as ?spouses) (SAMPLE (?spName) as ?sname)"
+						+ " (SAMPLE (?spOccupation) as ?spOccu) (SAMPLE (?deathPlace) as ?death)"
+						+ " (SAMPLE(?birthPlace) as ?birth) (SAMPLE(?deathDate) as ?dDate) "
+						+ " (SAMPLE( ?birthDate) as ?bDate)  {  VALUES ?wikiPageID { " + wikiPageID
+						+ " } ?res a dbo:Person."
+						+ " ?res dbo:wikiPageID ?wikiPageID. ?res dbp:birthPlace ?birthPlace. "
+						+ " ?res dbp:birthDate ?birthDate. OPTIONAL{?res dbo:occupation ?occupation}."
+						+ " OPTIONAL{?res dbo:thumbnail ?photoLink}."
+						+ " OPTIONAL{?res dbo:spouse ?spouse. ?spouse dbp:name ?spName."
+						+ " ?spouse dbo:occupation ?spOccupation}. "
+						+ " OPTIONAL{?res dbp:deathDate ?deathDate. ?res dbp:deathPlace ?deathPlace}. } ");
+
+		abstractByWikiPageID = new ParameterizedSparqlString(" PREFIX  dbo:  <http://dbpedia.org/ontology/> SELECT ?abstract { VALUES ?wikiPageID { " + wikiPageID
+				+ " } ?res a dbo:Person. ?res dbo:wikiPageID ?wikiPageID. ?res dbo:abstract ?abstract."
+				+ " FILTER (lang(?abstract) = 'en') }");
+
+		queriesMap = new HashMap<QueryTypes, ParameterizedSparqlString>();
+		queriesMap.put(QueryTypes.BASIC_INFO_BY_WIKI_PAGE_ID, basicInfoByWikiPageID);
+		queriesMap.put(QueryTypes.ABSTRACT_BY_WIKI_PAGE_ID, abstractByWikiPageID);
 	}
 
 	@SuppressWarnings("resource")
