@@ -8,7 +8,7 @@
 				
 				<div class="hero slide-up" style="background-image: url('img/awardsback.jpg');">
 					<div class="content">
-						<div class="avatar" style="background-image: url({{personalInformation.photoLink}});"></div>
+						<div ng-show="!loadingPersonalInfo" class="avatar" style="background-image: url({{personalInformation.photoLink}});"></div>
 						<h4 style="color:black;">Awards of {{name}}</h4>
 						<br/>
 					</div>

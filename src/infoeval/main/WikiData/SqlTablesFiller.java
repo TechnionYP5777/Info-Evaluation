@@ -200,10 +200,10 @@ public class SqlTablesFiller {
 			throws ClassNotFoundException, SQLException, IOException, ParseException {
 
 		QuerySolution solution = r.nextSolution();
-		
+
 		RDFNode name = solution.get("name");
-		String personalName =  name == null || !name.isLiteral() ? "No Name" : name.asLiteral().getString() + "";
-		
+		String personalName = name == null || !name.isLiteral() ? "No Name" : name.asLiteral().getString() + "";
+
 		RDFNode sName = solution.get("sname");
 		String spouseName = sName == null || !sName.isLiteral() ? "No Spouse" : sName.asLiteral().getString() + "";
 

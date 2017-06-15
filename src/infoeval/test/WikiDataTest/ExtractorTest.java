@@ -106,7 +106,10 @@ public class ExtractorTest {
 	@Ignore
 	@Test
 	public void basicInfoByIDTest() throws Exception {
-		int wikiPageID = Integer.parseInt(Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles=Shakira&prop=pageimages&format=xml&pithumbsize=350").get().toString().split("pageid=\"")[1].split("\"")[0]);
+		int wikiPageID = Integer.parseInt((Jsoup
+				.connect(
+						"https://en.wikipedia.org/w/api.php?action=query&titles=Shakira&prop=pageimages&format=xml&pithumbsize=350")
+				.get() + "").split("pageid=\"")[1].split("\"")[0]);
 
 		Extractor extr = new Extractor(wikiPageID);
 		extr.executeQuery(QueryTypes.BASIC_INFO_BY_WIKI_PAGE_ID);
@@ -118,7 +121,7 @@ public class ExtractorTest {
 		filler.close();
 
 		System.out.println("Name is " + te.getName());
-		
+
 		System.out.println("Birth Place is " + te.getBirthPlace());
 
 		System.out.println("Death Place is " + te.getDeathPlace());
@@ -143,7 +146,10 @@ public class ExtractorTest {
 	@Ignore
 	@Test
 	public void abstractByWikiPageIdTest() throws Exception {
-		int wikiPageID = Integer.parseInt(Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles=Shakira&prop=pageimages&format=xml&pithumbsize=350").get().toString().split("pageid=\"")[1].split("\"")[0]);
+		int wikiPageID = Integer.parseInt((Jsoup
+				.connect(
+						"https://en.wikipedia.org/w/api.php?action=query&titles=Shakira&prop=pageimages&format=xml&pithumbsize=350")
+				.get() + "").split("pageid=\"")[1].split("\"")[0]);
 		Extractor extr = new Extractor(wikiPageID);
 		extr.executeQuery(QueryTypes.ABSTRACT_BY_WIKI_PAGE_ID);
 		ResultSetRewindable results = extr.getResults();

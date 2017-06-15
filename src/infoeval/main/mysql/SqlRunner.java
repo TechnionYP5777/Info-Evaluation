@@ -374,7 +374,7 @@ public class SqlRunner {
 		TableEntry result = new TableEntry(te);
 		String name = result.getName();
 		System.out.println(name);
-		//String newName = name.replaceAll("_", " ");
+		// String newName = name.replaceAll("_", " ");
 		result.setName(name);
 
 		result.setUrl("");
@@ -382,11 +382,15 @@ public class SqlRunner {
 		result.setOverview(overviewStr);
 
 		String photoLink = result.getPhotoLink();
-		//photoLink.replaceAll("'", "\'");
+		photoLink.replaceAll("'", "\'");
+		int containsQuesmark = photoLink.indexOf("?");
+		if (containsQuesmark != -1) {
+			photoLink = photoLink.substring(0, containsQuesmark);
+		}
 		result.setPhotoLink(photoLink);
 
-		result.setUrl(wikiURL+wikiPageID);
-		
+		result.setUrl(wikiURL + wikiPageID);
+
 		return result;
 	}
 
@@ -464,8 +468,8 @@ public class SqlRunner {
 		// String wikiPageID = (String)
 		// res_row.row.get(9).getValue().cast(res_row.row.get(9).getKey());
 
-		TableEntry te = new TableEntry(wikiURL+wikiPageID, name, birthPlace, deathPlace, birthDate, deathDate, occupation, spouseName,
-				spouseOccupation, photoLink, overviewStr);
+		TableEntry te = new TableEntry(wikiURL + wikiPageID, name, birthPlace, deathPlace, birthDate, deathDate,
+				occupation, spouseName, spouseOccupation, photoLink, overviewStr);
 		return te;
 	}
 

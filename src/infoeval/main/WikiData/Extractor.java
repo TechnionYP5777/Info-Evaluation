@@ -127,8 +127,7 @@ public class Extractor {
 						+ " (SAMPLE (?spOccupation) as ?spOccu) (SAMPLE (?deathPlace) as ?death)"
 						+ " (SAMPLE(?birthPlace) as ?birth) (SAMPLE(?deathDate) as ?dDate) "
 						+ " (SAMPLE( ?birthDate) as ?bDate)  {  VALUES ?wikiPageID { " + wikiPageID
-						+ " } ?res a dbo:Person. "
-						+ " ?res dbp:name ?name."
+						+ " } ?res a dbo:Person. " + " ?res dbp:name ?name."
 						+ " ?res dbo:wikiPageID ?wikiPageID. ?res dbp:birthPlace ?birthPlace. "
 						+ " ?res dbp:birthDate ?birthDate. OPTIONAL{?res dbo:occupation ?occupation}."
 						+ " OPTIONAL{?res dbo:thumbnail ?photoLink}."
@@ -136,9 +135,10 @@ public class Extractor {
 						+ " ?spouse dbo:occupation ?spOccupation}. "
 						+ " OPTIONAL{?res dbp:deathDate ?deathDate. ?res dbp:deathPlace ?deathPlace}. } "
 						+ " GROUP BY (?name)");
-		abstractByWikiPageID = new ParameterizedSparqlString(" PREFIX  dbo:  <http://dbpedia.org/ontology/> SELECT ?abstract { VALUES ?wikiPageID { " + wikiPageID
-				+ " } ?res a dbo:Person. ?res dbo:wikiPageID ?wikiPageID. ?res dbo:abstract ?abstract."
-				+ " FILTER (lang(?abstract) = 'en') }");
+		abstractByWikiPageID = new ParameterizedSparqlString(
+				" PREFIX  dbo:  <http://dbpedia.org/ontology/> SELECT ?abstract { VALUES ?wikiPageID { " + wikiPageID
+						+ " } ?res a dbo:Person. ?res dbo:wikiPageID ?wikiPageID. ?res dbo:abstract ?abstract."
+						+ " FILTER (lang(?abstract) = 'en') }");
 
 		queriesMap = new HashMap<QueryTypes, ParameterizedSparqlString>();
 		queriesMap.put(QueryTypes.BASIC_INFO_BY_WIKI_PAGE_ID, basicInfoByWikiPageID);

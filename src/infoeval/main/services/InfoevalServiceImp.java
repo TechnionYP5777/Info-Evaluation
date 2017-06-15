@@ -10,13 +10,11 @@ import infoeval.main.WikiData.WikiParsing;
 import infoeval.main.mysql.SqlRunner;
 
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.*;
 //import org.springframework.stereotype.*;
 //import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -37,24 +35,22 @@ public class InfoevalServiceImp implements InfoevalService {
 	private static final Logger logger = Logger.getLogger("InfoevalServiceImp".getClass().getName());
 	private static AnalyzeParagraph analyze;
 	SqlRunner runner;
-	
 
 	public InfoevalServiceImp() throws Exception {
-		 analyze = new AnalyzeParagraph();
+		analyze = new AnalyzeParagraph();
 		// Pre-Loading the classifiers used by NLP and openIE to enhance
 		// performance.
-		 analyze.LoadNLPClassifiers();
-		 analyze.LoadIEClassifiers();
-		runner=new SqlRunner();
+		analyze.LoadNLPClassifiers();
+		analyze.LoadIEClassifiers();
+		runner = new SqlRunner();
 	}
 
 	@Override
 	@RequestMapping(path = "Queries/Query2", method = RequestMethod.GET)
 	public ArrayList<TableEntry> getBornInPlaceYear(String place, String year) throws Exception {
 
-		ArrayList<TableEntry> $ =runner.getBornInPlaceBeforeYear(place, year);
-		logger.log(Level.INFO,
-				"Born in place before year was called.\n Parameters:Place:" + place + ", Year:" + year);
+		ArrayList<TableEntry> $ = runner.getBornInPlaceBeforeYear(place, year);
+		logger.log(Level.INFO, "Born in place before year was called.\n Parameters:Place:" + place + ", Year:" + year);
 		logger.log(Level.INFO, "list size:" + $.size());
 
 		return $;
@@ -125,8 +121,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	@Override
 	@RequestMapping(path = "Queries/Dynamic", method = RequestMethod.GET)
 	public LinkedList<String> getDynamic(String name, String query) throws Exception {
-		logger.log(Level.INFO,
-				"Get dynamic query results was called.\n Parameters:Name:" + name + " Query:" + query);
+		logger.log(Level.INFO, "Get dynamic query results was called.\n Parameters:Name:" + name + " Query:" + query);
 		// Parse user's input:
 		try {
 			analyze.dynamicQuery(name, query);
@@ -145,9 +140,8 @@ public class InfoevalServiceImp implements InfoevalService {
 		String pageId = "", UpdatedName = updteName(name);
 		System.out.println(UpdatedName);
 		try {
-			pageId = Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles=" + UpdatedName
-					+ "&prop=pageimages&format=xml&pithumbsize=350").get().toString().split("pageid=\"")[1]
-							.split("\"")[0];
+			pageId = (Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles=" + UpdatedName
+					+ "&prop=pageimages&format=xml&pithumbsize=350").get() + "").split("pageid=\"")[1].split("\"")[0];
 		} catch (Exception e) {
 			throw e;
 			// TODO: Inform user that page does not exist
