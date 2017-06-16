@@ -273,13 +273,39 @@ angular.module('starter.controllers', [])
 		//Get the personal data of the person:
 	//var perName = $stateParams.name;
 	console.log('229 in extra info');
-	$scope.loadind=false;
+	$scope.loadind=true;
 	$scope.stateShow=true;
 	$scope.personalInformation=Query1ExtraInfo.getPerson();
 	$scope.showMoreInfo = function(){
-			$scope.stateShow=false;
+		$scope.stateShow=false;
 		console.log('281 in on click more info');
-		};
+		$http({
+		  method: 'GET',
+		  url:'/Queries/PersonalInformation',
+			params: {
+			name: $scope.personalInformation.name
+		}
+		}).then(function successCallback(response) {
+			console.log('personal data - success');
+			$scope.moreInfo = response.data;
+			console.log('url is ' + $scope.moreInfo.photoLink);
+			console.log('birthPlace is:'+$scope.moreInfo.birthPlace);
+			if($scope.moreInfo.photoLink == "No Photo") {
+				$scope.moreInfo.photoLink="http://www.freeiconspng.com/uploads/profile-icon-9.png";
+			}
+			$scope.loadind=false;
+			
+		}, function errorCallback(response) {
+			alert(JSON.stringify(response))
+			var FetchErrorAlert = $ionicPopup.alert({
+				title: 'Fetch error!',
+				template: 'Unable to get personal data', 
+			});
+		console.log(response.data);
+		$scope.loadindPersonalInfo = false;
+		}
+		);
+	};
 	/*$http({
 		  method: 'GET',
 		  url:'/Queries/PersonalInformation',
