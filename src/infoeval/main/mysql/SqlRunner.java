@@ -367,18 +367,10 @@ public class SqlRunner {
 		ResultSetRewindable basicInfoByNameResults = ext.getResults();
 		basicInfoByNameResults.reset();
 
-		SqlTablesFiller filler = new SqlTablesFiller();
-		TableEntry te = filler.getInfo(basicInfoByNameResults);
-		filler.close();
-
+		TableEntry te = SqlTablesFiller.getBasicInfo(basicInfoByNameResults);
 		TableEntry result = new TableEntry(te);
-		String name = result.getName();
-		System.out.println(name);
-		// String newName = name.replaceAll("_", " ");
-		result.setName(name);
 
-		result.setUrl("");
-
+		result.setUrl(wikiURL + wikiPageID);
 		result.setOverview(overviewStr);
 
 		String photoLink = result.getPhotoLink();
@@ -388,8 +380,6 @@ public class SqlRunner {
 			photoLink = photoLink.substring(0, containsQuesmark);
 		}
 		result.setPhotoLink(photoLink);
-
-		result.setUrl(wikiURL + wikiPageID);
 
 		return result;
 	}
@@ -413,7 +403,7 @@ public class SqlRunner {
 		if (id_result.isEmpty()) {
 			Extractor ext = new Extractor(wikiPageID);
 			logger.log(Level.INFO, "abstract extraction query is being executed");
-			ext.executeQuery(QueryTypes.ABSTRACT);
+			ext.executeQuery(QueryTypes.ABSTRACT_BY_WIKI_PAGE_ID);
 			ResultSetRewindable results = ext.getResults();
 
 			results.reset();

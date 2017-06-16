@@ -50,61 +50,6 @@ public class ExtractorTest {
 
 	@Ignore
 	@Test
-	public void abstractTest() {
-		String name = "michelle williams (actress)", newName = WordUtils.capitalize(name).replaceAll(" ", "_");
-		Extractor extr = new Extractor(newName);
-		extr.executeQuery(QueryTypes.ABSTRACT);
-		ResultSetRewindable results = extr.getResults();
-		results.reset();
-
-		RDFNode overview = results.nextSolution().get("abstract");
-		String overviewStr = "No Abstract";
-		if (overview != null)
-			if (overview.isResource())
-				overviewStr = (overview.asResource() + "").split("resource/")[1];
-			else if (overview.isLiteral())
-				overviewStr = (overview.asLiteral() + "").split("@")[0];
-
-		assertEquals(overviewStr,
-				"Michelle Ingrid Williams (born September 9, 1980) is an American actress. She began her career with television guest appearances, and made her feature film debut in Lassie (1994), which earned her a Youth in Film nomination. She is known for her role as Jen Lindley on the The WB series Dawson's Creek, from 1998 to 2003. Williams received critical acclaim for her role as the wife of Ennis Del Mar in Brokeback Mountain (2005), for which she won a Broadcast Film Critics Association Award and was nominated for the SAG Award, BAFTA Award, Golden Globe, and Academy Award for Best Supporting Actress. She followed this with films such as Martin Scorsese's Shutter Island (2010). Williams' performance as a drifter in 2008's Wendy and Lucy earned her a Independent Spirit Award nomination, and her work in Blue Valentine (2010) garnered her nominations for the Golden Globe Award and the Academy Award for Best Actress. She won a Golden Globe and an Independent Spirit Award for her portrayal of Marilyn Monroe in My Week with Marilyn (2011), which also garnered her BAFTA, SAG, and Academy Award nominations. In 2014, she made her Broadway debut in a revival of Cabaret as Sally Bowles. She returned to Broadway in 2016 in a production of Blackbird alongside Jeff Daniels.");
-	}
-
-	@Ignore
-	@Test
-	public void basicInfoBracketsNameTest() throws Exception {
-		String name = "Michelle_Williams_(singer)";
-		Extractor extr = new Extractor(name);
-		extr.executeQuery(QueryTypes.BASIC_INFO_BRACKETS_NAME);
-		ResultSetRewindable results = extr.getResults();
-		results.reset();
-
-		SqlTablesFiller filler = new SqlTablesFiller();
-		TableEntry te = filler.getInfo(results);
-		filler.close();
-
-		System.out.println("Birth Place is " + te.getBirthPlace());
-
-		System.out.println("Death Place is " + te.getDeathPlace());
-
-		Date birthDate = te.getBirthDate();
-		if (birthDate != null)
-			System.out.println("Birth Date is " + birthDate);
-
-		Date deathDate = te.getDeathDate();
-		if (deathDate != null)
-			System.out.println("Death Date is " + deathDate);
-
-		System.out.println("Occupation is " + te.getOccupation());
-
-		System.out.println("Spouse Name is " + te.getSpouseName());
-
-		System.out.println("Spouse Occupation is " + te.getSpouseOccupation());
-
-		System.out.println("PhotoLink is " + te.getPhotoLink());
-	}
-
-	@Ignore
-	@Test
 	public void basicInfoByIDTest() throws Exception {
 		int wikiPageID = Integer.parseInt((Jsoup
 				.connect(
@@ -116,9 +61,7 @@ public class ExtractorTest {
 		ResultSetRewindable results = extr.getResults();
 		results.reset();
 
-		SqlTablesFiller filler = new SqlTablesFiller();
-		TableEntry te = filler.getInfo(results);
-		filler.close();
+		TableEntry te = SqlTablesFiller.getBasicInfo(results);
 
 		System.out.println("Name is " + te.getName());
 
