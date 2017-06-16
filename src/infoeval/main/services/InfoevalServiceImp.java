@@ -15,6 +15,7 @@ import org.springframework.boot.autoconfigure.*;
 //import org.springframework.stereotype.*;
 //import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -75,6 +76,19 @@ public class InfoevalServiceImp implements InfoevalService {
 		return runner.getSameOccupationCouples();
 
 	}
+	
+	@Override
+	@RequestMapping(path="Queries/checkAmbiguities", method=RequestMethod.GET)
+	public ArrayList<String> checkAmbiguities(String name) throws IOException{
+		String UpdatedName = updteName(name);
+		try{
+			WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + UpdatedName));
+			return !wiki.isConflictedName() ? null : wiki.getNames();
+		}
+		catch (Exception e){
+			throw e;
+		}
+	}
 
 	@Override
 	@RequestMapping(path = "Queries/Arrests", method = RequestMethod.GET)
@@ -85,8 +99,6 @@ public class InfoevalServiceImp implements InfoevalService {
 		try {
 			WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + UpdatedName));
 			wiki.Parse("arrested");
-			wiki.isConflictedName();
-			wiki.getNames();
 			new ArrayList<>();
 			analyze.setParagraphs(wiki.getParagraphs());
 			analyze.AnalyzeArrestsQuery();
@@ -144,7 +156,6 @@ public class InfoevalServiceImp implements InfoevalService {
 					+ "&prop=pageimages&format=xml&pithumbsize=350").get() + "").split("pageid=\"")[1].split("\"")[0];
 		} catch (Exception e) {
 			throw e;
-			// TODO: Inform user that page does not exist
 		}
 		return runner.getPersonalInfo(Integer.parseInt(pageId));
 	}
