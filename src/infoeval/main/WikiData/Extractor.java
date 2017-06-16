@@ -20,9 +20,6 @@ public class Extractor {
 
 	private ParameterizedSparqlString basicInfoQuery;
 	private ParameterizedSparqlString wikiIdQuery;
-	private ParameterizedSparqlString abstractQuery;
-	private ParameterizedSparqlString basicInfoByNameQuery;
-	private ParameterizedSparqlString basicInfoByBracketsNameQuery;
 	private ParameterizedSparqlString basicInfoByWikiPageID;
 	private ParameterizedSparqlString abstractByWikiPageID;
 	private ResultSetRewindable results;
@@ -65,57 +62,6 @@ public class Extractor {
 		queriesMap.put(QueryTypes.WIKI_ID, wikiIdQuery);
 	}
 
-	public Extractor(String name) {
-		abstractQuery = new ParameterizedSparqlString(" PREFIX dbo: <http://dbpedia.org/ontology/>"
-
-				+ " SELECT ?abstract WHERE { <http://dbpedia.org/resource/" + name + "> dbo:abstract ?abstract."
-				+ "FILTER (lang(?abstract) = 'en')}");
-
-		basicInfoByNameQuery = new ParameterizedSparqlString(
-				" PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-						+ " PREFIX  dbo: <http://dbpedia.org/ontology/>"
-						+ " PREFIX  dbp: <http://dbpedia.org/property/>"
-						+ " PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX bif:<bif:>"
-						+ " SELECT (SAMPLE (?photoLink) as ?photo) (SAMPLE (?occupation) as ?occup)"
-						+ " (SAMPLE (?spouse) as ?spouses) (SAMPLE (?spName) as ?sname)"
-						+ " (SAMPLE (?spOccupation) as ?spOccu) (SAMPLE (?deathPlace) as ?death)"
-						+ " (SAMPLE(?birthPlace) as ?birth) (SAMPLE(?deathDate) as ?dDate) "
-						+ " (SAMPLE( ?birthDate) as ?bDate)  WHERE { ?resource a dbo:Person."
-						+ " ?resource rdfs:label ?name. FILTER(bif:contains(?name,?nameVal))"
-						+ " ?resource dbp:birthPlace ?birthPlace. ?resource dbp:birthDate ?birthDate."
-						+ " OPTIONAL{?resource dbo:occupation ?occupation}."
-						+ " OPTIONAL{?resource dbo:thumbnail ?photoLink}."
-						+ " OPTIONAL{?resource dbo:spouse ?spouse. ?spouse dbp:name ?spName."
-						+ " ?spouse dbo:occupation ?spOccupation}. "
-						+ " OPTIONAL{?resource dbp:deathDate ?deathDate. ?resource dbp:deathPlace ?deathPlace} "
-						+ " }");
-
-		basicInfoByBracketsNameQuery = new ParameterizedSparqlString(
-				" PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
-						+ " PREFIX  dbo: <http://dbpedia.org/ontology/>"
-						+ " PREFIX  dbp: <http://dbpedia.org/property/>"
-						+ " PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
-						+ " SELECT ?uri (SAMPLE (?photoLink) as ?photo) (SAMPLE (?occupation) as ?occup)"
-						+ " (SAMPLE (?spouse) as ?spouses) (SAMPLE (?spName) as ?sname)"
-						+ " (SAMPLE (?spOccupation) as ?spOccu) (SAMPLE (?deathPlace) as ?death)"
-						+ " (SAMPLE(?birthPlace) as ?birth) (SAMPLE(?deathDate) as ?dDate) "
-						+ " (SAMPLE( ?birthDate) as ?bDate)  { VALUES ?uri { <http://dbpedia.org/resource/" + name
-						+ "> } ?uri dbp:birthPlace ?birthPlace. ?uri dbp:birthDate ?birthDate."
-						+ " OPTIONAL{?uri dbo:occupation ?occupation}. OPTIONAL{?uri dbo:thumbnail ?photoLink}."
-						+ " OPTIONAL{?uri dbo:spouse ?spouse. ?spouse dbp:name ?spName."
-						+ " ?spouse dbo:occupation ?spOccupation}. "
-						+ " OPTIONAL{?uri dbp:deathDate ?deathDate. ?uri dbp:deathPlace ?deathPlace}  } "
-						+ "GROUP BY ?uri");
-
-		// abstractQuery.setIri("name","http://dbpedia.org/resorce/"+name);
-		basicInfoByNameQuery.setLiteral("nameVal", name);
-
-		queriesMap = new HashMap<QueryTypes, ParameterizedSparqlString>();
-		queriesMap.put(QueryTypes.ABSTRACT, abstractQuery);
-		queriesMap.put(QueryTypes.BASIC_INFO_BY_NAME, basicInfoByNameQuery);
-		queriesMap.put(QueryTypes.BASIC_INFO_BRACKETS_NAME, basicInfoByBracketsNameQuery);
-	}
-
 	public Extractor(int wikiPageID) {
 		basicInfoByWikiPageID = new ParameterizedSparqlString(
 				" PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
@@ -145,17 +91,12 @@ public class Extractor {
 		queriesMap.put(QueryTypes.ABSTRACT_BY_WIKI_PAGE_ID, abstractByWikiPageID);
 	}
 
-	@SuppressWarnings("resource")
 	public void executeQuery(QueryTypes ¢) {
-		// this.results = ResultSetFactory.copyResults(
-		// (new QueryEngineHTTP("http://dbpedia.org/sparql",
-		// queriesMap.get(¢).asQuery())).execSelect());
-
-		this.results = ResultSetFactory.copyResults(QueryExecutionFactory
+		results = ResultSetFactory.copyResults(QueryExecutionFactory
 				.sparqlService("http://dbpedia.org/sparql", queriesMap.get(¢).asQuery()).execSelect());
 	}
 
 	public ResultSetRewindable getResults() {
-		return this.results;
+		return results;
 	}
 }
