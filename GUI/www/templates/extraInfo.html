@@ -27,7 +27,11 @@
 							</button>
 						</div>
 						
-						<div ng-show="!stateShow" >
+						<div ng-show="!stateShow && loading" >
+							<center> <img src="img/2.gif"></center>
+						</div>
+							
+						<div ng-show="!loading && !stateShow" >
 							<h3 class="tab25">Short overview:</h3> <p class="tab40 paragraphInfo "> {{personalInformation.overview}} </p>
 						</div>
 					</div>

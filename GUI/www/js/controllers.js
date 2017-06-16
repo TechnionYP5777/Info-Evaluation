@@ -316,13 +316,13 @@ angular.module('starter.controllers', [])
 			$scope.loadind=false;
 			
 		}, function errorCallback(response) {
-			alert(JSON.stringify(response))
+			//alert(JSON.stringify(response))
 			var FetchErrorAlert = $ionicPopup.alert({
 				title: 'Fetch error!',
-				template: 'Unable to get personal data', 
+				template: 'Unable to get more personal', 
 			});
-		console.log(response.data);
-		$scope.loadindPersonalInfo = false;
+			console.log(response.data);
+			//$state.go('app.InteractiveSearch');
 		}
 		);
 	};
