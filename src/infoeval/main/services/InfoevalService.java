@@ -1,5 +1,6 @@
 package infoeval.main.services;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,5 +28,7 @@ public interface InfoevalService {
 	ArrayList<TableEntry> getSameOccupationCouples() throws Exception;
 
 	LinkedList<String> getDynamic(String name, String query) throws Exception;
+
+	ArrayList<String> checkAmbiguities(String name) throws IOException;
 
 }
