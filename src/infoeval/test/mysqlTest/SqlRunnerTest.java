@@ -119,12 +119,10 @@ public class SqlRunnerTest {
 	@Ignore
 	@Test
 	public void getPersonalInfoTest() throws Exception {
-		TableEntry te = querun
-				.getPersonalInfo(
-						Integer.parseInt(Jsoup
-								.connect("https://en.wikipedia.org/w/api.php?action=query&titles=Yasuhiro_Takato"
-										+ "&prop=pageimages&format=xml&pithumbsize=350")
-								.get().toString().split("pageid=\"")[1].split("\"")[0]));
+		TableEntry te = querun.getPersonalInfo(
+				Integer.parseInt((Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles=Yasuhiro_Takato"
+						+ "&prop=pageimages&format=xml&pithumbsize=350").get() + "").split("pageid=\"")[1]
+								.split("\"")[0]));
 
 		System.out.println("Birth Place is " + te.getBirthPlace());
 
@@ -153,10 +151,14 @@ public class SqlRunnerTest {
 	@Ignore
 	@Test
 	public void getPersonalInfoNotInDBTest() throws Exception {
-		TableEntry te = querun.getPersonalInfo(Integer.parseInt(Jsoup
+		TableEntry te = querun.getPersonalInfo(Integer.parseInt((Jsoup
 				.connect(
-						"https://en.wikipedia.org/w/api.php?action=query&titles=Shakira&prop=pageimages&format=xml&pithumbsize=350")
-				.get().toString().split("pageid=\"")[1].split("\"")[0]));
+						"https://en.wikipedia.org/w/api.php?action=query&titles=Enrique_Iglesias&prop=pageimages&format=xml&pithumbsize=350")
+				.get() + "").split("pageid=\"")[1].split("\"")[0]));
+
+		System.out.println("Wikipedia URL is " + te.getUrl());
+
+		System.out.println("Name is " + te.getName());
 
 		System.out.println("Birth Place is " + te.getBirthPlace());
 

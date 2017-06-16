@@ -88,8 +88,12 @@ public class SqlTablesFiller {
 		QuerySolution solution = r.nextSolution();
 		String name = solution.getLiteral("name").getString();
 
-		RDFNode sName = solution.get("sname");
-		String spouseName = sName == null || !sName.isLiteral() ? "No Spouse" : sName.asLiteral().getString() + "";
+		RDFNode sName = solution.getLiteral("sname");
+		String spouseName="No Spouse";
+		if(sName!=null){
+			spouseName=solution.getLiteral("sname").getString();
+		}
+		
 		RDFNode bPlace = solution.get("birth");
 		String birthPlace = "No Birth Place";
 		if (bPlace != null)
@@ -201,6 +205,9 @@ public class SqlTablesFiller {
 
 		QuerySolution solution = r.nextSolution();
 
+		RDFNode name = solution.get("name");
+		String personalName = name == null || !name.isLiteral() ? "No Name" : name.asLiteral().getString() + "";
+
 		RDFNode sName = solution.get("sname");
 		String spouseName = sName == null || !sName.isLiteral() ? "No Spouse" : sName.asLiteral().getString() + "";
 
@@ -295,7 +302,7 @@ public class SqlTablesFiller {
 			++monthNum;
 		}
 
-		return new TableEntry("", "", birthPlace, deathPlace, sqlBirthDate, sqlDeathDate, occup, spouseName,
+		return new TableEntry("", personalName, birthPlace, deathPlace, sqlBirthDate, sqlDeathDate, occup, spouseName,
 				spouseOccupation, (solution.get("photo") == null ? "No Photo" : solution.get("photo") + ""), "");
 	}
 

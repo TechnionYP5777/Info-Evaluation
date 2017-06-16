@@ -38,18 +38,19 @@ public class AnalyzeParagraph {
 	final StanfordCoreNLP pipeLine;
 
 	public AnalyzeParagraph(Elements Paragraphs) throws IOException {
+		this.Paragraphs = new Elements();
 		this.Paragraphs = Paragraphs;
 		this.Information = new LinkedList<String>();
 		final Properties props = new Properties();
-		props.put("annotators", "tokenize,ssplit, pos ,parse,lemma");	
-		this.pipeLine = new StanfordCoreNLP(props);	
+		props.put("annotators", "tokenize,ssplit, pos ,parse,lemma");
+		this.pipeLine = new StanfordCoreNLP(props);
 	}
 
 	public AnalyzeParagraph() throws IOException {
 		this.Paragraphs = new Elements();
 		this.Information = new LinkedList<String>();
 		final Properties props = new Properties();
-		props.put("annotators", "tokenize,ssplit, pos,parse,lemma");	
+		props.put("annotators", "tokenize,ssplit, pos,parse,lemma");
 		this.pipeLine = new StanfordCoreNLP(props);
 	}
 
@@ -62,73 +63,69 @@ public class AnalyzeParagraph {
 	}
 
 	public void LoadNLPClassifiers() throws IOException {
-		//Load coreNLP classifiers
+		// Load coreNLP classifiers
 		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/The_Weeknd"));
 		wiki.Parse("arrested");
 		setParagraphs(wiki.getParagraphs());
 		AnalyzeArrestsQuery();
 	}
-	
-	public void LoadIEClassifiers() throws IOException{
-		//Load openIE classifiers
+
+	public void LoadIEClassifiers() throws IOException {
+		// Load openIE classifiers
 		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/Adele"));
 		wiki.Parse("won");
 		setParagraphs(wiki.getParagraphs());
 		AwardsQuery();
 	}
-	
+
 	public static boolean containsItemFromArray(String inputString, String[] items) {
-	    // Convert the array of String items as a Stream
-	    // For each element of the Stream call inputString.contains(element)
-	    // If you have any match returns true, false otherwise
-	    return Arrays.stream(items).anyMatch(inputString::contains);
+		// Convert the array of String items as a Stream
+		// For each element of the Stream call inputString.contains(element)
+		// If you have any match returns true, false otherwise
+		return Arrays.stream(items).anyMatch(inputString::contains);
 	}
-	
-	
-	public void dynamicQuery(String name,String query) throws Exception{
-		try{
-		//Prepare list of similar words to the query
-        List<String> keywords = new LinkedList<String>();
-        keywords.add(query);
-        name = name.trim().replaceAll(" ", "_").toLowerCase();
-		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + name));
-		System.out.println("https://en.wikipedia.org/wiki/" + name);
-		wiki.Parse(query);
-		System.out.println(wiki.getParagraphs().text());
-		setParagraphs(wiki.getParagraphs());
-		
-		
-		 Annotation doc = new Annotation(query);
-		 this.pipeLine.annotate(doc);
-	        for(CoreMap sentence: doc.get(SentencesAnnotation.class))
+
+	public void dynamicQuery(String name, String query) throws Exception {
+		try {
+			// Prepare list of similar words to the query
+			List<String> keywords = new LinkedList<String>();
+			keywords.add(query);
+			name = name.trim().replaceAll(" ", "_").toLowerCase();
+			WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + name));
+			System.out.println("https://en.wikipedia.org/wiki/" + name);
+			wiki.Parse(query);
+			System.out.println(wiki.getParagraphs().text());
+			setParagraphs(wiki.getParagraphs());
+
+			Annotation doc = new Annotation(query);
+			this.pipeLine.annotate(doc);
+			for (CoreMap sentence : doc.get(SentencesAnnotation.class))
 				for (CoreLabel token : sentence.get(TokensAnnotation.class))
 					keywords.add(token.get(LemmaAnnotation.class));
 
-		//The query itself
-		for (final Element paragraph : this.Paragraphs)
-			for (String sent : paragraph.text().split("\\.")) { // Split to sentences.
-				
-				boolean hasTerm = false;
-				for (String word : sent.split("\\s+"))
-					for (String keyword : keywords)
-						if (word.equals(keyword)) {
-							hasTerm = true;
-							break;
-						}
-				
-				
-				if (!hasTerm)
-					continue;
-				
-				sent = sent.replaceAll("\\[\\d+\\]", "");
-				Information.add(sent);
-			}
-		}
-		catch (Exception e) {
+			// The query itself
+			for (final Element paragraph : this.Paragraphs)
+				for (String sent : paragraph.text().split("\\.")) { // Split to
+																	// sentences.
+
+					boolean hasTerm = false;
+					for (String word : sent.split("\\s+"))
+						for (String keyword : keywords)
+							if (word.equals(keyword)) {
+								hasTerm = true;
+								break;
+							}
+
+					if (!hasTerm)
+						continue;
+
+					sent = sent.replaceAll("\\[\\d+\\]", "");
+					Information.add(sent);
+				}
+		} catch (Exception e) {
 			throw e;
 		}
 	}
-
 
 	public void AwardsQuery() {
 		System.out.println("Started analyzing awards query");
