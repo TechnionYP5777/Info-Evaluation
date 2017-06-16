@@ -105,22 +105,13 @@ angular.module('starter.controllers', [])
 .controller('ShowResultsButtonCtrl',function($scope,$state,DataQ,$ionicPopup){
 	
 	$scope.isNumber = function(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
+  		return !isNaN(parseFloat(n)) && isFinite(n);
 	};	
 
-	$scope.showSecondQueryResults = function(place,year){
-		console.log('show results button was clicked-query 2');
-		 return $scope.validateInput(place,year).then(function(place,year){
-			 if($scope.legalInput=true){
-		DataQ.setYear(year);
-		DataQ.setPlace(place);
-		$state.go('app.Query2Results');
-			 }
-		});
-	};
 	
 	
-		$scope.validateInput = function(place,year){
+	
+	$scope.validateInput = function(place,year){
 		$scope.legalInput=true;
 		 if (!(year && place)) {
             //don't allow the user search unless he enters all inputs
@@ -141,6 +132,35 @@ angular.module('starter.controllers', [])
 			}
 		}
 			
+	};
+	
+	$scope.showSecondQueryResults = function(place,year){
+		console.log('show results button was clicked-query 2');
+		$scope.legalInput=true;
+		 if (!(year && place)) {
+            //don't allow the user search unless he enters all inputs
+           
+			var InputErrorAlert = $ionicPopup.alert({
+				title: 'Input error!',
+				template: 'Missing Input. Please insert valid Place and Year', 
+			});
+          } 
+		else{
+			//Input is set, but check that it is legal.
+			if( !$scope.isNumber(year)){
+				var InputErrorAlert = $ionicPopup.alert({
+				title: 'Input error!',
+				template: 'Illegal Input. Please insert a valid Year', 
+			});
+				$scope.legalInput=false;
+			}
+		}
+		 if($scope.legalInput=true){
+			DataQ.setYear(year);
+			DataQ.setPlace(place);
+			$state.go('app.Query2Results');
+		 }
+		
 	};
 	
 	$scope.setParams = function(place,year){
