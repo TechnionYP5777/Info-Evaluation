@@ -77,6 +77,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             }
         }
     })
+	
 
     .state('app.extraInfo', {
         url: '/extraInfo',

@@ -83,6 +83,7 @@ public class InfoevalServiceImp implements InfoevalService {
 		String UpdatedName = updteName(name);
 		try{
 			WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + UpdatedName));
+			System.out.print("Trying to fetch from ,  https://en.wikipedia.org/wiki/" + UpdatedName);
 			return !wiki.isConflictedName() ? null : wiki.getNames();
 		}
 		catch (Exception e){
