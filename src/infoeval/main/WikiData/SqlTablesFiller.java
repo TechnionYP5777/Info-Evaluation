@@ -107,11 +107,7 @@ public class SqlTablesFiller {
 		// : sName.asLiteral().getString() + "";
 
 		RDFNode sName = solution.getLiteral("sname");
-		String spouseName = "No Spouse";
-		if (sName != null) {
-			spouseName = solution.getLiteral("sname").getString();
-		}
-
+		String spouseName = sName == null ? "No Spouse" : solution.getLiteral("sname").getString();
 		RDFNode bPlace = solution.get("birth");
 		String birthPlace = "No Birth Place";
 		if (bPlace != null)

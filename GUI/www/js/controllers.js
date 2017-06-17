@@ -353,7 +353,6 @@ angular.module('starter.controllers', [])
         $scope.loading = false;
 
     }, function errorCallback(response) {
-        alert(JSON.stringify(response))
         var FetchErrorAlert = $ionicPopup.alert({
             title: 'Fetch error!',
             template: 'Unable to get data',
@@ -475,7 +474,7 @@ angular.module('starter.controllers', [])
 								}
 							}).then(function successCallback(response) {
 								$scope.listOfPersons = [];
-								if (response.data == null) {
+								if (!response) {
 									console.log('No ambiguities');
 								} else {
 									for (var r in response.data) {
@@ -513,7 +512,11 @@ angular.module('starter.controllers', [])
 
         myPopup.then(function(res) {
 			if( $scope.ambiguitiesSolved == false){
-				alert('Couldn\'nt solve ambiguities');
+				var FetchErrorAlert = $ionicPopup.alert({
+            title: 'Error!',
+            template: 'Couldn\'nt solve ambiguity!',
+       		 });
+				$state.go('app.InteractiveSearch');
 			}
 			else{
             console.log('Query was added: ' + res.query);
@@ -529,81 +532,6 @@ angular.module('starter.controllers', [])
 
 
 
-})
-
-.controller('ambiguityCheckCtrl', function($scope, $http, $state, $timeout, $ionicPopup, ionicMaterialMotion, ionicMaterialInk, DynamicParams) {
-    // Set Header
-    $scope.$parent.showHeader();
-    $scope.$parent.clearFabs();
-    $scope.isExpanded = false;
-    $scope.$parent.setExpanded(false);
-    $scope.$parent.setHeaderFab(false);
-    $scope.loading = true;
-    $scope.loadindPersonalInfo = true;
-    console.log('Checking for ambiguities');
-    $scope.listOfPersons = [];
-    $scope.name = DynamicParams.getName();
-    $scope.queryName = DynamicParams.getQuery();
-    console.log($scope.name);
-    $http({
-        method: 'GET',
-        url: '/Queries/checkAmbiguities',
-        params: {
-            name: DynamicParams.getName(),
-            query: DynamicParams.getQuery()
-        }
-    }).then(function successCallback(response) {
-        $scope.listOfPersons = [];
-        if (response.data == null) {
-            //If its null -  then there are no ambiguities.
-			console.log('Query wad added: ' + res.query);
-            console.log('Person to look for in query: ' + res.personName);
-            DynamicParams.setName(res.personName);
-            DynamicParams.setQuery(res.query);
-            $state.go('app.dynamicQueryResults');
-        } else {
-            for (var r in response.data) {
-                var info = response.data[r];
-
-                $scope.listOfPersons.push(info);
-                console.log(info);
-            }
-            $scope.loading = false;
-			var listPopup = $ionicPopup.show({
-			 template: '<ion-list>                                '+
-					   '  <ion-item ng-repeat="item in listOfPersons"> '+
-					   '    {{item}}                              '+
-					   '  </ion-item>                             '+
-					   '</ion-list>                               ',
-
-			 title: 'List',
-			 scope: $scope,
-			 buttons: [
-			   { text: 'Cancel' },
-			 ]
-		   });   
-        }
-
-    }, function errorCallback(response) {
-        alert('Unable to solve ambiguities.')
-        $state.go('app.InteractiveSearch');
-    });
-
-    // Set Motion
-    $timeout(function() {
-        ionicMaterialMotion.slideUp({
-            selector: '.slide-up'
-        });
-    }, 300);
-
-    $timeout(function() {
-        ionicMaterialMotion.fadeSlideInRight({
-            startVelocity: 3000
-        });
-    }, 700);
-
-    // Set Ink
-    ionicMaterialInk.displayEffect();
 })
 
 
