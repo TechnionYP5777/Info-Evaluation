@@ -96,6 +96,42 @@ angular.module('starter.services', [])
 	};
 })
 
+.factory('CheckQuery2Input',function($q){
+	
+	
+	return{
+		isNumber: function(n) {
+  		return !isNaN(parseFloat(n)) && isFinite(n);
+		},
+		validateInput: function(place,year){
+			 var deferred = $q.defer();
+		//$scope.legalInput=true;
+		 if (!(year && place)) {
+            //don't allow the user search unless he enters all inputs
+          // var InputErrorAlert = $ionicPopup.alert({
+			//	title: 'Input error!',
+			//	template: 'Missing Input. Please insert valid Place and Year', 
+			//});
+			deferred.reject('MISSING');
+          } 
+		else{
+			//Input is set, but check that it is legal.
+			if( !this.isNumber(year)){
+				//var InputErrorAlert = $ionicPopup.alert({
+				//title: 'Input error!',
+				//template: 'Illegal Input. Please insert a valid Year', 
+			//});
+				//$scope.legalInput=false;
+				deferred.reject('INVALIDYEAR');
+			}
+		}
+		
+		deferred.resolve('OK');
+		return deferred.promise;
+		}
+	};
+})
+
 //EOF
 ;
 
