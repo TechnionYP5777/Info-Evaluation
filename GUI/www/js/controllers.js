@@ -255,6 +255,7 @@ angular.module('starter.controllers', [])
     console.log('229 in extra info');
     $scope.loading = true;
     $scope.stateShow = true;
+	$scope.titleOverview=false;
     $scope.personalInformation = Query1ExtraInfo.getPerson();
 	console.log('259 name is ' + $scope.personalInformation.name);
     $scope.showMoreInfo = function() {
@@ -275,6 +276,7 @@ angular.module('starter.controllers', [])
                 $scope.moreInfo.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
             $scope.loading = false;
+			$scope.titleOverview=true;
 
         }, function errorCallback(response) {
             //alert(JSON.stringify(response))

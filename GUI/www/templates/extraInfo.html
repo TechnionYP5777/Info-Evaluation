@@ -3,12 +3,14 @@
        <div ng-controller="ExtraInfo1">
 		
 				
-			<div class="hero slide-up" style="background-image: url({{personalInformation.photoLink}});">
-				<div class="content">
-					<!--<div class="avatar" style="background-image: url({{personalInformation.photoLink}});"></div>
+		<!--	<ion-img width="80" height="80" src="{{personalInformation.photoLink}}"></ion-img>-->
+		   
+		   <div class="hero slide-up" style="background-image: url({{personalInformation.photoLink}});">
+				<!--<div class="content">
+					<div class="avatar" style="background-image: url({{personalInformation.photoLink}});"></div>
 					<h4><a class="light">Personal Information of {{personalInformation.name}} </a></h4>
-					<br/>-->
-				</div>
+					<br/>
+				</div>-->
 			</div>
 			
 			<!--<div ng-show="loadindPersonalInfo || loading"><br/><br/><center> <img src="img/2.gif"></center></div>
@@ -31,7 +33,7 @@
 							<center> <img src="img/2.gif"></center>
 						</div>
 							
-						<div ng-show="!loading && !stateShow" >
+						<div ng-show="!loading && !stateShow && titleOverview" >
 							<h3 class="tab25">Short overview:</h3> <p class="tab40 paragraphInfo "> {{personalInformation.overview}} </p>
 						</div>
 					</div>
