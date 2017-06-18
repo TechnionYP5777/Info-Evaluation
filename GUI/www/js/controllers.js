@@ -257,6 +257,12 @@ angular.module('starter.controllers', [])
     $scope.stateShow = true;
 	$scope.titleOverview=false;
     $scope.personalInformation = Query1ExtraInfo.getPerson();
+	
+	var photoLink = $scope.personalInformation.photoLink;
+	/*$scope.personalInformation.photoLink=photoLink.replace("url('", "");
+	photoLink = $scope.personalInformation.photoLink;
+	$scope.personalInformation.photoLink=photoLink.replace("')", "");*/
+	console.log('url is ' + $scope.personalInformation.photoLink);
 	console.log('259 name is ' + $scope.personalInformation.name);
     $scope.showMoreInfo = function() {
         $scope.stateShow = false;
