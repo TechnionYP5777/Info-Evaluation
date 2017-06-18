@@ -252,12 +252,11 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ExtraInfo1', function($scope, $http, $ionicPopup, Query1ExtraInfo) {
-    //Get the personal data of the person:
-    //var perName = $stateParams.name;
     console.log('229 in extra info');
     $scope.loading = true;
     $scope.stateShow = true;
     $scope.personalInformation = Query1ExtraInfo.getPerson();
+	console.log('259 name is ' + $scope.personalInformation.name);
     $scope.showMoreInfo = function() {
         $scope.stateShow = false;
         console.log('281 in on click more info');
@@ -290,34 +289,6 @@ angular.module('starter.controllers', [])
             //$state.go('app.InteractiveSearch');
         });
     };
-    /*$http({
-    	  method: 'GET',
-    	  url:'/Queries/PersonalInformation',
-    		params: {
-    		name: Query1ExtraInfo.getName()
-    	}
-    	}).then(function successCallback(response) {
-    		console.log('personal data - success');
-    		$scope.personalInformation = response.data;
-    		$scope.loadindPersonalInfo = true;
-    		console.log('url is ' + $scope.personalInformation.photoLink);
-    		console.log('name is' + name);
-    		console.log('birthPlace is:'+$scope.personalInformation.birthPlace);
-    		if($scope.personalInformation.photoLink == "No Photo") {
-    			$scope.personalInformation.photoLink="http://www.freeiconspng.com/uploads/profile-icon-9.png";
-    		}
-    		$scope.loadind=false;
-    		
-    	}, function errorCallback(response) {
-    		alert(JSON.stringify(response))
-    		var FetchErrorAlert = $ionicPopup.alert({
-    			title: 'Fetch error!',
-    			template: 'Unable to get personal data', 
-    		});
-    	console.log(response.data);
-    	$scope.loadindPersonalInfo = false;
-    	}
-    );*/
 })
 
 .controller('SameOccupationQuery', function($scope, $http, $ionicPopup) {
