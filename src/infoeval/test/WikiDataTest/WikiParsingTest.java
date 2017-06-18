@@ -80,5 +80,21 @@ public class WikiParsingTest {
 		assert wp.getNames().size()==28;
 
 	}
+	@Test
+	public void test9() throws IOException {
+		WikiParsing wp = new WikiParsing("https://en.wikipedia.org/wiki/Agüero");
+		wp.Parse("refer");
+		wp.CheckAmbiguities();
+		assert wp.getNames().size()==13;
+
+	}
+	@Test
+	public void test10() throws IOException {
+		WikiParsing wp = new WikiParsing("https://en.wikipedia.org/wiki/Agnieszka");
+		wp.Parse("refer");
+		wp.CheckAmbiguities();
+		assert wp.getNames().size()==26;
+
+	}
 	
 }
