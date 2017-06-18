@@ -421,7 +421,7 @@ angular.module('starter.controllers', [])
 .controller('AddQueryCtrl', function($scope, $state,$http, $ionicPopup, DynamicParams) {
 
 	$scope.ambiguitiesSolved = true;
-
+	$scope.noAmbiguities=true;
     // Triggered on a button click, or some other target
     $scope.searchPopUp = function() {
         $scope.dynamicData = {};
@@ -455,6 +455,7 @@ angular.module('starter.controllers', [])
 								if (!response) {
 									console.log('No ambiguities');
 								} else {
+									$scope.noAmbiguities=false;
 									for (var r in response.data) {
 										var info = response.data[r];
 
@@ -462,19 +463,6 @@ angular.module('starter.controllers', [])
 										console.log(info);
 									}
 									$scope.loading = false;
-									var listPopup = $ionicPopup.show({
-									 template: '<ion-list>                                '+
-											   '  <ion-item ng-repeat="item in listOfPersons"> '+
-											   '    {{item}}                              '+
-											   '  </ion-item>                             '+
-											   '</ion-list>                               ',
-
-									 title: 'List',
-									 scope: $scope,
-									 buttons: [
-									   { text: 'Cancel' },
-									 ]
-								   });   
 								}
 
 							}, function errorCallback(response) {
@@ -489,14 +477,33 @@ angular.module('starter.controllers', [])
         });
 
         myPopup.then(function(res) {
-			if( $scope.ambiguitiesSolved == false){
+			$scope.optionChosen=false;
+			if($scope.noAmbiguities == false){
+			if($scope.ambiguitiesSolved == true){
+				var listPopup = $ionicPopup.show({
+									 template: '<ion-list>                                '+
+											   '  <ion-item ng-repeat="item in listOfPersons"> '+
+											   '    {{item}}                              '+
+											   '  </ion-item>                             '+
+											   '</ion-list>                               ',
+
+									 title: 'List',
+									 scope: $scope,
+									 buttons: [
+									   { text: 'Cancel' },
+									 ]
+								   }); 
+			}
+				
+			else if( $scope.ambiguitiesSolved == false){
 				var FetchErrorAlert = $ionicPopup.alert({
             title: 'Error!',
             template: 'Couldn\'nt solve ambiguity!',
        		 });
 				$state.go('app.InteractiveSearch');
 			}
-			else{
+			}
+			if($scope.optionChosen==true){
             console.log('Query was added: ' + res.query);
             console.log('Person to look for in query: ' + res.personName);
             DynamicParams.setName(res.personName);
