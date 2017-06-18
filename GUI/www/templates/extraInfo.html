@@ -12,9 +12,11 @@
                         <h3 class="tab25">Place of Birth:</h3> <p class="tab40 paragraphInfo "> {{personalInformation.birthPlace}}  </p>
 						
 						<div ng-show="stateShow" >
-							<button style="border-radius: 50px 50px;background-color: #020626;" class="button button-block w3-black" ng-click="showMoreInfo()">
+							<center>
+							<button style="border-radius: 50px 50px;background-color: #020626; width: 90%;" class="button button-block w3-black" ng-click="showMoreInfo()">
 								<p style="color:white;" >Show more info </p>
 							</button>
+							</center>
 						</div>
 						
 						<div ng-show="!stateShow && loading" >
