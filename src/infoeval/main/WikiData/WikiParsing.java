@@ -22,7 +22,7 @@ public class WikiParsing {
 	String parsedDoc;
 	ArrayList<String> names;
 	Document doc;
-
+	
 	public WikiParsing(String URL) throws IOException {
 		this.url = URL;
 		this.doc = Jsoup.connect(this.url).get();

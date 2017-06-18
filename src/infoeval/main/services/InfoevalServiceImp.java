@@ -84,6 +84,7 @@ public class InfoevalServiceImp implements InfoevalService {
 		try{
 			WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + UpdatedName));
 			System.out.print("Trying to fetch from ,  https://en.wikipedia.org/wiki/" + UpdatedName);
+			wiki.CheckAmbiguities();
 			return !wiki.isConflictedName() ? null : wiki.getNames();
 		}
 		catch (Exception e){
@@ -117,7 +118,6 @@ public class InfoevalServiceImp implements InfoevalService {
 		try {
 			String UpdatedName = updteName(name);
 			WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + UpdatedName));
-			logger.log(Level.INFO, "111 Get Arrests was called.\n url:" + wiki.getURL());
 			wiki.Parse("won");
 			wiki.isConflictedName();
 			wiki.getNames();

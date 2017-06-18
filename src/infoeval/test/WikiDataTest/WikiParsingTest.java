@@ -67,7 +67,7 @@ public class WikiParsingTest {
 	@Test
 	public void test7() throws IOException {
 		WikiParsing wp = new WikiParsing("https://en.wikipedia.org/wiki/Slash");
-		wp.Parse("refer");
+		wp.Parse("married");
 		wp.CheckAmbiguities();
 		assert wp.isConflictedName();
 
@@ -75,7 +75,7 @@ public class WikiParsingTest {
 	@Test
 	public void test8() throws IOException {
 		WikiParsing wp = new WikiParsing("https://en.wikipedia.org/wiki/Slash");
-		wp.Parse("refer");
+		wp.Parse("married");
 		wp.CheckAmbiguities();
 		assert wp.getNames().size()==28;
 

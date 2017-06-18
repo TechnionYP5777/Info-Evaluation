@@ -35,6 +35,11 @@
       "path": "/Queries/Dynamic",
       "proxyUrl": "http://localhost:8080/Queries/Dynamic/"
 		
+    },
+	     {
+      "path": "/Queries/checkAmbiguities",
+      "proxyUrl": "http://localhost:8080/Queries/checkAmbiguities/"
+		
     }
 	    
 	   

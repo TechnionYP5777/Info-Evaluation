@@ -448,8 +448,7 @@ angular.module('starter.controllers', [])
 								method: 'GET',
 								url: '/Queries/checkAmbiguities',
 								params: {
-									name: DynamicParams.getName(),
-									query: DynamicParams.getQuery()
+									name: $scope.dynamicData.personName
 								}
 							}).then(function successCallback(response) {
 								$scope.listOfPersons = [];
