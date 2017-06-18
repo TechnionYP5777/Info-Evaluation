@@ -77,7 +77,7 @@ public class WikiParsing {
 	public boolean isConflictedName() throws IOException {
 		Element contentDiv = this.doc.select("div[id=content]").first();
 		this.parsedDoc = contentDiv.text();
-		return this.parsedDoc.contains("disambiguation");
+		return this.parsedDoc.contains("disambiguation page");
 	}
 
 }

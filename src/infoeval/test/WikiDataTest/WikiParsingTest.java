@@ -13,7 +13,7 @@ import java.io.IOException;
 import org.junit.Test;
 
 import infoeval.main.WikiData.WikiParsing;
-import infoeval.main.services.InfoevalServiceImp;
+
 
 public class WikiParsingTest {
 	@Test
@@ -48,6 +48,7 @@ public class WikiParsingTest {
 	public void test5() throws IOException {
 		WikiParsing wp = new WikiParsing("https://en.wikipedia.org/wiki/Michelle_Williams");
 		wp.Parse("refer");
+		wp.CheckAmbiguities();
 		assert wp.getNames().size() == 4;
 		assert wp.getNames().contains("Michelle Williams (swimmer)");
 		assert wp.getNames().contains("Michelle Williams (singer)");
@@ -59,7 +60,25 @@ public class WikiParsingTest {
 	public void test6() throws IOException {
 		WikiParsing wp = new WikiParsing("https://en.wikipedia.org/wiki/Michelle_Ann_Williams");
 		wp.Parse("refer");
+		wp.CheckAmbiguities();
 		assert wp.getNames().isEmpty();
 
 	}
+	@Test
+	public void test7() throws IOException {
+		WikiParsing wp = new WikiParsing("https://en.wikipedia.org/wiki/Slash");
+		wp.Parse("refer");
+		wp.CheckAmbiguities();
+		assert wp.isConflictedName();
+
+	}
+	@Test
+	public void test8() throws IOException {
+		WikiParsing wp = new WikiParsing("https://en.wikipedia.org/wiki/Slash");
+		wp.Parse("refer");
+		wp.CheckAmbiguities();
+		assert wp.getNames().size()==28;
+
+	}
+	
 }
