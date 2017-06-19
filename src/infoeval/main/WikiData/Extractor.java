@@ -68,19 +68,18 @@ public class Extractor {
 						+ " PREFIX  dbo:  <http://dbpedia.org/ontology/>"
 						+ " PREFIX  dbp:  <http://dbpedia.org/property/>"
 						+ " PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
-						+ " SELECT ?name (SAMPLE (?photoLink) as ?photo) (SAMPLE (?occupation) as ?occup)"
-						+ " (SAMPLE (?spouse) as ?spouses) (SAMPLE (?spName) as ?sname)"
-						+ " (SAMPLE (?spOccupation) as ?spOccu) (SAMPLE (?deathPlace) as ?death)"
-						+ " (SAMPLE(?birthPlace) as ?birth) (SAMPLE(?deathDate) as ?dDate) "
-						+ " (SAMPLE( ?birthDate) as ?bDate)  {  VALUES ?wikiPageID { " + wikiPageID
-						+ " } ?res a dbo:Person. " + " ?res dbp:name ?name."
-						+ " ?res dbo:wikiPageID ?wikiPageID. ?res dbp:birthPlace ?birthPlace. "
-						+ " ?res dbp:birthDate ?birthDate. OPTIONAL{?res dbo:occupation ?occupation}."
+						+ " SELECT (SAMPLE (?name) AS ?pName) (SAMPLE (?photoLink) AS ?photo) (SAMPLE (?occupation) AS ?occup)"
+						+ " (SAMPLE (?spouse) AS ?spouses) (SAMPLE (?spName) AS ?sname)"
+						+ " (SAMPLE (?spOccupation) AS ?spOccu) (SAMPLE (?deathPlace) AS ?death)"
+						+ " (SAMPLE(?birthPlace) AS ?birth) (SAMPLE(?deathDate) AS ?dDate) "
+						+ " (SAMPLE( ?birthDate) AS ?bDate)   {   VALUES ?wikiPageID { " + wikiPageID
+						+ "} ?res a dbo:Person.  ?res dbo:wikiPageID ?wikiPageID.  ?res rdfs:label ?name."
+						+ " FILTER (lang(?name) = 'en') OPTIONAL{?res dbo:birthPlace ?birthPlace}. "
+						+ " OPTIONAL{?res dbo:birthDate ?birthDate}. OPTIONAL{?res dbo:occupation ?occupation}."
 						+ " OPTIONAL{?res dbo:thumbnail ?photoLink}."
-						+ " OPTIONAL{?res dbo:spouse ?spouse. ?spouse dbp:name ?spName."
+						+ " OPTIONAL{?res dbo:spouse ?spouse. ?spouse rdfs:label ?spName."
 						+ " ?spouse dbo:occupation ?spOccupation}. "
-						+ " OPTIONAL{?res dbp:deathDate ?deathDate. ?res dbp:deathPlace ?deathPlace}. } "
-						+ " GROUP BY (?name)");
+						+ " OPTIONAL{?res dbo:deathDate ?deathDate. ?res dbo:deathPlace ?deathPlace}. } ");
 		abstractByWikiPageID = new ParameterizedSparqlString(
 				" PREFIX  dbo:  <http://dbpedia.org/ontology/> SELECT ?abstract { VALUES ?wikiPageID { " + wikiPageID
 						+ " } ?res a dbo:Person. ?res dbo:wikiPageID ?wikiPageID. ?res dbo:abstract ?abstract."

@@ -2,24 +2,15 @@ package infoeval.test.WikiDataTest;
 
 import org.junit.Test;
 import org.junit.Ignore;
-
 import infoeval.main.WikiData.Extractor;
 import infoeval.main.WikiData.QueryTypes;
 import infoeval.main.WikiData.SqlTablesFiller;
 import infoeval.main.mysql.TableEntry;
-
 import static org.junit.Assert.*;
-
 import java.sql.Date;
-
-import org.apache.commons.lang3.text.WordUtils;
-import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSetRewindable;
 import org.apache.jena.rdf.model.RDFNode;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
-//import org.apache.jena.query.ResultSetFormatter;
 
 /**
  * 
@@ -53,7 +44,7 @@ public class ExtractorTest {
 	public void basicInfoByIDTest() throws Exception {
 		int wikiPageID = Integer.parseInt((Jsoup
 				.connect(
-						"https://en.wikipedia.org/w/api.php?action=query&titles=Shakira&prop=pageimages&format=xml&pithumbsize=350")
+						"https://en.wikipedia.org/w/api.php?action=query&titles=Michael_Jackson&prop=pageimages&format=xml&pithumbsize=350")
 				.get() + "").split("pageid=\"")[1].split("\"")[0]);
 
 		Extractor extr = new Extractor(wikiPageID);

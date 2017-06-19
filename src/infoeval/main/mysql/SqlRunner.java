@@ -364,10 +364,10 @@ public class SqlRunner {
 
 		logger.log(Level.INFO, "Basic Info By Wiki Page ID extraction query is being executed");
 		ext.executeQuery(QueryTypes.BASIC_INFO_BY_WIKI_PAGE_ID);
-		ResultSetRewindable basicInfoByNameResults = ext.getResults();
-		basicInfoByNameResults.reset();
+		ResultSetRewindable basicInfoByIdResults = ext.getResults();
+		basicInfoByIdResults.reset();
 
-		TableEntry te = SqlTablesFiller.getBasicInfo(basicInfoByNameResults);
+		TableEntry te = SqlTablesFiller.getBasicInfo(basicInfoByIdResults);
 		TableEntry result = new TableEntry(te);
 
 		result.setUrl(wikiURL + wikiPageID);
