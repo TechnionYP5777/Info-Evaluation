@@ -5,14 +5,15 @@
         <div ng-controller="ArrestsCtrl">
             <div class="hero slide-up" style="background-image: url('img/arrests.jpg');height: 250px;">
                      <div class="content">  
+						 <br/>
                          <div class="avatar slide-up" style="background-image: url({{personalInformation.photoLink}});width: 150px; height: 150px;">  </div>
-                      <h4 style="color:black;">Arrests of {{name}}</h4>
+                      <h2 style="color:black; text-shadow: white 0.1em 0.1em 0.2em;">Arrests of {{name}}</h2>
+						 <br/>
                     </div>
              </div>
             
                 <div ng-show="!loadindPersonalInfo" class="card stable-bg ink-dark">            
 					<div class="item-text-wrap">
-						<h2 style="color:black; margin-left: 10px;"><u>Personal Information</u></h2>
                         <h3 class="tab25">Full Name:</h3><p class="tab40 paragraphInfo">{{personalInformation.name}} </p>
                         <h3 class="tab25">Date of Birth:</h3> <p class="tab40 paragraphInfo "> {{personalInformation.birthDate}} </p>
                         <h3 class="tab25">Place of Birth:</h3> <p class="tab40 paragraphInfo "> {{personalInformation.birthPlace}}  </p>
