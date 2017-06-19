@@ -88,14 +88,14 @@ public class AnalyzeParagraph {
 	public void dynamicQuery(String name, String query) throws Exception {
 		try {
 			// Prepare list of similar words to the query
-			List<String> keywords = new LinkedList<String>();
+			LinkedList<String> keywords = new LinkedList<String>();
 			keywords.add(query);
 			name = name.trim().replaceAll(" ", "_").toLowerCase();
 			WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + name));
-			System.out.println("https://en.wikipedia.org/wiki/" + name);
-			wiki.Parse(query);
-			System.out.println(wiki.getParagraphs().text());
-			setParagraphs(wiki.getParagraphs());
+//			System.out.println("https://en.wikipedia.org/wiki/" + name);
+//			wiki.Parse(query);
+//			System.out.println(wiki.getParagraphs().text());
+//			setParagraphs(wiki.getParagraphs());
 
 			Annotation doc = new Annotation(query);
 			this.pipeLine.annotate(doc);
@@ -104,6 +104,10 @@ public class AnalyzeParagraph {
 					keywords.add(token.get(LemmaAnnotation.class));
 
 			// The query itself
+			for(String queryWord : keywords){
+				wiki.Parse(queryWord);
+				System.out.println(wiki.getParagraphs().text());
+				setParagraphs(wiki.getParagraphs());
 			for (final Element paragraph : this.Paragraphs)
 				for (String sent : paragraph.text().split("\\.")) { // Split to
 																	// sentences.
@@ -122,6 +126,7 @@ public class AnalyzeParagraph {
 					sent = sent.replaceAll("\\[\\d+\\]", "");
 					Information.add(sent);
 				}
+			}
 		} catch (Exception e) {
 			throw e;
 		}
