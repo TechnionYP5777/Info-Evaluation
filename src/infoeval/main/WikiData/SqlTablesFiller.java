@@ -196,7 +196,8 @@ public class SqlTablesFiller {
 		}
 
 		return new TableEntry("", personalName, birthPlace, deathPlace, sqlBirthDate, sqlDeathDate, occup, spouseName,
-				spouseOccupation, (solution.get("photo") == null ? "No Photo" : solution.get("photo") + ""), "");
+				spouseOccupation, (solution.get("photo") == null ? "No Photo" : solution.get("photo") + ""), "","","");
+		//TODO: add birthCity and DeathCity
 	}
 
 	private static java.sql.Date stringToSqlDate(String stringDate, SimpleDateFormat f) throws ParseException {
