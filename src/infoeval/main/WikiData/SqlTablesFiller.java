@@ -111,7 +111,25 @@ public class SqlTablesFiller {
 				birthPlace = (bPlace.asResource() + "").split("resource/")[1];
 			else if (bPlace.isLiteral())
 				birthPlace = (bPlace.asLiteral() + "").split("@")[0];
-
+		
+		RDFNode bCity = solution.get("bCity");
+		String birthCity = "No Birth Place";
+		if (bCity != null)
+			if (bPlace.isResource())
+				birthCity = (bCity.asResource() + "").split("resource/")[1];
+			else if (bPlace.isLiteral())
+				birthCity = (bCity.asLiteral() + "").split("@")[0];
+		birthCity= birthCity.replaceAll("_", " ");
+		
+		RDFNode dCity = solution.get("dCity");
+		String deathCity = "No Birth Place";
+		if (dCity != null)
+			if (bPlace.isResource())
+				deathCity = (dCity.asResource() + "").split("resource/")[1];
+			else if (bPlace.isLiteral())
+				deathCity = (dCity.asLiteral() + "").split("@")[0];
+		deathCity= deathCity.replaceAll("_", " ");
+		
 		RDFNode dPlace = solution.get("death");
 		String deathPlace = "No Death Place";
 		if (dPlace != null)
@@ -196,8 +214,8 @@ public class SqlTablesFiller {
 		}
 
 		return new TableEntry("", personalName, birthPlace, deathPlace, sqlBirthDate, sqlDeathDate, occup, spouseName,
-				spouseOccupation, (solution.get("photo") == null ? "No Photo" : solution.get("photo") + ""), "","","");
-		//TODO: add birthCity and DeathCity
+				spouseOccupation, (solution.get("photo") == null ? "No Photo" : solution.get("photo") + ""), "",birthCity,deathCity);
+		
 	}
 
 	private static java.sql.Date stringToSqlDate(String stringDate, SimpleDateFormat f) throws ParseException {
