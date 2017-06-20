@@ -43,11 +43,12 @@ public class Extractor {
 				+ " (SAMPLE(?birthPlace) as ?birth) (SAMPLE(?deathDate) as ?dDate) "
 				+ " (SAMPLE( ?birthDate) as ?bDate) " + " WHERE {"
 				+ " ?resource   a <http://dbpedia.org/ontology/Person>;  "
-				+ " dbp:name ?name; dbp:birthPlace ?birthPlace;dbp:birthDate ?birthDate."
+				+ " dbp:name ?name; dbp:birthPlace ?birthPlace; "
+				+ "dbp:birthDate ?birthDate. ?birthPlace a dbo:Country."
 				+ " OPTIONAL{?resource dbo:occupation ?occupation}." + " OPTIONAL{?resource dbo:thumbnail ?photoLink}."
 				+ " OPTIONAL{?resource dbo:spouse ?spouse. ?spouse dbp:name ?spName."
 				+ " ?spouse dbo:occupation ?spOccupation}. "
-				+ " OPTIONAL{?resource dbp:deathDate ?deathDate. ?resource dbp:deathPlace ?deathPlace} "
+				+ " OPTIONAL{?resource dbp:deathDate ?deathDate. ?resource dbp:deathPlace ?deathPlace.?deathPlace a dbo:Country.} "
 				+ " FILTER (lang(?name) = 'en')  }GROUP BY ?name " + " ORDER BY DESC(?name)    LIMIT " + ENTRIES_NUM
 				+ " OFFSET " + SKIP_NUM);
 
