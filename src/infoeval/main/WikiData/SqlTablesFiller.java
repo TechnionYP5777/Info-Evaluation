@@ -111,9 +111,10 @@ public class SqlTablesFiller {
 				birthPlace = (bPlace.asResource() + "").split("resource/")[1];
 			else if (bPlace.isLiteral())
 				birthPlace = (bPlace.asLiteral() + "").split("@")[0];
+		birthPlace= birthPlace.replaceAll("_", " ");
 		
 		RDFNode bCity = solution.get("bCity");
-		String birthCity = "No Birth Place";
+		String birthCity = "No Birth City";
 		if (bCity != null)
 			if (bPlace.isResource())
 				birthCity = (bCity.asResource() + "").split("resource/")[1];
@@ -122,7 +123,7 @@ public class SqlTablesFiller {
 		birthCity= birthCity.replaceAll("_", " ");
 		
 		RDFNode dCity = solution.get("dCity");
-		String deathCity = "No Birth Place";
+		String deathCity = "No Death City";
 		if (dCity != null)
 			if (bPlace.isResource())
 				deathCity = (dCity.asResource() + "").split("resource/")[1];
@@ -137,6 +138,7 @@ public class SqlTablesFiller {
 				deathPlace = (dPlace.asResource() + "").split("resource/")[1];
 			else if (dPlace.isLiteral())
 				deathPlace = (dPlace.asLiteral() + "").split("@")[0];
+		deathPlace= deathPlace.replaceAll("_", " ");
 
 		RDFNode occupation = solution.get("occup");
 		String occup = "No Occupation";
@@ -146,6 +148,7 @@ public class SqlTablesFiller {
 						: (occupation.asResource() + "").split("resource/")[1];
 			else if (occupation.isLiteral())
 				occup = (occupation.asLiteral() + "").split("@")[0];
+		occup= occup.replaceAll("_", " ");
 
 		RDFNode spOcuup = solution.get("spOccu");
 		String spouseOccupation = "No Spouse Occupation";
@@ -155,6 +158,7 @@ public class SqlTablesFiller {
 						: (spOcuup.asResource() + "").split("resource/")[1];
 			else if (dPlace.isLiteral())
 				spouseOccupation = (spOcuup.asLiteral() + "").split("@")[0];
+		spouseOccupation= spouseOccupation.replaceAll("_", " ");
 
 		RDFNode bDate = solution.get("bDate");
 		String birthDate = bDate == null ? "" : !bDate.isLiteral() ? null : bDate.asLiteral().getValue() + "";
