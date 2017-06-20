@@ -41,7 +41,8 @@ public class SqlTablesFiller {
 		connector.runUpdate("CREATE TABLE IF NOT EXISTS basic_info(Name VARCHAR(100) NOT NULL,"
 				+ " BirthPlace VARCHAR(100) NULL,DeathPlace VARCHAR(100) NULL,BirthDate DATE NULL,"
 				+ " DeathDate DATE NULL, occupation VARCHAR(100) NULL, spouseName VARCHAR(100) NULL,"
-				+ " spouseOccupation VARCHAR(100) NULL, photoLink VARCHAR(500) NULL)");
+				+ " spouseOccupation VARCHAR(100) NULL, photoLink VARCHAR(500) NULL), birthCity VARCHAR(100),"
+				+ "deathCity VARCHAR(100)");
 		logger.log(Level.INFO, "basic_info table created successfully");
 		connector.runUpdate(
 				"CREATE TABLE IF NOT EXISTS WikiID(Name VARCHAR(100) NOT NULL,wikiPageID VARCHAR(50) NOT NULL)");
@@ -80,7 +81,7 @@ public class SqlTablesFiller {
 		results.reset();
 		for (int ¢ = 0; ¢ < results.size(); ++¢) {
 			TableEntry te = getBasicInfo(results);
-			Object[] inp = new Object[9];
+			Object[] inp = new Object[11];
 			inp[0] = te.getName();
 			inp[1] = te.getBirthPlace();
 			inp[2] = te.getDeathPlace();
@@ -90,7 +91,9 @@ public class SqlTablesFiller {
 			inp[6] = te.getSpouseName();
 			inp[7] = te.getSpouseOccupation();
 			inp[8] = te.getPhotoLink();
-			connector.runUpdate("INSERT INTO basic_info VALUES(?,?,?,?,?,?,?,?,?)", inp);
+			inp[9] = te.getBirthCity();
+			inp[10] = te.getDeathCity();
+			connector.runUpdate("INSERT INTO basic_info VALUES(?,?,?,?,?,?,?,?,?,?,?)", inp);
 		}
 	}
 
