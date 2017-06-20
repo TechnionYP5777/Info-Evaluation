@@ -37,13 +37,13 @@ public class Extractor {
 		 */
 		basicInfoQuery = new ParameterizedSparqlString(" PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
 				+ " PREFIX  dbo: <http://dbpedia.org/ontology/>" + " PREFIX  dbp: <http://dbpedia.org/property/>"
-				+ " SELECT DISTINCT " + " ?name (SAMPLE (?photoLink) as ?photo) (SAMPLE (?occupation) as ?occup)"
+				+ " SELECT DISTINCT " + " ?pname (SAMPLE (?photoLink) as ?photo) (SAMPLE (?occupation) as ?occup)"
 				+ " (SAMPLE (?spouse) as ?spouses) (SAMPLE (?spName) as ?sname)"
 				+ " (SAMPLE (?spOccupation) as ?spOccu) (SAMPLE (?deathPlace) as ?death)"
 				+ " (SAMPLE(?birthPlace) as ?birth) (SAMPLE(?deathDate) as ?dDate) "
 				+ " (SAMPLE( ?birthDate) as ?bDate)(SAMPLE( ?birthCity) as ?bCity)(SAMPLE( ?deathCity) as ?dCity) " + " WHERE {"
 				+ " ?resource   a <http://dbpedia.org/ontology/Person>;  "
-				+ " dbp:name ?name; dbp:birthPlace ?birthPlace; "
+				+ " dbp:name ?pname; dbp:birthPlace ?birthPlace; "
 				+ "dbp:birthDate ?birthDate. ?birthPlace a dbo:Country."
 				+ " OPTIONAL{?resource dbo:occupation ?occupation}." + " OPTIONAL{?resource dbo:thumbnail ?photoLink}."
 				+ " OPTIONAL{?resource dbo:spouse ?spouse. ?spouse dbp:name ?spName."
@@ -51,7 +51,7 @@ public class Extractor {
 				+" OPTIONAL{?resource dbp:birthPlace ?birthCity. ?birthCity a dbo:City}."
 				+" OPTIONAL{?resource dbp:deathPlace ?deathCity. ?deathCity a dbo:City}."
 				+ " OPTIONAL{?resource dbp:deathDate ?deathDate. ?resource dbp:deathPlace ?deathPlace.?deathPlace a dbo:Country.} "
-				+ " FILTER (lang(?name) = 'en')  }GROUP BY ?name " + " ORDER BY DESC(?name)    LIMIT " + ENTRIES_NUM
+				+ " FILTER (lang(?pname) = 'en')  }GROUP BY ?pname " + " ORDER BY DESC(?pname)    LIMIT " + ENTRIES_NUM
 				+ " OFFSET " + SKIP_NUM);
 
 		wikiIdQuery = new ParameterizedSparqlString("PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "

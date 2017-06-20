@@ -101,11 +101,11 @@ public class SqlTablesFiller {
 			throws ClassNotFoundException, SQLException, IOException, ParseException {
 
 		QuerySolution solution = r.nextSolution();
-
-		RDFNode name = solution.get("pName");
+		RDFNode spName=solution.get("sname");
+		RDFNode name = solution.get("pname");
 		String personalName = name == null || !name.isLiteral() ? "No Name" : name.asLiteral().getString() + "",
-				spouseName = solution.getLiteral("sname") == null ? "No Spouse"
-						: solution.getLiteral("sname").getString();
+				spouseName = spName == null ? "No Spouse"
+						: name.asLiteral().getString()+"";
 
 		RDFNode bPlace = solution.get("birth");
 		String birthPlace = "No Birth Place";
