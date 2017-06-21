@@ -2,7 +2,7 @@
     <ion-content ng-class="{expanded:isExpanded}"  class="list animate-fade-slide-in">
 		
         <div ng-controller="ambiguitySolver">
-			<div ng-repeat="per in persons " ng-click="showExtraInfo(per)" style="cursor: pointer;">
+			<div ng-repeat="per in persons " ng-click="RetryQuery(per)" style="cursor: pointer;">
 				<div class="card stable-bg ink-dark">            
 					<div class="item-avatar item-text-wrap">
 						<h3 style="color:black;">{{per.toString()}} </h3>  

@@ -492,6 +492,16 @@ angular.module('starter.controllers', [])
 	$scope.persons = [];
 	$scope.persons = ambiguousNames.getNames();
 	console.log($scope.persons[0].toString());
+	$scope.query = DynamicParams.getQuery();
+	$scope.RetryQuery = function(name){
+			
+			console.log('No ambiguities');
+			console.log('Query was added: ' + DynamicParams.getQuery());
+			console.log('Person to look for in query: ' + name);
+			DynamicParams.setName(name.toString());
+			$state.go('app.dynamicQueryResults');
+		
+	};
 })
 
 .controller('AwardsParameters', function($scope, $state, $ionicPopup, AwardsParams) {
