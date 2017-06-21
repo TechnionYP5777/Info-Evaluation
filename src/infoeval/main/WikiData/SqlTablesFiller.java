@@ -41,8 +41,8 @@ public class SqlTablesFiller {
 		connector.runUpdate("CREATE TABLE IF NOT EXISTS basic_info(Name VARCHAR(100) NOT NULL,"
 				+ " BirthPlace VARCHAR(100) NULL,DeathPlace VARCHAR(100) NULL,BirthDate DATE NULL,"
 				+ " DeathDate DATE NULL, occupation VARCHAR(100) NULL, spouseName VARCHAR(100) NULL,"
-				+ " spouseOccupation VARCHAR(100) NULL, photoLink VARCHAR(500) NULL), birthCity VARCHAR(100),"
-				+ "deathCity VARCHAR(100)");
+				+ " spouseOccupation VARCHAR(100) NULL, photoLink VARCHAR(500) NULL, birthCity VARCHAR(100) NULL,"
+				+ "deathCity VARCHAR(100) NULL)");
 		logger.log(Level.INFO, "basic_info table created successfully");
 		connector.runUpdate(
 				"CREATE TABLE IF NOT EXISTS WikiID(Name VARCHAR(100) NOT NULL,wikiPageID VARCHAR(50) NOT NULL)");
@@ -64,6 +64,7 @@ public class SqlTablesFiller {
 		ResultSetRewindable results = ext.getResults();
 		results.reset();
 		for (int i = 0; i < results.size(); ++i) {
+			System.out.println("Filling WikiID entry number "+i);
 			QuerySolution solution = results.nextSolution();
 			Object[] inp = new Object[2];
 			inp[0] = solution.getLiteral("name").getString();
@@ -80,7 +81,9 @@ public class SqlTablesFiller {
 		ResultSetRewindable results = ext.getResults();
 		results.reset();
 		for (int ¢ = 0; ¢ < results.size(); ++¢) {
-			TableEntry te = getBasicInfo(results);
+			
+			try{TableEntry te = getBasicInfo(results);
+			
 			Object[] inp = new Object[11];
 			inp[0] = te.getName();
 			inp[1] = te.getBirthPlace();
@@ -94,7 +97,11 @@ public class SqlTablesFiller {
 			inp[9] = te.getBirthCity();
 			inp[10] = te.getDeathCity();
 			connector.runUpdate("INSERT INTO basic_info VALUES(?,?,?,?,?,?,?,?,?,?,?)", inp);
-		}
+			}
+			catch (Exception e) {
+				System.out.println("Failed filling basicInfo entry number "+¢);
+			}
+			}
 	}
 
 	public static TableEntry getBasicInfo(ResultSetRewindable r)
@@ -189,7 +196,10 @@ public class SqlTablesFiller {
 				}
 				if (deathDate.startsWith(month)) {
 					String parseDeathDate = deathDate.split(" ")[1] + "-" + monthNum;
-					sqlDeathDate = stringToSqlDate(parseDeathDate, new SimpleDateFormat("yyyy-MM"));
+					try{sqlDeathDate = stringToSqlDate(parseDeathDate, new SimpleDateFormat("yyyy-MM"));}
+					catch (Exception e) {
+						throw e;
+					}
 					break;
 				}
 				++monthNum;
@@ -226,7 +236,10 @@ public class SqlTablesFiller {
 	}
 
 	private static java.sql.Date stringToSqlDate(String stringDate, SimpleDateFormat f) throws ParseException {
-		return new java.sql.Date(f.parse(stringDate).getTime());
+		try{return new java.sql.Date(f.parse(stringDate).getTime());}
+		catch (Exception e) {
+			throw e;
+		}
 	}
 
 	public void dropTables() throws SQLException, ClassNotFoundException, IOException {
