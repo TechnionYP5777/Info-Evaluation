@@ -477,6 +477,7 @@ angular.module('starter.controllers', [])
 									}
 									$scope.loading = false;
 									ambiguousNames.setNames($scope.listOfPersons);
+									DynamicParams.setQuery(res.query);
 									$state.go('app.solveAmbiguity');
 								}
 							}, function errorCallback(response) {
@@ -499,9 +500,10 @@ angular.module('starter.controllers', [])
             });
 	$scope.RetryQuery = function(name){
 			console.log('No ambiguities');
-			console.log('Query was added: ' + DynamicParams.getQuery());
+			console.log('Query was added: ' + DynamicParams.getQuery().toString());
 			console.log('Person to look for in query: ' + name);
 			DynamicParams.setName(name.toString());
+			DynamicParams.setQuery(DynamicParams.getQuery().toString());
 			$state.go('app.dynamicQueryResults');
 		
 	};
