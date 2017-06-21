@@ -487,6 +487,12 @@ angular.module('starter.controllers', [])
         }
 })
 
+.controller('ambiguitySolver', function($scope, $state,$http,$q ,$ionicPopup, DynamicParams,ambiguousNames) {
+	console.log('Start to solve ambiguous names');
+	$scope.persons = [];
+	$scope.persons = ambiguousNames.getNames();
+	console.log($scope.persons[0].toString());
+})
 
 .controller('AwardsParameters', function($scope, $state, $ionicPopup, AwardsParams) {
     $scope.showAwardsResults = function(name) {
