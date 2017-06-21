@@ -100,12 +100,14 @@ public class SqlRunner {
 				String last = name.split(",")[0];
 				String first = name.split(",")[1].substring(1);
 				String newName = first + " " + last;
+				//TODO: add birthCity and DeathCity
 				res.add(new TableEntry(wikiURL + wikiPageID, newName, birthPlace, "", birthDate, sqlDate, "", "", "",
-						photoLink, ""));
+						photoLink, "","",""));
 			} else {
 				res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, "", birthDate, sqlDate, "", "", "",
-						photoLink, ""));
+						photoLink, "","",""));
 			}
+			//TODO: add birthCity and DeathCity
 		}
 		return res;
 	}
@@ -149,11 +151,13 @@ public class SqlRunner {
 				String last = name.split(",")[0];
 				String first = name.split(",")[1].substring(1);
 				String newName = first + " " + last;
+				//TODO: add birthCity and DeathCity
 				res.add(new TableEntry(wikiURL + wikiPageID, newName, birthPlace, deathPlace, sqlDate, sqlDate, "", "",
-						"", photoLink, ""));
+						"", photoLink, "","",""));
 			} else {
 				res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, deathPlace, sqlDate, sqlDate, "", "", "",
-						photoLink, ""));
+						photoLink, "","",""));
+				//TODO: add birthCity and DeathCity
 			}
 			++i;
 		}
@@ -195,11 +199,13 @@ public class SqlRunner {
 				String last = name.split(",")[0];
 				String first = name.split(",")[1].substring(1);
 				String newName = first + " " + last;
+				//TODO: add birthCity and DeathCity
 				res.add(new TableEntry("", newName, "", "", sqlDate, sqlDate, occupation, spouseName, spouseOoccupation,
-						"", ""));
+						"", "","",""));
 			} else {
 				res.add(new TableEntry("", name, "", "", sqlDate, sqlDate, occupation, spouseName, spouseOoccupation,
-						"", ""));
+						"", "","",""));
+				//TODO: add birthCity and DeathCity
 			}
 		}
 		return res;
@@ -243,10 +249,12 @@ public class SqlRunner {
 				String last = name.split(",")[0];
 				String first = name.split(",")[1].substring(1);
 				String newName = first + " " + last;
-				res.add(new TableEntry("", newName, birthPlace, "", sqlDate, sqlDate, "", spouseName, "", "", ""));
+				//TODO: add birthCity and DeathCity
+				res.add(new TableEntry("", newName, birthPlace, "", sqlDate, sqlDate, "", spouseName, "", "", "","",""));
 			} else {
-				res.add(new TableEntry("", name, birthPlace, "", sqlDate, sqlDate, "", spouseName, "", "", ""));
+				res.add(new TableEntry("", name, birthPlace, "", sqlDate, sqlDate, "", spouseName, "", "", "","",""));
 			}
+			//TODO: add birthCity and DeathCity
 		}
 		return res;
 	}
@@ -287,11 +295,13 @@ public class SqlRunner {
 				String last = name.split(",")[0];
 				String first = name.split(",")[1].substring(1);
 				String newName = first + " " + last;
+				//TODO: add birthCity and DeathCity
 				res.add(new TableEntry(wikiURL + wikiPageID, newName, "", "", birthDate, deathDate, occupation, "", "",
-						photoLink, ""));
+						photoLink, "","",""));
 			} else {
 				res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, deathDate, occupation, "", "",
-						photoLink, ""));
+						photoLink, "","",""));
+				//TODO: add birthCity and DeathCity
 			}
 		}
 		return res;
@@ -336,10 +346,10 @@ public class SqlRunner {
 				String first = name.split(",")[1].substring(1);
 				String newName = first + " " + last;
 				res.add(new TableEntry(wikiURL + wikiPageID, newName, "", "", birthDate, deathDate, occupation, "", "",
-						photoLink, ""));
+						photoLink, "","",""));
 			} else {
 				res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, deathDate, occupation, "", "",
-						photoLink, ""));
+						photoLink, "","",""));
 			}
 		}
 		return res;
@@ -459,7 +469,8 @@ public class SqlRunner {
 		// res_row.row.get(9).getValue().cast(res_row.row.get(9).getKey());
 
 		TableEntry te = new TableEntry(wikiURL + wikiPageID, name, birthPlace, deathPlace, birthDate, deathDate,
-				occupation, spouseName, spouseOccupation, photoLink, overviewStr);
+				occupation, spouseName, spouseOccupation, photoLink, overviewStr,"","");
+		//TODO: add birthCity and DeathCity
 		return te;
 	}
 

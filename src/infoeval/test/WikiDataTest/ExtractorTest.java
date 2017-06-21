@@ -1,5 +1,6 @@
 package infoeval.test.WikiDataTest;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import infoeval.main.WikiData.Extractor;
 import infoeval.main.WikiData.QueryTypes;
@@ -7,6 +8,8 @@ import infoeval.main.WikiData.SqlTablesFiller;
 import infoeval.main.mysql.TableEntry;
 import static org.junit.Assert.*;
 import java.sql.Date;
+
+import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.query.ResultSetRewindable;
 import org.apache.jena.rdf.model.RDFNode;
 import org.jsoup.Jsoup;
@@ -22,7 +25,7 @@ import org.jsoup.Jsoup;
 public class ExtractorTest {
 	private static final int ENTRIES_NUM = 10000;
 
-
+	@Ignore
 	@Test
 	public void wikiIdTest() {
 		Extractor extr = new Extractor();
@@ -30,7 +33,7 @@ public class ExtractorTest {
 		assertEquals(extr.getResults().size(), ENTRIES_NUM);
 	}
 
-
+	@Ignore
 	@Test
 	public void basicInfoTest() {
 		Extractor extr = new Extractor();
@@ -38,7 +41,7 @@ public class ExtractorTest {
 		assertEquals(extr.getResults().size(), ENTRIES_NUM);
 	}
 
-	
+	@Ignore
 	@Test
 	public void basicInfoByIDTest() throws Exception {
 		int wikiPageID = Integer.parseInt((Jsoup
@@ -76,7 +79,7 @@ public class ExtractorTest {
 		System.out.println("PhotoLink is " + te.getPhotoLink());
 	}
 
-	
+	@Ignore
 	@Test
 	public void abstractByWikiPageIdTest() throws Exception {
 		int wikiPageID = Integer.parseInt((Jsoup

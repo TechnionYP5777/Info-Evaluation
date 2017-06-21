@@ -124,6 +124,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             }
         }
     })
+	
+	.state('app.solveAmbiguity', {
+        url: '/solveAmbiguity',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/solveAmbiguity.html',
+                controller: ''
+            },
+            'fabContent': {
+                template: '',
+                controller: ''
+                }
+            }
+        })
 
     .state('app.InteractiveSearch', {
         url: '/Search',
