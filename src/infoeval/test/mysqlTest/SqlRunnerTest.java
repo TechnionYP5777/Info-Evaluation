@@ -148,7 +148,7 @@ public class SqlRunnerTest {
 
 	}
 
-
+@Ignore
 	@Test
 	public void getPersonalInfoNotInDBTest() throws Exception {
 		TableEntry te = querun.getPersonalInfo(Integer.parseInt(
