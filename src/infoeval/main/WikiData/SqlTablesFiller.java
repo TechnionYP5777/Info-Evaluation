@@ -112,8 +112,9 @@ public class SqlTablesFiller {
 		RDFNode name = solution.get("pname");
 		String personalName = name == null || !name.isLiteral() ? "No Name" : name.asLiteral().getString() + "",
 				spouseName = spName == null ? "No Spouse"
-						: name.asLiteral().getString()+"";
-
+						: spName.asLiteral().getString()+"";
+//		String personalName=solution.getLiteral("pname").getString();
+//		String spouseName=solution.getLiteral("sname").getString();
 		RDFNode bPlace = solution.get("birth");
 		String birthPlace = "No Birth Place";
 		if (bPlace != null)

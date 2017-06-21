@@ -71,7 +71,7 @@ public class Extractor {
 						+ " PREFIX  dbo:  <http://dbpedia.org/ontology/>"
 						+ " PREFIX  dbp:  <http://dbpedia.org/property/>"
 						+ " PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
-						+ " SELECT (SAMPLE (?name) AS ?pName) (SAMPLE (?photoLink) AS ?photo) (SAMPLE (?occupation) AS ?occup)"
+						+ " SELECT (SAMPLE (?name) AS ?pname) (SAMPLE (?photoLink) AS ?photo) (SAMPLE (?occupation) AS ?occup)"
 						+ " (SAMPLE (?spouse) AS ?spouses) (SAMPLE (?spName) AS ?sname)"
 						+ " (SAMPLE (?spOccupation) AS ?spOccu) (SAMPLE (?deathPlace) AS ?death)"
 						+ " (SAMPLE(?birthPlace) AS ?birth) (SAMPLE(?deathDate) AS ?dDate) "
