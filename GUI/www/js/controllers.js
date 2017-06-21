@@ -418,7 +418,7 @@ angular.module('starter.controllers', [])
     ionicMaterialInk.displayEffect();
 })
 
-.controller('AddQueryCtrl', function($scope, $state,$http, $ionicPopup, DynamicParams) {
+.controller('AddQueryCtrl', function($scope, $state,$http,$q ,$ionicPopup, DynamicParams,ambiguousNames) {
 	
     // Triggered on a button click, or some other target
     $scope.searchPopUp = function() {
@@ -431,6 +431,7 @@ angular.module('starter.controllers', [])
             title: 'Enter the Query name you wish to look for',
             subTitle: 'Please describe in one word',
             scope: $scope,
+			async: false,
             buttons: [
                 { text: 'Cancel' },
                 {
@@ -441,91 +442,49 @@ angular.module('starter.controllers', [])
                             //don't allow the user search unless he enters all inputs
                             e.preventDefault();
                         } else {
-							//Check for ambiguities
-																 $http({
-								method: 'GET',
-								url: '/Queries/checkAmbiguities',
-								params: {
-									name: $scope.dynamicData.personName
-								}
-							}).then(function successCallback(response) {
-								$scope.dynamicData.listOfPersons = [];
-								if (!response) {
-									console.log('No ambiguities');
-									$scope.dynamicData.ambiguitiesSolved = true;
-									$scope.dynamicData.noAmbiguities=true;
-									$scope.checked=true;
-								} else {
-									$scope.dynamicData.noAmbiguities=false;
-									$scope.dynamicData.ambiguitiesSolved = true;
-									for (var r in response.data) {
-										var info = response.data[r];
-
-										$scope.dynamicData.listOfPersons.push(info);
-										console.log(info);
-									}
-									$scope.loading = false;
-									$scope.checked=true;
-								}
-								//return $scope.dynamicData;
-							}, function errorCallback(response) {
-								$scope.dynamicData.ambiguitiesSolved=false;
-								//return $scope.dynamicData;
-								$scope.checked=true;
-							});
-							
-							$scope.$watch('checked', function() {
-     					   alert('hey, myVar has changed!');
-								return $scope.dynamicData;
-    						});
-                            
+                            return $scope.dynamicData;
                         }
                     }
                 }
             ]
         });
 
-        myPopup.then(function(res) {
-			console.log($scope.dynamicData.personName);
-			if($scope.dynamicData.noAmbiguities == false){
-			if($scope.dynamicData.ambiguitiesSolved == true){
-				var listPopup = $ionicPopup.show({
-									 template: '<ion-list>                                '+
-											   '  <ion-item ng-repeat="item in dynamicData.listOfPersons"> '+
-											   '    {{item}}                              '+
-											   '  </ion-item>                             '+
-											   '</ion-list>                               ',
+		myPopup.then(function(res) {
+			$http({
+								method: 'GET',
+								url: '/Queries/checkAmbiguities',
+								params: {
+									name: res.personName
+								}
+							}).then(function successCallback(response) {
+								$scope.listOfPersons = [];
+								console.log(response);
+								if (!response.data) {
+									console.log('No ambiguities');
+									console.log('Query was added: ' + res.query);
+									console.log('Person to look for in query: ' + res.personName);
+									DynamicParams.setName(res.personName);
+									DynamicParams.setQuery(res.query);
+									$state.go('app.dynamicQueryResults');
+									
+								} else {
+									
+									for (var r in response.data) {
+										var info = response.data[r];
 
-									 title: 'List',
-									 scope: $scope,
-									 buttons: [
-									   { text: 'Cancel' },
-									 ]
-								   }); 
-			}
-				
-			else if( $scope.dynamicData.ambiguitiesSolved == false){
-				var FetchErrorAlert = $ionicPopup.alert({
-            title: 'Error!',
-            template: 'Couldn\'nt solve ambiguity!',
-       		 });
-				$state.go('app.InteractiveSearch');
-			}
-			}
-			else{
-            console.log('Query was added: ' + res.query);
-            console.log('Person to look for in query: ' + res.personName);
-            DynamicParams.setName(res.personName);
-            DynamicParams.setQuery(res.query);
-            $state.go('app.dynamicQueryResults');
-			}
-
-        });
-
-    };
-
-
-
+										$scope.listOfPersons.push(info);
+										console.log(info);
+									}
+									$scope.loading = false;
+									ambiguousNames.setNames($scope.listOfPersons);
+									$state.go('app.solveAmbiguity');
+								}
+							}, function errorCallback(response) {
+								res.ambiguitiesSolved=false;
+								alret('problem');
+							});
+			});
+        }
 })
 
 

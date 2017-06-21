@@ -119,5 +119,17 @@ angular.module('starter.services', [])
     };
 })
 
+.factory('ambiguousNames', function() {
+    var names = [];
+    return {
+        getNames: function() {
+            return names;
+        },
+        setNames: function(namesParameter) {
+            names = namesParameter;
+        }
+    };
+})
+
 //EOF
 ;
