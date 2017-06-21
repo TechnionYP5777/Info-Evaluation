@@ -493,8 +493,11 @@ angular.module('starter.controllers', [])
 	$scope.persons = ambiguousNames.getNames();
 	console.log($scope.persons[0].toString());
 	$scope.query = DynamicParams.getQuery();
+	var FetchErrorAlert = $ionicPopup.alert({
+                title: 'Ambiguity !',
+                template: 'There are many entities with the same name. <br> Please choose the person you are referring to.',
+            });
 	$scope.RetryQuery = function(name){
-			
 			console.log('No ambiguities');
 			console.log('Query was added: ' + DynamicParams.getQuery());
 			console.log('Person to look for in query: ' + name);

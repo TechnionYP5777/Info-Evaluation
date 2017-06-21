@@ -1,6 +1,6 @@
 <ion-view view-title="Ambiguity">
     <ion-content ng-class="{expanded:isExpanded}"  class="list animate-fade-slide-in">
-		
+		<h3 style="color:white;">Please choose the entity you are referring to: </h3>
         <div ng-controller="ambiguitySolver">
 			<div ng-repeat="per in persons " ng-click="RetryQuery(per)" style="cursor: pointer;">
 				<div class="card stable-bg ink-dark">            
