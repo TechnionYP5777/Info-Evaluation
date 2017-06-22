@@ -58,6 +58,10 @@ public class AnalyzeParagraph {
 		if (!this.Paragraphs.isEmpty())
 			this.Paragraphs.empty();
 		this.Paragraphs = Paragraphs;
+		
+	}
+	
+	public void clearInformation(){
 		if (!this.Information.isEmpty())
 			this.Information.clear();
 	}
@@ -67,6 +71,7 @@ public class AnalyzeParagraph {
 		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/The_Weeknd"));
 		wiki.Parse("arrested");
 		setParagraphs(wiki.getParagraphs());
+		clearInformation();
 		AnalyzeArrestsQuery();
 	}
 
@@ -75,6 +80,7 @@ public class AnalyzeParagraph {
 		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/Adele"));
 		wiki.Parse("won");
 		setParagraphs(wiki.getParagraphs());
+		clearInformation();
 		AwardsQuery();
 	}
 

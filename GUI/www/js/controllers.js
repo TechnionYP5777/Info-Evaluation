@@ -547,7 +547,7 @@ angular.module('starter.controllers', [])
             query: DynamicParams.getQuery()
         }
     }).then(function successCallback(response) {
-        console.log('awards success');
+        console.log('Dynamic query success');
         $scope.information = [];
         if (response.data == null) {
             $scope.loading = false;

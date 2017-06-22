@@ -103,6 +103,7 @@ public class InfoevalServiceImp implements InfoevalService {
 			wiki.Parse("arrested");
 			new ArrayList<>();
 			analyze.setParagraphs(wiki.getParagraphs());
+			analyze.clearInformation();
 			analyze.AnalyzeArrestsQuery();
 			return analyze.RefineResults(10);
 		} catch (Exception e) {
@@ -124,6 +125,7 @@ public class InfoevalServiceImp implements InfoevalService {
 			new ArrayList<>();
 			System.out.println(wiki.getParagraphs().text());
 			analyze.setParagraphs(wiki.getParagraphs());
+			analyze.clearInformation();
 			analyze.AwardsQuery();
 			return analyze.RefineResults(10);
 		} catch (Exception e) {
