@@ -73,6 +73,7 @@ public class AnalyzeParagraph {
 		setParagraphs(wiki.getParagraphs());
 		clearInformation();
 		AnalyzeArrestsQuery();
+		clearInformation();
 	}
 
 	public void LoadIEClassifiers() throws IOException {
@@ -82,6 +83,7 @@ public class AnalyzeParagraph {
 		setParagraphs(wiki.getParagraphs());
 		clearInformation();
 		AwardsQuery();
+		clearInformation();
 	}
 
 	public static boolean containsItemFromArray(String inputString, String[] items) {
