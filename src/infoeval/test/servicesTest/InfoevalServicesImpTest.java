@@ -101,7 +101,7 @@ public class InfoevalServicesImpTest {
 				"deathCity2");
 		people.add(te1);
 		people.add(te2);
-		when(runner.getBornInPlaceBeforeYear("Casablanca", "1954")).thenReturn(people);
+		when(runner.getDifferentDeathPlace()).thenReturn(people);
 
 		mockMvc.perform(get("/Queries/Query1")).andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
