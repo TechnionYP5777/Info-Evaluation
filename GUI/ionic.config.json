@@ -4,41 +4,41 @@
    "proxies": [
 	   {
 		   "path": "/Queries/Query1",
-      "proxyUrl": "http://132.68.206.107:8080/Queries/Query1/"
+      "proxyUrl": "http://localhost:8080/Queries/Query1/"
 	   }, 
     {
       "path": "/Queries/Query2",
-      "proxyUrl": "http://132.68.206.107:8080/Queries/Query2/"
+      "proxyUrl": "http://localhost:8080/Queries/Query2/"
 		
     },
 	   {
       "path": "/Queries/Arrests",
-      "proxyUrl": "http://132.68.206.107:8080/Queries/Arrests/"
+      "proxyUrl": "http://localhost:8080/Queries/Arrests/"
 		
     },
 	   {
       "path": "/Queries/PersonalInformation",
-      "proxyUrl": "http://132.68.206.107:8080/Queries/PersonalInformation/"
+      "proxyUrl": "http://localhost:8080/Queries/PersonalInformation/"
 		
     },
 	     {
       "path": "/Queries/Awards",
-      "proxyUrl": "http://132.68.206.107:8080/Queries/Awards/"
+      "proxyUrl": "http://localhost:8080/Queries/Awards/"
 		
     },
 	    {
       "path": "/Queries/SameOccupationCouples",
-      "proxyUrl": "http://132.68.206.107:8080/Queries/SameOccupationCouples/"
+      "proxyUrl": "http://localhost:8080/Queries/SameOccupationCouples/"
 		
     },
 	    {
       "path": "/Queries/Dynamic",
-      "proxyUrl": "http://132.68.206.107:8080/Queries/Dynamic/"
+      "proxyUrl": "http://localhost:8080/Queries/Dynamic/"
 		
     },
 	     {
       "path": "/Queries/checkAmbiguities",
-      "proxyUrl": "http://132.68.206.107:8080/Queries/checkAmbiguities/"
+      "proxyUrl": "http://localhost:8080/Queries/checkAmbiguities/"
 		
     }
 	    
