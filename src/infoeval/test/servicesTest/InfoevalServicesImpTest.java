@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -74,4 +75,42 @@ public class InfoevalServicesImpTest {
 		verify(infoevalServicesImp, times(1)).getBornInPlaceYear("Casablanca", "1954");
 		verifyNoMoreInteractions(infoevalServicesImp);
 	}
+
+	/*
+	 * MvcResult result = mockMvc.perform(get("/Queries/Query2")
+	 * .param("place","Casablanca") .param("year","1954")
+	 * .accept(MediaType.APPLICATION_JSON)) .andReturn();
+	 * 
+	 * String content = result.getResponse().getContentAsString();
+	 * 
+	 * System.out.println(content);
+	 */
+
+	@Ignore
+	@Test
+	public void differentDeathPlaceTest() throws Exception {
+		ArrayList<TableEntry> people = new ArrayList<TableEntry>();
+		SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
+		java.sql.Date sqlBirthDate = new java.sql.Date(df.parse("1870-12-07").getTime());
+		java.sql.Date sqlDeathDate = new java.sql.Date(df.parse("1940-10-14").getTime());
+		TableEntry te1 = new TableEntry("url1", "name1", "birthPlace1", "deathPlace1", sqlBirthDate, sqlDeathDate,
+				"occupation1", "spouseName1", "spouseOccupation1", "photoLink1", "overview1", "birthCity1",
+				"deathCity1");
+		TableEntry te2 = new TableEntry("url2", "name2", "birthPlace2", "deathPlace2", sqlBirthDate, sqlDeathDate,
+				"occupation2", "spouseName2", "spouseOccupation2", "photoLink2", "overview2", "birthCity2",
+				"deathCity2");
+		people.add(te1);
+		people.add(te2);
+		when(runner.getBornInPlaceBeforeYear("Casablanca", "1954")).thenReturn(people);
+
+		mockMvc.perform(get("/Queries/Query1")).andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+				.andExpect(jsonPath("$", hasSize(2))).andExpect(jsonPath("$[0].birthPlace", is("birthPlace1")))
+				.andExpect(jsonPath("$[0].photoLink", is("photoLink1")))
+				.andExpect(jsonPath("$[1].occupation", is("occupation2")))
+				.andExpect(jsonPath("$[1].name", is("name2")));
+		verify(infoevalServicesImp, times(1)).differentDeathPlace();
+		verifyNoMoreInteractions(infoevalServicesImp);
+	}
+
 }

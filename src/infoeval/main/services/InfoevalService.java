@@ -16,7 +16,7 @@ import infoeval.main.mysql.TableEntry;
  */
 
 public interface InfoevalService {
-	List<TableEntry> getBornInPlaceYear(@RequestParam String year, @RequestParam String place) throws Exception;
+	List<TableEntry> getBornInPlaceYear(String year, String place) throws Exception;
 	// TODO: change String to an object of Entry
 
 	List<TableEntry> differentDeathPlace() throws Exception;

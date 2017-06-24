@@ -49,7 +49,7 @@ public class InfoevalServiceImp implements InfoevalService {
 
 	@Override
 	@RequestMapping(path = "Queries/Query2", method = RequestMethod.GET)
-	public ArrayList<TableEntry> getBornInPlaceYear(@RequestParam String place, @RequestParam String year)
+	public ArrayList<TableEntry> getBornInPlaceYear(String place, String year)
 			throws Exception {
 
 		ArrayList<TableEntry> $ = runner.getBornInPlaceBeforeYear(place, year);
