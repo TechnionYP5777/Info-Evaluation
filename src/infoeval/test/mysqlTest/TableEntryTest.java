@@ -23,6 +23,7 @@ public class TableEntryTest {
 		assertNull(te.getDeathDate());
 		assertEquals("", te.getBirthPlace());
 		assertEquals("", te.getDeathPlace());
+
 		assertEquals("", te.getUrl());
 		assertEquals("", te.getName());
 	}
@@ -31,7 +32,7 @@ public class TableEntryTest {
 	@SuppressWarnings("deprecation")
 	public void test2() {
 		TableEntry te = new TableEntry("url", "name", "birthPlace", "deathPlace", new Date(2000, 10, 21),
-				new Date(2015, 10, 21), "", "", "", "", "","","");
+				new Date(2015, 10, 21), "", "", "", "", "", "", "");
 		assertEquals(te.getBirthDate(), new Date(2000, 10, 21));
 		assertEquals(te.getDeathDate(), new Date(2015, 10, 21));
 		assertEquals("birthPlace", te.getBirthPlace());
@@ -50,8 +51,10 @@ public class TableEntryTest {
 		te.setBirthPlace("birthPlace");
 		te.setBirthDate(new Date(2000, 10, 21));
 		te.setDeathDate(new Date(2015, 10, 21));
+		te.setOccupation("Politician");
 		assertEquals(te.getBirthDate(), new Date(2000, 10, 21));
 		assertEquals(te.getDeathDate(), new Date(2015, 10, 21));
+		assertEquals("Politician", te.getOccupation());
 		assertEquals("birthPlace", te.getBirthPlace());
 		assertEquals("deathPlace", te.getDeathPlace());
 		assertEquals("url", te.getUrl());
@@ -61,8 +64,8 @@ public class TableEntryTest {
 	@Test
 	@SuppressWarnings("deprecation")
 	public void test4() {
-		TableEntry te = new TableEntry("bla", "bla", "bla", "bla", new Date(1, 1, 1), new Date(1, 1, 1), "", "", "", "",
-				"","","");
+		TableEntry te = new TableEntry("bla", "bla", "bla", "bla", new Date(1, 1, 1), new Date(1, 1, 1), "",
+				"spouseName", "", "photo", "", "birthCity", "deathCity");
 		te.setUrl("url");
 		te.setName("name");
 		te.setDeathPlace("deathPlace");
@@ -70,6 +73,7 @@ public class TableEntryTest {
 		te.setBirthDate(new Date(2000, 10, 21));
 		te.setDeathDate(new Date(2015, 10, 21));
 		te.setOverview("An interesting overview");
+		assertEquals("spouseName", te.getSpouseName());
 		assertEquals(te.getBirthDate(), new Date(2000, 10, 21));
 		assertEquals(te.getDeathDate(), new Date(2015, 10, 21));
 		assertEquals("birthPlace", te.getBirthPlace());
@@ -77,5 +81,11 @@ public class TableEntryTest {
 		assertEquals("url", te.getUrl());
 		assertEquals("name", te.getName());
 		assertEquals("An interesting overview", te.getOverview());
+
+		TableEntry te2 = new TableEntry(te);
+		assertEquals("An interesting overview", te2.getOverview());
+		assertEquals("photo", te.getPhotoLink());
+		assertEquals("birthCity", te.getBirthCity());
+		assertEquals("deathCity", te.getDeathCity());
 	}
 }

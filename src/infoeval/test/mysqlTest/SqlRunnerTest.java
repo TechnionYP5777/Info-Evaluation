@@ -148,11 +148,11 @@ public class SqlRunnerTest {
 
 	}
 
-@Ignore
+	@Ignore
 	@Test
 	public void getPersonalInfoNotInDBTest() throws Exception {
-		TableEntry te = querun.getPersonalInfo(Integer.parseInt(
-				(Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles=Brad_Pitt"
+		TableEntry te = querun.getPersonalInfo(
+				Integer.parseInt((Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles=James_Brown"
 						+ "&prop=pageimages&format=xml&pithumbsize=350").get() + "").split("pageid=\"")[1]
 								.split("\"")[0]));
 

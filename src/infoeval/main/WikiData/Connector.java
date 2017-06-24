@@ -141,19 +141,6 @@ public class Connector {
 		return res;
 	}
 
-	public int runUpdate(final String query, final Object input)
-			throws SQLException, ClassNotFoundException, IOException {
-		Connection conn = getConnection();
-		PreparedStatement ps = conn.prepareStatement(query);
-		ps.setObject(1, input);
-		int res = ps.executeUpdate();
-		if (ps != null)
-			ps.close();
-		if (conn != null)
-			conn.close();
-		return res;
-	}
-
 	public void clearBasicInfoTable() throws SQLException, ClassNotFoundException, IOException {
 		runUpdate("DELETE FROM basic_info");
 	}

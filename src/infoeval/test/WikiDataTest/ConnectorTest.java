@@ -40,40 +40,43 @@ public class ConnectorTest {
 
 	@Ignore
 	@Test
-	public void basicInfoTableSizeTest() throws Exception {
+	public void runQueryTest() throws Exception {
 		Connector conn = new Connector();
 		assert conn.getConnection() != null;
 
-		ArrayList<Row> rows = conn.runQuery("SELECT COUNT(*) FROM basic_info");
+		ArrayList<Row> rows = conn.runQuery("SELECT photoLink FROM basic_info LIMIT 1");
 		Row row = rows.get(0);
 		Entry<Object, Class> col = row.row.get(0);
-		Object size = col.getValue().cast(col.getKey());
+		String photo = (String) col.getValue().cast(col.getKey());
 
-		assertEquals(ENTRIES_NUM, size);
-
-		Extractor ext = new Extractor();
-		ext.executeQuery(QueryTypes.BASIC_INFO);
-		assertEquals(ext.getResults().size(), size);
+		int res = conn.runUpdate("INSERT INTO WikiID VALUES('osher','1234')");
+		assert res == 1;
+		res = conn.runUpdate("DELETE FROM WikiID WHERE name LIKE 'osher'");
+		assert res == 1;
 
 		conn.close();
 	}
 
 	@Ignore
 	@Test
-	public void wikiIdTableSizeTest() throws Exception {
+	public void runUpdateTest() throws Exception {
 		Connector conn = new Connector();
 		assert conn.getConnection() != null;
 
-		ArrayList<Row> rows = conn.runQuery("SELECT COUNT(*) FROM WikiID");
+		Object[] inp = new Object[] { "Jessica" };
+		ArrayList<Row> rows = conn
+				.runQuery("SELECT photoLink FROM basic_info WHERE name LIKE CONCAT('%',?,'%') LIMIT 1", inp);
 		Row row = rows.get(0);
 		Entry<Object, Class> col = row.row.get(0);
-		Object size = col.getValue().cast(col.getKey());
+		String photo = (String) col.getValue().cast(col.getKey());
 
-		assertEquals(ENTRIES_NUM, size);
+		inp = new Object[] { "osher", "1234" };
+		int res = conn.runUpdate("INSERT INTO WikiID VALUES(?,?)", inp);
+		assert res == 1;
 
-		Extractor ext = new Extractor();
-		ext.executeQuery(QueryTypes.WIKI_ID);
-		assertEquals(ext.getResults().size(), size);
+		Object[] name = new Object[] { "osher" };
+		res = conn.runUpdate("DELETE FROM WikiID WHERE name LIKE ?", name);
+		assert res == 1;
 
 		conn.close();
 	}
