@@ -94,16 +94,14 @@ public class AnalyzeParagraph {
 	}
 
 	public void dynamicQuery(String name, String query) throws Exception {
+		clearInformation();
 		try {
 			// Prepare list of similar words to the query
 			LinkedList<String> keywords = new LinkedList<String>();
 			keywords.add(query);
 			name = name.trim().replaceAll(" ", "_").toLowerCase();
 			WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + name));
-//			System.out.println("https://en.wikipedia.org/wiki/" + name);
-//			wiki.Parse(query);
-//			System.out.println(wiki.getParagraphs().text());
-//			setParagraphs(wiki.getParagraphs());
+	
 
 			Annotation doc = new Annotation(query);
 			this.pipeLine.annotate(doc);
