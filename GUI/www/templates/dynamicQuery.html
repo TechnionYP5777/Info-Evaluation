@@ -3,34 +3,34 @@
       
 		
         <div ng-controller="DynamicQueryCtrl">
-            <div class="hero slide-up" style="background-image: url('img/profile-bg.jpg');">
+            <div class="hero slide-up" style="background-image: url('img/profile-bg.jpg'); height: 250px;">
                      <div class="content">  
-                         <div class="avatar slide-up" style="background-image: url({{personalInformation.photoLink}}) ;">  </div>
-                      <h4>{{queryName}} for {{name}}</h4>
+                         <div class="avatar slide-up" style="background-image: url({{personalInformation.photoLink}}) ;width: 150px; height: 150px;">  </div>
+                      <h2 style="color:black; text-shadow: white 0.1em 0.1em 0.2em;">{{queryName}} for {{name}}</h2>
                     </div>
              </div>
             
             
 			
-                <div ng-show="!loadindPersonalInfo" class="card stable-bg ink-dark">            
-					<div class="item-avatar item-text-wrap">
-                        <span class="avatar" style="background-image: url{{personalInformation.photoLink}};"></span>
-						<p style="color:black;"><strong>Personal Information:</strong>  </p>
-                        <p style="color:black;"><strong>Full Name:</strong>{{personalInformation.name}}  </p> 
-                        <p style="color:black;"><strong>Date of Birth:</strong>{{personalInformation.birthDate}}  </p> 
-                         <p style="color:black;"><strong>Place of Birth:</strong>{{personalInformation.birthPlace}}  </p> 
+                 <div ng-show="!loadindPersonalInfo" class="card stable-bg ink-dark">            
+					<div class="item-text-wrap">
+						<br/>
+                        <h3 class="tab25">Full Name:</h3><p class="tab40 paragraphInfo">{{personalInformation.name}} </p>
+                        <h3 class="tab25">Date of Birth:</h3> <p class="tab40 paragraphInfo "> {{personalInformation.birthDate}} </p>
+                        <h3 class="tab25">Place of Birth:</h3> <p class="tab40 paragraphInfo "> {{personalInformation.birthPlace}}  </p>
 					</div>
 
 				</div>
             
-            <div ng-show="loading"><br/><br/><center> <img src="img/2.gif"></center></div>
+            <div ng-show="loading || loadindPersonalInfo"><br/><br/><center> <img src="img/2.gif"></center></div>
 			
             
 			<div ng-show="!loading" ng-repeat="info in information track by $index" >
+				<div style="height:1px;font-size:1px;">&nbsp;</div>
 				<div class="card stable-bg ink-dark">            
 					<div class="item-avatar item-text-wrap">
-                        <span class="avatar" style="background-image: {{personalInformation.photoLink}};"></span>
-						<p style="color:black;"><strong>{{info}}</strong>  </p>
+						<div style="height:1px;font-size:1px;">&nbsp;</div>
+						<h3 style="tab40">{{info}}</h3>
 					</div>
 
 				</div>
