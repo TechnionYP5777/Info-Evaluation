@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.RequestParam;
+
 import infoeval.main.mysql.TableEntry;
 
 /**
@@ -14,7 +16,7 @@ import infoeval.main.mysql.TableEntry;
  */
 
 public interface InfoevalService {
-	List<TableEntry> getBornInPlaceYear(String year, String place) throws Exception;
+	List<TableEntry> getBornInPlaceYear(@RequestParam String year, @RequestParam String place) throws Exception;
 	// TODO: change String to an object of Entry
 
 	List<TableEntry> differentDeathPlace() throws Exception;

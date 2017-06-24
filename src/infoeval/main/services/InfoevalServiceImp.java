@@ -2,6 +2,7 @@ package infoeval.main.services;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import infoeval.main.mysql.TableEntry;
@@ -48,7 +49,8 @@ public class InfoevalServiceImp implements InfoevalService {
 
 	@Override
 	@RequestMapping(path = "Queries/Query2", method = RequestMethod.GET)
-	public ArrayList<TableEntry> getBornInPlaceYear(String place, String year) throws Exception {
+	public ArrayList<TableEntry> getBornInPlaceYear(@RequestParam String place, @RequestParam String year)
+			throws Exception {
 
 		ArrayList<TableEntry> $ = runner.getBornInPlaceBeforeYear(place, year);
 		logger.log(Level.INFO, "Born in place before year was called.\n Parameters:Place:" + place + ", Year:" + year);
@@ -76,18 +78,17 @@ public class InfoevalServiceImp implements InfoevalService {
 		return runner.getSameOccupationCouples();
 
 	}
-	
+
 	@Override
-	@RequestMapping(path="Queries/checkAmbiguities", method=RequestMethod.GET)
-	public ArrayList<String> checkAmbiguities(String name) throws IOException{
+	@RequestMapping(path = "Queries/checkAmbiguities", method = RequestMethod.GET)
+	public ArrayList<String> checkAmbiguities(String name) throws IOException {
 		String UpdatedName = updteName(name);
-		try{
+		try {
 			WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + UpdatedName));
 			System.out.print("Trying to fetch from ,  https://en.wikipedia.org/wiki/" + UpdatedName);
 			wiki.CheckAmbiguities();
 			return !wiki.isConflictedName() ? null : wiki.getNames();
-		}
-		catch (Exception e){
+		} catch (Exception e) {
 			throw e;
 		}
 	}
