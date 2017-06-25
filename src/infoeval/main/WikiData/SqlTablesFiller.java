@@ -127,18 +127,18 @@ public class SqlTablesFiller {
 		RDFNode bCity = solution.get("bCity");
 		String birthCity = "No Birth City";
 		if (bCity != null)
-			if (bPlace.isResource())
+			if (bCity.isResource())
 				birthCity = (bCity.asResource() + "").split("resource/")[1];
-			else if (bPlace.isLiteral())
+			else if (bCity.isLiteral())
 				birthCity = (bCity.asLiteral() + "").split("@")[0];
 		birthCity= birthCity.replaceAll("_", " ");
 		
 		RDFNode dCity = solution.get("dCity");
 		String deathCity = "No Death City";
 		if (dCity != null)
-			if (bPlace.isResource())
+			if (dCity.isResource())
 				deathCity = (dCity.asResource() + "").split("resource/")[1];
-			else if (bPlace.isLiteral())
+			else if (dCity.isLiteral())
 				deathCity = (dCity.asLiteral() + "").split("@")[0];
 		deathCity= deathCity.replaceAll("_", " ");
 		

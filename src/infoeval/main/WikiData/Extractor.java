@@ -75,14 +75,16 @@ public class Extractor {
 						+ " (SAMPLE (?spouse) AS ?spouses) (SAMPLE (?spName) AS ?sname)"
 						+ " (SAMPLE (?spOccupation) AS ?spOccu) (SAMPLE (?deathPlace) AS ?death)"
 						+ " (SAMPLE(?birthPlace) AS ?birth) (SAMPLE(?deathDate) AS ?dDate) "
-						+ " (SAMPLE( ?birthDate) AS ?bDate)   {   VALUES ?wikiPageID { " + wikiPageID
+						+ " (SAMPLE( ?birthDate) AS ?bDate)(SAMPLE( ?birthCity) as ?bCity)(SAMPLE( ?deathCity) as ?dCity)   {   VALUES ?wikiPageID { " + wikiPageID
 						+ "} ?res a dbo:Person.  ?res dbo:wikiPageID ?wikiPageID.  ?res rdfs:label ?name."
-						+ " FILTER (lang(?name) = 'en') OPTIONAL{?res dbo:birthPlace ?birthPlace}. "
+						+ " FILTER (lang(?name) = 'en') OPTIONAL{?res dbo:birthPlace ?birthPlace.?birthPlace a dbo:Country. }. "
 						+ " OPTIONAL{?res dbo:birthDate ?birthDate}. OPTIONAL{?res dbo:occupation ?occupation}."
 						+ " OPTIONAL{?res dbo:thumbnail ?photoLink}."
+						+" OPTIONAL{?res dbo:birthPlace ?birthCity. ?birthCity a dbo:City}."
+						+" OPTIONAL{?res dbo:deathPlace ?deathCity. ?deathCity a dbo:City}."
 						+ " OPTIONAL{?res dbo:spouse ?spouse. ?spouse rdfs:label ?spName."
 						+ " ?spouse dbo:occupation ?spOccupation}. "
-						+ " OPTIONAL{?res dbo:deathDate ?deathDate. ?res dbo:deathPlace ?deathPlace}. } ");
+						+ " OPTIONAL{?res dbo:deathDate ?deathDate.}OPTIONAL{ ?res dbo:deathPlace ?deathPlace. ?deathPlace a dbo:Country}. } ");
 		abstractByWikiPageID = new ParameterizedSparqlString(
 				" PREFIX  dbo:  <http://dbpedia.org/ontology/> SELECT ?abstract { VALUES ?wikiPageID { " + wikiPageID
 						+ " } ?res a dbo:Person. ?res dbo:wikiPageID ?wikiPageID. ?res dbo:abstract ?abstract."

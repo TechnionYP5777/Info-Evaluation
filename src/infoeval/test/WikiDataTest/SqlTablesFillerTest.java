@@ -36,9 +36,9 @@ public class SqlTablesFillerTest {
 	
 	public static void init() throws IOException, ClassNotFoundException, SQLException, ParseException {
 		filler = new SqlTablesFiller();
-		filler.createTables();
-		filler.fillBasicInfoTable();
-		 filler.fillWikiIdTable();
+		//filler.createTables();
+		//filler.fillBasicInfoTable();
+		 //filler.fillWikiIdTable();
 		 filler.close();
 	}
 
@@ -57,8 +57,7 @@ public class SqlTablesFillerTest {
 		Entry<Object, Class> col = row.row.get(0);
 		assertEquals(ENTRIES_NUM-1, (long) col.getValue().cast(col.getKey()));
 	}
-
-	@Ignore
+@Ignore
 	@Test
 	public void wikiIdTableSizeTest() throws Exception {
 		Connector conn = new Connector();
@@ -68,10 +67,10 @@ public class SqlTablesFillerTest {
 		assertEquals(ENTRIES_NUM, (long) col.getValue().cast(col.getKey()));
 	}
 
-	@Ignore
+	
 	@Test
 	public void IndexTest() throws Exception {
-		filler.dropIndex();
+	//	filler.dropIndex();
 		filler.addIndexBasicInfo();
 		filler.addIndexWikiID();
 		
