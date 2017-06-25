@@ -38,13 +38,13 @@ public class SqlRunnerTest {
 	 * 
 	 * @throws Exception
 	 */
-@Ignore
+
 	@BeforeClass
 
 	public static void initRunner() throws Exception {
 		querun = new SqlRunner();
 	}
-@Ignore
+
 	@AfterClass
 
 	public static void close() {
@@ -148,11 +148,14 @@ public class SqlRunnerTest {
 
 	}
 
-@Ignore
+
 	@Test
 	public void getPersonalInfoNotInDBTest() throws Exception {
 		TableEntry te = querun.getPersonalInfo(
+
+			
 				Integer.parseInt((Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles=Angela_Merkel"
+ 
 						+ "&prop=pageimages&format=xml&pithumbsize=350").get() + "").split("pageid=\"")[1]
 								.split("\"")[0]));
 
