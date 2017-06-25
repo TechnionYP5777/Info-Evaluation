@@ -38,13 +38,13 @@ public class SqlRunnerTest {
 	 * 
 	 * @throws Exception
 	 */
-
+@Ignore
 	@BeforeClass
 
 	public static void initRunner() throws Exception {
 		querun = new SqlRunner();
 	}
-
+@Ignore
 	@AfterClass
 
 	public static void close() {
@@ -148,7 +148,7 @@ public class SqlRunnerTest {
 
 	}
 
-
+@Ignore
 	@Test
 	public void getPersonalInfoNotInDBTest() throws Exception {
 		TableEntry te = querun.getPersonalInfo(
