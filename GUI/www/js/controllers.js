@@ -326,7 +326,7 @@ angular.module('starter.controllers', [])
             $scope.persons.push(person);
             console.log(person.name);
             console.log(person.birthPlace);
-            console.log(person.deathPlace);
+            console.log('the spouse of '+ person.name+' is ' + person.SpouseName);
             console.log(person.photoLink);
         }
         $scope.loading = false;
