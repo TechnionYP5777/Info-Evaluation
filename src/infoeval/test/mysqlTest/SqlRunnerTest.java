@@ -152,7 +152,7 @@ public class SqlRunnerTest {
 	@Test
 	public void getPersonalInfoNotInDBTest() throws Exception {
 		TableEntry te = querun.getPersonalInfo(
-				Integer.parseInt((Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles=James_Brown"
+				Integer.parseInt((Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles=Tobey_Maguire"
 						+ "&prop=pageimages&format=xml&pithumbsize=350").get() + "").split("pageid=\"")[1]
 								.split("\"")[0]));
 
