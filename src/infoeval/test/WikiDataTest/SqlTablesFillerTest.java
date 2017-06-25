@@ -31,7 +31,7 @@ import infoeval.main.mysql.Row;
 public class SqlTablesFillerTest {
 	private final int ENTRIES_NUM = 10000;
 	static SqlTablesFiller filler;
-
+@Ignore
 	@BeforeClass
 	
 	public static void init() throws IOException, ClassNotFoundException, SQLException, ParseException {
@@ -67,7 +67,7 @@ public class SqlTablesFillerTest {
 		assertEquals(ENTRIES_NUM, (long) col.getValue().cast(col.getKey()));
 	}
 
-	
+	@Ignore
 	@Test
 	public void IndexTest() throws Exception {
 	//	filler.dropIndex();
