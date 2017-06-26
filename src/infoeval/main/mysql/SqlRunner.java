@@ -66,7 +66,7 @@ public class SqlRunner {
 		int serialized_id = -1;
 		ArrayList<Row> rows = new ArrayList<>();
 		if (id_result.isEmpty()) {
-			final String beforeYearInPlace = "SELECT filtered_info.name, filtered_info.BirthPlace, filtered_info.BirthDate, filtered_info.photoLink, WikiID.wikiPageID "
+			final String beforeYearInPlace = "SELECT filtered_info.name, filtered_info.BirthPlace, filtered_info.BirthDate, filtered_info.photoLink, WikiID.wikiPageID, filterd_info.birthCity "
 					+ "FROM (SELECT * FROM basic_info WHERE BirthPlace LIKE CONCAT('%',?,'%') AND YEAR(BirthDate) < ?) AS filtered_info  "
 					+ "LEFT JOIN WikiID " + "ON WikiID.name = filtered_info.name " + "LIMIT " + LIMIT_NUM;
 			logger.log(Level.INFO, "Born in place before year query is being executed");
@@ -93,6 +93,7 @@ public class SqlRunner {
 			String photoLink = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
 			photoLink.replaceAll("'", "\'");
 			String wikiPageID = (String) row.row.get(4).getValue().cast(row.row.get(4).getKey());
+			String birthCity = (String) row.row.get(5).getValue().cast(row.row.get(5).getKey());
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
 
@@ -100,14 +101,14 @@ public class SqlRunner {
 				String last = name.split(",")[0];
 				String first = name.split(",")[1].substring(1);
 				String newName = first + " " + last;
-				//TODO: add birthCity and DeathCity
-				res.add(new TableEntry(wikiURL + wikiPageID, newName, birthPlace, "", birthDate, sqlDate, "", "", "",
+				
+				res.add(new TableEntry(wikiURL + wikiPageID, newName, birthPlace, "", birthDate, sqlDate, "", birthCity, "",
 						photoLink, "","",""));
 			} else {
-				res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, "", birthDate, sqlDate, "", "", "",
+				res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, "", birthDate, sqlDate, "", birthCity, "",
 						photoLink, "","",""));
 			}
-			//TODO: add birthCity and DeathCity
+			
 		}
 		return res;
 	}
@@ -119,7 +120,7 @@ public class SqlRunner {
 		int serialized_id = -1;
 		ArrayList<Row> rows = new ArrayList<>();
 		if (id_result.isEmpty()) {
-			final String birthDeathPlace = "SELECT filtered_info.name, filtered_info.BirthPlace, filtered_info.DeathPlace, filtered_info.photoLink, WikiID.wikiPageID "
+			final String birthDeathPlace = "SELECT filtered_info.name, filtered_info.BirthPlace, filtered_info.DeathPlace, filtered_info.photoLink, WikiID.wikiPageID , filtered_info.birthCity,filtered_info.deathCity"
 					+ "FROM (SELECT * FROM basic_info WHERE DeathPlace != 'No Death Place' "
 					+ " AND BirthPlace != DeathPlace) AS filtered_info  " + "LEFT JOIN WikiID "
 					+ "ON WikiID.name = filtered_info.name " + "LIMIT " + LIMIT_NUM;
@@ -144,6 +145,8 @@ public class SqlRunner {
 			String photoLink = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
 			photoLink.replaceAll("'", "\'");
 			String wikiPageID = (String) row.row.get(4).getValue().cast(row.row.get(4).getKey());
+			String birthCity = (String) row.row.get(5).getValue().cast(row.row.get(5).getKey());
+			String deathCity = (String) row.row.get(6).getValue().cast(row.row.get(6).getKey());
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
 
@@ -151,13 +154,13 @@ public class SqlRunner {
 				String last = name.split(",")[0];
 				String first = name.split(",")[1].substring(1);
 				String newName = first + " " + last;
-				//TODO: add birthCity and DeathCity
+			
 				res.add(new TableEntry(wikiURL + wikiPageID, newName, birthPlace, deathPlace, sqlDate, sqlDate, "", "",
-						"", photoLink, "","",""));
+						"", photoLink, "",birthCity,deathCity));
 			} else {
 				res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, deathPlace, sqlDate, sqlDate, "", "", "",
-						photoLink, "","",""));
-				//TODO: add birthCity and DeathCity
+						photoLink, "",birthCity,deathCity));
+			
 			}
 			++i;
 		}
@@ -191,7 +194,7 @@ public class SqlRunner {
 			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey());
 			String spouseName = (String) row.row.get(1).getValue().cast(row.row.get(1).getKey());
 			String occupation = (String) row.row.get(2).getValue().cast(row.row.get(2).getKey());
-			String spouseOoccupation = (String) row.row.get(2).getValue().cast(row.row.get(2).getKey());
+			String spouseOoccupation = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
 
@@ -199,13 +202,13 @@ public class SqlRunner {
 				String last = name.split(",")[0];
 				String first = name.split(",")[1].substring(1);
 				String newName = first + " " + last;
-				//TODO: add birthCity and DeathCity
+			
 				res.add(new TableEntry("", newName, "", "", sqlDate, sqlDate, occupation, spouseName, spouseOoccupation,
 						"", "","",""));
 			} else {
 				res.add(new TableEntry("", name, "", "", sqlDate, sqlDate, occupation, spouseName, spouseOoccupation,
 						"", "","",""));
-				//TODO: add birthCity and DeathCity
+				
 			}
 		}
 		return res;
@@ -249,12 +252,12 @@ public class SqlRunner {
 				String last = name.split(",")[0];
 				String first = name.split(",")[1].substring(1);
 				String newName = first + " " + last;
-				//TODO: add birthCity and DeathCity
+				
 				res.add(new TableEntry("", newName, birthPlace, "", sqlDate, sqlDate, "", spouseName, "", "", "","",""));
 			} else {
 				res.add(new TableEntry("", name, birthPlace, "", sqlDate, sqlDate, "", spouseName, "", "", "","",""));
 			}
-			//TODO: add birthCity and DeathCity
+		
 		}
 		return res;
 	}
@@ -295,13 +298,13 @@ public class SqlRunner {
 				String last = name.split(",")[0];
 				String first = name.split(",")[1].substring(1);
 				String newName = first + " " + last;
-				//TODO: add birthCity and DeathCity
+				
 				res.add(new TableEntry(wikiURL + wikiPageID, newName, "", "", birthDate, deathDate, occupation, "", "",
 						photoLink, "","",""));
 			} else {
 				res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, deathDate, occupation, "", "",
 						photoLink, "","",""));
-				//TODO: add birthCity and DeathCity
+			
 			}
 		}
 		return res;

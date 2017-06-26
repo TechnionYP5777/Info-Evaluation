@@ -38,15 +38,15 @@ public class SqlRunnerTest {
 	 * 
 	 * @throws Exception
 	 */
-
+@Ignore
 	@BeforeClass
-	@Ignore
+
 	public static void initRunner() throws Exception {
 		querun = new SqlRunner();
 	}
-
+@Ignore
 	@AfterClass
-	@Ignore
+
 	public static void close() {
 		querun.close();
 	}
@@ -148,11 +148,14 @@ public class SqlRunnerTest {
 
 	}
 
-	@Ignore
+@Ignore
 	@Test
 	public void getPersonalInfoNotInDBTest() throws Exception {
 		TableEntry te = querun.getPersonalInfo(
-				Integer.parseInt((Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles=James_Brown"
+
+			
+				Integer.parseInt((Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles=Angela_Merkel"
+ 
 						+ "&prop=pageimages&format=xml&pithumbsize=350").get() + "").split("pageid=\"")[1]
 								.split("\"")[0]));
 
@@ -163,6 +166,10 @@ public class SqlRunnerTest {
 		System.out.println("Birth Place is " + te.getBirthPlace());
 
 		System.out.println("Death Place is " + te.getDeathPlace());
+		System.out.println("Birth City is " + te.getBirthCity());
+
+		System.out.println("Death City is " + te.getDeathCity());
+
 
 		Date birthDate = te.getBirthDate();
 		if (birthDate != null)

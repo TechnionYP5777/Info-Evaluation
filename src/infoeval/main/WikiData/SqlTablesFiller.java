@@ -64,7 +64,7 @@ public class SqlTablesFiller {
 		ResultSetRewindable results = ext.getResults();
 		results.reset();
 		for (int i = 0; i < results.size(); ++i) {
-			System.out.println("Filling WikiID entry number "+i);
+			System.out.println("Filling WikiID entry number " + i);
 			QuerySolution solution = results.nextSolution();
 			Object[] inp = new Object[2];
 			inp[0] = solution.getLiteral("name").getString();
@@ -81,40 +81,39 @@ public class SqlTablesFiller {
 		ResultSetRewindable results = ext.getResults();
 		results.reset();
 		for (int ¢ = 0; ¢ < results.size(); ++¢) {
-			
-			try{TableEntry te = getBasicInfo(results);
-			
-			Object[] inp = new Object[11];
-			inp[0] = te.getName();
-			inp[1] = te.getBirthPlace();
-			inp[2] = te.getDeathPlace();
-			inp[3] = te.getBirthDate();
-			inp[4] = te.getDeathDate();
-			inp[5] = te.getOccupation();
-			inp[6] = te.getSpouseName();
-			inp[7] = te.getSpouseOccupation();
-			inp[8] = te.getPhotoLink();
-			inp[9] = te.getBirthCity();
-			inp[10] = te.getDeathCity();
-			connector.runUpdate("INSERT INTO basic_info VALUES(?,?,?,?,?,?,?,?,?,?,?)", inp);
+
+			try {
+				TableEntry te = getBasicInfo(results);
+
+				Object[] inp = new Object[11];
+				inp[0] = te.getName();
+				inp[1] = te.getBirthPlace();
+				inp[2] = te.getDeathPlace();
+				inp[3] = te.getBirthDate();
+				inp[4] = te.getDeathDate();
+				inp[5] = te.getOccupation();
+				inp[6] = te.getSpouseName();
+				inp[7] = te.getSpouseOccupation();
+				inp[8] = te.getPhotoLink();
+				inp[9] = te.getBirthCity();
+				inp[10] = te.getDeathCity();
+				connector.runUpdate("INSERT INTO basic_info VALUES(?,?,?,?,?,?,?,?,?,?,?)", inp);
+			} catch (Exception e) {
+				System.out.println("Failed filling basicInfo entry number " + ¢);
 			}
-			catch (Exception e) {
-				System.out.println("Failed filling basicInfo entry number "+¢);
-			}
-			}
+		}
 	}
 
 	public static TableEntry getBasicInfo(ResultSetRewindable r)
 			throws ClassNotFoundException, SQLException, IOException, ParseException {
 
 		QuerySolution solution = r.nextSolution();
-		RDFNode spName=solution.get("sname");
+		RDFNode spName = solution.get("sname");
 		RDFNode name = solution.get("pname");
 		String personalName = name == null || !name.isLiteral() ? "No Name" : name.asLiteral().getString() + "",
-				spouseName = spName == null ? "No Spouse"
-						: spName.asLiteral().getString()+"";
-//		String personalName=solution.getLiteral("pname").getString();
-//		String spouseName=solution.getLiteral("sname").getString();
+				spouseName = spName == null ? "No Spouse" : spName.asLiteral().getString() + "";
+		// String personalName=solution.getLiteral("pname").getString();
+		// String spouseName=solution.getLiteral("sname").getString();
 		RDFNode bPlace = solution.get("birth");
 		String birthPlace = "No Birth Place";
 		if (bPlace != null)
@@ -122,26 +121,26 @@ public class SqlTablesFiller {
 				birthPlace = (bPlace.asResource() + "").split("resource/")[1];
 			else if (bPlace.isLiteral())
 				birthPlace = (bPlace.asLiteral() + "").split("@")[0];
-		birthPlace= birthPlace.replaceAll("_", " ");
-		
+		birthPlace = birthPlace.replaceAll("_", " ");
+
 		RDFNode bCity = solution.get("bCity");
 		String birthCity = "No Birth City";
 		if (bCity != null)
-			if (bPlace.isResource())
+			if (bCity.isResource())
 				birthCity = (bCity.asResource() + "").split("resource/")[1];
-			else if (bPlace.isLiteral())
+			else if (bCity.isLiteral())
 				birthCity = (bCity.asLiteral() + "").split("@")[0];
-		birthCity= birthCity.replaceAll("_", " ");
-		
+		birthCity = birthCity.replaceAll("_", " ");
+
 		RDFNode dCity = solution.get("dCity");
 		String deathCity = "No Death City";
 		if (dCity != null)
-			if (bPlace.isResource())
+			if (dCity.isResource())
 				deathCity = (dCity.asResource() + "").split("resource/")[1];
-			else if (bPlace.isLiteral())
+			else if (dCity.isLiteral())
 				deathCity = (dCity.asLiteral() + "").split("@")[0];
-		deathCity= deathCity.replaceAll("_", " ");
-		
+		deathCity = deathCity.replaceAll("_", " ");
+
 		RDFNode dPlace = solution.get("death");
 		String deathPlace = "No Death Place";
 		if (dPlace != null)
@@ -149,7 +148,7 @@ public class SqlTablesFiller {
 				deathPlace = (dPlace.asResource() + "").split("resource/")[1];
 			else if (dPlace.isLiteral())
 				deathPlace = (dPlace.asLiteral() + "").split("@")[0];
-		deathPlace= deathPlace.replaceAll("_", " ");
+		deathPlace = deathPlace.replaceAll("_", " ");
 
 		RDFNode occupation = solution.get("occup");
 		String occup = "No Occupation";
@@ -159,7 +158,15 @@ public class SqlTablesFiller {
 						: (occupation.asResource() + "").split("resource/")[1];
 			else if (occupation.isLiteral())
 				occup = (occupation.asLiteral() + "").split("@")[0];
-		occup= occup.replaceAll("_", " ");
+		occup = occup.replaceAll("_", " ");
+		if (occup.contains(personalName)) {
+			RDFNode occupationTitle = solution.get("occupTitle");
+			occup = "No Occupation";
+			if (occupationTitle.isLiteral()) {
+				occup = (occupationTitle.asLiteral() + "").split("@")[0];
+				occup = occup.replaceAll("_", " ");
+			}
+		}
 
 		RDFNode spOcuup = solution.get("spOccu");
 		String spouseOccupation = "No Spouse Occupation";
@@ -169,7 +176,7 @@ public class SqlTablesFiller {
 						: (spOcuup.asResource() + "").split("resource/")[1];
 			else if (dPlace.isLiteral())
 				spouseOccupation = (spOcuup.asLiteral() + "").split("@")[0];
-		spouseOccupation= spouseOccupation.replaceAll("_", " ");
+		spouseOccupation = spouseOccupation.replaceAll("_", " ");
 
 		RDFNode bDate = solution.get("bDate");
 		String birthDate = bDate == null ? "" : !bDate.isLiteral() ? null : bDate.asLiteral().getValue() + "";
@@ -197,8 +204,9 @@ public class SqlTablesFiller {
 				}
 				if (deathDate.startsWith(month)) {
 					String parseDeathDate = deathDate.split(" ")[1] + "-" + monthNum;
-					try{sqlDeathDate = stringToSqlDate(parseDeathDate, new SimpleDateFormat("yyyy-MM"));}
-					catch (Exception e) {
+					try {
+						sqlDeathDate = stringToSqlDate(parseDeathDate, new SimpleDateFormat("yyyy-MM"));
+					} catch (Exception e) {
 						throw e;
 					}
 					break;
@@ -232,13 +240,15 @@ public class SqlTablesFiller {
 		}
 
 		return new TableEntry("", personalName, birthPlace, deathPlace, sqlBirthDate, sqlDeathDate, occup, spouseName,
-				spouseOccupation, (solution.get("photo") == null ? "No Photo" : solution.get("photo") + ""), "",birthCity,deathCity);
-		
+				spouseOccupation, (solution.get("photo") == null ? "No Photo" : solution.get("photo") + ""), "",
+				birthCity, deathCity);
+
 	}
 
 	private static java.sql.Date stringToSqlDate(String stringDate, SimpleDateFormat f) throws ParseException {
-		try{return new java.sql.Date(f.parse(stringDate).getTime());}
-		catch (Exception e) {
+		try {
+			return new java.sql.Date(f.parse(stringDate).getTime());
+		} catch (Exception e) {
 			throw e;
 		}
 	}
