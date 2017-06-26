@@ -66,7 +66,7 @@ public class SqlRunner {
 		int serialized_id = -1;
 		ArrayList<Row> rows = new ArrayList<>();
 		if (id_result.isEmpty()) {
-			final String beforeYearInPlace = "SELECT filtered_info.name, filtered_info.BirthPlace, filtered_info.BirthDate, filtered_info.photoLink, WikiID.wikiPageID, filterd_info.birthCity "
+			final String beforeYearInPlace = "SELECT filtered_info.name, filtered_info.BirthPlace, filtered_info.BirthDate, filtered_info.photoLink, WikiID.wikiPageID, filtered_info.birthCity "
 					+ "FROM (SELECT * FROM basic_info WHERE BirthPlace LIKE CONCAT('%',?,'%') AND YEAR(BirthDate) < ?) AS filtered_info  "
 					+ "LEFT JOIN WikiID " + "ON WikiID.name = filtered_info.name " + "LIMIT " + LIMIT_NUM;
 			logger.log(Level.INFO, "Born in place before year query is being executed");

@@ -56,8 +56,7 @@ public class SqlRunnerTest {
 	public void TestClearSerializedQueries() throws Exception {
 		querun.clearSerializedQueries();
 	}
-
-	@Ignore
+@Ignore
 	@Test
 	public void getBornInPlaceBeforeYearTest() throws Exception {
 		for (TableEntry te : querun.getBornInPlaceBeforeYear("Canada", "1970")) {
@@ -116,7 +115,7 @@ public class SqlRunnerTest {
 			assertEquals(¢.getSpouseName(), "No Spouse Name");
 	}
 
-	@Ignore
+@Ignore
 	@Test
 	public void getPersonalInfoTest() throws Exception {
 		TableEntry te = querun.getPersonalInfo(Integer.parseInt((Jsoup
@@ -159,35 +158,18 @@ public class SqlRunnerTest {
 						+ "&prop=pageimages&format=xml&pithumbsize=350").get() + "").split("pageid=\"")[1]
 								.split("\"")[0]));
 
-		System.out.println("Wikipedia URL is " + te.getUrl());
-
-		System.out.println("Name is " + te.getName());
-
-		System.out.println("Birth Place is " + te.getBirthPlace());
-
-		System.out.println("Death Place is " + te.getDeathPlace());
-		System.out.println("Birth City is " + te.getBirthCity());
-
-		System.out.println("Death City is " + te.getDeathCity());
-
-
-		Date birthDate = te.getBirthDate();
-		if (birthDate != null)
-			System.out.println("Birth Date is " + birthDate);
-
-		Date deathDate = te.getDeathDate();
-		if (deathDate != null)
-			System.out.println("Death Date is " + deathDate);
-
-		System.out.println("Occupation is " + te.getOccupation());
-
-		System.out.println("Spouse Name is " + te.getSpouseName());
-
-		System.out.println("Spouse Occupation is " + te.getSpouseOccupation());
-
-		System.out.println("PhotoLink is " + te.getPhotoLink());
-
-		System.out.println("Abstract is " + te.getOverview());
-
+         assertEquals(te.getUrl(),"https://en.wikipedia.org/?curid=72671");
+		 assertEquals(te.getName(),"Angela Merkel");
+		 assertEquals(te.getBirthPlace(),"West Germany");
+		 assertEquals(te.getDeathPlace(),"No Death Place");
+		 assertEquals(te.getBirthCity(),"Hamburg");
+		 assertEquals(te.getDeathCity(),"No Death City");
+		 assertEquals(te.getBirthDate().toString(),"1954-07-17");
+	     assertEquals(te.getDeathDate(),null);
+		 assertEquals(te.getOccupation(),"No Occupation");
+		 assertEquals(te.getSpouseName(),"No Spouse");
+		 assertEquals(te.getSpouseOccupation(),"No Spouse Occupation");
+		 assertEquals(te.getPhotoLink(),"http://commons.wikimedia.org/wiki/Special:FilePath/Angela_Merkel_Juli_2010_-_3zu4.jpg");
+		 assertEquals( te.getOverview().split(" ")[1],"Dorothea");
 	}
 }
