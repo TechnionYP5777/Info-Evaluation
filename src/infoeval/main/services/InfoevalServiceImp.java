@@ -1,5 +1,6 @@
 package infoeval.main.services;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,6 +49,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	}
 
 	@Override
+	@CrossOrigin
 	@RequestMapping(path = "Queries/Query2", method = RequestMethod.GET)
 	public ArrayList<TableEntry> getBornInPlaceYear(String place, String year)
 			throws Exception {
@@ -60,6 +62,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	}
 
 	@Override
+	@CrossOrigin
 	@RequestMapping(path = "Queries/Query1", method = RequestMethod.GET)
 	public ArrayList<TableEntry> differentDeathPlace() throws Exception {
 		logger.log(Level.INFO, "Born and died in different place was called");
@@ -70,6 +73,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	}
 
 	@Override
+	@CrossOrigin
 	@RequestMapping(path = "Queries/SameOccupationCouples", method = RequestMethod.GET)
 	public ArrayList<TableEntry> getSameOccupationCouples() throws Exception {
 		logger.log(Level.INFO, "Get SameOccupationCouples was called.\n ");
@@ -80,6 +84,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	}
 
 	@Override
+	@CrossOrigin
 	@RequestMapping(path = "Queries/checkAmbiguities", method = RequestMethod.GET)
 	public ArrayList<String> checkAmbiguities(String name) throws IOException {
 		String UpdatedName = updteName(name);
@@ -94,6 +99,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	}
 
 	@Override
+	@CrossOrigin
 	@RequestMapping(path = "Queries/Arrests", method = RequestMethod.GET)
 	public LinkedList<String> getArrested(String name) throws Exception {
 		logger.log(Level.INFO, "Get Arrests was called.\n Parameters:Name:" + name);
@@ -113,6 +119,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	}
 
 	@Override
+	@CrossOrigin
 	@RequestMapping(path = "Queries/Awards", method = RequestMethod.GET)
 	public LinkedList<String> getAwards(String name) throws Exception {
 		logger.log(Level.INFO, "Get Awards was called.\n Parameters:Name:" + name);
@@ -135,6 +142,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	}
 
 	@Override
+	@CrossOrigin
 	@RequestMapping(path = "Queries/Dynamic", method = RequestMethod.GET)
 	public LinkedList<String> getDynamic(String name, String query) throws Exception {
 		logger.log(Level.INFO, "Get dynamic query results was called.\n Parameters:Name:" + name + " Query:" + query);
@@ -146,8 +154,9 @@ public class InfoevalServiceImp implements InfoevalService {
 			throw e;
 		}
 	}
-
+	
 	@Override
+	@CrossOrigin
 	@RequestMapping(path = "Queries/PersonalInformation", method = RequestMethod.GET)
 	public TableEntry getPersonal_Information(String name) throws Exception {
 		logger.log(Level.INFO, "Get personal information was called.\n Parameters:Name:" + name);

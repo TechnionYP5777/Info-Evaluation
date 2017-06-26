@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.ionicframework.sample374926" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>sample</name>
+  <name>Info Evaluation</name>
   <description>
-        An Ionic Framework and Cordova project.
+        Find all the information you need.
     </description>
-  <author email="hi@ionicframework" href="http://ionicframework.com/">
-      Ionic Framework Team
+  <author email="moshikoe@campus.technion.ac.il" href="http://ionicframework.com/">
+      Info Evaluation Team
     </author>
   <content src="index.html"/>
   <access origin="*"/>
@@ -71,4 +71,8 @@
     <splash src="resources/ios/splash/Default~iphone.png" height="480" width="320"/>
   </platform>
   <plugin name="cordova-plugin-http" spec="~1.2.0"/>
+	<allow-navigation href="http://*/*" />
+	<allow-nagivation href="https://*/*" />
+	<allow-intent href="http://*/*" />
+<allow-intent href="https://*/*" />
 </widget>
