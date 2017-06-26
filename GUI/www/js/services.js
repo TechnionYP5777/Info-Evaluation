@@ -25,6 +25,25 @@ angular.module('starter.services', [])
     };
 })
 
+.factory('DynamicQueryParams', function() {
+    var queryName = {};
+    var person = {};
+    return {
+        getQueryName: function() {
+            return queryName;
+        },
+        setQueryName: function(nameparameter) {
+            queryName = nameparameter;
+        },
+        getPerson: function() {
+            return person;
+        },
+        setPerson: function(personparameter) {
+            person = personparameter;
+        }
+    };
+})
+
 
 .factory('ArrestsParams', function() {
     var name = {};

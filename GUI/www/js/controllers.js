@@ -493,6 +493,49 @@ angular.module('starter.controllers', [])
    }
 })
 
+.controller('Dynamicparameters', function($scope, $http, $ionicPopup, DynamicParams, $state) {
+	//TODO: rewrite accordingly
+    $scope.showDynamicResults = function(query,person) {
+		
+		$http({
+			method: 'GET',
+			url: '/Queries/checkAmbiguities',
+			params: {
+				name: person
+			}
+		}).then(function successCallback(response) {
+			$scope.listOfPersons = [];
+			console.log(response);
+			if (!response.data) {
+				console.log('No ambiguities');
+				console.log('Query was added: ' + query);
+				console.log('Person to look for in query: ' + person);
+				DynamicParams.setName(person);
+				DynamicParams.setQuery(query);
+				$state.go('app.dynamicQueryResults');
+
+			} else {
+
+				for (var r in response.data) {
+					var info = response.data[r];
+
+					$scope.listOfPersons.push(info);
+					console.log(info);
+				}
+				$scope.loading = false;
+				ambiguousNames.setNames($scope.listOfPersons);
+				DynamicParams.setQuery(query);
+				$state.go('app.solveAmbiguity');
+			}
+		}, function errorCallback(response) {
+			res.ambiguitiesSolved=false;
+			alret('problem');
+		});
+	}
+
+
+})
+
 .controller('ambiguitySolver', function($scope, $state,$http,$q ,$ionicPopup, DynamicParams,ambiguousNames) {
 	console.log('Start to solve ambiguous names');
 	$scope.persons = [];

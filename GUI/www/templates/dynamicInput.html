@@ -18,12 +18,12 @@
 		  <div class="item-input-inset">
 			  <label class="item-input-wrapper">		
 					<i class="icon ion-edit placeholder-icon"></i>
-					<input type="text" style="font-size:16px;"  placeholder="Name of Person" ng-model="name">
+					<input type="text" style="font-size:16px;"  placeholder="Name of Person" ng-model="person">
 			  </label>
 		 </div>
 					<br/>
 		<div ng-controller="Dynamicparameters">
-			<button style="border-radius: 50px 50px;background-color: #020626;" class="button button-block" ng-click="showDynamicResults(name)">
+			<button style="border-radius: 50px 50px;background-color: #020626;" class="button button-block" ng-click="showDynamicResults(query,person)">
 				<p style="color:white;" >Show results </p>
 			</button>
 		</div>
