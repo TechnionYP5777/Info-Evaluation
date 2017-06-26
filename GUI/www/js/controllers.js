@@ -205,7 +205,7 @@ angular.module('starter.controllers', [])
 
     $http({
         method: 'GET',
-        url: '/Queries/Query1',
+        url: 'http://132.68.206.107:8080/Queries/Query1',
     }).then(function successCallback(response) {
         console.log('success');
         $scope.persons = [];
@@ -269,7 +269,7 @@ angular.module('starter.controllers', [])
         console.log('281 in on click more info');
         $http({
             method: 'GET',
-            url: '/Queries/PersonalInformation',
+            url: 'http://132.68.206.107:8080/Queries/PersonalInformation',
             params: {
                 name: $scope.personalInformation.name
             }
@@ -694,7 +694,7 @@ angular.module('starter.controllers', [])
     console.log($scope.name);
     $http({
         method: 'GET',
-        url: '/Queries/Awards',
+        url: 'http://132.68.206.107:8080/Queries/Awards',
         params: {
             name: AwardsParams.getName()
         }
@@ -724,7 +724,7 @@ angular.module('starter.controllers', [])
     if ($scope.failed == false) {
         $http({
             method: 'GET',
-            url: '/Queries/PersonalInformation',
+            url: 'http://132.68.206.107:8080/Queries/PersonalInformation',
             params: {
                 name: AwardsParams.getName()
             }
