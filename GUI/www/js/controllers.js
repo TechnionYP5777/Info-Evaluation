@@ -420,11 +420,15 @@ angular.module('starter.controllers', [])
 
 .controller('AddQueryCtrl', function($scope, $state,$http,$q ,$ionicPopup, DynamicParams,ambiguousNames) {
 	
+	//$state.go('app.dynamicInput');
+	
     // Triggered on a button click, or some other target
-    $scope.searchPopUp = function() {
+   $scope.searchPopUp = function() {
     $scope.dynamicData = {};
 	$scope.checked=false;
+	   $state.go('app.dynamicInput');
         // An elaborate, custom popup
+	   /*
         var myPopup = $ionicPopup.show({
             template: '<input type="text" ng-model="dynamicData.query" placeholder="Your Query here"; white-space:normal; >' +
                 '</br> <input type="text" ng-model="dynamicData.personName"  placeholder="Person\'s name ; white-space:normal;">',
@@ -485,7 +489,8 @@ angular.module('starter.controllers', [])
 								alret('problem');
 							});
 			});
-        }
+        */
+   }
 })
 
 .controller('ambiguitySolver', function($scope, $state,$http,$q ,$ionicPopup, DynamicParams,ambiguousNames) {

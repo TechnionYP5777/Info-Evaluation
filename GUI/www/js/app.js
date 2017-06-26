@@ -187,6 +187,23 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             }
         }
     })
+	
+	.state('app.dynamicInput', {
+        url: '/dynamicInput',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/dynamicInput.html',
+                controller: ''
+            },
+            'fabContent': {
+                controller: function ($timeout) {
+                    /*$timeout(function () {
+                        document.getElementById('fab-profile').classList.toggle('on');
+                    }, 800);*/
+                }
+            }
+        }
+    })
 
     .state('app.AwardsResults', {
         url: '/Awards',
