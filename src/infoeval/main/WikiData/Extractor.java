@@ -41,15 +41,15 @@ public class Extractor {
 				+ "  (SAMPLE (?spName) as ?sname)"
 				+ " (SAMPLE (?spOccupation) as ?spOccu) (SAMPLE (?deathPlace) as ?death)"
 				+ " (SAMPLE(?birthPlace) as ?birth) (SAMPLE(?deathDate) as ?dDate) "
-				+ " (SAMPLE( ?birthDate) as ?bDate)(SAMPLE( ?birthCity) as ?bCity)(SAMPLE( ?deathCity) as ?dCity) "
+				+ " (SAMPLE( ?birthDate) as ?bDate)(SAMPLE( ?birthExpanded) as ?bExp)(SAMPLE( ?deathExpanded) as ?dExp) "
 				+ " WHERE {" + " ?resource   a <http://dbpedia.org/ontology/Person>;  "
 				+ " dbp:name ?pname; dbp:birthPlace ?birthPlace; "
 				+ "dbp:birthDate ?birthDate. ?birthPlace a dbo:Country."
 				+ " OPTIONAL{?resource dbo:occupation ?occupation}." + " OPTIONAL{?resource dbo:thumbnail ?photoLink}."
 				+ " OPTIONAL{?resource dbo:spouse ?spouse. ?spouse dbp:name ?spName."
 				+ " OPTIONAL{?spouse dbo:occupation ?spOccupation}.}. "
-				+ " OPTIONAL{?resource dbp:birthPlace ?birthCity. ?birthCity a dbo:City}."
-				+ " OPTIONAL{?resource dbp:deathPlace ?deathCity. ?deathCity a dbo:City}."
+				+ " OPTIONAL{?resource dbp:birthPlace ?birthExpanded. }."
+				+ " OPTIONAL{?resource dbp:deathPlace ?deathExpanded.}."
 				+ " OPTIONAL{?resource dbp:deathDate ?deathDate. ?resource dbp:deathPlace ?deathPlace.?deathPlace a dbo:Country.} "
 				+ " FILTER (lang(?pname) = 'en')  }GROUP BY ?pname " + " ORDER BY DESC(?pname)    LIMIT " + ENTRIES_NUM
 				+ " OFFSET " + SKIP_NUM);
@@ -71,23 +71,23 @@ public class Extractor {
 						+ " PREFIX  dbo:  <http://dbpedia.org/ontology/>"
 						+ " PREFIX  dbp:  <http://dbpedia.org/property/>"
 						+ " PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>"
-						+ " SELECT (SAMPLE (?name) AS ?pname) (SAMPLE (?photoLink) AS ?photo) (SAMPLE (?occupation) AS ?occup)"
+						+ " SELECT DISTINCT ?pname (SAMPLE (?photoLink) AS ?photo) (SAMPLE (?occupation) AS ?occup)"
 						+ " (SAMPLE (?occupationTitle) AS ?occupTitle) (SAMPLE (?spouse) AS ?spouses) (SAMPLE (?spName) AS ?sname)"
 						+ " (SAMPLE (?spOccupation) AS ?spOccu) (SAMPLE (?deathPlace) AS ?death)"
 						+ " (SAMPLE(?birthPlace) AS ?birth) (SAMPLE(?deathDate) AS ?dDate) "
-						+ " (SAMPLE( ?birthDate) AS ?bDate)  (SAMPLE( ?birthCity) as ?bCity)(SAMPLE( ?deathCity) as ?dCity) " + " {   VALUES ?wikiPageID { " + wikiPageID + "}"
-						+ " ?res a dbo:Person.  " + " ?res dbo:wikiPageID ?wikiPageID." + " ?res rdfs:label ?name."
-						+ " FILTER (lang(?name) = 'en') " + " OPTIONAL{?res dbo:birthPlace ?birthPlace. ?birthPlace a dbo:Country}."
+						+ " (SAMPLE( ?birthDate) AS ?bDate)  (SAMPLE( ?birthExpanded) as ?bExp)(SAMPLE( ?deathExpanded) as ?dExp) " + " {   VALUES ?wikiPageID { " + wikiPageID + "}"
+						+ " ?res a dbo:Person.  " + " ?res dbo:wikiPageID ?wikiPageID." + " ?res rdfs:label ?pname."
+						+ " FILTER (lang(?pname) = 'en') " + " OPTIONAL{?res dbp:birthPlace ?birthPlace. ?birthPlace a dbo:Country}."
 						+ " OPTIONAL{?res dbo:birthDate ?birthDate}." + " OPTIONAL{?res dbo:occupation ?occupation}."
 						+ "  OPTIONAL{?res dbo:occupation ?occupation. ?occupation a dbo:PersonFunction . ?occupation dbo:title ?occupationTitle}."
 
 						+ " OPTIONAL{?res dbo:thumbnail ?photoLink}."
-						+" OPTIONAL{?res dbo:birthPlace ?birthCity. ?birthCity a dbo:City}."
-						+" OPTIONAL{?res dbo:deathPlace ?deathCity. ?deathCity a dbo:City}."
+						+" OPTIONAL{?res dbp:birthPlace ?birthExpanded. }."
+						+" OPTIONAL{?res dbp:deathPlace ?deathExpanded. }."
 						+ " OPTIONAL{?res dbo:spouse ?spouse. ?spouse rdfs:label ?spName. ?spouse dbo:occupation ?spOccupation. FILTER (lang(?spName) = 'en')}"
 						
 
-						+ " OPTIONAL{?res dbo:deathDate ?deathDate.}OPTIONAL{ ?res dbo:deathPlace ?deathPlace. ?deathPlace a dbo:Country}. } ");
+						+ " OPTIONAL{?res dbo:deathDate ?deathDate.}OPTIONAL{ ?res dbo:deathPlace ?deathPlace. ?deathPlace a dbo:Country}.} GROUP BY ?pname ");
 
 
 		

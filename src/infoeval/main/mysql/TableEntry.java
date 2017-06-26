@@ -17,8 +17,8 @@ public class TableEntry {
 	private String name;
 	private String birthPlace;
 	private String deathPlace;
-	private String birthCity;
-	private String deathCity;
+	private String birthExpandedPlace;
+	private String deathExpandedPlace;
 	private Date birthDate;
 	private Date deathDate;
 	private String occupation;
@@ -31,18 +31,18 @@ public class TableEntry {
 	public TableEntry() {
 		this.deathPlace = this.birthPlace = this.name = this.url = 
 		this.occupation = this.SpouseName = this.spouseOccupation = 
-		this.photoLink = this.overview = this.birthCity = this.deathCity= "";
+		this.photoLink = this.overview = this.birthExpandedPlace = this.deathExpandedPlace= "";
 		this.deathDate = null;
 		this.birthDate = null;
 	}
 
 	public TableEntry(TableEntry te) {
 		this(te.getUrl(), te.getName(), te.getBirthPlace(), te.getDeathPlace(), te.getBirthDate(), te.getDeathDate(),
-				te.getOccupation(), te.getSpouseName(), te.getSpouseOccupation(), te.getPhotoLink(), te.getOverview(), te.getBirthCity(), te.getDeathCity());
+				te.getOccupation(), te.getSpouseName(), te.getSpouseOccupation(), te.getPhotoLink(), te.getOverview(), te.getBirthExpandedPlace(), te.getDeathExpandedPlace());
 	}
 
 	public TableEntry(String url, String name, String birthPlace, String deathPlace, Date birthDate, Date deathDate,
-			String occupation, String spouseName, String spouseOccupation, String link, String overview,String birthCity, String deathCity) {
+			String occupation, String spouseName, String spouseOccupation, String link, String overview,String birthExpandedPlace, String deathExpandedPlace) {
 		setUrl(url);
 		setName(name);
 		setBirthPlace(birthPlace);
@@ -54,16 +54,16 @@ public class TableEntry {
 		setSpouseOccupation(spouseOccupation);
 		setPhotoLink(link);
 		setOverview(overview);
-		setBirthCity(birthCity);
-		setDeathCity(deathCity);
+		setBirthExpandedPlace(birthExpandedPlace);
+		setDeathExpandedPlace(deathExpandedPlace);
 	}
 
 	// Setters
-	public void setBirthCity(String birthCity) {
-		this.birthCity = birthCity;
+	public void setBirthExpandedPlace(String birthExpandedPlace) {
+		this.birthExpandedPlace = birthExpandedPlace;
 	}
-	public void setDeathCity(String deathCity) {
-		this.deathCity = deathCity;
+	public void setDeathExpandedPlace(String deathExpandedPlace) {
+		this.deathExpandedPlace = deathExpandedPlace;
 	}
 	public void setUrl(String url) {
 		this.url = url;
@@ -110,11 +110,11 @@ public class TableEntry {
 	}
 
 	// Getters
-	public String getBirthCity() {
-		return this.birthCity;
+	public String getBirthExpandedPlace() {
+		return this.birthExpandedPlace;
 	}
-	public String getDeathCity() {
-		return this.deathCity;
+	public String getDeathExpandedPlace() {
+		return this.deathExpandedPlace;
 	}
 	public String getUrl() {
 		return this.url;

@@ -66,7 +66,7 @@ public class SqlRunner {
 		int serialized_id = -1;
 		ArrayList<Row> rows = new ArrayList<>();
 		if (id_result.isEmpty()) {
-			final String beforeYearInPlace = "SELECT filtered_info.name, filtered_info.BirthPlace, filtered_info.BirthDate, filtered_info.photoLink, WikiID.wikiPageID, filtered_info.birthCity "
+			final String beforeYearInPlace = "SELECT filtered_info.name, filtered_info.BirthPlace, filtered_info.BirthDate, filtered_info.photoLink, WikiID.wikiPageID, filtered_info.birthExpanded "
 					+ "FROM (SELECT * FROM basic_info WHERE BirthPlace LIKE CONCAT('%',?,'%') AND YEAR(BirthDate) < ?) AS filtered_info  "
 					+ "LEFT JOIN WikiID " + "ON WikiID.name = filtered_info.name " + "LIMIT " + LIMIT_NUM;
 			logger.log(Level.INFO, "Born in place before year query is being executed");
@@ -93,7 +93,7 @@ public class SqlRunner {
 			String photoLink = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
 			photoLink.replaceAll("'", "\'");
 			String wikiPageID = (String) row.row.get(4).getValue().cast(row.row.get(4).getKey());
-			String birthCity = (String) row.row.get(5).getValue().cast(row.row.get(5).getKey());
+			String birthExpanded = (String) row.row.get(5).getValue().cast(row.row.get(5).getKey());
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
 
@@ -102,10 +102,10 @@ public class SqlRunner {
 				String first = name.split(",")[1].substring(1);
 				String newName = first + " " + last;
 				
-				res.add(new TableEntry(wikiURL + wikiPageID, newName, birthPlace, "", birthDate, sqlDate, "", birthCity, "",
+				res.add(new TableEntry(wikiURL + wikiPageID, newName, birthPlace, "", birthDate, sqlDate, "", birthExpanded, "",
 						photoLink, "","",""));
 			} else {
-				res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, "", birthDate, sqlDate, "", birthCity, "",
+				res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, "", birthDate, sqlDate, "", birthExpanded, "",
 						photoLink, "","",""));
 			}
 			
@@ -120,9 +120,9 @@ public class SqlRunner {
 		int serialized_id = -1;
 		ArrayList<Row> rows = new ArrayList<>();
 		if (id_result.isEmpty()) {
-			final String birthDeathPlace = "SELECT filtered_info.name, filtered_info.BirthPlace, filtered_info.DeathPlace, filtered_info.photoLink, WikiID.wikiPageID , filtered_info.birthCity,filtered_info.deathCity"
-					+ "FROM (SELECT * FROM basic_info WHERE DeathPlace != 'No Death Place' "
-					+ " AND BirthPlace != DeathPlace) AS filtered_info  " + "LEFT JOIN WikiID "
+			final String birthDeathPlace = "SELECT filtered_info.name, filtered_info.BirthPlace, filtered_info.DeathPlace, filtered_info.photoLink, WikiID.wikiPageID , filtered_info.birthExpanded,filtered_info.deathExpanded"
+					+ "FROM (SELECT * FROM basic_info WHERE DeathPlace <> 'No Death Place' "
+					+ " AND BirthPlace <> DeathPlace) AS filtered_info  " + "LEFT JOIN WikiID "
 					+ "ON WikiID.name = filtered_info.name " + "LIMIT " + LIMIT_NUM;
 			logger.log(Level.INFO, "Different birth and death place query is being executed");
 			rows = conn.runQuery(birthDeathPlace);
@@ -145,8 +145,8 @@ public class SqlRunner {
 			String photoLink = (String) row.row.get(3).getValue().cast(row.row.get(3).getKey());
 			photoLink.replaceAll("'", "\'");
 			String wikiPageID = (String) row.row.get(4).getValue().cast(row.row.get(4).getKey());
-			String birthCity = (String) row.row.get(5).getValue().cast(row.row.get(5).getKey());
-			String deathCity = (String) row.row.get(6).getValue().cast(row.row.get(6).getKey());
+			String birthExpanded = (String) row.row.get(5).getValue().cast(row.row.get(5).getKey());
+			String deathExpanded = (String) row.row.get(6).getValue().cast(row.row.get(6).getKey());
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 			java.sql.Date sqlDate = new java.sql.Date(df.parse("1970-12-07").getTime());
 
@@ -156,10 +156,10 @@ public class SqlRunner {
 				String newName = first + " " + last;
 			
 				res.add(new TableEntry(wikiURL + wikiPageID, newName, birthPlace, deathPlace, sqlDate, sqlDate, "", "",
-						"", photoLink, "",birthCity,deathCity));
+						"", photoLink, "",birthExpanded,deathExpanded));
 			} else {
 				res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, deathPlace, sqlDate, sqlDate, "", "", "",
-						photoLink, "",birthCity,deathCity));
+						photoLink, "",birthExpanded,deathExpanded));
 			
 			}
 			++i;
@@ -473,7 +473,7 @@ public class SqlRunner {
 
 		TableEntry te = new TableEntry(wikiURL + wikiPageID, name, birthPlace, deathPlace, birthDate, deathDate,
 				occupation, spouseName, spouseOccupation, photoLink, overviewStr,"","");
-		//TODO: add birthCity and DeathCity
+		
 		return te;
 	}
 

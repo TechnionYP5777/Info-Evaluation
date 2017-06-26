@@ -41,8 +41,8 @@ public class SqlTablesFiller {
 		connector.runUpdate("CREATE TABLE IF NOT EXISTS basic_info(Name VARCHAR(100) NOT NULL,"
 				+ " BirthPlace VARCHAR(100) NULL,DeathPlace VARCHAR(100) NULL,BirthDate DATE NULL,"
 				+ " DeathDate DATE NULL, occupation VARCHAR(100) NULL, spouseName VARCHAR(100) NULL,"
-				+ " spouseOccupation VARCHAR(100) NULL, photoLink VARCHAR(500) NULL, birthCity VARCHAR(100) NULL,"
-				+ "deathCity VARCHAR(100) NULL)");
+				+ " spouseOccupation VARCHAR(100) NULL, photoLink VARCHAR(500) NULL, birthExpanded VARCHAR(100) NULL,"
+				+ "deathExpanded VARCHAR(100) NULL)");
 		logger.log(Level.INFO, "basic_info table created successfully");
 		connector.runUpdate(
 				"CREATE TABLE IF NOT EXISTS WikiID(Name VARCHAR(100) NOT NULL,wikiPageID VARCHAR(50) NOT NULL)");
@@ -95,8 +95,8 @@ public class SqlTablesFiller {
 				inp[6] = te.getSpouseName();
 				inp[7] = te.getSpouseOccupation();
 				inp[8] = te.getPhotoLink();
-				inp[9] = te.getBirthCity();
-				inp[10] = te.getDeathCity();
+				inp[9] = te.getBirthExpandedPlace();
+				inp[10] = te.getDeathExpandedPlace();
 				connector.runUpdate("INSERT INTO basic_info VALUES(?,?,?,?,?,?,?,?,?,?,?)", inp);
 			} catch (Exception e) {
 				System.out.println("Failed filling basicInfo entry number " + ¢);
@@ -123,23 +123,23 @@ public class SqlTablesFiller {
 				birthPlace = (bPlace.asLiteral() + "").split("@")[0];
 		birthPlace = birthPlace.replaceAll("_", " ");
 
-		RDFNode bCity = solution.get("bCity");
-		String birthCity = "No Birth City";
-		if (bCity != null)
-			if (bCity.isResource())
-				birthCity = (bCity.asResource() + "").split("resource/")[1];
-			else if (bCity.isLiteral())
-				birthCity = (bCity.asLiteral() + "").split("@")[0];
-		birthCity = birthCity.replaceAll("_", " ");
+		RDFNode bExp = solution.get("bExp");
+		String birthExpanded = "No Birth Place";
+		if (bExp != null)
+			if (bExp.isResource())
+				birthExpanded = (bExp.asResource() + "").split("resource/")[1];
+			else if (bExp.isLiteral())
+				birthExpanded = (bExp.asLiteral() + "").split("@")[0];
+		birthExpanded = birthExpanded.replaceAll("_", " ");
 
-		RDFNode dCity = solution.get("dCity");
-		String deathCity = "No Death City";
-		if (dCity != null)
-			if (dCity.isResource())
-				deathCity = (dCity.asResource() + "").split("resource/")[1];
-			else if (dCity.isLiteral())
-				deathCity = (dCity.asLiteral() + "").split("@")[0];
-		deathCity = deathCity.replaceAll("_", " ");
+		RDFNode dExp = solution.get("dExp");
+		String deathExpanded = "No Death Place";
+		if (dExp != null)
+			if (dExp.isResource())
+				deathExpanded = (dExp.asResource() + "").split("resource/")[1];
+			else if (dExp.isLiteral())
+				deathExpanded = (dExp.asLiteral() + "").split("@")[0];
+		deathExpanded = deathExpanded.replaceAll("_", " ");
 
 		RDFNode dPlace = solution.get("death");
 		String deathPlace = "No Death Place";
@@ -241,7 +241,7 @@ public class SqlTablesFiller {
 
 		return new TableEntry("", personalName, birthPlace, deathPlace, sqlBirthDate, sqlDeathDate, occup, spouseName,
 				spouseOccupation, (solution.get("photo") == null ? "No Photo" : solution.get("photo") + ""), "",
-				birthCity, deathCity);
+				birthExpanded, deathExpanded);
 
 	}
 

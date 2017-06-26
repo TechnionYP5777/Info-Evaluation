@@ -65,7 +65,7 @@ public class TableEntryTest {
 	@SuppressWarnings("deprecation")
 	public void test4() {
 		TableEntry te = new TableEntry("bla", "bla", "bla", "bla", new Date(1, 1, 1), new Date(1, 1, 1), "",
-				"spouseName", "", "photo", "", "birthCity", "deathCity");
+				"spouseName", "", "photo", "", "birthExpandedPlace", "deathExpandedPlace");
 		te.setUrl("url");
 		te.setName("name");
 		te.setDeathPlace("deathPlace");
@@ -85,7 +85,7 @@ public class TableEntryTest {
 		TableEntry te2 = new TableEntry(te);
 		assertEquals("An interesting overview", te2.getOverview());
 		assertEquals("photo", te.getPhotoLink());
-		assertEquals("birthCity", te.getBirthCity());
-		assertEquals("deathCity", te.getDeathCity());
+		assertEquals("birthExpandedPlace", te.getBirthExpandedPlace());
+		assertEquals("deathExpandedPlace", te.getDeathExpandedPlace());
 	}
 }
