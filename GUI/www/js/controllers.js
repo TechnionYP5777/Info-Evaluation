@@ -493,7 +493,7 @@ angular.module('starter.controllers', [])
    }
 })
 
-.controller('Dynamicparameters', function($scope, $http, $ionicPopup, DynamicParams, $state) {
+.controller('Dynamicparameters', function($scope, $http, $ionicPopup, DynamicParams, $state,ambiguousNames) {
 	//TODO: rewrite accordingly
     $scope.showDynamicResults = function(query,person) {
 		
