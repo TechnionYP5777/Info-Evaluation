@@ -60,11 +60,12 @@ public class SqlRunnerTest {
 @Ignore
 	@Test
 	public void getBornInPlaceBeforeYearTest() throws Exception {
-		for (TableEntry te : querun.getBornInPlaceBeforeYear("Canada", "1970")) {
+		for (TableEntry te : querun.getBornInPlaceBeforeYear("Japan", "1970")) {
 			java.sql.Date birthDate = te.getBirthDate();
 			String birthPlace = te.getBirthPlace();
 			assert Integer.parseInt(new SimpleDateFormat("yyyy").format(birthDate)) < 1970;
-			assert birthPlace.contains("Canada");
+			assert birthPlace.contains("Japan");
+			
 			
 		}
 	}
@@ -175,6 +176,10 @@ public class SqlRunnerTest {
 		 assertEquals(te.getSpouseOccupation(),"No Spouse Occupation");
 		 assertEquals(te.getPhotoLink(),"http://commons.wikimedia.org/wiki/Special:FilePath/Angela_Merkel_Juli_2010_-_3zu4.jpg");
 		 assertEquals( te.getOverview().split(" ")[1],"Dorothea");
+		
+
+					
+		
 		 
 		
 	}
