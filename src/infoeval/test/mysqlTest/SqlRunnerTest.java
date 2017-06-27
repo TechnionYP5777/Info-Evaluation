@@ -68,8 +68,7 @@ public class SqlRunnerTest {
 			
 		}
 	}
-
-	@Ignore
+@Ignore
 	@Test
 	public void getDifferentDeathPlaceTest() throws Exception {
 		for (TableEntry ¢ : querun.getDifferentDeathPlace())

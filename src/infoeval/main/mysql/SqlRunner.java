@@ -120,11 +120,12 @@ public class SqlRunner {
 		int serialized_id = -1;
 		ArrayList<Row> rows = new ArrayList<>();
 		if (id_result.isEmpty()) {
-			final String birthDeathPlace = "SELECT filtered_info.name, filtered_info.BirthPlace, filtered_info.DeathPlace, filtered_info.photoLink, WikiID.wikiPageID , filtered_info.birthExpanded,filtered_info.deathExpanded"
-					+ "FROM (SELECT * FROM basic_info WHERE DeathPlace <> 'No Death Place' "
-					+ " AND BirthPlace <> DeathPlace) AS filtered_info  " + "LEFT JOIN WikiID "
+			final String birthDeathPlace = "SELECT filtered_info.name, filtered_info.BirthPlace, filtered_info.DeathPlace, filtered_info.photoLink, WikiID.wikiPageID, filtered_info.birthExpanded, filtered_info.deathExpanded\n"
+					+ "FROM (SELECT * FROM basic_info WHERE DeathPlace<>'No Death Place' \n"
+					+ "AND BirthPlace<>DeathPlace) AS filtered_info " + "LEFT JOIN WikiID\n "
 					+ "ON WikiID.name = filtered_info.name " + "LIMIT " + LIMIT_NUM;
 			logger.log(Level.INFO, "Different birth and death place query is being executed");
+			
 			rows = conn.runQuery(birthDeathPlace);
 			String query_identifier = "getDifferentDeathPlace()";
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
