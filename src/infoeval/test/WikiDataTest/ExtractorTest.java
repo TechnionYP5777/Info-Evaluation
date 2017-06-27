@@ -8,8 +8,6 @@ import infoeval.main.WikiData.SqlTablesFiller;
 import infoeval.main.mysql.TableEntry;
 import static org.junit.Assert.*;
 import java.sql.Date;
-
-import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.query.ResultSetRewindable;
 import org.apache.jena.rdf.model.RDFNode;
 import org.jsoup.Jsoup;
