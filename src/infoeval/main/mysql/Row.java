@@ -21,8 +21,11 @@ import java.util.logging.Logger;
  * @author Adam Dziedzic
  * 
  */
+@SuppressWarnings({ "serial", "rawtypes" })
 public class Row implements Serializable {
+	
 	public List<Entry<Object, Class>> row;
+	
 	public static Map<String, Class> TYPE;
 
 	static {

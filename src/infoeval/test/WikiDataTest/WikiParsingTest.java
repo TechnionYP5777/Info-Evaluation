@@ -18,14 +18,13 @@ import infoeval.main.WikiData.WikiParsing;
 public class WikiParsingTest {
 	@Test
 	public void test1() throws Exception {
-
-		System.out.println((new WikiParsing("https://en.wikipedia.org/wiki/Shia_LaBeouf")).Parse("arrested"));
-
+		assert new WikiParsing("https://en.wikipedia.org/wiki/Shia_LaBeouf").Parse("arrested").contains("In February 2005, LaBeouf was arrested by police in Los Angeles and charged with assault with a deadly weapon after threatening his neighbor by driving into his car.");
 	}
 
 	@Test
 	public void test2() throws IOException {
-		System.out.print((new WikiParsing("https://en.wikipedia.org/wiki/Justin_Timberlake")).Parse("awarded"));
+		assert new WikiParsing("https://en.wikipedia.org/wiki/Justin_Timberlake").Parse("awarded").contains("In February 2008, Timberlake was awarded two Grammy Awards.");
+
 	}
 
 	@Test

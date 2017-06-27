@@ -1,16 +1,14 @@
 package infoeval.test.WikiDataTest;
 
-import static org.junit.Assert.*;
 
 import org.junit.Ignore;
 import org.junit.Test;
 import infoeval.main.WikiData.Connector;
-import infoeval.main.WikiData.Extractor;
-import infoeval.main.WikiData.QueryTypes;
 import infoeval.main.mysql.Row;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.Map.Entry;
 
 /**
@@ -19,7 +17,7 @@ import java.util.Map.Entry;
  * @since 19-04-2017
  */
 public class ConnectorTest {
-	private static final int ENTRIES_NUM = 10000;
+	
 
 	/*
 	 * ATTENTION ! When you want to test this class , remove the @ignore
@@ -32,52 +30,43 @@ public class ConnectorTest {
 	@Ignore
 	@Test
 	public void connectionTest() throws Exception {
-		Connector conn = new Connector();
-		Connection connection = conn.getConnection();
+		Connection connection = new Connector().getConnection();
 		assert connection != null;
 		connection.close();
 	}
 
 	@Ignore
 	@Test
+	@SuppressWarnings("rawtypes")
 	public void runQueryTest() throws Exception {
 		Connector conn = new Connector();
 		assert conn.getConnection() != null;
-
-		ArrayList<Row> rows = conn.runQuery("SELECT photoLink FROM basic_info LIMIT 1");
-		Row row = rows.get(0);
+		Row row = conn.runQuery("SELECT photoLink FROM basic_info LIMIT 1").get(0);
 		Entry<Object, Class> col = row.row.get(0);
-		String photo = (String) col.getValue().cast(col.getKey());
-
+		assertNotNull((String) col.getValue().cast(col.getKey()));
 		int res = conn.runUpdate("INSERT INTO WikiID VALUES('osher','1234')");
 		assert res == 1;
 		res = conn.runUpdate("DELETE FROM WikiID WHERE name LIKE 'osher'");
 		assert res == 1;
-
 		conn.close();
 	}
 
 	@Ignore
 	@Test
+	@SuppressWarnings("rawtypes")
 	public void runUpdateTest() throws Exception {
 		Connector conn = new Connector();
 		assert conn.getConnection() != null;
-
 		Object[] inp = new Object[] { "Jessica" };
-		ArrayList<Row> rows = conn
-				.runQuery("SELECT photoLink FROM basic_info WHERE name LIKE CONCAT('%',?,'%') LIMIT 1", inp);
-		Row row = rows.get(0);
+		Row row = conn.runQuery("SELECT photoLink FROM basic_info WHERE name LIKE CONCAT('%',?,'%') LIMIT 1", inp)
+				.get(0);
 		Entry<Object, Class> col = row.row.get(0);
-		String photo = (String) col.getValue().cast(col.getKey());
-
+		assertNotNull((String) col.getValue().cast(col.getKey()));
 		inp = new Object[] { "osher", "1234" };
 		int res = conn.runUpdate("INSERT INTO WikiID VALUES(?,?)", inp);
 		assert res == 1;
-
-		Object[] name = new Object[] { "osher" };
-		res = conn.runUpdate("DELETE FROM WikiID WHERE name LIKE ?", name);
+		res = conn.runUpdate("DELETE FROM WikiID WHERE name LIKE ?", new Object[] { "osher" });
 		assert res == 1;
-
 		conn.close();
 	}
 }
