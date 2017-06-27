@@ -102,11 +102,11 @@ public class SqlRunner {
 				String first = name.split(",")[1].substring(1);
 				String newName = first + " " + last;
 				
-				res.add(new TableEntry(wikiURL + wikiPageID, newName, birthPlace, "", birthDate, sqlDate, "", birthExpanded, "",
-						photoLink, "","",""));
+				res.add(new TableEntry(wikiURL + wikiPageID, newName, birthPlace, "", birthDate, sqlDate, "", "", "",
+						photoLink, "",birthExpanded,""));
 			} else {
-				res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, "", birthDate, sqlDate, "", birthExpanded, "",
-						photoLink, "","",""));
+				res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, "", birthDate, sqlDate, "", "", "",
+						photoLink, "",birthExpanded,""));
 			}
 			
 		}
