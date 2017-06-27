@@ -41,7 +41,7 @@ public class ExtractorTest {
 		assertEquals(extr.getResults().size(), ENTRIES_NUM);
 	}
 
-	@Ignore
+@Ignore
 	@Test
 	public void basicInfoByIDTest() throws Exception {
 		int wikiPageID = Integer.parseInt((Jsoup
@@ -53,33 +53,22 @@ public class ExtractorTest {
 		extr.executeQuery(QueryTypes.BASIC_INFO_BY_WIKI_PAGE_ID);
 		ResultSetRewindable results = extr.getResults();
 		results.reset();
-
 		TableEntry te = SqlTablesFiller.getBasicInfo(results);
-
-		System.out.println("Name is " + te.getName());
-
-		System.out.println("Birth Place is " + te.getBirthPlace());
-
-		System.out.println("Death Place is " + te.getDeathPlace());
-
+		assertEquals(te.getName(), "Michael Jackson");
+		assertEquals(te.getBirthPlace(), "No Birth Place");
+		assertEquals(te.getDeathPlace(), "No Death Place");
 		Date birthDate = te.getBirthDate();
-		if (birthDate != null)
-			System.out.println("Birth Date is " + birthDate);
-
+		assertNull(birthDate);
 		Date deathDate = te.getDeathDate();
-		if (deathDate != null)
-			System.out.println("Death Date is " + deathDate);
+		assertNull(deathDate);
+		assertEquals(te.getOccupation(), "No Occupation");
+		assertEquals(te.getSpouseName(), "No Spouse");
+		assertEquals(te.getSpouseOccupation(),"No Spouse Occupation");
+		assertEquals(te.getPhotoLink(),"http://commons.wikimedia.org/wiki/Special:FilePath/Michael_Jackson_in_1988.jpg?width=300");
 
-		System.out.println("Occupation is " + te.getOccupation());
-
-		System.out.println("Spouse Name is " + te.getSpouseName());
-
-		System.out.println("Spouse Occupation is " + te.getSpouseOccupation());
-
-		System.out.println("PhotoLink is " + te.getPhotoLink());
 	}
 
-	@Ignore
+@Ignore
 	@Test
 	public void abstractByWikiPageIdTest() throws Exception {
 		int wikiPageID = Integer.parseInt((Jsoup
@@ -99,6 +88,6 @@ public class ExtractorTest {
 			else if (overview.isLiteral())
 				overviewStr = (overview.asLiteral() + "").split("@")[0];
 
-		System.out.println("Abstract is " + overviewStr);
+		assert overviewStr.contains("is a Colombian singer, songwriter, dancer, record producer, choreographer, and model");
 	}
 }
