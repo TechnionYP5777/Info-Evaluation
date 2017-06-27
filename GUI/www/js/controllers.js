@@ -5,7 +5,7 @@ angular.module('starter.controllers', [])
 
 
 .constant('ApiEndpoint', {
-    url: 'http://localhost:8100/api'
+    url: 'http://132.68.206.107:8080'
 })
 
 
@@ -144,7 +144,7 @@ angular.module('starter.controllers', [])
     $scope.loading = true;
     $http({
         method: 'GET',
-        url: '/Queries/Query2',
+        url: 'http://132.68.206.107:8080/Queries/Query2',
         params: {
             place: DataQ.getPlace(),
             year: DataQ.getYear()
@@ -310,7 +310,7 @@ angular.module('starter.controllers', [])
 
     $http({
         method: 'GET',
-        url: '/Queries/SameOccupationCouples',
+        url: +'http://132.68.206.107:8080/Queries/SameOccupationCouples',
     }).then(function successCallback(response) {
         console.log('success');
         $scope.persons = [];
@@ -498,7 +498,7 @@ angular.module('starter.controllers', [])
 		
 		$http({
 			method: 'GET',
-			url: '/Queries/checkAmbiguities',
+			url: 'http://132.68.206.107:8080/Queries/checkAmbiguities',
 			params: {
 				name: person
 			}
@@ -605,7 +605,7 @@ angular.module('starter.controllers', [])
     console.log($scope.name);
     $http({
         method: 'GET',
-        url: '/Queries/Dynamic',
+        url: 'http://132.68.206.107:8080/Queries/Dynamic',
         params: {
             name: DynamicParams.getName(),
             query: DynamicParams.getQuery()
@@ -635,7 +635,7 @@ angular.module('starter.controllers', [])
     if ($scope.failed == false) {
         $http({
             method: 'GET',
-            url: '/Queries/PersonalInformation',
+            url: 'http://132.68.206.107:8080/Queries/PersonalInformation',
             params: {
                 name: DynamicParams.getName()
             }
@@ -818,7 +818,7 @@ angular.module('starter.controllers', [])
     console.log($scope.name);
     $http({
         method: 'GET',
-        url: '/Queries/Arrests',
+        url: 'http://132.68.206.107:8080/Queries/Arrests',
         params: {
             name: ArrestsParams.getName()
         }
@@ -848,7 +848,7 @@ angular.module('starter.controllers', [])
     if ($scope.failed == false && $scope.loading == false) {
         $http({
             method: 'GET',
-            url: '/Queries/PersonalInformation',
+            url: 'http://132.68.206.107:8080/Queries/PersonalInformation',
             params: {
                 name: ArrestsParams.getName()
             }
