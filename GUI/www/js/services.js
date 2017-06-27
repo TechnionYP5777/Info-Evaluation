@@ -25,6 +25,28 @@ angular.module('starter.services', [])
     };
 })
 
+.factory('CheckNameInput', function($q) {
+    return {
+        isName: function(n) {
+            return n.match(/[A-Za-z]/g);
+        },
+        validateInput: function(name) {
+            var deferred = $q.defer();
+            if (!name) {
+                deferred.reject('MISSING');
+            } else {
+                if (!this.isName(name)) {
+                    deferred.reject('INVALIDNAME');
+                }
+            }
+
+            deferred.resolve('OK');
+            return deferred.promise;
+        }
+    };
+})
+
+/*
 .factory('DynamicQueryParams', function() {
     var queryName = {};
     var person = {};
@@ -42,7 +64,7 @@ angular.module('starter.services', [])
             person = personparameter;
         }
     };
-})
+})*/
 
 
 .factory('ArrestsParams', function() {
@@ -116,8 +138,6 @@ angular.module('starter.services', [])
 })
 
 .factory('CheckQuery2Input', function($q) {
-
-
     return {
         isNumber: function(n) {
             return !isNaN(parseFloat(n)) && isFinite(n);

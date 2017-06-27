@@ -494,7 +494,6 @@ angular.module('starter.controllers', [])
 })
 
 .controller('Dynamicparameters', function($scope, $http, $ionicPopup, DynamicParams, $state,ambiguousNames) {
-	//TODO: rewrite accordingly
     $scope.showDynamicResults = function(query,person) {
 		
 		$http({
@@ -557,7 +556,8 @@ angular.module('starter.controllers', [])
 	};
 })
 
-.controller('AwardsParameters', function($scope, $state, $ionicPopup, AwardsParams) {
+.controller('AwardsParameters', function($scope, $state, $ionicPopup, AwardsParams, CheckNameInput) {
+	//TODO: add check of name param
     $scope.showAwardsResults = function(name) {
         if (name == null || name.trim().length == 0) {
             var FetchErrorAlert = $ionicPopup.alert({
@@ -767,7 +767,8 @@ angular.module('starter.controllers', [])
     ionicMaterialInk.displayEffect();
 })
 
-.controller('ArrestsParameters', function($scope, $state, $ionicPopup, ArrestsParams) {
+.controller('ArrestsParameters', function($scope, $state, $ionicPopup, ArrestsParams, CheckNameInput) {
+	//TODO: add check of name param
     $scope.showArrestsResults = function(name) {
         if (name == null || name.trim().length == 0) {
             var FetchErrorAlert = $ionicPopup.alert({
