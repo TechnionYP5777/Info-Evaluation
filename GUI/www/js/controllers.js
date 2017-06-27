@@ -678,22 +678,6 @@ angular.module('starter.controllers', [])
     ionicMaterialInk.displayEffect();
 })
 
-
-/*.controller('AwardsParameters', function($scope, $state, $ionicPopup, AwardsParams) {
-    $scope.showAwardsResults = function(name) {
-        if (name == null || name.trim().length == 0) {
-            var FetchErrorAlert = $ionicPopup.alert({
-                title: 'Input error!',
-                template: 'Please enter a name of a person you wish to look for.',
-            });
-        } else {
-            console.log('Sending params for Awards query ');
-            AwardsParams.setName(name)
-            $state.go('app.AwardsResults');
-        }
-    };
-})*/
-
 .controller('AwardsCtrl', function($scope, $http, $state, $timeout, $ionicPopup, ionicMaterialMotion, ionicMaterialInk, AwardsParams) {
     // Set Header
     $scope.$parent.showHeader();
@@ -786,16 +770,32 @@ angular.module('starter.controllers', [])
 .controller('ArrestsParameters', function($scope, $state, $ionicPopup, ArrestsParams, CheckNameInput) {
 	//TODO: add check of name param
     $scope.showArrestsResults = function(name) {
-        if (name == null || name.trim().length == 0) {
-            var FetchErrorAlert = $ionicPopup.alert({
-                title: 'Input error!',
-                template: 'Please enter a name of a person you wish to look for.',
-            });
-        } else {
-            console.log('Sending params for Arrests query ');
-            ArrestsParams.setName(name)
-            $state.go('app.ArrestsResults');
-        }
+		console.log('Sending params for Arrests query ');
+        CheckNameInput.validateInput(name)
+            .then(
+                function(response) {
+                    if (response == 'OK') {
+						
+						ArrestsParams.setName(name)
+            			$state.go('app.ArrestsResults');
+                    }
+                },
+                function(error) {
+                    if (error == 'MISSING') {
+                        //don't allow the user search unless he enters all inputs
+                        var InputErrorAlert = $ionicPopup.alert({
+                            title: 'Input error!',
+                            template: 'Missing Input. Please insert valid person\'s name',
+                        });
+                    } else if (error == 'INVALIDNAME') {
+                        var InputErrorAlert = $ionicPopup.alert({
+                            title: 'Input error!',
+                            template: 'Illegal Input. Please insert a valid person\'s name',
+                        });
+                    }
+
+                }
+            );
     };
 })
 
