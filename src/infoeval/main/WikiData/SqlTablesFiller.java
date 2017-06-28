@@ -23,7 +23,7 @@ import org.apache.jena.rdf.model.RDFNode;
  *
  */
 public class SqlTablesFiller {
-	static int i=0;
+	static int i;
 	private static final Logger logger = Logger.getLogger("SqlTablesFiller".getClass().getName());
 	private Connector connector;
 	private static String[] months = { "January", "February", "March", "April", "May", "June", "July", "August",
@@ -81,11 +81,9 @@ public class SqlTablesFiller {
 		ext.executeQuery(QueryTypes.BASIC_INFO);
 		ResultSetRewindable results = ext.getResults();
 		results.reset();
-		for (int ¢ = 0; ¢ < results.size(); ++¢) {
-
+		for (int ¢ = 0; ¢ < results.size(); ++¢)
 			try {
 				TableEntry te = getBasicInfo(results);
-
 				Object[] inp = new Object[11];
 				inp[0] = te.getName();
 				inp[1] = te.getBirthPlace();
@@ -101,9 +99,7 @@ public class SqlTablesFiller {
 				connector.runUpdate("INSERT INTO basic_info VALUES(?,?,?,?,?,?,?,?,?,?,?)", inp);
 			} catch (Exception e) {
 				System.out.println("Failed filling basicInfo entry number " + ¢);
-				
 			}
-		}
 	}
 
 	public static TableEntry getBasicInfo(ResultSetRewindable r)

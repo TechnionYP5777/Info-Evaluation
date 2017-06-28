@@ -112,10 +112,8 @@ public class SqlRunnerTest {
 	@Ignore
 	@Test
 	public void getSpouselessBetweenYearsTest() throws Exception {
-		for (TableEntry ¢ : querun.getSpouselessBetweenYears("1900", "1980")){
-			
+		for (TableEntry ¢ : querun.getSpouselessBetweenYears("1900", "1980"))
 			assertEquals(¢.getSpouseName(), "No Spouse Name");
-	}
 	}
 
 @Ignore
@@ -167,7 +165,7 @@ public class SqlRunnerTest {
 		 assertEquals(te.getDeathPlace(),"No Death Place");
 		 assertEquals(te.getBirthExpandedPlace(),"West Germany");
 		 assertEquals(te.getDeathExpandedPlace(),"No Death Place");
-		 assertEquals(te.getBirthDate().toString(),"1954-07-17");
+		 assertEquals((te.getBirthDate() + ""),"1954-07-17");
 	     assertEquals(te.getDeathDate(),null);
 		 assertEquals(te.getOccupation(),"No Occupation");
 		 assertEquals(te.getSpouseName(),"No Spouse");
