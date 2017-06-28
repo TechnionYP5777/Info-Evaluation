@@ -49,7 +49,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	@Override
 	@CrossOrigin
 	@RequestMapping(path = "Queries/Query2", method = RequestMethod.GET)
-	public ArrayList<TableEntry> getBornInPlaceYear(String place, String year)
+	public synchronized ArrayList<TableEntry> getBornInPlaceYear(String place, String year)
 			throws Exception {
 
 		ArrayList<TableEntry> $ = runner.getBornInPlaceBeforeYear(place, year);
@@ -62,7 +62,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	@Override
 	@CrossOrigin
 	@RequestMapping(path = "Queries/Query1", method = RequestMethod.GET)
-	public ArrayList<TableEntry> differentDeathPlace() throws Exception {
+	public synchronized ArrayList<TableEntry> differentDeathPlace() throws Exception {
 		logger.log(Level.INFO, "Born and died in different place was called");
 		ArrayList<TableEntry> $ = runner.getDifferentDeathPlace();
 		logger.log(Level.INFO, "list size:" + $.size());
@@ -73,7 +73,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	@Override
 	@CrossOrigin
 	@RequestMapping(path = "Queries/SameOccupationCouples", method = RequestMethod.GET)
-	public ArrayList<TableEntry> getSameOccupationCouples() throws Exception {
+	public synchronized ArrayList<TableEntry> getSameOccupationCouples() throws Exception {
 		logger.log(Level.INFO, "Get SameOccupationCouples was called.\n ");
 		// Parse user's input:
 
@@ -84,7 +84,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	@Override
 	@CrossOrigin
 	@RequestMapping(path = "Queries/checkAmbiguities", method = RequestMethod.GET)
-	public ArrayList<String> checkAmbiguities(String name) throws IOException {
+	public synchronized ArrayList<String> checkAmbiguities(String name) throws IOException {
 		String UpdatedName = updteName(name);
 		try {
 			WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + UpdatedName));
@@ -99,7 +99,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	@Override
 	@CrossOrigin
 	@RequestMapping(path = "Queries/Arrests", method = RequestMethod.GET)
-	public LinkedList<String> getArrested(String name) throws Exception {
+	public synchronized LinkedList<String> getArrested(String name) throws Exception {
 		logger.log(Level.INFO, "Get Arrests was called.\n Parameters:Name:" + name);
 		// Parse user's input:
 		String UpdatedName = updteName(name);
@@ -119,7 +119,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	@Override
 	@CrossOrigin
 	@RequestMapping(path = "Queries/Awards", method = RequestMethod.GET)
-	public LinkedList<String> getAwards(String name) throws Exception {
+	public synchronized LinkedList<String> getAwards(String name) throws Exception {
 		logger.log(Level.INFO, "Get Awards was called.\n Parameters:Name:" + name);
 		// Parse user's input:
 		try {
@@ -142,7 +142,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	@Override
 	@CrossOrigin
 	@RequestMapping(path = "Queries/Dynamic", method = RequestMethod.GET)
-	public LinkedList<String> getDynamic(String name, String query) throws Exception {
+	public synchronized LinkedList<String> getDynamic(String name, String query) throws Exception {
 		logger.log(Level.INFO, "Get dynamic query results was called.\n Parameters:Name:" + name + " Query:" + query);
 		// Parse user's input:
 		try {
@@ -156,7 +156,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	@Override
 	@CrossOrigin
 	@RequestMapping(path = "Queries/PersonalInformation", method = RequestMethod.GET)
-	public TableEntry getPersonal_Information(String name) throws Exception {
+	public synchronized TableEntry getPersonal_Information(String name) throws Exception {
 		logger.log(Level.INFO, "Get personal information was called.\n Parameters:Name:" + name);
 		// Parse user's input:
 
@@ -171,7 +171,7 @@ public class InfoevalServiceImp implements InfoevalService {
 		return runner.getPersonalInfo(Integer.parseInt(pageId));
 	}
 
-	public String updteName(String name) {
+	public static String updteName(String name) {
 		String[] parts = name.split(" ");
 		String UpdatedName = "";
 		for (String part : parts) {
