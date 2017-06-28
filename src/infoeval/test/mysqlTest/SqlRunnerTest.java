@@ -8,7 +8,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.Ignore;
 import org.junit.BeforeClass;
-import org.apache.jena.base.Sys;
 import org.jsoup.Jsoup;
 import org.junit.AfterClass;
 
@@ -69,8 +68,7 @@ public class SqlRunnerTest {
 			
 		}
 	}
-
-	@Ignore
+@Ignore
 	@Test
 	public void getDifferentDeathPlaceTest() throws Exception {
 		for (TableEntry ¢ : querun.getDifferentDeathPlace())

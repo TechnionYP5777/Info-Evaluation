@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Map.Entry;
 
 import org.junit.AfterClass;
@@ -50,19 +49,17 @@ public class SqlTablesFillerTest {
 
 	@Ignore
 	@Test
+	@SuppressWarnings("rawtypes")
 	public void basicInfoTableSizeTest() throws Exception {
-		Connector conn = new Connector();
-		ArrayList<Row> rows = conn.runQuery("SELECT COUNT(*) FROM basic_info");
-		Row row = rows.get(0);
+		Row row = new Connector().runQuery("SELECT COUNT(*) FROM basic_info").get(0);
 		Entry<Object, Class> col = row.row.get(0);
-		assertEquals(ENTRIES_NUM-1, (long) col.getValue().cast(col.getKey()));
+		assertEquals(ENTRIES_NUM - 1, (long) col.getValue().cast(col.getKey()));
 	}
+	@SuppressWarnings("rawtypes")
 	@Ignore
 	@Test
 	public void wikiIdTableSizeTest() throws Exception {
-		Connector conn = new Connector();
-		ArrayList<Row> rows = conn.runQuery("SELECT COUNT(*) FROM WikiID");
-		Row row = rows.get(0);
+		Row row = new Connector().runQuery("SELECT COUNT(*) FROM WikiID").get(0);
 		Entry<Object, Class> col = row.row.get(0);
 		assertEquals(ENTRIES_NUM, (long) col.getValue().cast(col.getKey()));
 	}

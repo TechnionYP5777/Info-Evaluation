@@ -1,6 +1,5 @@
 package infoeval.test.AnalysisTest;
 
-import java.io.IOException;
 
 /**
  * 
@@ -12,7 +11,6 @@ import java.io.IOException;
 import org.junit.Test;
 
 import infoeval.main.Analysis.AnalyzeParagraph;
-import infoeval.main.WikiData.WikiParsing;
 
 public class AnalyzeParagraphTest {
 

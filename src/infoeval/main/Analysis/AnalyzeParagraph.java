@@ -6,11 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
-import org.jsoup.HttpStatusException;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreAnnotations.LemmaAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;

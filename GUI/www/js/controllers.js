@@ -493,43 +493,76 @@ angular.module('starter.controllers', [])
    }
 })
 
-.controller('Dynamicparameters', function($scope, $http, $ionicPopup, DynamicParams, $state,ambiguousNames) {
+.controller('Dynamicparameters', function($scope, $http, $ionicPopup, DynamicParams, $state,ambiguousNames, CheckDynamicParams) {
     $scope.showDynamicResults = function(query,person) {
-		
-		$http({
-			method: 'GET',
-			url: 'http://132.68.206.107:8080/Queries/checkAmbiguities',
-			params: {
-				name: person
-			}
-		}).then(function successCallback(response) {
-			$scope.listOfPersons = [];
-			console.log(response);
-			if (!response.data) {
-				console.log('No ambiguities');
-				console.log('Query was added: ' + query);
-				console.log('Person to look for in query: ' + person);
-				DynamicParams.setName(person);
-				DynamicParams.setQuery(query);
-				$state.go('app.dynamicQueryResults');
+		CheckDynamicParams.validateInput(query,person)
+            .then(
+                function(response) {
+                    if (response == 'OK') {
+						console.log('Input ok');
+                       $http({
+							method: 'GET',
+							url: 'http://132.68.206.107:8080/Queries/checkAmbiguities',
+							params: {
+								name: person
+							}
+						}).then(function successCallback(response) {
+							$scope.listOfPersons = [];
+							console.log(response);
+							if (!response.data) {
+								console.log('No ambiguities');
+								console.log('Query was added: ' + query);
+								console.log('Person to look for in query: ' + person);
+								DynamicParams.setName(person);
+								DynamicParams.setQuery(query);
+								$state.go('app.dynamicQueryResults');
 
-			} else {
+							} else {
 
-				for (var r in response.data) {
-					var info = response.data[r];
+								for (var r in response.data) {
+									var info = response.data[r];
 
-					$scope.listOfPersons.push(info);
-					console.log(info);
-				}
-				$scope.loading = false;
-				ambiguousNames.setNames($scope.listOfPersons);
-				DynamicParams.setQuery(query);
-				$state.go('app.solveAmbiguity');
-			}
-		}, function errorCallback(response) {
-			res.ambiguitiesSolved=false;
-			alret('problem');
-		});
+									$scope.listOfPersons.push(info);
+									console.log(info);
+								}
+								$scope.loading = false;
+								ambiguousNames.setNames($scope.listOfPersons);
+								DynamicParams.setQuery(query);
+								$state.go('app.solveAmbiguity');
+							}
+						}, function errorCallback(response) {
+							res.ambiguitiesSolved=false;
+							alret('problem');
+						});
+                    }
+                },
+                function(error) {
+                    if (error == 'MISSING') {
+                        //don't allow the user search unless he enters all inputs
+                        var InputErrorAlert = $ionicPopup.alert({
+                            title: 'Input error!',
+                            template: 'Missing Input. Please insert valid query and name',
+                        });
+                    } /*else if (error == 'INVALIDSPACE' ) {
+                        var InputErrorAlert = $ionicPopup.alert({
+                            title: 'Input error!',
+                            template: 'Illegal Input. Please insert a query which contains only one word',
+                        });
+                    } */else if (error == 'INVALIDQUERY' || error == 'INVALIDSPACE') {
+                        var InputErrorAlert = $ionicPopup.alert({
+                            title: 'Input error!',
+                            template: 'Illegal Input. Please insert a one word query which contains only letters',
+                        });
+                    } else if (error == 'INVALIDNAME') {
+                        var InputErrorAlert = $ionicPopup.alert({
+                            title: 'Input error!',
+                            template: 'Illegal Input. Please insert a valid person\'s name',
+                        });
+                    }
+					
+
+                }
+        );
 	}
 
 

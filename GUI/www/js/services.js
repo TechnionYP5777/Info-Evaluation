@@ -46,25 +46,38 @@ angular.module('starter.services', [])
     };
 })
 
-/*
-.factory('DynamicQueryParams', function() {
-    var queryName = {};
-    var person = {};
+
+.factory('CheckDynamicParams', function($q) {
     return {
-        getQueryName: function() {
-            return queryName;
+        isName: function(n) {
+            return n.match(/[A-Za-z]/g);
         },
-        setQueryName: function(nameparameter) {
-            queryName = nameparameter;
+		containsNonLetter: function(n) {
+            return n.match(/^[a-zA-Z]+$/);
         },
-        getPerson: function() {
-            return person;
-        },
-        setPerson: function(personparameter) {
-            person = personparameter;
+        validateInput: function(query, name) {
+            var deferred = $q.defer();
+            if (!name || !query) {
+                deferred.reject('MISSING');
+            } else {
+				if (name.includes(" ")) {
+					deferred.reject('INVALIDSPACE');
+				}
+				
+				if (!this.containsNonLetter(query)) {
+                    deferred.reject('INVALIDQUERY');
+                }
+				
+				if (!this.isName(name)) {
+                    deferred.reject('INVALIDNAME');
+                }
+            }
+
+            deferred.resolve('OK');
+            return deferred.promise;
         }
     };
-})*/
+})
 
 
 .factory('ArrestsParams', function() {

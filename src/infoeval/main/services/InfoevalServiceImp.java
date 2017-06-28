@@ -3,7 +3,6 @@ package infoeval.main.services;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import infoeval.main.mysql.TableEntry;
@@ -14,8 +13,7 @@ import infoeval.main.mysql.SqlRunner;
 import org.jsoup.Jsoup;
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.*;
-//import org.springframework.stereotype.*;
-//import org.springframework.web.bind.annotation.*;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
