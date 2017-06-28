@@ -110,9 +110,9 @@ public class InfoevalServiceImp implements InfoevalService {
 			wiki.Parse("arrested");
 			new ArrayList<>();
 			analyze.setParagraphs(wiki.getParagraphs());
-			analyze.clearInformation();
+			analyze.clearArrestsInformation();
 			analyze.AnalyzeArrestsQuery();
-			return analyze.RefineResults(10);
+			return analyze.RefineResults(10, analyze.getArrestsInformation());
 		} catch (Exception e) {
 			throw e;
 		}
@@ -133,9 +133,9 @@ public class InfoevalServiceImp implements InfoevalService {
 			new ArrayList<>();
 			System.out.println(wiki.getParagraphs().text());
 			analyze.setParagraphs(wiki.getParagraphs());
-			analyze.clearInformation();
+			analyze.clearAwardsInformation();
 			analyze.AwardsQuery();
-			return analyze.RefineResults(10);
+			return analyze.RefineResults(10, analyze.getAwardsInformation());
 		} catch (Exception e) {
 			throw e;
 		}
@@ -149,7 +149,7 @@ public class InfoevalServiceImp implements InfoevalService {
 		// Parse user's input:
 		try {
 			analyze.dynamicQuery(name, query);
-			return analyze.getInformation();
+			return analyze.getDynamicInformation();
 		} catch (Exception e) {
 			throw e;
 		}

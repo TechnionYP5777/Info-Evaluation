@@ -56,12 +56,12 @@ public class AnalyzeParagraphTest {
 		analyze.dynamicQuery("Donald Trump", "married");
 //		for (final String ¢ : analyze.getInformation())
 //			System.out.println(¢);
-		assert analyze.getInformation().contains(" On a visit to Kallstadt, he met Elisabeth Christ and married her in 1902");
-		assert analyze.getInformation().contains(" Fred and Mary were married in 1936 and raised their family in Queens");
-		assert analyze.getInformation().contains("Trump married his first wife, Czech model Ivana Zelníčková, on April 7, 1977, at the Marble Collegiate Church in Manhattan in a ceremony performed by the Reverend Norman Vincent Peale");
-		assert analyze.getInformation().contains(" Maples and Trump were married two months later on December 20, 1993");
-		assert analyze.getInformation().contains("Trump married Slovene model Melania Knauss on January 22, 2005 at Bethesda-by-the-Sea Episcopal Church in Palm Beach, Florida, followed by a reception at Trump's Mar-a-Lago estate");
-		assert analyze.getInformation().contains(" His parents married in a Manhattan Presbyterian church in 1936");
+		assert analyze.getDynamicInformation().contains(" On a visit to Kallstadt, he met Elisabeth Christ and married her in 1902");
+		assert analyze.getDynamicInformation().contains(" Fred and Mary were married in 1936 and raised their family in Queens");
+		assert analyze.getDynamicInformation().contains("Trump married his first wife, Czech model Ivana Zelníčková, on April 7, 1977, at the Marble Collegiate Church in Manhattan in a ceremony performed by the Reverend Norman Vincent Peale");
+		assert analyze.getDynamicInformation().contains(" Maples and Trump were married two months later on December 20, 1993");
+		assert analyze.getDynamicInformation().contains("Trump married Slovene model Melania Knauss on January 22, 2005 at Bethesda-by-the-Sea Episcopal Church in Palm Beach, Florida, followed by a reception at Trump's Mar-a-Lago estate");
+		assert analyze.getDynamicInformation().contains(" His parents married in a Manhattan Presbyterian church in 1936");
 
 		
 	}

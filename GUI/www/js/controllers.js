@@ -310,7 +310,7 @@ angular.module('starter.controllers', [])
 
     $http({
         method: 'GET',
-        url: +'http://132.68.206.107:8080/Queries/SameOccupationCouples',
+        url: 'http://132.68.206.107:8080/Queries/SameOccupationCouples',
     }).then(function successCallback(response) {
         console.log('success');
         $scope.persons = [];

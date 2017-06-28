@@ -33,14 +33,18 @@ import infoeval.main.WikiData.WikiParsing;
 
 public class AnalyzeParagraph {
 	Elements Paragraphs;
-	LinkedList<String> Information; // will hold the information about the
-									// query.
+	
+	LinkedList<String> dynamicInformation;
+	LinkedList<String> arrestsInformation;
+	LinkedList<String> awardsInformation;
 	final StanfordCoreNLP pipeLine;
 
 	public AnalyzeParagraph(Elements Paragraphs) throws IOException {
 		this.Paragraphs = new Elements();
 		this.Paragraphs = Paragraphs;
-		this.Information = new LinkedList<String>();
+		this.dynamicInformation= new LinkedList<String>();
+		this.arrestsInformation=new LinkedList<String>();
+		this.awardsInformation=new LinkedList<String>();
 		final Properties props = new Properties();
 		props.put("annotators", "tokenize,ssplit, pos ,parse,lemma");
 		this.pipeLine = new StanfordCoreNLP(props);
@@ -48,7 +52,10 @@ public class AnalyzeParagraph {
 
 	public AnalyzeParagraph() throws IOException {
 		this.Paragraphs = new Elements();
-		this.Information = new LinkedList<String>();
+		
+		this.dynamicInformation= new LinkedList<String>();
+		this.arrestsInformation=new LinkedList<String>();
+		this.awardsInformation=new LinkedList<String>();
 		final Properties props = new Properties();
 		props.put("annotators", "tokenize,ssplit, pos,parse,lemma");
 		this.pipeLine = new StanfordCoreNLP(props);
@@ -61,9 +68,18 @@ public class AnalyzeParagraph {
 		
 	}
 	
-	public void clearInformation(){
-		if (!this.Information.isEmpty())
-			this.Information.clear();
+
+	public void clearDynamicInformation(){
+		if (!this.dynamicInformation.isEmpty())
+			this.dynamicInformation.clear();
+	}
+	public void clearArrestsInformation(){
+		if (!this.arrestsInformation.isEmpty())
+			this.arrestsInformation.clear();
+	}
+	public void clearAwardsInformation(){
+		if (!this.awardsInformation.isEmpty())
+			this.awardsInformation.clear();
 	}
 
 	public void LoadNLPClassifiers() throws IOException {
@@ -71,9 +87,9 @@ public class AnalyzeParagraph {
 		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/The_Weeknd"));
 		wiki.Parse("arrested");
 		setParagraphs(wiki.getParagraphs());
-		clearInformation();
+		clearArrestsInformation();
 		AnalyzeArrestsQuery();
-		clearInformation();
+		clearArrestsInformation();
 	}
 
 	public void LoadIEClassifiers() throws IOException {
@@ -81,9 +97,9 @@ public class AnalyzeParagraph {
 		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/Adele"));
 		wiki.Parse("won");
 		setParagraphs(wiki.getParagraphs());
-		clearInformation();
+		clearAwardsInformation();
 		AwardsQuery();
-		clearInformation();
+		clearAwardsInformation();
 	}
 
 	public static boolean containsItemFromArray(String inputString, String[] items) {
@@ -94,7 +110,7 @@ public class AnalyzeParagraph {
 	}
 
 	public void dynamicQuery(String name, String query) throws Exception {
-		clearInformation();
+		clearDynamicInformation();
 		try {
 			// Prepare list of similar words to the query
 			LinkedList<String> keywords = new LinkedList<String>();
@@ -130,7 +146,7 @@ public class AnalyzeParagraph {
 						continue;
 
 					sent = sent.replaceAll("\\[\\d+\\]", "");
-					Information.add(sent);
+					this.dynamicInformation.add(sent);
 				}
 			}
 		} catch (Exception e) {
@@ -146,7 +162,7 @@ public class AnalyzeParagraph {
 						&& !"recieved".equals(sent))
 					continue;
 				sent = sent.replaceAll("\\[\\d+\\]", "");
-				Information.add(sent);
+				this.awardsInformation.add(sent);
 			}
 	}
 
@@ -180,9 +196,9 @@ public class AnalyzeParagraph {
 		return $;
 	}
 
-	public LinkedList<String> RefineResults(int limit) {
+	public LinkedList<String> RefineResults(int limit, LinkedList<String> info) {
 		// Take only the longest #limit results.
-		LinkedList<String> $ = new LinkedList<String>(this.Information);
+		LinkedList<String> $ = new LinkedList<String>(info);
 		System.out.println($.size());
 		while ($.size() > limit)
 			$.remove(getShortestString($));
@@ -304,19 +320,26 @@ public class AnalyzeParagraph {
 						}
 					}
 				if (!"".equals(prefixDetails.trim())) {
-					this.Information.add(prefixDetails.trim());
-					System.out.println((this.Information.get(index) + ""));
+					this.arrestsInformation.add(prefixDetails.trim());
+					
 					++index;
 				}
-				this.Information.add((reason + " " + details).trim());
-				System.out.println((this.Information.get(index) + ""));
+				this.arrestsInformation.add((reason + " " + details).trim());
+				
 				++index;
 			}
 		}
 	}
 
-	public LinkedList<String> getInformation() {
-		return this.Information;
+	
+	public LinkedList<String> getDynamicInformation() {
+		return this.dynamicInformation;
+	}
+	public LinkedList<String> getArrestsInformation() {
+		return this.arrestsInformation;
+	}
+	public LinkedList<String> getAwardsInformation() {
+		return this.awardsInformation;
 	}
 
 }
