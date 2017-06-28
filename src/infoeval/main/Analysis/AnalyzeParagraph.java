@@ -156,7 +156,7 @@ public class AnalyzeParagraph {
 				wiki.Parse(queryWord);
 				System.out.println(wiki.getParagraphs().text());
 				setParagraphsDynamic(wiki.getParagraphs());
-			for (final Element paragraph : this.Paragraphs)
+			for (final Element paragraph : this.dynamicParagraphs)
 				for (String sent : paragraph.text().split("\\.")) { // Split to
 																	// sentences.
 
@@ -182,7 +182,7 @@ public class AnalyzeParagraph {
 
 	public void AwardsQuery() {
 		System.out.println("Started analyzing awards query");
-		for (final Element paragraph : this.Paragraphs)
+		for (final Element paragraph : this.awardsParagraphs)
 			for (String sent : paragraph.text().split("\\.")) {
 				if (!sent.contains("won") && !sent.contains("award") && !sent.contains("awarded")
 						&& !"recieved".equals(sent))
@@ -254,7 +254,7 @@ public class AnalyzeParagraph {
 		// final StanfordCoreNLP pipeLine = new StanfordCoreNLP(props);
 
 		// inputText will be the text to evaluate in this example
-		for (final Element paragraph : this.Paragraphs) {
+		for (final Element paragraph : this.arrestsParagraphs) {
 			final String inputText = paragraph.text() + "";
 			final Annotation document = new Annotation(inputText);
 			System.out.println(document);
