@@ -31,7 +31,9 @@ import infoeval.main.WikiData.WikiParsing;
 
 public class AnalyzeParagraph {
 	Elements Paragraphs;
-	
+	Elements dynamicParagraphs;
+	Elements arrestsParagraphs;
+	Elements awardsParagraphs;
 	LinkedList<String> dynamicInformation;
 	LinkedList<String> arrestsInformation;
 	LinkedList<String> awardsInformation;
@@ -40,6 +42,9 @@ public class AnalyzeParagraph {
 	public AnalyzeParagraph(Elements Paragraphs) throws IOException {
 		this.Paragraphs = new Elements();
 		this.Paragraphs = Paragraphs;
+		this.dynamicParagraphs = new Elements();
+		this.arrestsParagraphs = new Elements();
+		this.awardsParagraphs = new Elements();
 		this.dynamicInformation= new LinkedList<String>();
 		this.arrestsInformation=new LinkedList<String>();
 		this.awardsInformation=new LinkedList<String>();
@@ -50,7 +55,9 @@ public class AnalyzeParagraph {
 
 	public AnalyzeParagraph() throws IOException {
 		this.Paragraphs = new Elements();
-		
+		this.dynamicParagraphs = new Elements();
+		this.arrestsParagraphs = new Elements();
+		this.awardsParagraphs = new Elements();
 		this.dynamicInformation= new LinkedList<String>();
 		this.arrestsInformation=new LinkedList<String>();
 		this.awardsInformation=new LinkedList<String>();
@@ -63,6 +70,27 @@ public class AnalyzeParagraph {
 		if (!this.Paragraphs.isEmpty())
 			this.Paragraphs.empty();
 		this.Paragraphs = Paragraphs;
+		
+	}
+	
+	public void setParagraphsDynamic(Elements Paragraphs) {
+		if (!this.dynamicParagraphs.isEmpty())
+			this.dynamicParagraphs.empty();
+		this.dynamicParagraphs = Paragraphs;
+		
+	}
+	
+	public void setParagraphsArrests(Elements Paragraphs) {
+		if (!this.arrestsParagraphs.isEmpty())
+			this.arrestsParagraphs.empty();
+		this.arrestsParagraphs = Paragraphs;
+		
+	}
+	
+	public void setParagraphsAwards(Elements Paragraphs) {
+		if (!this.awardsParagraphs.isEmpty())
+			this.awardsParagraphs.empty();
+		this.awardsParagraphs = Paragraphs;
 		
 	}
 	
@@ -84,7 +112,7 @@ public class AnalyzeParagraph {
 		// Load coreNLP classifiers
 		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/The_Weeknd"));
 		wiki.Parse("arrested");
-		setParagraphs(wiki.getParagraphs());
+		setParagraphsArrests(wiki.getParagraphs());
 		clearArrestsInformation();
 		AnalyzeArrestsQuery();
 		clearArrestsInformation();
@@ -94,7 +122,7 @@ public class AnalyzeParagraph {
 		// Load openIE classifiers
 		WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/Adele"));
 		wiki.Parse("won");
-		setParagraphs(wiki.getParagraphs());
+		setParagraphsAwards(wiki.getParagraphs());
 		clearAwardsInformation();
 		AwardsQuery();
 		clearAwardsInformation();
@@ -127,7 +155,7 @@ public class AnalyzeParagraph {
 			for(String queryWord : keywords){
 				wiki.Parse(queryWord);
 				System.out.println(wiki.getParagraphs().text());
-				setParagraphs(wiki.getParagraphs());
+				setParagraphsDynamic(wiki.getParagraphs());
 			for (final Element paragraph : this.Paragraphs)
 				for (String sent : paragraph.text().split("\\.")) { // Split to
 																	// sentences.
@@ -226,7 +254,6 @@ public class AnalyzeParagraph {
 		// final StanfordCoreNLP pipeLine = new StanfordCoreNLP(props);
 
 		// inputText will be the text to evaluate in this example
-		int index = 0;
 		for (final Element paragraph : this.Paragraphs) {
 			final String inputText = paragraph.text() + "";
 			final Annotation document = new Annotation(inputText);
@@ -317,14 +344,10 @@ public class AnalyzeParagraph {
 
 						}
 					}
-				if (!"".equals(prefixDetails.trim())) {
+				if (!"".equals(prefixDetails.trim()))
 					this.arrestsInformation.add(prefixDetails.trim());
-					
-					++index;
-				}
 				this.arrestsInformation.add((reason + " " + details).trim());
 				
-				++index;
 			}
 		}
 	}

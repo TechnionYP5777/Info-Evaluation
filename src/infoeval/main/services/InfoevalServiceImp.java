@@ -107,7 +107,7 @@ public class InfoevalServiceImp implements InfoevalService {
 			WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + UpdatedName));
 			wiki.Parse("arrested");
 			new ArrayList<>();
-			analyze.setParagraphs(wiki.getParagraphs());
+			analyze.setParagraphsArrests(wiki.getParagraphs());
 			analyze.clearArrestsInformation();
 			analyze.AnalyzeArrestsQuery();
 			return analyze.RefineResults(10, analyze.getArrestsInformation());
@@ -130,7 +130,7 @@ public class InfoevalServiceImp implements InfoevalService {
 			wiki.getNames();
 			new ArrayList<>();
 			System.out.println(wiki.getParagraphs().text());
-			analyze.setParagraphs(wiki.getParagraphs());
+			analyze.setParagraphsAwards(wiki.getParagraphs());
 			analyze.clearAwardsInformation();
 			analyze.AwardsQuery();
 			return analyze.RefineResults(10, analyze.getAwardsInformation());
@@ -146,7 +146,7 @@ public class InfoevalServiceImp implements InfoevalService {
 		logger.log(Level.INFO, "Get dynamic query results was called.\n Parameters:Name:" + name + " Query:" + query);
 		// Parse user's input:
 		try {
-			analyze.dynamicQuery(name, query);
+			analyze.dynamicQuery(updteName(name), query);
 			return analyze.getDynamicInformation();
 		} catch (Exception e) {
 			throw e;
