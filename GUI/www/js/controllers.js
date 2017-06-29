@@ -43,7 +43,6 @@ angular.module('starter.controllers', [])
             }
         }
     };
-
     $scope.setExpanded = function(bool) {
         $scope.isExpanded = bool;
     };
@@ -160,7 +159,7 @@ angular.module('starter.controllers', [])
                 person.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
 			
-            var photoUrl = person.photoLink.replace(/\'/g, "\\'");
+            var photoUrl = person.photoLink.replace(/\'/g, "\\'").replace(/\(/g, "\\(").replace(/\)/g, "\\)").replace(/\[/g, "\\[").replace(/\]/g, "\\]");
 			person.photoLink = photoUrl;
 			photoUrl = "url('" + person.photoLink + "')";
             person.photoLink = photoUrl;
@@ -218,7 +217,7 @@ angular.module('starter.controllers', [])
             if (person.photoLink == "No Photo") {
                 person.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
-            var photoUrl = person.photoLink.replace(/\'/g, "\\'");
+            var photoUrl = person.photoLink.replace(/\'/g, "\\'").replace(/\(/g, "\\(").replace(/\)/g, "\\)").replace(/\[/g, "\\[").replace(/\]/g, "\\]");
 			person.photoLink = photoUrl;
 			photoUrl = "url('" + person.photoLink + "')";
             person.photoLink = photoUrl;
@@ -328,7 +327,7 @@ angular.module('starter.controllers', [])
             if (person.photoLink == "No Photo") {
                 person.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
-            var photoUrl = person.photoLink.replace(/\'/g, "\\'");
+            var photoUrl = person.photoLink.replace(/\'/g, "\\'").replace(/\(/g, "\\(").replace(/\)/g, "\\)").replace(/\[/g, "\\[").replace(/\]/g, "\\]");
 			person.photoLink = photoUrl;
 			photoUrl = "url('" + person.photoLink + "')";
             person.photoLink = photoUrl;
@@ -437,70 +436,6 @@ angular.module('starter.controllers', [])
     $scope.dynamicData = {};
 	$scope.checked=false;
 	   $state.go('app.dynamicInput');
-        // An elaborate, custom popup
-	   /*
-        var myPopup = $ionicPopup.show({
-            template: '<input type="text" ng-model="dynamicData.query" placeholder="Your Query here"; white-space:normal; >' +
-                '</br> <input type="text" ng-model="dynamicData.personName"  placeholder="Person\'s name ; white-space:normal;">',
-            tvar photoUrl = person.photoLink.
-			photoUrl = "url('" + person.photoLink + "')";itle: 'Enter the Query name you wish to look for',
-            subTitle: 'Please describe in one word',
-            scope: $scope,
-			async: false,
-            buttons: [
-                { text: 'Cancel' },
-                {
-                    text: '<b>Search</b>',
-                    type: 'button-positive',
-                    onTap: function(e) {
-                        if (!($scope.dynamicData.query && $scope.dynamicData.personName)) {
-                            //don't allow the user search unless he enters all inputs
-                            e.preventDefault();
-                        } else {
-                            return $scope.dynamicData;
-                        }
-                    }
-                }
-            ]
-        });
-
-		myPopup.then(function(res) {
-			$http({
-								method: 'GET',
-								url: '/Queries/checkAmbiguities',
-								params: {
-									name: res.personName
-								}
-							}).then(function successCallback(response) {
-								$scope.listOfPersons = [];
-								console.log(response);
-								if (!response.data) {
-									console.log('No ambiguities');
-									console.log('Query was added: ' + res.query);
-									console.log('Person to look for in query: ' + res.personName);
-									DynamicParams.setName(res.personName);
-									DynamicParams.setQuery(res.query);
-									$state.go('app.dynamicQueryResults');
-									
-								} else {
-									
-									for (var r in response.data) {
-										var info = response.data[r];
-
-										$scope.listOfPersons.push(info);
-										console.log(info);
-									}
-									$scope.loading = false;
-									ambiguousNames.setNames($scope.listOfPersons);
-									DynamicParams.setQuery(res.query);
-									$state.go('app.solveAmbiguity');
-								}
-							}, function errorCallback(response) {
-								res.ambiguitiesSolved=false;
-								alret('problem');
-							});
-			});
-        */
    }
 })
 
@@ -693,6 +628,9 @@ angular.module('starter.controllers', [])
             if ($scope.personalInformation.photoLink == "No Photo") {
                 $scope.personalInformation.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
+			var photoUrl = $scope.personalInformation.photoLink.replace(/\'/g, "\\'").replace(/\(/g, "\\(").replace(/\)/g, "\\)").replace(/\[/g, "\\[").replace(/\]/g, "\\]");
+			$scope.personalInformation=photoUrl;
+			
 
         }, function errorCallback(response) {
             var FetchErrorAlert = $ionicPopup.alert({
@@ -782,6 +720,8 @@ angular.module('starter.controllers', [])
             if ($scope.personalInformation.photoLink == "No Photo") {
                 $scope.personalInformation.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
+			/*var photoUrl = $scope.personalInformation.photoLink.replace(/\'/g, "\\'");
+			$scope.personalInformation=photoUrl;*/
 
         }, function errorCallback(response) {
             var FetchErrorAlert = $ionicPopup.alert({
@@ -905,6 +845,8 @@ angular.module('starter.controllers', [])
             if ($scope.personalInformation.photoLink == "No Photo") {
                 $scope.personalInformation.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
+			var photoUrl = $scope.personalInformation.photoLink.replace(/\'/g, "\\'").replace(/\(/g, "\\(").replace(/\)/g, "\\)").replace(/\[/g, "\\[").replace(/\]/g, "\\]");
+			$scope.personalInformation=photoUrl;
 
         }, function errorCallback(response) {
             var FetchErrorAlert = $ionicPopup.alert({
