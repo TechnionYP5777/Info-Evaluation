@@ -163,6 +163,7 @@ angular.module('starter.controllers', [])
 			person.photoLink = photoUrl;
 			photoUrl = "url('" + person.photoLink + "')";
             person.photoLink = photoUrl;
+			console.log('url is ' + person.photoLink);
 
             $scope.persons.push(person);
             console.log(person.name);
@@ -630,6 +631,8 @@ angular.module('starter.controllers', [])
             }
 			var photoUrl = $scope.personalInformation.photoLink.replace(/\'/g, "\\'").replace(/\(/g, "\\(").replace(/\)/g, "\\)").replace(/\[/g, "\\[").replace(/\]/g, "\\]");
 			$scope.personalInformation=photoUrl;
+			/*photoUrl = "url('" + $scope.personalInformation.photoLink + "')";
+            $scope.personalInformation.photoLink = photoUrl;*/
 			
 
         }, function errorCallback(response) {
@@ -847,6 +850,8 @@ angular.module('starter.controllers', [])
             }
 			var photoUrl = $scope.personalInformation.photoLink.replace(/\'/g, "\\'").replace(/\(/g, "\\(").replace(/\)/g, "\\)").replace(/\[/g, "\\[").replace(/\]/g, "\\]");
 			$scope.personalInformation=photoUrl;
+			/*photoUrl = "url('" + $scope.personalInformation.photoLink + "')";
+            $scope.personalInformation.photoLink = photoUrl;*/
 
         }, function errorCallback(response) {
             var FetchErrorAlert = $ionicPopup.alert({
