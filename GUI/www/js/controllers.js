@@ -159,7 +159,10 @@ angular.module('starter.controllers', [])
             if (person.photoLink == "No Photo") {
                 person.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
-            var photoUrl = "url('" + person.photoLink + "')";
+			
+            var photoUrl = person.photoLink.replace(/\'/g, "\\'");
+			person.photoLink = photoUrl;
+			photoUrl = "url('" + person.photoLink + "')";
             person.photoLink = photoUrl;
 
             $scope.persons.push(person);
@@ -215,7 +218,9 @@ angular.module('starter.controllers', [])
             if (person.photoLink == "No Photo") {
                 person.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
-            var photoUrl = "url('" + person.photoLink + "')";
+            var photoUrl = person.photoLink.replace(/\'/g, "\\'");
+			person.photoLink = photoUrl;
+			photoUrl = "url('" + person.photoLink + "')";
             person.photoLink = photoUrl;
 
             $scope.persons.push(person);
@@ -323,7 +328,9 @@ angular.module('starter.controllers', [])
             if (person.photoLink == "No Photo") {
                 person.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
-            var photoUrl = "url('" + person.photoLink + "')";
+            var photoUrl = person.photoLink.replace(/\'/g, "\\'");
+			person.photoLink = photoUrl;
+			photoUrl = "url('" + person.photoLink + "')";
             person.photoLink = photoUrl;
 
             $scope.persons.push(person);
@@ -435,7 +442,8 @@ angular.module('starter.controllers', [])
         var myPopup = $ionicPopup.show({
             template: '<input type="text" ng-model="dynamicData.query" placeholder="Your Query here"; white-space:normal; >' +
                 '</br> <input type="text" ng-model="dynamicData.personName"  placeholder="Person\'s name ; white-space:normal;">',
-            title: 'Enter the Query name you wish to look for',
+            tvar photoUrl = person.photoLink.
+			photoUrl = "url('" + person.photoLink + "')";itle: 'Enter the Query name you wish to look for',
             subTitle: 'Please describe in one word',
             scope: $scope,
 			async: false,
@@ -618,7 +626,6 @@ angular.module('starter.controllers', [])
                             template: 'Illegal Input. Please insert a valid person\'s name',
                         });
                     }
-
                 }
             );
         }
