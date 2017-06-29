@@ -267,20 +267,23 @@ angular.module('starter.controllers', [])
     $scope.showMoreInfo = function() {
         $scope.stateShow = false;
         console.log('281 in on click more info');
+        console.log('name is '+$scope.personalInformation.name);
+		var name=$scope.personalInformation.name;
         $http({
             method: 'GET',
             url: 'http://132.68.206.107:8080/Queries/PersonalInformation',
             params: {
-                name: $scope.personalInformation.name
+                name: name
             }
         }).then(function successCallback(response) {
             console.log('personal data - success');
             $scope.moreInfo = response.data;
             console.log('url is ' + $scope.moreInfo.photoLink);
-            console.log('birthPlace is:' + $scope.moreInfo.birthPlace);
+            console.log('birthPla$scope.personalInformation.namece is:' + $scope.moreInfo.birthPlace);
             if ($scope.moreInfo.photoLink == "No Photo") {
                 $scope.moreInfo.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
+			//$scope.personalInformation.name
             $scope.loading = false;
 			$scope.titleOverview=true;
 
@@ -355,7 +358,7 @@ angular.module('starter.controllers', [])
     $scope.$parent.clearFabs();
     $scope.$parent.setHeaderFab('left');
 
-    // Delay expansion
+    // Delay expansion$scope.personalInformation.name
     $timeout(function() {
         $scope.isExpanded = true;
         $scope.$parent.setExpanded(true);
@@ -369,7 +372,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ProfileCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk) {
-    // Set Header
+    // Set Header$scope.personalInformation.name
     $scope.$parent.showHeader();
     $scope.$parent.clearFabs();
     $scope.isExpanded = false;
@@ -843,7 +846,7 @@ angular.module('starter.controllers', [])
     $scope.$parent.setExpanded(false);
     $scope.$parent.setHeaderFab(false);
     $scope.loading = true;
-    $scope.loadindPersonalInfo = true;
+    $scope.lo$scope.personalInformation.nameadindPersonalInfo = true;
     $scope.failed = false;
     console.log('Show results of Get Arrests was called');
     $scope.information = [];
@@ -875,7 +878,7 @@ angular.module('starter.controllers', [])
         console.log(response.data);
         $scope.failed = true;
         $state.go('app.InteractiveSearch');
-    });
+    });$scope.personalInformation.name
 
     //Get the personal data of the person:
     if ($scope.failed == false && $scope.loading == false) {
