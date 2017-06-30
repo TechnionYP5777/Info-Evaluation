@@ -40,7 +40,7 @@ public class Connector {
 	}
 
 	public void initializeConnectionPool() throws IOException {
-		InputStream is = Connector.class.getResourceAsStream("/database.properties");
+		InputStream is = this.getClass().getResourceAsStream("database.properties");
 		Properties props = new Properties();
 		props.load(is);
 		is.close();
