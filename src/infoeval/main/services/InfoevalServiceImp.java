@@ -49,17 +49,14 @@ public class InfoevalServiceImp implements InfoevalService {
 	public synchronized ArrayList<TableEntry> getBornInPlaceYear(String place, String year)
 			throws Exception {
 
-		ArrayList<TableEntry> $ = runner.getBornInPlaceBeforeYear(place, year);
-
-		return $;
+		return runner.getBornInPlaceBeforeYear(place, year);
 	}
 
 	@Override
 	@CrossOrigin
 	@RequestMapping(path = "Queries/Query1", method = RequestMethod.GET)
 	public synchronized ArrayList<TableEntry> differentDeathPlace() throws Exception {
-		ArrayList<TableEntry> $ = runner.getDifferentDeathPlace();
-		return $;
+		return runner.getDifferentDeathPlace();
 
 	}
 

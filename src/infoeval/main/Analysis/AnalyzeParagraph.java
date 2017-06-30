@@ -185,10 +185,22 @@ public class AnalyzeParagraph {
 		for (final Element paragraph : this.awardsParagraphs)
 			for (String sent : paragraph.text().split("\\.")) {
 				if (!sent.contains("won") && !sent.contains("award") && !sent.contains("awarded")
-						&& !"recieved".equals(sent))
+						&& !sent.contains("recieved") && !sent.contains("win") && !sent.contains("nominated") )
 					continue;
 				sent = sent.replaceAll("\\[\\d+\\]", "");
 				this.awardsInformation.add(sent);
+			}
+	}
+	
+	public void ArrestsQuery() {
+		System.out.println("Started analyzing arrests query");
+		for (final Element paragraph : this.arrestsParagraphs)
+			for (String sent : paragraph.text().split("\\.")) {
+				if (!sent.contains("custody") && !sent.contains("arrested") && !sent.contains("jailed") && !sent.contains("arrest")
+						&& !sent.contains("charged"))
+					continue;
+				sent = sent.replaceAll("\\[\\d+\\]", "");
+				this.arrestsInformation.add(sent);
 			}
 	}
 
