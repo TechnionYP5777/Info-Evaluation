@@ -60,7 +60,7 @@ angular.module('starter.services', [])
             if (!name || !query) {
                 deferred.reject('MISSING');
             } else {
-				if (name.includes(" ")) {
+				if (query.includes(" ")) {
 					deferred.reject('INVALIDSPACE');
 				}
 				

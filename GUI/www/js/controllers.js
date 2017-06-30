@@ -6,7 +6,7 @@ angular.module('starter.controllers', [])
 
 .constant('ApiEndpoint', {
     url: 'http://132.68.206.107:8080'
-	//url: 'http://localhost:8100/api'
+	// url: 'http://localhost:8100/api'
 })
 
 
@@ -211,7 +211,7 @@ angular.module('starter.controllers', [])
     $http({
         method: 'GET',
         url: 'http://132.68.206.107:8080/Queries/Query1',
-        //url: '/Queries/Query1',
+        // url: '/Queries/Query1',
     }).then(function successCallback(response) {
         console.log('success');
         $scope.persons = [];
@@ -488,7 +488,28 @@ angular.module('starter.controllers', [])
 	};
 })
 
-.controller('AwardsParameters', function($scope, $state, $ionicPopup, AwardsParams, CheckNameInput) {
+.controller('ambiguitySolverAwards', function($scope, $state,$http,$q ,$ionicPopup, AwardsParams,ambiguousNames) {
+	console.log('Start to solve ambiguous names');
+	$scope.persons = [];
+	$scope.persons = ambiguousNames.getNames();
+	console.log($scope.persons[0].toString());
+	//$scope.query = DynamicParams.getQuery();
+	var FetchErrorAlert = $ionicPopup.alert({
+                title: 'Ambiguity !',
+                template: 'There are many entities with the same name. <br> Please choose the person you are referring to.',
+            });
+	$scope.RetryQuery = function(name){
+			console.log('No ambiguities');
+			//console.log('Query was added: ' + DynamicParams.getQuery().toString());
+			console.log('Person to look for Arrests in query: ' + name);
+			AwardsParams.setName(name.toString());
+			//DynamicParams.setQuery(DynamicParams.getQuery().toString());
+			$state.go('app.AwardsResults');
+		
+	};
+})
+
+.controller('AwardsParameters', function($scope, $state, $ionicPopup,$http, AwardsParams, CheckNameInput, ambiguousNames) {
 	//TODO: add check of name param
     $scope.showAwardsResults = function(name) {
 		console.log('Sending params for Awards query ');
@@ -497,8 +518,41 @@ angular.module('starter.controllers', [])
                 function(response) {
                     if (response == 'OK') {
 						
-						AwardsParams.setName(name)
-						$state.go('app.AwardsResults');
+						/*AwardsParams.setName(name)
+						$state.go('app.AwardsResults');*/
+						
+						$http({
+							method: 'GET',
+							url: 'http://132.68.206.107:8080/Queries/checkAmbiguities',
+							// url: '/Queries/checkAmbiguities',
+							params: {
+								name: name
+							}
+						}).then(function successCallback(response) {
+							$scope.listOfPersons = [];
+							console.log(response);
+							if (!response.data) {
+								console.log('No ambiguities');
+								AwardsParams.setName(name);
+								$state.go('app.AwardsResults');
+
+							} else {
+
+								for (var r in response.data) {
+									var info = response.data[r];
+
+									$scope.listOfPersons.push(info);
+									console.log(info);
+								}
+								$scope.loading = false;
+								ambiguousNames.setNames($scope.listOfPersons);
+								//DynamicParams.setQuery(query);
+								$state.go('app.solveAmbiguityAwards');
+							}
+						}, function errorCallback(response) {
+							res.ambiguitiesSolved=false;
+							alret('problem');
+						});
                     }
                 },
                 function(error) {
@@ -633,6 +687,7 @@ angular.module('starter.controllers', [])
     $http({
         method: 'GET',
         url: 'http://132.68.206.107:8080/Queries/Awards',
+        //url: '/Queries/Awards',
         params: {
             name: AwardsParams.getName()
         }
@@ -663,6 +718,7 @@ angular.module('starter.controllers', [])
         $http({
             method: 'GET',
             url: 'http://132.68.206.107:8080/Queries/PersonalInformation',
+            // url: '/Queries/PersonalInformation',
             params: {
                 name: AwardsParams.getName()
             }
@@ -721,7 +777,7 @@ angular.module('starter.controllers', [])
 						$http({
 							method: 'GET',
 							url: 'http://132.68.206.107:8080/Queries/checkAmbiguities',
-							//url: '/Queries/checkAmbiguities',
+							// url: '/Queries/checkAmbiguities',
 							params: {
 								name: name
 							}
@@ -784,7 +840,7 @@ angular.module('starter.controllers', [])
                        $http({
 							method: 'GET',
 							url: 'http://132.68.206.107:8080/Queries/checkAmbiguities',
-							//url: '/Queries/checkAmbiguities',
+							// url: '/Queries/checkAmbiguities',
 							params: {
 								name: person
 							}
@@ -862,7 +918,7 @@ angular.module('starter.controllers', [])
     $http({
         method: 'GET',
         url: 'http://132.68.206.107:8080/Queries/Arrests',
-        //url: '/Queries/Arrests',
+        // url: '/Queries/Arrests',
         params: {
             name: ArrestsParams.getName()
         }
@@ -893,7 +949,7 @@ angular.module('starter.controllers', [])
         $http({
             method: 'GET',
             url: 'http://132.68.206.107:8080/Queries/PersonalInformation',
-            //url: '/Queries/PersonalInformation',
+            // url: '/Queries/PersonalInformation',
             params: {
                 name: ArrestsParams.getName()
             }
