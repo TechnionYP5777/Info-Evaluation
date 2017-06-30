@@ -6,6 +6,7 @@ angular.module('starter.controllers', [])
 
 .constant('ApiEndpoint', {
     url: 'http://132.68.206.107:8080'
+	//url: 'http://localhost:8100/api'
 })
 
 
@@ -144,6 +145,7 @@ angular.module('starter.controllers', [])
     $http({
         method: 'GET',
         url: 'http://132.68.206.107:8080/Queries/Query2',
+        //url: '/Queries/Query2',
         params: {
             place: DataQ.getPlace(),
             year: DataQ.getYear()
@@ -209,6 +211,7 @@ angular.module('starter.controllers', [])
     $http({
         method: 'GET',
         url: 'http://132.68.206.107:8080/Queries/Query1',
+        //url: '/Queries/Query1',
     }).then(function successCallback(response) {
         console.log('success');
         $scope.persons = [];
@@ -277,6 +280,7 @@ angular.module('starter.controllers', [])
         $http({
             method: 'GET',
             url: 'http://132.68.206.107:8080/Queries/PersonalInformation',
+            //url: '/Queries/PersonalInformation',
             params: {
                 name: name
             }
@@ -440,80 +444,7 @@ angular.module('starter.controllers', [])
    }
 })
 
-.controller('Dynamicparameters', function($scope, $http, $ionicPopup, DynamicParams, $state,ambiguousNames, CheckDynamicParams) {
-    $scope.showDynamicResults = function(query,person) {
-		CheckDynamicParams.validateInput(query,person)
-            .then(
-                function(response) {
-                    if (response == 'OK') {
-						console.log('Input ok');
-                       $http({
-							method: 'GET',
-							url: 'http://132.68.206.107:8080/Queries/checkAmbiguities',
-							params: {
-								name: person
-							}
-						}).then(function successCallback(response) {
-							$scope.listOfPersons = [];
-							console.log(response);
-							if (!response.data) {
-								console.log('No ambiguities');
-								console.log('Query was added: ' + query);
-								console.log('Person to look for in query: ' + person);
-								DynamicParams.setName(person);
-								DynamicParams.setQuery(query);
-								$state.go('app.dynamicQueryResults');
 
-							} else {
-
-								for (var r in response.data) {
-									var info = response.data[r];
-
-									$scope.listOfPersons.push(info);
-									console.log(info);
-								}
-								$scope.loading = false;
-								ambiguousNames.setNames($scope.listOfPersons);
-								DynamicParams.setQuery(query);
-								$state.go('app.solveAmbiguity');
-							}
-						}, function errorCallback(response) {
-							res.ambiguitiesSolved=false;
-							alret('problem');
-						});
-                    }
-                },
-                function(error) {
-                    if (error == 'MISSING') {
-                        //don't allow the user search unless he enters all inputs
-                        var InputErrorAlert = $ionicPopup.alert({
-                            title: 'Input error!',
-                            template: 'Missing Input. Please insert valid query and name',
-                        });
-                    } /*else if (error == 'INVALIDSPACE' ) {
-                        var InputErrorAlert = $ionicPopup.alert({
-                            title: 'Input error!',
-                            template: 'Illegal Input. Please insert a query which contains only one word',
-                        });
-                    } */else if (error == 'INVALIDQUERY' || error == 'INVALIDSPACE') {
-                        var InputErrorAlert = $ionicPopup.alert({
-                            title: 'Input error!',
-                            template: 'Illegal Input. Please insert a one word query which contains only letters',
-                        });
-                    } else if (error == 'INVALIDNAME') {
-                        var InputErrorAlert = $ionicPopup.alert({
-                            title: 'Input error!',
-                            template: 'Illegal Input. Please insert a valid person\'s name',
-                        });
-                    }
-					
-
-                }
-        );
-	}
-
-
-})
 
 .controller('ambiguitySolver', function($scope, $state,$http,$q ,$ionicPopup, DynamicParams,ambiguousNames) {
 	console.log('Start to solve ambiguous names');
@@ -532,6 +463,27 @@ angular.module('starter.controllers', [])
 			DynamicParams.setName(name.toString());
 			DynamicParams.setQuery(DynamicParams.getQuery().toString());
 			$state.go('app.dynamicQueryResults');
+		
+	};
+})
+
+.controller('ambiguitySolverArrest', function($scope, $state,$http,$q ,$ionicPopup, ArrestsParams,ambiguousNames) {
+	console.log('Start to solve ambiguous names');
+	$scope.persons = [];
+	$scope.persons = ambiguousNames.getNames();
+	console.log($scope.persons[0].toString());
+	//$scope.query = DynamicParams.getQuery();
+	var FetchErrorAlert = $ionicPopup.alert({
+                title: 'Ambiguity !',
+                template: 'There are many entities with the same name. <br> Please choose the person you are referring to.',
+            });
+	$scope.RetryQuery = function(name){
+			console.log('No ambiguities');
+			//console.log('Query was added: ' + DynamicParams.getQuery().toString());
+			console.log('Person to look for Arrests in query: ' + name);
+			ArrestsParams.setName(name.toString());
+			//DynamicParams.setQuery(DynamicParams.getQuery().toString());
+			$state.go('app.ArrestsResults');
 		
 	};
 })
@@ -585,6 +537,7 @@ angular.module('starter.controllers', [])
     $http({
         method: 'GET',
         url: 'http://132.68.206.107:8080/Queries/Dynamic',
+        //url: '/Queries/Dynamic',
         params: {
             name: DynamicParams.getName(),
             query: DynamicParams.getQuery()
@@ -615,6 +568,7 @@ angular.module('starter.controllers', [])
         $http({
             method: 'GET',
             url: 'http://132.68.206.107:8080/Queries/PersonalInformation',
+            //url: '/Queries/PersonalInformation',
             params: {
                 name: DynamicParams.getName()
             }
@@ -753,8 +707,7 @@ angular.module('starter.controllers', [])
     ionicMaterialInk.displayEffect();
 })
 
-.controller('ArrestsParameters', function($scope, $state, $ionicPopup, ArrestsParams, CheckNameInput) {
-	//TODO: add check of name param
+.controller('ArrestsParameters', function($scope, $state, $ionicPopup,$http, ArrestsParams, CheckNameInput, ambiguousNames) {
     $scope.showArrestsResults = function(name) {
 		console.log('Sending params for Arrests query ');
         CheckNameInput.validateInput(name)
@@ -762,8 +715,44 @@ angular.module('starter.controllers', [])
                 function(response) {
                     if (response == 'OK') {
 						
-						ArrestsParams.setName(name)
-            			$state.go('app.ArrestsResults');
+						/*ArrestsParams.setName(name)
+            			$state.go('app.ArrestsResults');*/
+						
+						$http({
+							method: 'GET',
+							url: 'http://132.68.206.107:8080/Queries/checkAmbiguities',
+							//url: '/Queries/checkAmbiguities',
+							params: {
+								name: name
+							}
+						}).then(function successCallback(response) {
+							$scope.listOfPersons = [];
+							console.log(response);
+							if (!response.data) {
+								console.log('No ambiguities');
+								//console.log('Query was added: ' + query);
+								console.log('Person to look for in Arrests query: ' + name);
+								ArrestsParams.setName(name);
+								//DynamicParams.setQuery(query);
+								$state.go('app.ArrestsResults');
+
+							} else {
+
+								for (var r in response.data) {
+									var info = response.data[r];
+
+									$scope.listOfPersons.push(info);
+									console.log(info);
+								}
+								$scope.loading = false;
+								ambiguousNames.setNames($scope.listOfPersons);
+								//DynamicParams.setQuery(query);
+								$state.go('app.solveAmbiguityArrests');
+							}
+						}, function errorCallback(response) {
+							res.ambiguitiesSolved=false;
+							alret('problem');
+						});
                     }
                 },
                 function(error) {
@@ -785,7 +774,75 @@ angular.module('starter.controllers', [])
     };
 })
 
+.controller('Dynamicparameters', function($scope, $http, $ionicPopup, DynamicParams, $state,ambiguousNames, CheckDynamicParams) {
+    $scope.showDynamicResults = function(query,person) {
+		CheckDynamicParams.validateInput(query,person)
+            .then(
+                function(response) {
+                    if (response == 'OK') {
+						console.log('Input ok');
+                       $http({
+							method: 'GET',
+							url: 'http://132.68.206.107:8080/Queries/checkAmbiguities',
+							//url: '/Queries/checkAmbiguities',
+							params: {
+								name: person
+							}
+						}).then(function successCallback(response) {
+							$scope.listOfPersons = [];
+							console.log(response);
+							if (!response.data) {
+								console.log('No ambiguities');
+								console.log('Query was added: ' + query);
+								console.log('Person to look for in query: ' + person);
+								DynamicParams.setName(person);
+								DynamicParams.setQuery(query);
+								$state.go('app.dynamicQueryResults');
 
+							} else {
+
+								for (var r in response.data) {
+									var info = response.data[r];
+
+									$scope.listOfPersons.push(info);
+									console.log(info);
+								}
+								$scope.loading = false;
+								ambiguousNames.setNames($scope.listOfPersons);
+								DynamicParams.setQuery(query);
+								$state.go('app.solveAmbiguity');
+							}
+						}, function errorCallback(response) {
+							res.ambiguitiesSolved=false;
+							alret('problem');
+						});
+                    }
+                },
+                function(error) {
+                    if (error == 'MISSING') {
+                        //don't allow the user search unless he enters all inputs
+                        var InputErrorAlert = $ionicPopup.alert({
+                            title: 'Input error!',
+                            template: 'Missing Input. Please insert valid query and name',
+                        });
+                    } else if (error == 'INVALIDQUERY' || error == 'INVALIDSPACE') {
+						console.log('error is '+error);
+                        var InputErrorAlert = $ionicPopup.alert({
+                            title: 'Input error!',
+                            template: 'Illegal Input. Please insert a one word query which contains only letters',
+                        });
+                    } else if (error == 'INVALIDNAME') {
+                        var InputErrorAlert = $ionicPopup.alert({
+                            title: 'Input error!',
+                            template: 'Illegal Input. Please insert a valid person\'s name',
+                        });
+                    }
+					
+
+                }
+        );
+	}
+})
 
 
 .controller('ArrestsCtrl', function($scope, $http, $state, $timeout, $ionicPopup, ionicMaterialMotion, ionicMaterialInk, ArrestsParams) {
@@ -796,7 +853,7 @@ angular.module('starter.controllers', [])
     $scope.$parent.setExpanded(false);
     $scope.$parent.setHeaderFab(false);
     $scope.loading = true;
-    $scope.lo$scope.personalInformation.nameadindPersonalInfo = true;
+    $scope.loadindPersonalInfo = true;
     $scope.failed = false;
     console.log('Show results of Get Arrests was called');
     $scope.information = [];
@@ -805,6 +862,7 @@ angular.module('starter.controllers', [])
     $http({
         method: 'GET',
         url: 'http://132.68.206.107:8080/Queries/Arrests',
+        //url: '/Queries/Arrests',
         params: {
             name: ArrestsParams.getName()
         }
@@ -828,13 +886,14 @@ angular.module('starter.controllers', [])
         console.log(response.data);
         $scope.failed = true;
         $state.go('app.InteractiveSearch');
-    });$scope.personalInformation.name
+    });
 
     //Get the personal data of the person:
     if ($scope.failed == false && $scope.loading == false) {
         $http({
             method: 'GET',
             url: 'http://132.68.206.107:8080/Queries/PersonalInformation',
+            //url: '/Queries/PersonalInformation',
             params: {
                 name: ArrestsParams.getName()
             }

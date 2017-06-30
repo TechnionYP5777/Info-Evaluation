@@ -138,6 +138,34 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 }
             }
         })
+	
+	.state('app.solveAmbiguityArrests', {
+        url: '/solveAmbiguityArrests',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/solveAmbiguityArrests.html',
+                controller: ''
+            },
+            'fabContent': {
+                template: '',
+                controller: ''
+                }
+            }
+        })
+	
+	.state('app.solveAmbiguityAwards', {
+        url: '/solveAmbiguityAwards',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/solveAmbiguityAwards.html',
+                controller: ''
+            },
+            'fabContent': {
+                template: '',
+                controller: ''
+                }
+            }
+        })
 
     .state('app.InteractiveSearch', {
         url: '/Search',
