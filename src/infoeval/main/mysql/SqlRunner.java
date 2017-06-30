@@ -10,10 +10,6 @@ import infoeval.main.WikiData.Connector;
 import infoeval.main.WikiData.Extractor;
 import infoeval.main.WikiData.QueryTypes;
 import infoeval.main.WikiData.SqlTablesFiller;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSetRewindable;
 import org.apache.jena.rdf.model.RDFNode;
@@ -28,7 +24,6 @@ public class SqlRunner {
 	private Connector conn;
 	QueryResultsSerializer resultsSer;
 	private String wikiURL = "https://en.wikipedia.org/?curid=";
-	private static final Logger logger = Logger.getLogger("SqlRunner".getClass().getName());
 	private static final int LIMIT_NUM = 40;
 
 	public SqlRunner() throws Exception {
@@ -37,17 +32,15 @@ public class SqlRunner {
 		conn.runUpdate("CREATE TABLE IF NOT EXISTS serialized_query_results "
 				+ "(serialized_id int(30) NOT NULL AUTO_INCREMENT, " + "query_identifier VARCHAR(100) NOT NULL, "
 				+ "serialized_result LONGBLOB, " + "PRIMARY KEY (serialized_id))");
-		logger.log(Level.INFO, "serialized reulst table created successfully");
+
 	}
 
 	public void clearSerializedQueries() throws Exception {
 		conn.runUpdate("TRUNCATE TABLE serialized_query_results ");
-		logger.log(Level.INFO, " CLEARED Serialized Reulst table successfully");
 	}
 
 	public void dropSerializedTable() throws Exception {
 		conn.runUpdate("DROP TABLE serialized_query_results");
-		logger.log(Level.INFO, "serialized results table dropped successfully");
 	}
 
 	public void close() {
@@ -69,7 +62,6 @@ public class SqlRunner {
 			final String beforeYearInPlace = "SELECT filtered_info.name, filtered_info.BirthPlace, filtered_info.BirthDate, filtered_info.photoLink, WikiID.wikiPageID, filtered_info.birthExpanded "
 					+ "FROM (SELECT * FROM basic_info WHERE BirthPlace LIKE CONCAT('%',?,'%') AND YEAR(BirthDate) < ?) AS filtered_info  "
 					+ "LEFT JOIN WikiID " + "ON WikiID.name = filtered_info.name " + "LIMIT " + LIMIT_NUM;
-			logger.log(Level.INFO, "Born in place before year query is being executed");
 			rows = conn.runQuery(beforeYearInPlace, inp);
 			String query_identifier = "getBornInPlaceYear" + "(" + place + year + ")";
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
@@ -124,7 +116,7 @@ public class SqlRunner {
 					+ "FROM (SELECT * FROM basic_info WHERE DeathPlace<>'No Death Place' \n"
 					+ "AND BirthPlace<>DeathPlace) AS filtered_info " + "LEFT JOIN WikiID\n "
 					+ "ON WikiID.name = filtered_info.name " + "LIMIT " + LIMIT_NUM;
-			logger.log(Level.INFO, "Different birth and death place query is being executed");
+
 			
 			rows = conn.runQuery(birthDeathPlace);
 			String query_identifier = "getDifferentDeathPlace()";
@@ -137,9 +129,9 @@ public class SqlRunner {
 			rows.addAll(rows2);
 		}
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
-		int i = 1;
+		
 		for (Row row : rows) {
-			logger.log(Level.INFO, "record num " + i + " added");
+
 			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey());
 			String birthPlace = (String) row.row.get(1).getValue().cast(row.row.get(1).getKey());
 			String deathPlace = (String) row.row.get(2).getValue().cast(row.row.get(2).getKey());
@@ -163,7 +155,7 @@ public class SqlRunner {
 						photoLink, "",birthExpanded,deathExpanded));
 			
 			}
-			++i;
+			
 		}
 		return res;
 	}
@@ -179,7 +171,7 @@ public class SqlRunner {
 					+ "FROM basic_info "
 					+ "WHERE spouseName != 'No Spouse Name' AND spouseOccupation != 'No Spouse Occupation' "
 					+ "AND occupation = spouseOccupation " + "LIMIT " + LIMIT_NUM;
-			logger.log(Level.INFO, "Same occupation couples query is being executed");
+
 			rows = conn.runQuery(sameOccupationCouples);
 			String query_identifier = "getSameOccupationCouples()";
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
@@ -230,7 +222,6 @@ public class SqlRunner {
 					+ "ON B1.spouseName = basic_info.name " + "AND basic_info.spouseName = B1.name "
 					+ "AND B1.birthPlace = basic_info.birthPlace ";
 
-			logger.log(Level.INFO, "same birth place couples query is being executed");
 			rows = conn.runQuery(sameBirthPlaceCouples);
 			String query_identifier = "getSameBirthPlaceCouples()";
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
@@ -276,7 +267,6 @@ public class SqlRunner {
 					+ "AND YEAR(birthDate) >= ? AND YEAR(deathDate) <= ? " + "AND occupation = ?) AS filtered_info "
 					+ "LEFT JOIN WikiID " + "ON WikiID.name = filtered_info.name " + "LIMIT " + LIMIT_NUM;
 
-			logger.log(Level.INFO, "occupation between years query is being executed");
 			rows = conn.runQuery(occupationBetweenYears, inp);
 			String query_identifier = "getOccupationBetweenYears(" + year1 + "," + year2 + "," + occupation + ")";
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
@@ -324,7 +314,6 @@ public class SqlRunner {
 					+ "AND YEAR(birthDate) >= ? AND YEAR(deathDate) <= ? " + "AND spouseName = 'No Spouse Name' "
 					+ ") AS filtered_info " + "LEFT JOIN WikiID " + "ON WikiID.name = filtered_info.name " + "LIMIT "
 					+ LIMIT_NUM;
-			logger.log(Level.INFO, "spouseless between years query is being executed");
 			rows = conn.runQuery(spouselessBetweenYears, inp);
 			String query_identifier = "getSpouselessBetweenYears(" + year1 + "," + year2 + ")";
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
@@ -362,7 +351,6 @@ public class SqlRunner {
 	public TableEntry getPersonalInfoFromDBpedia(int wikiPageID)
 			throws ClassNotFoundException, SQLException, IOException, ParseException {
 		Extractor ext = new Extractor(wikiPageID);
-		logger.log(Level.INFO, "abstract extraction query is being executed");
 		ext.executeQuery(QueryTypes.ABSTRACT_BY_WIKI_PAGE_ID);
 		ResultSetRewindable results = ext.getResults();
 
@@ -376,7 +364,6 @@ public class SqlRunner {
 			else if (overview.isLiteral())
 				overviewStr = (overview.asLiteral() + "").split("@")[0];
 
-		logger.log(Level.INFO, "Basic Info By Wiki Page ID extraction query is being executed");
 		ext.executeQuery(QueryTypes.BASIC_INFO_BY_WIKI_PAGE_ID);
 		ResultSetRewindable basicInfoByIdResults = ext.getResults();
 		basicInfoByIdResults.reset();
@@ -416,7 +403,6 @@ public class SqlRunner {
 		String overviewStr = "";
 		if (id_result.isEmpty()) {
 			Extractor ext = new Extractor(wikiPageID);
-			logger.log(Level.INFO, "abstract extraction query is being executed");
 			ext.executeQuery(QueryTypes.ABSTRACT_BY_WIKI_PAGE_ID);
 			ResultSetRewindable results = ext.getResults();
 
@@ -434,7 +420,6 @@ public class SqlRunner {
 					+ "FROM (SELECT * FROM basic_info WHERE name = ?) AS filtered_info " + "LEFT JOIN WikiID "
 					+ "ON WikiID.name = filtered_info.name " + "LIMIT 1";
 
-			logger.log(Level.INFO, "personal info query is being executed");
 			rows = conn.runQuery(personalInfoQuery, inp);
 
 			Object[] toSerilaize = new Object[2];
