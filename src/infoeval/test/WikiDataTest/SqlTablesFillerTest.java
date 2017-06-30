@@ -32,17 +32,17 @@ public class SqlTablesFillerTest {
 	static SqlTablesFiller filler;
 
 	@BeforeClass
-	
+
 	public static void init() throws IOException, ClassNotFoundException, SQLException, ParseException {
 		filler = new SqlTablesFiller();
-		//filler.createTables();
-	//	filler.fillBasicInfoTable();
-		 //filler.fillWikiIdTable();
+		// filler.createTables();
+		// filler.fillBasicInfoTable();
+		// filler.fillWikiIdTable();
 		// filler.close();
 	}
 
 	@AfterClass
-	
+
 	public static void close() throws ClassNotFoundException, IOException, SQLException {
 		filler.close();
 	}
@@ -55,6 +55,7 @@ public class SqlTablesFillerTest {
 		Entry<Object, Class> col = row.row.get(0);
 		assertEquals(ENTRIES_NUM - 1, (long) col.getValue().cast(col.getKey()));
 	}
+
 	@SuppressWarnings("rawtypes")
 	@Ignore
 	@Test
@@ -67,10 +68,10 @@ public class SqlTablesFillerTest {
 	@Ignore
 	@Test
 	public void IndexTest() throws Exception {
-		//filler.dropIndex();
+		// filler.dropIndex();
 		filler.addIndexBasicInfo();
 		filler.addIndexWikiID();
-		
+
 	}
 
 }

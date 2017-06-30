@@ -39,28 +39,28 @@ public class AnalyzeParagraph {
 	LinkedList<String> awardsInformation;
 	final StanfordCoreNLP pipeLine;
 
-//	public AnalyzeParagraph(Elements Paragraphs) throws IOException {
-//		this.Paragraphs = new Elements();
-//		this.Paragraphs = Paragraphs;
-//		this.dynamicParagraphs = new Elements();
-//		this.arrestsParagraphs = new Elements();
-//		this.awardsParagraphs = new Elements();
-//		this.dynamicInformation= new LinkedList<String>();
-//		this.arrestsInformation=new LinkedList<String>();
-//		this.awardsInformation=new LinkedList<String>();
-//		final Properties props = new Properties();
-//		props.put("annotators", "tokenize,ssplit, pos ,parse,lemma");
-//		this.pipeLine = new StanfordCoreNLP(props);
-//	}
+	// public AnalyzeParagraph(Elements Paragraphs) throws IOException {
+	// this.Paragraphs = new Elements();
+	// this.Paragraphs = Paragraphs;
+	// this.dynamicParagraphs = new Elements();
+	// this.arrestsParagraphs = new Elements();
+	// this.awardsParagraphs = new Elements();
+	// this.dynamicInformation= new LinkedList<String>();
+	// this.arrestsInformation=new LinkedList<String>();
+	// this.awardsInformation=new LinkedList<String>();
+	// final Properties props = new Properties();
+	// props.put("annotators", "tokenize,ssplit, pos ,parse,lemma");
+	// this.pipeLine = new StanfordCoreNLP(props);
+	// }
 
 	public AnalyzeParagraph() throws IOException {
 		this.Paragraphs = new Elements();
 		this.dynamicParagraphs = new Elements();
 		this.arrestsParagraphs = new Elements();
 		this.awardsParagraphs = new Elements();
-		this.dynamicInformation= new LinkedList<String>();
-		this.arrestsInformation=new LinkedList<String>();
-		this.awardsInformation=new LinkedList<String>();
+		this.dynamicInformation = new LinkedList<String>();
+		this.arrestsInformation = new LinkedList<String>();
+		this.awardsInformation = new LinkedList<String>();
 		final Properties props = new Properties();
 		props.put("annotators", "tokenize,ssplit, pos,parse,lemma");
 		this.pipeLine = new StanfordCoreNLP(props);
@@ -70,40 +70,41 @@ public class AnalyzeParagraph {
 		if (!this.Paragraphs.isEmpty())
 			this.Paragraphs.empty();
 		this.Paragraphs = Paragraphs;
-		
+
 	}
-	
+
 	public void setParagraphsDynamic(Elements Paragraphs) {
 		if (!this.dynamicParagraphs.isEmpty())
 			this.dynamicParagraphs.empty();
 		this.dynamicParagraphs = Paragraphs;
-		
+
 	}
-	
+
 	public void setParagraphsArrests(Elements Paragraphs) {
 		if (!this.arrestsParagraphs.isEmpty())
 			this.arrestsParagraphs.empty();
 		this.arrestsParagraphs = Paragraphs;
-		
+
 	}
-	
+
 	public void setParagraphsAwards(Elements Paragraphs) {
 		if (!this.awardsParagraphs.isEmpty())
 			this.awardsParagraphs.empty();
 		this.awardsParagraphs = Paragraphs;
-		
-	}
-	
 
-	public void clearDynamicInformation(){
+	}
+
+	public void clearDynamicInformation() {
 		if (!this.dynamicInformation.isEmpty())
 			this.dynamicInformation.clear();
 	}
-	public void clearArrestsInformation(){
+
+	public void clearArrestsInformation() {
 		if (!this.arrestsInformation.isEmpty())
 			this.arrestsInformation.clear();
 	}
-	public void clearAwardsInformation(){
+
+	public void clearAwardsInformation() {
 		if (!this.awardsInformation.isEmpty())
 			this.awardsInformation.clear();
 	}
@@ -143,7 +144,6 @@ public class AnalyzeParagraph {
 			keywords.add(query);
 			name = name.trim().replaceAll(" ", "_").toLowerCase();
 			WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + name));
-	
 
 			Annotation doc = new Annotation(query);
 			this.pipeLine.annotate(doc);
@@ -152,27 +152,28 @@ public class AnalyzeParagraph {
 					keywords.add(token.get(LemmaAnnotation.class));
 
 			// The query itself
-			for(String queryWord : keywords){
+			for (String queryWord : keywords) {
 				wiki.Parse(queryWord);
 				setParagraphsDynamic(wiki.getParagraphs());
-			for (final Element paragraph : this.dynamicParagraphs)
-				for (String sent : paragraph.text().split("\\.")) { // Split to
-																	// sentences.
+				for (final Element paragraph : this.dynamicParagraphs)
+					for (String sent : paragraph.text().split("\\.")) { // Split
+																		// to
+																		// sentences.
 
-					boolean hasTerm = false;
-					for (String word : sent.split("\\s+"))
-						for (String keyword : keywords)
-							if (word.equals(keyword)) {
-								hasTerm = true;
-								break;
-							}
+						boolean hasTerm = false;
+						for (String word : sent.split("\\s+"))
+							for (String keyword : keywords)
+								if (word.equals(keyword)) {
+									hasTerm = true;
+									break;
+								}
 
-					if (!hasTerm)
-						continue;
+						if (!hasTerm)
+							continue;
 
-					sent = sent.replaceAll("\\[\\d+\\]", "");
-					this.dynamicInformation.add(sent);
-				}
+						sent = sent.replaceAll("\\[\\d+\\]", "");
+						this.dynamicInformation.add(sent);
+					}
 			}
 		} catch (Exception e) {
 			throw e;
@@ -180,23 +181,23 @@ public class AnalyzeParagraph {
 	}
 
 	public void AwardsQuery() {
-		System.out.println("Started analyzing awards query");
+		// System.out.println("Started analyzing awards query");
 		for (final Element paragraph : this.awardsParagraphs)
 			for (String sent : paragraph.text().split("\\.")) {
 				if (!sent.contains("won") && !sent.contains("award") && !sent.contains("awarded")
-						&& !sent.contains("recieved") && !sent.contains("win") && !sent.contains("nominated") )
+						&& !sent.contains("recieved") && !sent.contains("win") && !sent.contains("nominated"))
 					continue;
 				sent = sent.replaceAll("\\[\\d+\\]", "");
 				this.awardsInformation.add(sent);
 			}
 	}
-	
+
 	public void ArrestsQuery() {
 		System.out.println("Started analyzing arrests query");
 		for (final Element paragraph : this.arrestsParagraphs)
 			for (String sent : paragraph.text().split("\\.")) {
-				if (!sent.contains("custody") && !sent.contains("arrested") && !sent.contains("jailed") && !sent.contains("arrest")
-						&& !sent.contains("charged"))
+				if (!sent.contains("custody") && !sent.contains("arrested") && !sent.contains("jailed")
+						&& !sent.contains("arrest") && !sent.contains("charged"))
 					continue;
 				sent = sent.replaceAll("\\[\\d+\\]", "");
 				this.arrestsInformation.add(sent);
@@ -353,18 +354,19 @@ public class AnalyzeParagraph {
 				if (!"".equals(prefixDetails.trim()))
 					this.arrestsInformation.add(prefixDetails.trim());
 				this.arrestsInformation.add((reason + " " + details).trim());
-				
+
 			}
 		}
 	}
 
-	
 	public LinkedList<String> getDynamicInformation() {
 		return this.dynamicInformation;
 	}
+
 	public LinkedList<String> getArrestsInformation() {
 		return this.arrestsInformation;
 	}
+
 	public LinkedList<String> getAwardsInformation() {
 		return this.awardsInformation;
 	}
