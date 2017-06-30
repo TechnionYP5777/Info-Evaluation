@@ -27,7 +27,7 @@ public class ExtractorTest {
 	@Test
 	public void wikiIdTest() {
 		Extractor extr = new Extractor();
-		extr.executeSelectQuery(QueryTypes.WIKI_ID);
+		extr.executeQuery(QueryTypes.WIKI_ID);
 		assertEquals(extr.getResults().size(), ENTRIES_NUM);
 	}
 
@@ -35,11 +35,11 @@ public class ExtractorTest {
 	@Test
 	public void basicInfoTest() {
 		Extractor extr = new Extractor();
-		extr.executeSelectQuery(QueryTypes.BASIC_INFO);
+		extr.executeQuery(QueryTypes.BASIC_INFO);
 		assertEquals(extr.getResults().size(), ENTRIES_NUM);
 	}
 
-	@Ignore
+@Ignore
 	@Test
 	public void basicInfoByIDTest() throws Exception {
 		int wikiPageID = Integer.parseInt((Jsoup
@@ -48,7 +48,7 @@ public class ExtractorTest {
 				.get() + "").split("pageid=\"")[1].split("\"")[0]);
 
 		Extractor extr = new Extractor(wikiPageID);
-		extr.executeSelectQuery(QueryTypes.BASIC_INFO_BY_WIKI_PAGE_ID);
+		extr.executeQuery(QueryTypes.BASIC_INFO_BY_WIKI_PAGE_ID);
 		ResultSetRewindable results = extr.getResults();
 		results.reset();
 		TableEntry te = SqlTablesFiller.getBasicInfo(results);
@@ -61,13 +61,12 @@ public class ExtractorTest {
 		assertNull(deathDate);
 		assertEquals(te.getOccupation(), "No Occupation");
 		assertEquals(te.getSpouseName(), "No Spouse");
-		assertEquals(te.getSpouseOccupation(), "No Spouse Occupation");
-		assertEquals(te.getPhotoLink(),
-				"http://commons.wikimedia.org/wiki/Special:FilePath/Michael_Jackson_in_1988.jpg?width=300");
+		assertEquals(te.getSpouseOccupation(),"No Spouse Occupation");
+		assertEquals(te.getPhotoLink(),"http://commons.wikimedia.org/wiki/Special:FilePath/Michael_Jackson_in_1988.jpg?width=300");
 
 	}
 
-	@Ignore
+@Ignore
 	@Test
 	public void abstractByWikiPageIdTest() throws Exception {
 		int wikiPageID = Integer.parseInt((Jsoup
@@ -75,7 +74,7 @@ public class ExtractorTest {
 						"https://en.wikipedia.org/w/api.php?action=query&titles=Shakira&prop=pageimages&format=xml&pithumbsize=350")
 				.get() + "").split("pageid=\"")[1].split("\"")[0]);
 		Extractor extr = new Extractor(wikiPageID);
-		extr.executeSelectQuery(QueryTypes.ABSTRACT_BY_WIKI_PAGE_ID);
+		extr.executeQuery(QueryTypes.ABSTRACT_BY_WIKI_PAGE_ID);
 		ResultSetRewindable results = extr.getResults();
 		results.reset();
 
@@ -87,16 +86,6 @@ public class ExtractorTest {
 			else if (overview.isLiteral())
 				overviewStr = (overview.asLiteral() + "").split("@")[0];
 
-		assert overviewStr
-				.contains("is a Colombian singer, songwriter, dancer, record producer, choreographer, and model");
-	}
-	
-	@Ignore
-	@Test
-	public void checkIfPersonTest() throws Exception {		
-		Extractor extr1 = new Extractor("Enrique_Iglesias");
-		assertTrue(extr1.executeAskQuery(QueryTypes.CHECK_IF_PERSON));		
-		Extractor extr2 = new Extractor("Sergei_Yudin");
-		assertFalse(extr2.executeAskQuery(QueryTypes.CHECK_IF_PERSON));		
+		assert overviewStr.contains("is a Colombian singer, songwriter, dancer, record producer, choreographer, and model");
 	}
 }
