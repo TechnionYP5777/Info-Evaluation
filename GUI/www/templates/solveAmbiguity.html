@@ -1,11 +1,14 @@
 <ion-view view-title="Ambiguity">
     <ion-content ng-class="{expanded:isExpanded}"  class="list animate-fade-slide-in">
-		<h3 style="color:white;">Please choose the entity you are referring to: </h3>
+		<br/>
+		<center><h3 style="color:white;">Please choose the entity you are referring to: </h3></center>
+		<br/>
         <div ng-controller="ambiguitySolver">
 			<div ng-repeat="per in persons " ng-click="RetryQuery(per)" style="cursor: pointer;">
+				<div style="height:1px;font-size:1px;">&nbsp;</div>
 				<div class="card stable-bg ink-dark">            
-					<div class="item-avatar item-text-wrap">
-						<h3 style="color:black;">{{per.toString()}} </h3>  
+					<div class="item-text-wrap">
+						<p class="tab40 paragraphInfo">{{per.toString()}} </p>  
 					</div>
 				</div>
 			</div>
