@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSetRewindable;
@@ -24,7 +22,6 @@ import org.apache.jena.rdf.model.RDFNode;
  */
 public class SqlTablesFiller {
 	static int i;
-	private static final Logger logger = Logger.getLogger("SqlTablesFiller".getClass().getName());
 	private Connector connector;
 	private static String[] months = { "January", "February", "March", "April", "May", "June", "July", "August",
 			"September", "October", "November", "December" };
@@ -44,10 +41,8 @@ public class SqlTablesFiller {
 				+ " DeathDate DATE NULL, occupation VARCHAR(100) NULL, spouseName VARCHAR(100) NULL,"
 				+ " spouseOccupation VARCHAR(100) NULL, photoLink VARCHAR(500) NULL, birthExpanded VARCHAR(100) NULL,"
 				+ "deathExpanded VARCHAR(100) NULL)");
-		logger.log(Level.INFO, "basic_info table created successfully");
 		connector.runUpdate(
 				"CREATE TABLE IF NOT EXISTS WikiID(Name VARCHAR(100) NOT NULL,wikiPageID VARCHAR(50) NOT NULL)");
-		logger.log(Level.INFO, "WIKI_ID table created successfully");
 	}
 
 	public void addIndexBasicInfo() throws SQLException, ClassNotFoundException, IOException {
@@ -65,7 +60,6 @@ public class SqlTablesFiller {
 		ResultSetRewindable results = ext.getResults();
 		results.reset();
 		for (int i = 0; i < results.size(); ++i) {
-			System.out.println("Filling WikiID entry number " + i);
 			QuerySolution solution = results.nextSolution();
 			Object[] inp = new Object[2];
 			inp[0] = solution.getLiteral("name").getString();
@@ -98,7 +92,6 @@ public class SqlTablesFiller {
 				inp[10] = te.getDeathExpandedPlace();
 				connector.runUpdate("INSERT INTO basic_info VALUES(?,?,?,?,?,?,?,?,?,?,?)", inp);
 			} catch (Exception e) {
-				System.out.println("Failed filling basicInfo entry number " + ¢);
 			}
 	}
 

@@ -11,8 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import infoeval.main.mysql.Row;
 
@@ -23,7 +21,6 @@ import infoeval.main.mysql.Row;
  * @since 19-04-2017 [[SuppressWarningsSpartan]]
  */
 public class Connector {
-	private static final Logger logger = Logger.getLogger("Connector".getClass().getName());
 	private final DataSource datasource;
 	private String url;
 	private String username;
@@ -33,7 +30,6 @@ public class Connector {
 		try {
 			datasource = new DataSource();
 			initializeConnectionPool();
-			logger.log(Level.INFO, "connection pool initialized");
 		} catch (Exception e) {
 			throw e;
 		}
@@ -41,7 +37,6 @@ public class Connector {
 
 	public void setCaching() throws SQLException, ClassNotFoundException, IOException {
 		runUpdate("SET GLOBAL query_cache_type = DEMAND");
-		logger.log(Level.INFO, "cache settings are set");
 	}
 
 	public void initializeConnectionPool() throws IOException {

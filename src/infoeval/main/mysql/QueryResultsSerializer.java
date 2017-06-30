@@ -9,8 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  * @author osherh
@@ -19,7 +18,6 @@ import java.util.logging.Logger;
  */
 
 public class QueryResultsSerializer {
-	private static final Logger logger = Logger.getLogger("QueryResultsSerializer".getClass().getName());
 	private static final String SERIALIZE_RESULT = "INSERT INTO serialized_query_results(query_identifier, serialized_result) VALUES (?, ?)";
 	private static final String DESERIALIZE_RESULT = "SELECT serialized_result FROM serialized_query_results WHERE serialized_id = ?";
 
@@ -38,7 +36,6 @@ public class QueryResultsSerializer {
 		pstmt.close();
 		c.close();
 
-		logger.log(Level.INFO, "Query " + query_identifier + " has been serialized");
 		return $;
 	}
 
@@ -58,7 +55,6 @@ public class QueryResultsSerializer {
 		pstmt.close();
 		c.close();
 
-		logger.log(Level.INFO, "Query with Serialized_ID: " + serialized_id + " has been deserialized");
 		return $;
 	}
 }

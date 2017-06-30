@@ -14,8 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Adam Dziedzic
@@ -57,15 +55,11 @@ public class Row implements Serializable {
 	}
 
 	public <T> void add(T data) {
-		Logger logi = Logger.getLogger(Row.class.getName());
-		logi.log(Level.INFO, "Data type is: " + data.getClass().getName() + "Data is :" + data);
 		this.row.add(new AbstractMap.SimpleImmutableEntry<Object, Class>(data, data.getClass()));
 	}
 
 	public void add(Object data, String sqlType) {
 		Class castType = Row.TYPE.get(sqlType.toUpperCase());
-		Logger logi = Logger.getLogger(Row.class.getName());
-		logi.log(Level.INFO, "The cast type: " + castType + "sqlType=" + sqlType);
 		try {
 			Object castedData = castType.cast(data);
 			if (castedData == null)
@@ -74,9 +68,6 @@ public class Row implements Serializable {
 				this.add(castedData);
 		} catch (NullPointerException e) {
 			e.printStackTrace();
-			Logger lgr = Logger.getLogger(Row.class.getName());
-			lgr.log(Level.SEVERE,
-					e.getMessage() + " Add the type " + sqlType + " to the TYPE hash map in the Row class.", e);
 			throw e;
 		}
 	}

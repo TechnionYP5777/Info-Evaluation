@@ -18,8 +18,6 @@ import org.springframework.boot.autoconfigure.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * 
@@ -33,7 +31,6 @@ import java.util.logging.Logger;
 @EnableAutoConfiguration
 @RestController
 public class InfoevalServiceImp implements InfoevalService {
-	private static final Logger logger = Logger.getLogger("InfoevalServiceImp".getClass().getName());
 	private static AnalyzeParagraph analyze;
 	SqlRunner runner;
 
@@ -53,8 +50,6 @@ public class InfoevalServiceImp implements InfoevalService {
 			throws Exception {
 
 		ArrayList<TableEntry> $ = runner.getBornInPlaceBeforeYear(place, year);
-		logger.log(Level.INFO, "Born in place before year was called.\n Parameters:Place:" + place + ", Year:" + year);
-		logger.log(Level.INFO, "list size:" + $.size());
 
 		return $;
 	}
@@ -63,9 +58,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	@CrossOrigin
 	@RequestMapping(path = "Queries/Query1", method = RequestMethod.GET)
 	public synchronized ArrayList<TableEntry> differentDeathPlace() throws Exception {
-		logger.log(Level.INFO, "Born and died in different place was called");
 		ArrayList<TableEntry> $ = runner.getDifferentDeathPlace();
-		logger.log(Level.INFO, "list size:" + $.size());
 		return $;
 
 	}
@@ -74,7 +67,6 @@ public class InfoevalServiceImp implements InfoevalService {
 	@CrossOrigin
 	@RequestMapping(path = "Queries/SameOccupationCouples", method = RequestMethod.GET)
 	public synchronized ArrayList<TableEntry> getSameOccupationCouples() throws Exception {
-		logger.log(Level.INFO, "Get SameOccupationCouples was called.\n ");
 		// Parse user's input:
 
 		return runner.getSameOccupationCouples();
@@ -88,7 +80,6 @@ public class InfoevalServiceImp implements InfoevalService {
 		String UpdatedName = updteName(name);
 		try {
 			WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + UpdatedName));
-			System.out.print("Trying to fetch from ,  https://en.wikipedia.org/wiki/" + UpdatedName);
 			wiki.CheckAmbiguities();
 			return !wiki.isConflictedName() ? null : wiki.getNames();
 		} catch (Exception e) {
@@ -100,7 +91,6 @@ public class InfoevalServiceImp implements InfoevalService {
 	@CrossOrigin
 	@RequestMapping(path = "Queries/Arrests", method = RequestMethod.GET)
 	public synchronized LinkedList<String> getArrested(String name) throws Exception {
-		logger.log(Level.INFO, "Get Arrests was called.\n Parameters:Name:" + name);
 		// Parse user's input:
 		String UpdatedName = updteName(name);
 		try {
@@ -120,7 +110,6 @@ public class InfoevalServiceImp implements InfoevalService {
 	@CrossOrigin
 	@RequestMapping(path = "Queries/Awards", method = RequestMethod.GET)
 	public synchronized LinkedList<String> getAwards(String name) throws Exception {
-		logger.log(Level.INFO, "Get Awards was called.\n Parameters:Name:" + name);
 		// Parse user's input:
 		try {
 			String UpdatedName = updteName(name);
@@ -129,7 +118,6 @@ public class InfoevalServiceImp implements InfoevalService {
 			wiki.isConflictedName();
 			wiki.getNames();
 			new ArrayList<>();
-			System.out.println(wiki.getParagraphs().text());
 			analyze.setParagraphsAwards(wiki.getParagraphs());
 			analyze.clearAwardsInformation();
 			analyze.AwardsQuery();
@@ -143,7 +131,6 @@ public class InfoevalServiceImp implements InfoevalService {
 	@CrossOrigin
 	@RequestMapping(path = "Queries/Dynamic", method = RequestMethod.GET)
 	public synchronized LinkedList<String> getDynamic(String name, String query) throws Exception {
-		logger.log(Level.INFO, "Get dynamic query results was called.\n Parameters:Name:" + name + " Query:" + query);
 		// Parse user's input:
 		try {
 			analyze.dynamicQuery(updteName(name), query);
@@ -157,11 +144,9 @@ public class InfoevalServiceImp implements InfoevalService {
 	@CrossOrigin
 	@RequestMapping(path = "Queries/PersonalInformation", method = RequestMethod.GET)
 	public synchronized TableEntry getPersonal_Information(String name) throws Exception {
-		logger.log(Level.INFO, "Get personal information was called.\n Parameters:Name:" + name);
 		// Parse user's input:
 
 		String pageId = "", UpdatedName = updteName(name);
-		System.out.println(UpdatedName);
 		try {
 			pageId = (Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles=" + UpdatedName
 					+ "&prop=pageimages&format=xml&pithumbsize=350").get() + "").split("pageid=\"")[1].split("\"")[0];
