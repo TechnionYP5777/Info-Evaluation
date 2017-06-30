@@ -40,23 +40,22 @@ public class SqlRunnerTest {
 	 */
 
 	@BeforeClass
-
 	public static void initRunner() throws Exception {
 		querun = new SqlRunner();
 	}
 
 	@AfterClass
-
 	public static void close() {
 		querun.close();
 	}
 
-	@Ignore
+//	@Ignore
 	@Test
 	public void TestClearSerializedQueries() throws Exception {
 		querun.clearSerializedQueries();
 	}
-@Ignore
+
+	@Ignore
 	@Test
 	public void getBornInPlaceBeforeYearTest() throws Exception {
 		for (TableEntry te : querun.getBornInPlaceBeforeYear("Japan", "1970")) {
@@ -64,11 +63,11 @@ public class SqlRunnerTest {
 			String birthPlace = te.getBirthPlace();
 			assert Integer.parseInt(new SimpleDateFormat("yyyy").format(birthDate)) < 1970;
 			assert birthPlace.contains("Japan");
-			
-			
+
 		}
 	}
-@Ignore
+
+	@Ignore
 	@Test
 	public void getDifferentDeathPlaceTest() throws Exception {
 		for (TableEntry ¢ : querun.getDifferentDeathPlace())
@@ -116,14 +115,16 @@ public class SqlRunnerTest {
 			assertEquals(¢.getSpouseName(), "No Spouse Name");
 	}
 
-@Ignore
+//	@Ignore
 	@Test
 	public void getPersonalInfoTest() throws Exception {
 		TableEntry te = querun.getPersonalInfo(Integer.parseInt((Jsoup
 				.connect(
-						"https://en.wikipedia.org/w/api.php?action=query&titles=Zózimo&prop=pageimages&format=xml&pithumbsize=350")
+						"https://en.wikipedia.org/w/api.php?action=query&titles=Yuen_Ren_Chao&prop=pageimages&format=xml&pithumbsize=350")
 				.get() + "").split("pageid=\"")[1].split("\"")[0]));
 
+		System.out.println("Name is " + te.getName());
+		
 		System.out.println("Birth Place is " + te.getBirthPlace());
 
 		System.out.println("Birth Place is " + te.getDeathPlace());
@@ -148,35 +149,30 @@ public class SqlRunnerTest {
 
 	}
 
-@Ignore
+	@Ignore
 	@Test
 	public void getPersonalInfoNotInDBTest() throws Exception {
 		TableEntry te = querun.getPersonalInfo(
 
-			
 				Integer.parseInt((Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles=Angela_Merkel"
- 
+
 						+ "&prop=pageimages&format=xml&pithumbsize=350").get() + "").split("pageid=\"")[1]
 								.split("\"")[0]));
 
-         assertEquals(te.getUrl(),"https://en.wikipedia.org/?curid=72671");
-		 assertEquals(te.getName(),"Angela Merkel");
-		 assertEquals(te.getBirthPlace(),"West Germany");
-		 assertEquals(te.getDeathPlace(),"No Death Place");
-		 assertEquals(te.getBirthExpandedPlace(),"West Germany");
-		 assertEquals(te.getDeathExpandedPlace(),"No Death Place");
-		 assertEquals((te.getBirthDate() + ""),"1954-07-17");
-	     assertEquals(te.getDeathDate(),null);
-		 assertEquals(te.getOccupation(),"No Occupation");
-		 assertEquals(te.getSpouseName(),"No Spouse");
-		 assertEquals(te.getSpouseOccupation(),"No Spouse Occupation");
-		 assertEquals(te.getPhotoLink(),"http://commons.wikimedia.org/wiki/Special:FilePath/Angela_Merkel_Juli_2010_-_3zu4.jpg");
-		 assertEquals( te.getOverview().split(" ")[1],"Dorothea");
-		
+		assertEquals(te.getUrl(), "https://en.wikipedia.org/?curid=72671");
+		assertEquals(te.getName(), "Angela Merkel");
+		assertEquals(te.getBirthPlace(), "West Germany");
+		assertEquals(te.getDeathPlace(), "No Death Place");
+		assertEquals(te.getBirthExpandedPlace(), "West Germany");
+		assertEquals(te.getDeathExpandedPlace(), "No Death Place");
+		assertEquals((te.getBirthDate() + ""), "1954-07-17");
+		assertEquals(te.getDeathDate(), null);
+		assertEquals(te.getOccupation(), "No Occupation");
+		assertEquals(te.getSpouseName(), "No Spouse");
+		assertEquals(te.getSpouseOccupation(), "No Spouse Occupation");
+		assertEquals(te.getPhotoLink(),
+				"http://commons.wikimedia.org/wiki/Special:FilePath/Angela_Merkel_Juli_2010_-_3zu4.jpg");
+		assertEquals(te.getOverview().split(" ")[1], "Dorothea");
 
-					
-		
-		 
-		
 	}
 }

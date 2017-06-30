@@ -10,6 +10,7 @@ import infoeval.main.WikiData.Connector;
 import infoeval.main.WikiData.Extractor;
 import infoeval.main.WikiData.QueryTypes;
 import infoeval.main.WikiData.SqlTablesFiller;
+
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSetRewindable;
 import org.apache.jena.rdf.model.RDFNode;
@@ -32,7 +33,6 @@ public class SqlRunner {
 		conn.runUpdate("CREATE TABLE IF NOT EXISTS serialized_query_results "
 				+ "(serialized_id int(30) NOT NULL AUTO_INCREMENT, " + "query_identifier VARCHAR(100) NOT NULL, "
 				+ "serialized_result LONGBLOB, " + "PRIMARY KEY (serialized_id))");
-
 	}
 
 	public void clearSerializedQueries() throws Exception {
@@ -116,7 +116,6 @@ public class SqlRunner {
 					+ "FROM (SELECT * FROM basic_info WHERE DeathPlace<>'No Death Place' \n"
 					+ "AND BirthPlace<>DeathPlace) AS filtered_info " + "LEFT JOIN WikiID\n "
 					+ "ON WikiID.name = filtered_info.name " + "LIMIT " + LIMIT_NUM;
-
 			
 			rows = conn.runQuery(birthDeathPlace);
 			String query_identifier = "getDifferentDeathPlace()";
@@ -129,9 +128,7 @@ public class SqlRunner {
 			rows.addAll(rows2);
 		}
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
-		
 		for (Row row : rows) {
-
 			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey());
 			String birthPlace = (String) row.row.get(1).getValue().cast(row.row.get(1).getKey());
 			String deathPlace = (String) row.row.get(2).getValue().cast(row.row.get(2).getKey());
@@ -155,7 +152,6 @@ public class SqlRunner {
 						photoLink, "",birthExpanded,deathExpanded));
 			
 			}
-			
 		}
 		return res;
 	}
@@ -171,7 +167,6 @@ public class SqlRunner {
 					+ "FROM basic_info "
 					+ "WHERE spouseName != 'No Spouse Name' AND spouseOccupation != 'No Spouse Occupation' "
 					+ "AND occupation = spouseOccupation " + "LIMIT " + LIMIT_NUM;
-
 			rows = conn.runQuery(sameOccupationCouples);
 			String query_identifier = "getSameOccupationCouples()";
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
@@ -351,7 +346,7 @@ public class SqlRunner {
 	public TableEntry getPersonalInfoFromDBpedia(int wikiPageID)
 			throws ClassNotFoundException, SQLException, IOException, ParseException {
 		Extractor ext = new Extractor(wikiPageID);
-		ext.executeQuery(QueryTypes.ABSTRACT_BY_WIKI_PAGE_ID);
+		ext.executeSelectQuery(QueryTypes.ABSTRACT_BY_WIKI_PAGE_ID);
 		ResultSetRewindable results = ext.getResults();
 
 		results.reset();
@@ -364,7 +359,7 @@ public class SqlRunner {
 			else if (overview.isLiteral())
 				overviewStr = (overview.asLiteral() + "").split("@")[0];
 
-		ext.executeQuery(QueryTypes.BASIC_INFO_BY_WIKI_PAGE_ID);
+		ext.executeSelectQuery(QueryTypes.BASIC_INFO_BY_WIKI_PAGE_ID);
 		ResultSetRewindable basicInfoByIdResults = ext.getResults();
 		basicInfoByIdResults.reset();
 
@@ -403,7 +398,7 @@ public class SqlRunner {
 		String overviewStr = "";
 		if (id_result.isEmpty()) {
 			Extractor ext = new Extractor(wikiPageID);
-			ext.executeQuery(QueryTypes.ABSTRACT_BY_WIKI_PAGE_ID);
+			ext.executeSelectQuery(QueryTypes.ABSTRACT_BY_WIKI_PAGE_ID);
 			ResultSetRewindable results = ext.getResults();
 
 			results.reset();
@@ -471,5 +466,10 @@ public class SqlRunner {
 
 	public Connector getConnector() {
 		return conn;
+	}
+	
+	public boolean checkIfPerson(String name){
+		Extractor ext = new Extractor(name);
+		return ext.executeAskQuery(QueryTypes.CHECK_IF_PERSON);
 	}
 }

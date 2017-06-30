@@ -56,10 +56,11 @@ public class SqlTablesFiller {
 	public void fillWikiIdTable() throws SQLException, ClassNotFoundException, IOException {
 		connector.clearWikiIdTable();
 		Extractor ext = new Extractor();
-		ext.executeQuery(QueryTypes.WIKI_ID);
+		ext.executeSelectQuery(QueryTypes.WIKI_ID);
 		ResultSetRewindable results = ext.getResults();
 		results.reset();
 		for (int i = 0; i < results.size(); ++i) {
+			System.out.println("Filling WikiID entry number " + i);
 			QuerySolution solution = results.nextSolution();
 			Object[] inp = new Object[2];
 			inp[0] = solution.getLiteral("name").getString();
@@ -72,7 +73,7 @@ public class SqlTablesFiller {
 
 		connector.clearBasicInfoTable();
 		Extractor ext = new Extractor();
-		ext.executeQuery(QueryTypes.BASIC_INFO);
+		ext.executeSelectQuery(QueryTypes.BASIC_INFO);
 		ResultSetRewindable results = ext.getResults();
 		results.reset();
 		for (int ¢ = 0; ¢ < results.size(); ++¢)
@@ -92,6 +93,7 @@ public class SqlTablesFiller {
 				inp[10] = te.getDeathExpandedPlace();
 				connector.runUpdate("INSERT INTO basic_info VALUES(?,?,?,?,?,?,?,?,?,?,?)", inp);
 			} catch (Exception e) {
+				System.out.println("Failed filling basicInfo entry number " + ¢);
 			}
 	}
 
