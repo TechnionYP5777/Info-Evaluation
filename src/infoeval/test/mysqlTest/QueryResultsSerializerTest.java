@@ -7,7 +7,6 @@ import infoeval.main.WikiData.Connector;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
-import org.junit.Ignore;
 
 import java.util.ArrayList;
 
@@ -37,7 +36,6 @@ public class QueryResultsSerializerTest {
 		connector = runner.getConnector();
 	}
 
-	@Ignore
 	@Test
 	@SuppressWarnings("unchecked")
 	public void serializeANDdeSerializeTest() throws Exception {

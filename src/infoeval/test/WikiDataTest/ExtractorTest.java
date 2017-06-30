@@ -1,6 +1,5 @@
 package infoeval.test.WikiDataTest;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import infoeval.main.WikiData.Extractor;
 import infoeval.main.WikiData.QueryTypes;
@@ -23,7 +22,6 @@ import org.jsoup.Jsoup;
 public class ExtractorTest {
 	private static final int ENTRIES_NUM = 10000;
 
-	@Ignore
 	@Test
 	public void wikiIdTest() {
 		Extractor extr = new Extractor();
@@ -31,7 +29,6 @@ public class ExtractorTest {
 		assertEquals(extr.getResults().size(), ENTRIES_NUM);
 	}
 
-	@Ignore
 	@Test
 	public void basicInfoTest() {
 		Extractor extr = new Extractor();
@@ -39,7 +36,6 @@ public class ExtractorTest {
 		assertEquals(extr.getResults().size(), ENTRIES_NUM);
 	}
 
-	@Ignore
 	@Test
 	public void basicInfoByIDTest() throws Exception {
 		int wikiPageID = Integer.parseInt((Jsoup
@@ -67,7 +63,6 @@ public class ExtractorTest {
 
 	}
 
-	@Ignore
 	@Test
 	public void abstractByWikiPageIdTest() throws Exception {
 		int wikiPageID = Integer.parseInt((Jsoup
@@ -90,12 +85,12 @@ public class ExtractorTest {
 		assert overviewStr
 				.contains("is a Colombian singer, songwriter, dancer, record producer, choreographer, and model");
 	}
-	
-	@Ignore
+
 	@Test
-	public void checkIfPersonTest() throws Exception {		
+	public void checkIfPersonTest() throws Exception {
 		Extractor extr1 = new Extractor("Enrique_Iglesias");
-		assertTrue(extr1.executeAskQuery(QueryTypes.CHECK_IF_PERSON));		
-		assertFalse((new Extractor("Sergei_Yudin")).executeAskQuery(QueryTypes.CHECK_IF_PERSON));		
+		assertTrue(extr1.executeAskQuery(QueryTypes.CHECK_IF_PERSON));
+		Extractor extr2 = new Extractor("Sergei_Yudin");
+		assertFalse(extr2.executeAskQuery(QueryTypes.CHECK_IF_PERSON));
 	}
 }
