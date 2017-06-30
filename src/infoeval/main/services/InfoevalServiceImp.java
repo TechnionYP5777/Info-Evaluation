@@ -98,7 +98,7 @@ public class InfoevalServiceImp implements InfoevalService {
 			new ArrayList<>();
 			analyze.setParagraphsArrests(wiki.getParagraphs());
 			analyze.clearArrestsInformation();
-			analyze.AnalyzeArrestsQuery();
+			analyze.ArrestsQuery();
 			return analyze.RefineResults(10, analyze.getArrestsInformation());
 		} catch (Exception e) {
 			throw e;
