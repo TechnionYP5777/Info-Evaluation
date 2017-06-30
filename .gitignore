@@ -95,7 +95,6 @@ $.*
 *.yy.h
 *.zip
 MySQLServerConfiguration.xml
-database.properties
 
 # Prefixes // vim: +,/^\s*$/-1!sort -u
 texput.*
