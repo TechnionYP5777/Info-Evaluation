@@ -14,10 +14,10 @@ import org.jsoup.Jsoup;
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.*;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Optional;
 
 /**
  * 
@@ -46,8 +46,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	@Override
 	@CrossOrigin
 	@RequestMapping(path = "Queries/Query2", method = RequestMethod.GET)
-	public synchronized ArrayList<TableEntry> getBornInPlaceYear(String place, String year)
-			throws Exception {
+	public synchronized ArrayList<TableEntry> getBornInPlaceYear(String place, String year) throws Exception {
 
 		return runner.getBornInPlaceBeforeYear(place, year);
 	}
@@ -77,6 +76,8 @@ public class InfoevalServiceImp implements InfoevalService {
 		String UpdatedName = updteName(name);
 		try {
 			WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + UpdatedName));
+			// System.out.print("Trying to fetch from ,
+			// https://en.wikipedia.org/wiki/" + UpdatedName);
 			wiki.CheckAmbiguities();
 			return !wiki.isConflictedName() ? null : wiki.getNames();
 		} catch (Exception e) {
@@ -115,6 +116,7 @@ public class InfoevalServiceImp implements InfoevalService {
 			wiki.isConflictedName();
 			wiki.getNames();
 			new ArrayList<>();
+			// System.out.println(wiki.getParagraphs().text());
 			analyze.setParagraphsAwards(wiki.getParagraphs());
 			analyze.clearAwardsInformation();
 			analyze.AwardsQuery();
@@ -136,7 +138,7 @@ public class InfoevalServiceImp implements InfoevalService {
 			throw e;
 		}
 	}
-	
+
 	@Override
 	@CrossOrigin
 	@RequestMapping(path = "Queries/PersonalInformation", method = RequestMethod.GET)
@@ -144,6 +146,8 @@ public class InfoevalServiceImp implements InfoevalService {
 		// Parse user's input:
 
 		String pageId = "", UpdatedName = updteName(name);
+		// System.out.println(UpdatedName);
+
 		try {
 			pageId = (Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles=" + UpdatedName
 					+ "&prop=pageimages&format=xml&pithumbsize=350").get() + "").split("pageid=\"")[1].split("\"")[0];
