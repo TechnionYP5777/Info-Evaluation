@@ -148,9 +148,6 @@ public class InfoevalServiceImp implements InfoevalService {
 		String pageId = "", UpdatedName = updteName(name);
 		// System.out.println(UpdatedName);
 
-		if (!runner.checkIfPerson(UpdatedName))
-			return null;
-
 		try {
 			pageId = (Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles=" + UpdatedName
 					+ "&prop=pageimages&format=xml&pithumbsize=350").get() + "").split("pageid=\"")[1].split("\"")[0];
