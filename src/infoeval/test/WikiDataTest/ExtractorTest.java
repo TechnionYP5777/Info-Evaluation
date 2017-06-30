@@ -86,6 +86,7 @@ public class ExtractorTest {
 			else if (overview.isLiteral())
 				overviewStr = (overview.asLiteral() + "").split("@")[0];
 
-		assert overviewStr.contains("is a Colombian singer, songwriter, dancer, record producer, choreographer, and model");
+		assert overviewStr
+				.contains("is a Colombian singer, songwriter, dancer, record producer, choreographer, and model");
 	}
 }
