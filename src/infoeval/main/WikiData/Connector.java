@@ -40,7 +40,7 @@ public class Connector {
 	}
 
 	public void initializeConnectionPool() throws IOException {
-		InputStream is = getClass().getResourceAsStream("database.properties");
+		InputStream is = getClass().getResourceAsStream("Info-Evaluation/src/infoeval/main/WikiData/database.properties");
 		Properties props = new Properties();
 		props.load(is);
 		is.close();
