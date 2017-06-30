@@ -193,7 +193,7 @@ public class AnalyzeParagraph {
 	}
 
 	public void ArrestsQuery() {
-		System.out.println("Started analyzing arrests query");
+		//System.out.println("Started analyzing arrests query");
 		for (final Element paragraph : this.arrestsParagraphs)
 			for (String sent : paragraph.text().split("\\.")) {
 				if (!sent.contains("custody") && !sent.contains("arrested") && !sent.contains("jailed")

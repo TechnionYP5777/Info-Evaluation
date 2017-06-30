@@ -47,7 +47,7 @@ public class SqlRunner {
 		try {
 			conn.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 

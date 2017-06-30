@@ -67,7 +67,7 @@ public class Row implements Serializable {
 			else
 				this.add(castedData);
 		} catch (NullPointerException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			throw e;
 		}
 	}

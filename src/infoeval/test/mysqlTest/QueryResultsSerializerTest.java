@@ -17,14 +17,6 @@ import java.util.ArrayList;
  *
  */
 
-/*
- * ATTENTION ! When you want to test this class , remove the @Ignore attributes.
- * I added it since the connector tries to read from the config.xml file which
- * won't be uploaded to GitHub and it causes travisCI to fail. like moshiko did
- * in the connectorTest it's relevant here too
- * 
- * @osherh
- */
 public class QueryResultsSerializerTest {
 	private QueryResultsSerializer resultsSer;
 	private Connector connector;

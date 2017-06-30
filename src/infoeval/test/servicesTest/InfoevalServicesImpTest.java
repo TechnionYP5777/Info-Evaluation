@@ -48,7 +48,7 @@ public class InfoevalServicesImpTest {
 		mockMvc = MockMvcBuilders.standaloneSetup(infoevalServicesImp).build();
 	}
 
-	@Ignore
+//	@Ignore
 	@Test
 	public void getBornInPlaceYearTest() throws Exception {
 		ArrayList<TableEntry> people = new ArrayList<TableEntry>();
