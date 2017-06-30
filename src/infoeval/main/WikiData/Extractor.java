@@ -125,8 +125,8 @@ public class Extractor {
 	public boolean executeAskQuery(QueryTypes ¢) {
 		Query query = QueryFactory.create(queriesAskMap.get(¢));
 		QueryExecution qexec = QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", query);
-		boolean result = qexec.execAsk();
+		boolean $ = qexec.execAsk();
 		qexec.close();
-		return result;
+		return $;
 	}
 }

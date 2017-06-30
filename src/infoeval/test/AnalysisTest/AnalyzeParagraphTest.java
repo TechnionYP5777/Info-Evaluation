@@ -25,8 +25,7 @@ public class AnalyzeParagraphTest {
 		AnalyzeParagraph analyze = new AnalyzeParagraph();
 		analyze.setParagraphsArrests(wiki.getParagraphs());
 		analyze.AnalyzeArrestsQuery();
-		LinkedList<String> info = analyze.getArrestsInformation();
-		assert(info.size() > 0);
+		assert (!analyze.getArrestsInformation().isEmpty());
 	}
 
 	// This test is for the new method of awards query.(see issue #224)
@@ -51,8 +50,8 @@ public class AnalyzeParagraphTest {
 		AnalyzeParagraph analyze = new AnalyzeParagraph();
 		analyze.setParagraphsArrests(wiki.getParagraphs());
 		analyze.ArrestsQuery();
-		LinkedList<String> info = analyze.getArrestsInformation();
-		assert info.contains(" When he failed to do so, an arrest warrant was issued and two of his bodyguards were released in Argentina in April 2015");
+		assert analyze.getArrestsInformation().contains(
+				" When he failed to do so, an arrest warrant was issued and two of his bodyguards were released in Argentina in April 2015");
 	}
 
 	// Test for dynamic query:

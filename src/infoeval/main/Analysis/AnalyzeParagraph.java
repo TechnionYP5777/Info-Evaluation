@@ -281,9 +281,8 @@ public class AnalyzeParagraph {
 			for (final CoreMap sentence : document.get(SentencesAnnotation.class)) {
 				Sentence sent = new Sentence(sentence);
 				if (sent.text().contains("sentenced") || sent.text().contains("juried")
-						|| sent.text().contains("sent to jail") || sent.text().contains("charged")) {
+						|| sent.text().contains("sent to jail") || sent.text().contains("charged"))
 					penalty = ArrestPenalty(sent);
-				}
 				final SemanticGraph dependencies = sentence.get(CollapsedDependenciesAnnotation.class);
 				for (final IndexedWord root : dependencies.getRoots())
 					for (final SemanticGraphEdge edge : dependencies.getOutEdgesSorted(root)) {

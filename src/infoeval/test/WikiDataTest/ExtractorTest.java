@@ -96,7 +96,6 @@ public class ExtractorTest {
 	public void checkIfPersonTest() throws Exception {		
 		Extractor extr1 = new Extractor("Enrique_Iglesias");
 		assertTrue(extr1.executeAskQuery(QueryTypes.CHECK_IF_PERSON));		
-		Extractor extr2 = new Extractor("Sergei_Yudin");
-		assertFalse(extr2.executeAskQuery(QueryTypes.CHECK_IF_PERSON));		
+		assertFalse((new Extractor("Sergei_Yudin")).executeAskQuery(QueryTypes.CHECK_IF_PERSON));		
 	}
 }

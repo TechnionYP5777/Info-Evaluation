@@ -149,9 +149,8 @@ public class InfoevalServiceImp implements InfoevalService {
 		String pageId = "", UpdatedName = updteName(name);
 		System.out.println(UpdatedName);
 		
-		if (!runner.checkIfPerson(UpdatedName)){
+		if (!runner.checkIfPerson(UpdatedName))
 			return null;
-		}
 		
 		try {
 			pageId = (Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles=" + UpdatedName
