@@ -38,7 +38,7 @@ public class AnalyzeParagraphTest {
 		analyze.AwardsQuery();
 		LinkedList<String> info = analyze.getAwardsInformation();
 		for (final String ¢ : info)
-			System.out.println(¢);
+//			System.out.println(¢);
 			assert(info.contains(" At the 51st Grammy Awards in 2009, Adele received the awards for Best New Artist and Best Female Pop Vocal Performance"));
 				}
 
