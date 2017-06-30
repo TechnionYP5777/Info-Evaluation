@@ -1,13 +1,9 @@
 package infoeval.test.WikiDataTest;
 
-
-import org.junit.Ignore;
 import org.junit.Test;
 import infoeval.main.WikiData.Connector;
 import infoeval.main.mysql.Row;
-
 import static org.junit.Assert.assertNotNull;
-
 import java.sql.Connection;
 import java.util.Map.Entry;
 
@@ -17,17 +13,7 @@ import java.util.Map.Entry;
  * @since 19-04-2017
  */
 public class ConnectorTest {
-	
 
-	/*
-	 * ATTENTION ! When you want to test this class , remove the @ignore
-	 * attributes. I added it becasue connector tries to read from the
-	 * config.xml file which won't be uploaded to GitHub and it causes travisCI
-	 * to fail.
-	 * 
-	 * @Moshiko
-	 */
-	@Ignore
 	@Test
 	public void connectionTest() throws Exception {
 		Connection connection = new Connector().getConnection();
@@ -35,7 +21,6 @@ public class ConnectorTest {
 		connection.close();
 	}
 
-	@Ignore
 	@Test
 	@SuppressWarnings("rawtypes")
 	public void runQueryTest() throws Exception {
@@ -51,7 +36,6 @@ public class ConnectorTest {
 		conn.close();
 	}
 
-	@Ignore
 	@Test
 	@SuppressWarnings("rawtypes")
 	public void runUpdateTest() throws Exception {

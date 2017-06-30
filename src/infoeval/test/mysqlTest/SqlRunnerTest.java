@@ -51,12 +51,11 @@ public class SqlRunnerTest {
 		querun.close();
 	}
 
-	@Ignore
 	@Test
 	public void TestClearSerializedQueries() throws Exception {
 		querun.clearSerializedQueries();
 	}
-@Ignore
+
 	@Test
 	public void getBornInPlaceBeforeYearTest() throws Exception {
 		for (TableEntry te : querun.getBornInPlaceBeforeYear("Japan", "1970")) {
@@ -68,14 +67,13 @@ public class SqlRunnerTest {
 			
 		}
 	}
-@Ignore
+
 	@Test
 	public void getDifferentDeathPlaceTest() throws Exception {
 		for (TableEntry ¢ : querun.getDifferentDeathPlace())
 			assertNotEquals(¢.getBirthPlace(), ¢.getDeathPlace());
 	}
 
-	@Ignore
 	@Test
 	public void getSameOccupationCouplesTest() throws Exception {
 		for (TableEntry ¢ : querun.getSameOccupationCouples())
@@ -95,7 +93,6 @@ public class SqlRunnerTest {
 		}
 	}
 
-	@Ignore
 	@Test
 	public void getOccupationBetweenYearsTest() throws Exception {
 		for (TableEntry te : querun.getOccupationBetweenYears("1840", "1920", "Politician")) {
@@ -109,14 +106,12 @@ public class SqlRunnerTest {
 		}
 	}
 
-	@Ignore
 	@Test
 	public void getSpouselessBetweenYearsTest() throws Exception {
 		for (TableEntry ¢ : querun.getSpouselessBetweenYears("1900", "1980"))
 			assertEquals(¢.getSpouseName(), "No Spouse Name");
 	}
 
-@Ignore
 	@Test
 	public void getPersonalInfoTest() throws Exception {
 		TableEntry te = querun.getPersonalInfo(Integer.parseInt((Jsoup
@@ -148,7 +143,6 @@ public class SqlRunnerTest {
 
 	}
 
-@Ignore
 	@Test
 	public void getPersonalInfoNotInDBTest() throws Exception {
 		TableEntry te = querun.getPersonalInfo(

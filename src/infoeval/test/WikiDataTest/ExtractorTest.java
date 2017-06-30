@@ -1,6 +1,5 @@
 package infoeval.test.WikiDataTest;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import infoeval.main.WikiData.Extractor;
 import infoeval.main.WikiData.QueryTypes;
@@ -23,7 +22,6 @@ import org.jsoup.Jsoup;
 public class ExtractorTest {
 	private static final int ENTRIES_NUM = 10000;
 
-	@Ignore
 	@Test
 	public void wikiIdTest() {
 		Extractor extr = new Extractor();
@@ -31,7 +29,6 @@ public class ExtractorTest {
 		assertEquals(extr.getResults().size(), ENTRIES_NUM);
 	}
 
-	@Ignore
 	@Test
 	public void basicInfoTest() {
 		Extractor extr = new Extractor();
@@ -39,7 +36,6 @@ public class ExtractorTest {
 		assertEquals(extr.getResults().size(), ENTRIES_NUM);
 	}
 
-@Ignore
 	@Test
 	public void basicInfoByIDTest() throws Exception {
 		int wikiPageID = Integer.parseInt((Jsoup
@@ -66,7 +62,6 @@ public class ExtractorTest {
 
 	}
 
-@Ignore
 	@Test
 	public void abstractByWikiPageIdTest() throws Exception {
 		int wikiPageID = Integer.parseInt((Jsoup
