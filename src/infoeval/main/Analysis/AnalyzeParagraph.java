@@ -39,19 +39,19 @@ public class AnalyzeParagraph {
 	LinkedList<String> awardsInformation;
 	final StanfordCoreNLP pipeLine;
 
-	public AnalyzeParagraph(Elements Paragraphs) throws IOException {
-		this.Paragraphs = new Elements();
-		this.Paragraphs = Paragraphs;
-		this.dynamicParagraphs = new Elements();
-		this.arrestsParagraphs = new Elements();
-		this.awardsParagraphs = new Elements();
-		this.dynamicInformation= new LinkedList<String>();
-		this.arrestsInformation=new LinkedList<String>();
-		this.awardsInformation=new LinkedList<String>();
-		final Properties props = new Properties();
-		props.put("annotators", "tokenize,ssplit, pos ,parse,lemma");
-		this.pipeLine = new StanfordCoreNLP(props);
-	}
+//	public AnalyzeParagraph(Elements Paragraphs) throws IOException {
+//		this.Paragraphs = new Elements();
+//		this.Paragraphs = Paragraphs;
+//		this.dynamicParagraphs = new Elements();
+//		this.arrestsParagraphs = new Elements();
+//		this.awardsParagraphs = new Elements();
+//		this.dynamicInformation= new LinkedList<String>();
+//		this.arrestsInformation=new LinkedList<String>();
+//		this.awardsInformation=new LinkedList<String>();
+//		final Properties props = new Properties();
+//		props.put("annotators", "tokenize,ssplit, pos ,parse,lemma");
+//		this.pipeLine = new StanfordCoreNLP(props);
+//	}
 
 	public AnalyzeParagraph() throws IOException {
 		this.Paragraphs = new Elements();
@@ -154,7 +154,6 @@ public class AnalyzeParagraph {
 			// The query itself
 			for(String queryWord : keywords){
 				wiki.Parse(queryWord);
-				System.out.println(wiki.getParagraphs().text());
 				setParagraphsDynamic(wiki.getParagraphs());
 			for (final Element paragraph : this.dynamicParagraphs)
 				for (String sent : paragraph.text().split("\\.")) { // Split to
@@ -217,7 +216,6 @@ public class AnalyzeParagraph {
 				res += s.word(i) + " ";
 			++i;
 		}
-		System.out.println(res);
 		return res.trim();
 	}
 
@@ -237,7 +235,6 @@ public class AnalyzeParagraph {
 	public LinkedList<String> RefineResults(int limit, LinkedList<String> info) {
 		// Take only the longest #limit results.
 		LinkedList<String> $ = new LinkedList<String>(info);
-		System.out.println($.size());
 		while ($.size() > limit)
 			$.remove(getShortestString($));
 		return $;
@@ -269,7 +266,6 @@ public class AnalyzeParagraph {
 		for (final Element paragraph : this.arrestsParagraphs) {
 			final String inputText = paragraph.text() + "";
 			final Annotation document = new Annotation(inputText);
-			System.out.println(document);
 
 			String reason = "";
 			String details = ""; // more details about the reason. e.g - where
@@ -287,7 +283,6 @@ public class AnalyzeParagraph {
 				if (sent.text().contains("sentenced") || sent.text().contains("juried")
 						|| sent.text().contains("sent to jail") || sent.text().contains("charged")) {
 					penalty = ArrestPenalty(sent);
-					System.out.println("Sentenced for:" + penalty);
 				}
 				final SemanticGraph dependencies = sentence.get(CollapsedDependenciesAnnotation.class);
 				for (final IndexedWord root : dependencies.getRoots())
