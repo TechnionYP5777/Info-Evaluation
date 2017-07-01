@@ -485,15 +485,22 @@ angular.module('starter.controllers', [])
     ionicMaterialInk.displayEffect();
 })
 
-.controller('AddQueryCtrl', function($scope, $state,$http,$q ,$ionicPopup, DynamicParams,ambiguousNames) {
+.controller('AddQueryCtrl', function($scope, $state,$http,$q ,$ionicPopup, DynamicParams,ambiguousNames, $ionicPopover) {
 	
 	//$state.go('app.dynamicInput');
+	
+	
+	 var template = '<ion-popover-view>' + /*'<ion-header-bar>' +
+      '<h1 class = "title">Popover Title</h1>' +
+      '</ion-header-bar>'+*/ '<ion-content>' +
+      'Custom search' + '</ion-content>' + '</ion-popover-view>';
 	
     // Triggered on a button click, or some other target
    $scope.searchPopUp = function() {
     $scope.dynamicData = {};
 	$scope.checked=false;
 	   $state.go('app.dynamicInput');
+	   
    }
 })
 
@@ -644,6 +651,7 @@ angular.module('starter.controllers', [])
     $scope.name = DynamicParams.getName();
     $scope.queryName = DynamicParams.getQuery();
     console.log($scope.name);
+	$scope.err=false;
 	var gotPersonal=false; var gotDynamic=false;
     $http({
         method: 'GET',
@@ -655,6 +663,7 @@ angular.module('starter.controllers', [])
         }
     }).then(function successCallback(response) {
         console.log('Dynamic query success');
+		gotDynamic=true;
         $scope.information = [];
         if (response.data == null) {
             $scope.loading = false;
@@ -669,7 +678,8 @@ angular.module('starter.controllers', [])
         }
 
     }, function errorCallback(response) {
-        alert('Unable to get data - Person does not exist.')
+        alert('Unable to get data - Person does not exist.');
+		gotDynamic=true;
         $scope.failed = true;
         $state.go('app.InteractiveSearch');
     });
@@ -685,6 +695,7 @@ angular.module('starter.controllers', [])
             }
         }).then(function successCallback(response) {
             console.log('personal data - success');
+			gotPersonal=true;
             $scope.personalInformation = response.data;
             $scope.loadindPersonalInfo = false;
             console.log('url is ' + $scope.personalInformation.photoLink);
@@ -695,18 +706,20 @@ angular.module('starter.controllers', [])
                 $scope.personalInformation.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
 			var photoUrl = $scope.personalInformation.photoLink.replace(/\'/g, "\\'").replace(/\(/g, "\\(").replace(/\)/g, "\\)").replace(/\[/g, "\\[").replace(/\]/g, "\\]");
-			$scope.personalInformation=photoUrl;
+			$scope.personalInformation.photoLink=photoUrl;
 			/*photoUrl = "url('" + $scope.personalInformation.photoLink + "')";
             $scope.personalInformation.photoLink = photoUrl;*/
 			
 
         }, function errorCallback(response) {
+			gotPersonal=true;
             var FetchErrorAlert = $ionicPopup.alert({
-                title: 'Fetch error!',
-                template: 'Unable to get Extra personal Information',
+                title: 'Sorry',
+                template: 'No personal Information to show',
             });
             console.log(response.data);
             $scope.loadindPersonalInfo = false;
+			$scope.err=true;
         });
     }
 	
@@ -747,6 +760,7 @@ angular.module('starter.controllers', [])
     $scope.loading = true;
     $scope.loadindPersonalInfo = true;
     $scope.failed = false;
+	$scope.err=true;
     console.log('Show results of Get Awards was called');
     $scope.information = [];
     $scope.name = AwardsParams.getName();
@@ -815,6 +829,7 @@ angular.module('starter.controllers', [])
             console.log(response.data);
 			gotPersonal=true;
             $scope.loadindPersonalInfo = false;
+			$scope.err=false;
         });
     }
 	
@@ -1001,7 +1016,7 @@ angular.module('starter.controllers', [])
     $scope.information = [];
     $scope.name = ArrestsParams.getName();
     console.log($scope.name);
-	
+	$scope.err=true;
 	var gotPersonal =false; var gotArrested=false; //these varaibles are for tmeout purpuses
     $http({
         method: 'GET',
@@ -1035,7 +1050,7 @@ angular.module('starter.controllers', [])
     });
 
     //Get the personal data of the person:
-    if ($scope.failed == false && $scope.loading == false) {
+    if ($scope.failed == false /*&& $scope.loading == false*/) {
         $http({
             method: 'GET',
             url: 'http://132.68.206.107:8080/Queries/PersonalInformation',
@@ -1048,13 +1063,13 @@ angular.module('starter.controllers', [])
             $scope.personalInformation = response.data;
             $scope.loadindPersonalInfo = false;
             console.log('url is ' + $scope.personalInformation.photoLink);
-            console.log('name is' + name);
-            console.log('birthPlace is:' + $scope.personalInformation.birthPlace);
+            console.log('name is' + $scope.name);
+            console.log('birthPlace is:' + $scope.personalInformation.birthExpandedPlace);
             if ($scope.personalInformation.photoLink == "No Photo") {
                 $scope.personalInformation.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
 			var photoUrl = $scope.personalInformation.photoLink.replace(/\'/g, "\\'").replace(/\(/g, "\\(").replace(/\)/g, "\\)").replace(/\[/g, "\\[").replace(/\]/g, "\\]");
-			$scope.personalInformation=photoUrl;
+			$scope.personalInformation.photoLink=photoUrl;
 			/*photoUrl = "url('" + $scope.personalInformation.photoLink + "')";
             $scope.personalInformation.photoLink = photoUrl;*/
 			gotPersonal =true;
@@ -1067,6 +1082,7 @@ angular.module('starter.controllers', [])
             console.log(response.data);
             $scope.loadindPersonalInfo = false;
 			gotPersonal =true;
+			$scope.err=false;
         });
     }
 	
