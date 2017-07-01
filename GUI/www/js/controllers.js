@@ -592,6 +592,7 @@ angular.module('starter.controllers', [])
     $scope.name = DynamicParams.getName();
     $scope.queryName = DynamicParams.getQuery();
     console.log($scope.name);
+	var gotPersonal=false; var gotDynamic=false;
     $http({
         method: 'GET',
         url: 'http://132.68.206.107:8080/Queries/Dynamic',
@@ -656,6 +657,16 @@ angular.module('starter.controllers', [])
             $scope.loadindPersonalInfo = false;
         });
     }
+	
+	$timeout(function() {
+          if (!gotPersonal || !gotDynamic) {
+            $ionicPopup.show({
+                title: 'Don\'t worry',
+                template: 'The query is still processing',
+				 buttons: [ { text: '<b>Ok</b>' }]
+            });
+          }
+        }, 3000);
 
     // Set Motion
     $timeout(function() {
@@ -890,8 +901,10 @@ angular.module('starter.controllers', [])
 								$state.go('app.solveAmbiguity');
 							}
 						}, function errorCallback(response) {
-							res.ambiguitiesSolved=false;
-							alret('problem');
+							var InputErrorAlert = $ionicPopup.alert({
+								title: 'Input error!',
+								template: 'The name you\'re entering may have a spelling error',
+							});
 						});
                     }
                 },
