@@ -136,12 +136,13 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('QueryEntry', function($scope, $http, $ionicPopup, DataQ, Query1ExtraInfo, $state) {
+.controller('QueryEntry', function($scope, $http, $ionicPopup, DataQ,$timeout, Query1ExtraInfo, $state) {
     console.log('show entered fields from button clicked-query 2');
     console.log(DataQ.getYear());
     console.log(DataQ.getPlace());
     $scope.persons = [];
     $scope.loading = true;
+	var gotData=false;
     $http({
         method: 'GET',
         url: 'http://132.68.206.107:8080/Queries/Query2',
@@ -176,15 +177,27 @@ angular.module('starter.controllers', [])
         }
         $scope.loading = false;
         console.log('end of success');
+		gotData=true;
     }, function errorCallback(response) {
         alert(JSON.stringify(response))
         var FetchErrorAlert = $ionicPopup.alert({
             title: 'Fetch error!',
             template: 'Unable to get data',
         });
-
+		gotData=true;
         console.log(response.data);
     });
+	
+	$timeout(function() {
+          if (!gotData) {
+            $ionicPopup.show({
+                title: 'Don\'t worry',
+                template: 'The query is still processing',
+				 buttons: [ { text: '<b>Ok</b>' }]
+            });
+          }
+        }, 3000);
+	
     $scope.numberOfItemsToDisplay = 6; // Use it with limit to in ng-repeat
     $scope.addMoreItem = function(done) {
         if ($scope.persons.length > $scope.numberOfItemsToDisplay)
