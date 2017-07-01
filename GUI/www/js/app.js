@@ -175,7 +175,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 controller: 'InteractiveSearchCtrl'
             },
             'fabContent': {
-                template: '<button id="fab-search" ng-click="searchPopUp()" class="button button-fab button-fab-bottom-right button-energized-900"><i class="icon ion-plus"></i></button>',
+                template: '<button id="fab-search" ng-click="searchPopUp()" class="button button-fab button-fab-bottom-right button-energized-900" ><i class="icon ion-plus"></i></button>',
                 controller: 'AddQueryCtrl'
             }
         }
