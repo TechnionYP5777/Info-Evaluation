@@ -12,7 +12,7 @@
                     </div>
              </div>
             
-                <div ng-show="!loadindPersonalInfo" class="card stable-bg ink-dark">            
+                <div ng-show="!loadindPersonalInfo && err" class="card stable-bg ink-dark">            
 					<div class="item-text-wrap">
                         <h3 class="tab25">Full Name:</h3><p class="tab40 paragraphInfo">{{personalInformation.name}} </p>
                         <h3 class="tab25">Date of Birth:</h3> <p class="tab40 paragraphInfo "> {{personalInformation.birthDate}} </p>

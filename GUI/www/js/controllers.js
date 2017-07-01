@@ -651,6 +651,7 @@ angular.module('starter.controllers', [])
     $scope.name = DynamicParams.getName();
     $scope.queryName = DynamicParams.getQuery();
     console.log($scope.name);
+	$scope.err=false;
 	var gotPersonal=false; var gotDynamic=false;
     $http({
         method: 'GET',
@@ -662,6 +663,7 @@ angular.module('starter.controllers', [])
         }
     }).then(function successCallback(response) {
         console.log('Dynamic query success');
+		gotDynamic=true;
         $scope.information = [];
         if (response.data == null) {
             $scope.loading = false;
@@ -676,7 +678,8 @@ angular.module('starter.controllers', [])
         }
 
     }, function errorCallback(response) {
-        alert('Unable to get data - Person does not exist.')
+        alert('Unable to get data - Person does not exist.');
+		gotDynamic=true;
         $scope.failed = true;
         $state.go('app.InteractiveSearch');
     });
@@ -692,6 +695,7 @@ angular.module('starter.controllers', [])
             }
         }).then(function successCallback(response) {
             console.log('personal data - success');
+			gotPersonal=true;
             $scope.personalInformation = response.data;
             $scope.loadindPersonalInfo = false;
             console.log('url is ' + $scope.personalInformation.photoLink);
@@ -708,12 +712,14 @@ angular.module('starter.controllers', [])
 			
 
         }, function errorCallback(response) {
+			gotPersonal=true;
             var FetchErrorAlert = $ionicPopup.alert({
-                title: 'Fetch error!',
-                template: 'Unable to get Extra personal Information',
+                title: 'Sorry',
+                template: 'No personal Information to show',
             });
             console.log(response.data);
             $scope.loadindPersonalInfo = false;
+			$scope.err=true;
         });
     }
 	
@@ -754,6 +760,7 @@ angular.module('starter.controllers', [])
     $scope.loading = true;
     $scope.loadindPersonalInfo = true;
     $scope.failed = false;
+	$scope.err=true;
     console.log('Show results of Get Awards was called');
     $scope.information = [];
     $scope.name = AwardsParams.getName();
@@ -822,6 +829,7 @@ angular.module('starter.controllers', [])
             console.log(response.data);
 			gotPersonal=true;
             $scope.loadindPersonalInfo = false;
+			$scope.err=false;
         });
     }
 	
@@ -1008,7 +1016,7 @@ angular.module('starter.controllers', [])
     $scope.information = [];
     $scope.name = ArrestsParams.getName();
     console.log($scope.name);
-	
+	$scope.err=true;
 	var gotPersonal =false; var gotArrested=false; //these varaibles are for tmeout purpuses
     $http({
         method: 'GET',
@@ -1074,6 +1082,7 @@ angular.module('starter.controllers', [])
             console.log(response.data);
             $scope.loadindPersonalInfo = false;
 			gotPersonal =true;
+			$scope.err=false;
         });
     }
 	
