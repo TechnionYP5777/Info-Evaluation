@@ -702,7 +702,7 @@ angular.module('starter.controllers', [])
                 $scope.personalInformation.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
 			var photoUrl = $scope.personalInformation.photoLink.replace(/\'/g, "\\'").replace(/\(/g, "\\(").replace(/\)/g, "\\)").replace(/\[/g, "\\[").replace(/\]/g, "\\]");
-			$scope.personalInformation=photoUrl;
+			$scope.personalInformation.photoLink=photoUrl;
 			/*photoUrl = "url('" + $scope.personalInformation.photoLink + "')";
             $scope.personalInformation.photoLink = photoUrl;*/
 			
