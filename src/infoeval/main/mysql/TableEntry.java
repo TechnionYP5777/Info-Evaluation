@@ -29,20 +29,20 @@ public class TableEntry {
 
 	// C'tors
 	public TableEntry() {
-		this.deathPlace = this.birthPlace = this.name = this.url = 
-		this.occupation = this.SpouseName = this.spouseOccupation = 
-		this.photoLink = this.overview = this.birthExpandedPlace = this.deathExpandedPlace= "";
+		this.deathPlace = this.birthPlace = this.name = this.url = this.occupation = this.SpouseName = this.spouseOccupation = this.photoLink = this.overview = this.birthExpandedPlace = this.deathExpandedPlace = "";
 		this.deathDate = null;
 		this.birthDate = null;
 	}
 
 	public TableEntry(TableEntry te) {
 		this(te.getUrl(), te.getName(), te.getBirthPlace(), te.getDeathPlace(), te.getBirthDate(), te.getDeathDate(),
-				te.getOccupation(), te.getSpouseName(), te.getSpouseOccupation(), te.getPhotoLink(), te.getOverview(), te.getBirthExpandedPlace(), te.getDeathExpandedPlace());
+				te.getOccupation(), te.getSpouseName(), te.getSpouseOccupation(), te.getPhotoLink(), te.getOverview(),
+				te.getBirthExpandedPlace(), te.getDeathExpandedPlace());
 	}
 
 	public TableEntry(String url, String name, String birthPlace, String deathPlace, Date birthDate, Date deathDate,
-			String occupation, String spouseName, String spouseOccupation, String link, String overview,String birthExpandedPlace, String deathExpandedPlace) {
+			String occupation, String spouseName, String spouseOccupation, String link, String overview,
+			String birthExpandedPlace, String deathExpandedPlace) {
 		setUrl(url);
 		setName(name);
 		setBirthPlace(birthPlace);
@@ -62,9 +62,11 @@ public class TableEntry {
 	public void setBirthExpandedPlace(String birthExpandedPlace) {
 		this.birthExpandedPlace = birthExpandedPlace;
 	}
+
 	public void setDeathExpandedPlace(String deathExpandedPlace) {
 		this.deathExpandedPlace = deathExpandedPlace;
 	}
+
 	public void setUrl(String url) {
 		this.url = url;
 	}
@@ -113,9 +115,11 @@ public class TableEntry {
 	public String getBirthExpandedPlace() {
 		return this.birthExpandedPlace;
 	}
+
 	public String getDeathExpandedPlace() {
 		return this.deathExpandedPlace;
 	}
+
 	public String getUrl() {
 		return this.url;
 	}

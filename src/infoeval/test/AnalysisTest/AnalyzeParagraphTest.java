@@ -1,7 +1,6 @@
 package infoeval.test.AnalysisTest;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -38,9 +37,10 @@ public class AnalyzeParagraphTest {
 		analyze.AwardsQuery();
 		LinkedList<String> info = analyze.getAwardsInformation();
 		for (final String ¢ : info)
-//			System.out.println(¢);
-			assert(info.contains(" At the 51st Grammy Awards in 2009, Adele received the awards for Best New Artist and Best Female Pop Vocal Performance"));
-				}
+			// System.out.println(¢);
+			assert (info.contains(
+					" At the 51st Grammy Awards in 2009, Adele received the awards for Best New Artist and Best Female Pop Vocal Performance"));
+	}
 
 	// This test is for the new method of awards query.(see issue #224)
 	@Test

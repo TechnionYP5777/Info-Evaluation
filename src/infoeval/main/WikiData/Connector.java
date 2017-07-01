@@ -3,15 +3,12 @@ package infoeval.main.WikiData;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Properties;
-
 import infoeval.main.mysql.Row;
 
 /**

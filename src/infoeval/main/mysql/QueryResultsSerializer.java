@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
 /**
  * @author osherh
  * @Since 25-05-2017 This class performs serialization of query results and

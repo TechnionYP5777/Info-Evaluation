@@ -17,9 +17,9 @@ import org.springframework.boot.autoconfigure.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  * 
  * @author geniashand , Moshiko
@@ -33,9 +33,9 @@ import java.util.logging.Logger;
 @RestController
 public class InfoevalServiceImp implements InfoevalService {
 	private static AnalyzeParagraph analyze;
-	private static final Logger logger =Logger.getLogger("InfoevalServiceImp".getClass().getName());
+	private static final Logger logger = Logger.getLogger("InfoevalServiceImp".getClass().getName());
 	SqlRunner runner;
-	
+
 	public InfoevalServiceImp() throws Exception {
 		analyze = new AnalyzeParagraph();
 		// Pre-Loading the classifiers used by NLP and openIE to enhance
@@ -50,7 +50,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	@RequestMapping(path = "Queries/Query2", method = RequestMethod.GET)
 	public synchronized ArrayList<TableEntry> getBornInPlaceYear(String place, String year) throws Exception {
 		ArrayList<TableEntry> $ = runner.getBornInPlaceBeforeYear(place, year);
-		
+
 		logger.log(Level.INFO, "Born in place before year was called.\n Parameters:Place:" + place + ", Year:" + year);
 		logger.log(Level.INFO, "list size:" + $.size());
 
@@ -75,7 +75,7 @@ public class InfoevalServiceImp implements InfoevalService {
 		ArrayList<TableEntry> $ = runner.getSameOccupationCouples();
 		logger.log(Level.INFO, "list size:" + $.size());
 		return $;
-		//return runner.getSameOccupationCouples();
+		// return runner.getSameOccupationCouples();
 
 	}
 
@@ -85,7 +85,7 @@ public class InfoevalServiceImp implements InfoevalService {
 	public synchronized ArrayList<String> checkAmbiguities(String name) throws IOException {
 		String UpdatedName = updteName(name);
 		try {
-			logger.log(Level.INFO, "Checking ambiguities in URL: "+"https://en.wikipedia.org/wiki/" + UpdatedName);
+			logger.log(Level.INFO, "Checking ambiguities in URL: " + "https://en.wikipedia.org/wiki/" + UpdatedName);
 
 			WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + UpdatedName));
 			// System.out.print("Trying to fetch from ,
@@ -105,7 +105,8 @@ public class InfoevalServiceImp implements InfoevalService {
 		// Parse user's input:
 		String UpdatedName = updteName(name);
 		try {
-			logger.log(Level.INFO, "Analyzing Arrests query from url: "+"https://en.wikipedia.org/wiki/" + UpdatedName);
+			logger.log(Level.INFO,
+					"Analyzing Arrests query from url: " + "https://en.wikipedia.org/wiki/" + UpdatedName);
 			WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + UpdatedName));
 			wiki.Parse("arrested");
 			new ArrayList<>();
@@ -126,7 +127,8 @@ public class InfoevalServiceImp implements InfoevalService {
 		// Parse user's input:
 		try {
 			String UpdatedName = updteName(name);
-			logger.log(Level.INFO, "Analyzing Awards query from url: "+"https://en.wikipedia.org/wiki/" + UpdatedName);
+			logger.log(Level.INFO,
+					"Analyzing Awards query from url: " + "https://en.wikipedia.org/wiki/" + UpdatedName);
 			WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + UpdatedName));
 			wiki.Parse("won");
 			wiki.isConflictedName();
@@ -149,7 +151,8 @@ public class InfoevalServiceImp implements InfoevalService {
 		// Parse user's input:
 		try {
 			String UpdatedName = updteName(name);
-			logger.log(Level.INFO, "Analyzing Dynamic query from url: "+"https://en.wikipedia.org/wiki/" + UpdatedName);
+			logger.log(Level.INFO,
+					"Analyzing Dynamic query from url: " + "https://en.wikipedia.org/wiki/" + UpdatedName);
 			analyze.dynamicQuery(UpdatedName, query);
 			return analyze.getDynamicInformation();
 		} catch (Exception e) {

@@ -22,7 +22,7 @@ public class WikiParsing {
 	String parsedDoc;
 	ArrayList<String> names;
 	Document doc;
-	
+
 	public WikiParsing(String URL) throws IOException {
 		this.url = URL;
 		this.doc = Jsoup.connect(this.url).get();
@@ -53,19 +53,19 @@ public class WikiParsing {
 	public String Parse(String filter) throws IOException {
 		this.parsedParagraphs = this.doc.select("p:contains" + "(" + filter + ")");
 
-//		Element contentDiv = doc.select("div[id=content]").first();
-//		this.parsedDoc = contentDiv.text();
-//
-//		Elements elements = doc.select("p ~ ul a:eq(0)");
-//
-//		for (Element ¢ : elements)
-//			names.add(¢.text());
+		// Element contentDiv = doc.select("div[id=content]").first();
+		// this.parsedDoc = contentDiv.text();
+		//
+		// Elements elements = doc.select("p ~ ul a:eq(0)");
+		//
+		// for (Element ¢ : elements)
+		// names.add(¢.text());
 
 		return this.parsedText = this.parsedParagraphs.text() + "";
 
 	}
-	
-	public void CheckAmbiguities() throws IOException{
+
+	public void CheckAmbiguities() throws IOException {
 		Element contentDiv = this.doc.select("div[id=content]").first();
 		this.parsedDoc = contentDiv.text();
 
