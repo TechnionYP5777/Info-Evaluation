@@ -6,7 +6,7 @@ angular.module('starter.controllers', [])
 
 .constant('ApiEndpoint', {
     url: 'http://132.68.206.107:8080'
-	// url: 'http://localhost:8100/api'
+	//url: 'http://localhost:8100/api'
 })
 
 
@@ -323,6 +323,7 @@ angular.module('starter.controllers', [])
     $http({
         method: 'GET',
         url: 'http://132.68.206.107:8080/Queries/SameOccupationCouples',
+        //url: '/Queries/SameOccupationCouples',
     }).then(function successCallback(response) {
         console.log('success');
         $scope.persons = [];
@@ -524,7 +525,7 @@ angular.module('starter.controllers', [])
 						$http({
 							method: 'GET',
 							url: 'http://132.68.206.107:8080/Queries/checkAmbiguities',
-							// url: '/Queries/checkAmbiguities',
+							//url: '/Queries/checkAmbiguities',
 							params: {
 								name: name
 							}
@@ -550,8 +551,11 @@ angular.module('starter.controllers', [])
 								$state.go('app.solveAmbiguityAwards');
 							}
 						}, function errorCallback(response) {
-							res.ambiguitiesSolved=false;
-							alret('problem');
+							//res.ambiguitiesSolved=false;
+							var InputErrorAlert = $ionicPopup.alert({
+                            title: 'Error!',
+                            template: 'an error occured',
+                        });
 						});
                     }
                 },
@@ -718,7 +722,7 @@ angular.module('starter.controllers', [])
         $http({
             method: 'GET',
             url: 'http://132.68.206.107:8080/Queries/PersonalInformation',
-            // url: '/Queries/PersonalInformation',
+            //url: '/Queries/PersonalInformation',
             params: {
                 name: AwardsParams.getName()
             }
@@ -777,7 +781,7 @@ angular.module('starter.controllers', [])
 						$http({
 							method: 'GET',
 							url: 'http://132.68.206.107:8080/Queries/checkAmbiguities',
-							// url: '/Queries/checkAmbiguities',
+							//url: '/Queries/checkAmbiguities',
 							params: {
 								name: name
 							}
@@ -806,8 +810,10 @@ angular.module('starter.controllers', [])
 								$state.go('app.solveAmbiguityArrests');
 							}
 						}, function errorCallback(response) {
-							res.ambiguitiesSolved=false;
-							alret('problem');
+							var InputErrorAlert = $ionicPopup.alert({
+								title: 'Input error!',
+								template: 'The name you\'re entering may have a spelling error',
+							});
 						});
                     }
                 },
@@ -840,7 +846,7 @@ angular.module('starter.controllers', [])
                        $http({
 							method: 'GET',
 							url: 'http://132.68.206.107:8080/Queries/checkAmbiguities',
-							// url: '/Queries/checkAmbiguities',
+							//url: '/Queries/checkAmbiguities',
 							params: {
 								name: person
 							}
@@ -915,10 +921,12 @@ angular.module('starter.controllers', [])
     $scope.information = [];
     $scope.name = ArrestsParams.getName();
     console.log($scope.name);
+	
+	var gotPersonal =false; var gotArrested=false; //these varaibles are for tmeout purpuses
     $http({
         method: 'GET',
         url: 'http://132.68.206.107:8080/Queries/Arrests',
-        // url: '/Queries/Arrests',
+        //url: '/Queries/Arrests',
         params: {
             name: ArrestsParams.getName()
         }
@@ -949,7 +957,7 @@ angular.module('starter.controllers', [])
         $http({
             method: 'GET',
             url: 'http://132.68.206.107:8080/Queries/PersonalInformation',
-            // url: '/Queries/PersonalInformation',
+            //url: '/Queries/PersonalInformation',
             params: {
                 name: ArrestsParams.getName()
             }
@@ -977,6 +985,24 @@ angular.module('starter.controllers', [])
             $scope.loadindPersonalInfo = false;
         });
     }
+	
+	$timeout(function() {
+          if (!gotPersonal || !gotArrested) {
+            $ionicPopup.show({
+                title: 'Don\'t worry',
+                template: 'The query is still processing',
+				 buttons: [
+					{ text: '<b>Ok</b>' }/*, {
+					   text: 'never mind',
+					   type: 'button-positive',
+						  onTap: function() {
+								$state.go('app.InteractiveSearch');
+						  }
+					}*/
+				 ]
+            });
+          }
+        }, 1000);
 
     // Set Motion
     $timeout(function() {
