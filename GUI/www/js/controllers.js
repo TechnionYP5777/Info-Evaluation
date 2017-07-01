@@ -351,12 +351,13 @@ angular.module('starter.controllers', [])
         }, 3000);
 })
 
-.controller('SameOccupationQuery', function($scope, $http, $ionicPopup) {
+.controller('SameOccupationQuery', function($scope, $http,$timeout, $ionicPopup) {
     console.log('show entered fields from button SameOccupationQuery');
     $scope.persons = [];
     $scope.numberOfItemsToDisplay = 6; // Use it with limit to in ng-repeat
 
     $scope.loading = true;
+	var gotData=false;
 
     console.log('started loading screen');
 
@@ -385,6 +386,7 @@ angular.module('starter.controllers', [])
             console.log(person.photoLink);
         }
         $scope.loading = false;
+		gotData=true;
 
     }, function errorCallback(response) {
         var FetchErrorAlert = $ionicPopup.alert({
@@ -392,6 +394,7 @@ angular.module('starter.controllers', [])
             template: 'Unable to get data',
         });
         console.log(response.data);
+		gotData=true;
     });
 
 
@@ -400,6 +403,15 @@ angular.module('starter.controllers', [])
             $scope.numberOfItemsToDisplay += 6; // load number of more items
         $scope.$broadcast('scroll.infiniteScrollComplete')
     }
+	$timeout(function() {
+          if (!gotData) {
+            $ionicPopup.show({
+                title: 'Don\'t worry',
+                template: 'The query is still processing',
+				 buttons: [ { text: '<b>Ok</b>' }]
+            });
+          }
+        }, 3000);
 
 
 })
