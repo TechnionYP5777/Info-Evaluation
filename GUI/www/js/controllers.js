@@ -285,12 +285,14 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('ExtraInfo1', function($scope, $http, $ionicPopup, Query1ExtraInfo) {
+.controller('ExtraInfo1', function($scope, $http, $ionicPopup,$timeout, Query1ExtraInfo) {
     console.log('229 in extra info');
     $scope.loading = true;
     $scope.stateShow = true;
 	$scope.titleOverview=false;
     $scope.personalInformation = Query1ExtraInfo.getPerson();
+	
+	var clicked= false; var gotPersonal=false;
 	
 	var photoLink = $scope.personalInformation.photoLink;
 	/*$scope.personalInformation.photoLink=photoLink.replace("url('", "");
@@ -299,6 +301,7 @@ angular.module('starter.controllers', [])
 	console.log('url is ' + $scope.personalInformation.photoLink);
 	console.log('259 name is ' + $scope.personalInformation.name);
     $scope.showMoreInfo = function() {
+		clicked=true;
         $scope.stateShow = false;
         console.log('281 in on click more info');
         console.log('name is '+$scope.personalInformation.name);
@@ -321,9 +324,11 @@ angular.module('starter.controllers', [])
 			//$scope.personalInformation.name
             $scope.loading = false;
 			$scope.titleOverview=true;
+			gotPersonal=true;
 
         }, function errorCallback(response) {
             //alert(JSON.stringify(response))
+			gotPersonal=true;
             console.log('loading is ' + $scope.loading);
             console.log('stateShow is ' + $scope.stateShow);
             $scope.loading = false;
@@ -335,6 +340,15 @@ angular.module('starter.controllers', [])
             //$state.go('app.InteractiveSearch');
         });
     };
+	$timeout(function() {
+          if (!gotPersonal && clicked) {
+            $ionicPopup.show({
+                title: 'Don\'t worry',
+                template: 'The query is still processing',
+				 buttons: [ { text: '<b>Ok</b>' }]
+            });
+          }
+        }, 3000);
 })
 
 .controller('SameOccupationQuery', function($scope, $http, $ionicPopup) {
