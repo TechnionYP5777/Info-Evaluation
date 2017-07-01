@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSetRewindable;
@@ -20,6 +22,7 @@ import org.apache.jena.rdf.model.RDFNode;
  * @since 17-05-2017
  *
  */
+
 public class SqlTablesFiller {
 	static int i;
 	private Connector connector;
@@ -28,6 +31,7 @@ public class SqlTablesFiller {
 
 	public SqlTablesFiller() throws IOException, ClassNotFoundException, SQLException {
 		connector = new Connector();
+		Logger logger = Logger.getLogger("com.microsoft.sqlserver.jdbc"); logger.setLevel(Level.OFF );
 	}
 
 	public void close() throws IOException, ClassNotFoundException, SQLException {
