@@ -290,7 +290,11 @@ angular.module('starter.controllers', [])
     $scope.loading = true;
     $scope.stateShow = true;
 	$scope.titleOverview=false;
+	$scope.somethingToShow=false;
     $scope.personalInformation = Query1ExtraInfo.getPerson();
+	$scope.deathExists=false;
+	if($scope.personalInformation.deathDate != "0171-02-12")
+		$scope.deathExists=true;
 	
 	var clicked= false; var gotPersonal=false;
 	
@@ -315,6 +319,7 @@ angular.module('starter.controllers', [])
             }
         }).then(function successCallback(response) {
             console.log('personal data - success');
+			$scope.somethingToShow=true;
             $scope.moreInfo = response.data;
             console.log('url is ' + $scope.moreInfo.photoLink);
             console.log('birthPla$scope.personalInformation.namece is:' + $scope.moreInfo.birthPlace);
@@ -332,10 +337,15 @@ angular.module('starter.controllers', [])
             console.log('loading is ' + $scope.loading);
             console.log('stateShow is ' + $scope.stateShow);
             $scope.loading = false;
-            var FetchErrorAlert = $ionicPopup.alert({
-                title: 'Fetch error!',
-                template: 'Unable to get more personal',
-            });
+			if($scope.personalInformation.deathDate || $scope.personalInformation.occupation || $scope.personalInformation.SpouseName) {
+				$scope.somethingToShow=true;
+			} else {
+				var FetchErrorAlert = $ionicPopup.alert({
+					title: 'Sorry',
+					template: 'No more personal infornation to show',
+				});
+			}
+			
             console.log(response.data);
             //$state.go('app.InteractiveSearch');
         });

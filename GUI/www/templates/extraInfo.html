@@ -9,7 +9,7 @@
 						<h2 style="color:black;"><center><u>Personal Information</u></center></h2>
                         <h3 class="tab25">Full Name:</h3><p class="tab40 paragraphInfo">{{personalInformation.name}} </p>
                         <h3 class="tab25">Date of Birth:</h3> <p class="tab40 paragraphInfo "> {{personalInformation.birthDate}} </p>
-                        <h3 class="tab25">Place of Birth:</h3> <p class="tab40 paragraphInfo "> {{personalInformation.birthPlace}}  </p>
+                        <h3 class="tab25">Place of Birth:</h3> <p class="tab40 paragraphInfo "> {{personalInformation.birthExpandedPlace}}  </p>
 						
 						<div ng-show="stateShow" >
 							<center>
@@ -23,8 +23,12 @@
 							<center> <img src="img/2.gif"></center>
 						</div>
 							
-						<div ng-show="!loading && !stateShow && titleOverview" >
-							<h3 class="tab25">Short overview:</h3> <p class="tab40 paragraphInfo "> {{moreInfo.overview}} </p>
+						<div ng-show="!loading && !stateShow && somethingToShow" >
+							<div ng-show="deathExists"> <h3 class="tab25">Date of Death:</h3> <p class="tab40 paragraphInfo "> {{personalInformation.deathDate}} </p>
+							<h3 class="tab25">Place of Death:</h3> <p class="tab40 paragraphInfo "> {{personalInformation.deathExpandedPlace}}  </p> </div>
+							<h3 class="tab25" ng-show="{{personalInformation.occupation}}">Occupation:</h3> <p class="tab40 paragraphInfo "> {{personalInformation.occupation}} </p>
+							<h3 class="tab25" ng-show="{{personalInformation.spouseName}}">Spouse name:</h3> <p class="tab40 paragraphInfo "> {{personalInformation.spouseName}} </p>
+							<h3 class="tab25" ng-show="titleOverview">Short overview:</h3> <p class="tab40 paragraphInfo "> {{moreInfo.overview}} </p>
 						</div>
 					</div>
 			</div>
