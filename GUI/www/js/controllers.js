@@ -485,15 +485,22 @@ angular.module('starter.controllers', [])
     ionicMaterialInk.displayEffect();
 })
 
-.controller('AddQueryCtrl', function($scope, $state,$http,$q ,$ionicPopup, DynamicParams,ambiguousNames) {
+.controller('AddQueryCtrl', function($scope, $state,$http,$q ,$ionicPopup, DynamicParams,ambiguousNames, $ionicPopover) {
 	
 	//$state.go('app.dynamicInput');
+	
+	
+	 var template = '<ion-popover-view>' + /*'<ion-header-bar>' +
+      '<h1 class = "title">Popover Title</h1>' +
+      '</ion-header-bar>'+*/ '<ion-content>' +
+      'Custom search' + '</ion-content>' + '</ion-popover-view>';
 	
     // Triggered on a button click, or some other target
    $scope.searchPopUp = function() {
     $scope.dynamicData = {};
 	$scope.checked=false;
 	   $state.go('app.dynamicInput');
+	   
    }
 })
 
@@ -1035,7 +1042,7 @@ angular.module('starter.controllers', [])
     });
 
     //Get the personal data of the person:
-    if ($scope.failed == false && $scope.loading == false) {
+    if ($scope.failed == false /*&& $scope.loading == false*/) {
         $http({
             method: 'GET',
             url: 'http://132.68.206.107:8080/Queries/PersonalInformation',
@@ -1048,13 +1055,13 @@ angular.module('starter.controllers', [])
             $scope.personalInformation = response.data;
             $scope.loadindPersonalInfo = false;
             console.log('url is ' + $scope.personalInformation.photoLink);
-            console.log('name is' + name);
-            console.log('birthPlace is:' + $scope.personalInformation.birthPlace);
+            console.log('name is' + $scope.name);
+            console.log('birthPlace is:' + $scope.personalInformation.birthExpandedPlace);
             if ($scope.personalInformation.photoLink == "No Photo") {
                 $scope.personalInformation.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
 			var photoUrl = $scope.personalInformation.photoLink.replace(/\'/g, "\\'").replace(/\(/g, "\\(").replace(/\)/g, "\\)").replace(/\[/g, "\\[").replace(/\]/g, "\\]");
-			$scope.personalInformation=photoUrl;
+			$scope.personalInformation.photoLink=photoUrl;
 			/*photoUrl = "url('" + $scope.personalInformation.photoLink + "')";
             $scope.personalInformation.photoLink = photoUrl;*/
 			gotPersonal =true;
