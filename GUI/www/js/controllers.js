@@ -293,7 +293,7 @@ angular.module('starter.controllers', [])
 	$scope.somethingToShow=false;
     $scope.personalInformation = Query1ExtraInfo.getPerson();
 	$scope.deathExists=false;
-	if($scope.personalInformation.deathDate != "0171-02-12")
+	if($scope.personalInformation.deathDate/* != "0171-02-12"*/)
 		$scope.deathExists=true;
 	
 	var clicked= false; var gotPersonal=false;
