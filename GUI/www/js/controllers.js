@@ -211,7 +211,7 @@ angular.module('starter.controllers', [])
     $http({
         method: 'GET',
         url: 'http://132.68.206.107:8080/Queries/Query1',
-        // url: '/Queries/Query1',
+        //url: '/Queries/Query1',
     }).then(function successCallback(response) {
         console.log('success');
         $scope.persons = [];
@@ -553,9 +553,9 @@ angular.module('starter.controllers', [])
 						}, function errorCallback(response) {
 							//res.ambiguitiesSolved=false;
 							var InputErrorAlert = $ionicPopup.alert({
-                            title: 'Error!',
-                            template: 'an error occured',
-                        });
+								title: 'Input error!',
+								template: 'The name you\'re entering may have a spelling error',
+							});
 						});
                     }
                 },
@@ -687,6 +687,7 @@ angular.module('starter.controllers', [])
     console.log('Show results of Get Awards was called');
     $scope.information = [];
     $scope.name = AwardsParams.getName();
+	var gotPersonal=false; var gotAwards=false;
     console.log($scope.name);
     $http({
         method: 'GET',
@@ -705,6 +706,7 @@ angular.module('starter.controllers', [])
             console.log(info);
         }
         $scope.loading = false;
+		gotAwards=true;
 
     }, function errorCallback(response) {
         var FetchErrorAlert = $ionicPopup.alert({
@@ -714,6 +716,7 @@ angular.module('starter.controllers', [])
         console.log(response.data);
         $scope.loading = false;
         $scope.failed = true;
+		gotAwards=true;
         //$state.go('app.InteractiveSearch');	
     });
 
@@ -737,6 +740,7 @@ angular.module('starter.controllers', [])
             if ($scope.personalInformation.photoLink == "No Photo") {
                 $scope.personalInformation.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
+			gotPersonal=true;
 			/*var photoUrl = $scope.personalInformation.photoLink.replace(/\'/g, "\\'");
 			$scope.personalInformation=photoUrl;*/
 
@@ -746,9 +750,20 @@ angular.module('starter.controllers', [])
                 template: 'Unable to get Extra personal Information',
             });
             console.log(response.data);
+			gotPersonal=true;
             $scope.loadindPersonalInfo = false;
         });
     }
+	
+	$timeout(function() {
+          if (!gotPersonal || !gotAwards) {
+            $ionicPopup.show({
+                title: 'Don\'t worry',
+                template: 'The query is still processing',
+				 buttons: [ { text: '<b>Ok</b>' }]
+            });
+          }
+        }, 3000);
 
     // Set Motion
     $timeout(function() {
@@ -940,6 +955,7 @@ angular.module('starter.controllers', [])
             console.log(info);
         }
         $scope.loading = false;
+		gotArrested=true;
 
     }, function errorCallback(response) {
 
@@ -950,6 +966,7 @@ angular.module('starter.controllers', [])
         console.log(response.data);
         $scope.failed = true;
         $state.go('app.InteractiveSearch');
+		gotArrested=true;
     });
 
     //Get the personal data of the person:
@@ -975,6 +992,7 @@ angular.module('starter.controllers', [])
 			$scope.personalInformation=photoUrl;
 			/*photoUrl = "url('" + $scope.personalInformation.photoLink + "')";
             $scope.personalInformation.photoLink = photoUrl;*/
+			gotPersonal =true;
 
         }, function errorCallback(response) {
             var FetchErrorAlert = $ionicPopup.alert({
@@ -983,6 +1001,7 @@ angular.module('starter.controllers', [])
             });
             console.log(response.data);
             $scope.loadindPersonalInfo = false;
+			gotPersonal =true;
         });
     }
 	
@@ -991,18 +1010,10 @@ angular.module('starter.controllers', [])
             $ionicPopup.show({
                 title: 'Don\'t worry',
                 template: 'The query is still processing',
-				 buttons: [
-					{ text: '<b>Ok</b>' }/*, {
-					   text: 'never mind',
-					   type: 'button-positive',
-						  onTap: function() {
-								$state.go('app.InteractiveSearch');
-						  }
-					}*/
-				 ]
+				 buttons: [ { text: '<b>Ok</b>' }]
             });
           }
-        }, 1000);
+        }, 3000);
 
     // Set Motion
     $timeout(function() {
