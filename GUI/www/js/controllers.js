@@ -199,11 +199,12 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('Query1Entry', function($scope, $http, $ionicPopup, Query1ExtraInfo, $state) {
+.controller('Query1Entry', function($scope, $http, $ionicPopup, $timeout, Query1ExtraInfo, $state) {
     console.log('show entered fields from button clicked-query 1');
     $scope.persons = [];
     $scope.numberOfItemsToDisplay = 6; // Use it with limit to in ng-repeat
 
+	var gotData=false;
     $scope.loading = true;
 
     console.log('started loading screen');
@@ -233,6 +234,7 @@ angular.module('starter.controllers', [])
             console.log(person.photoLink);
         }
         $scope.loading = false;
+		gotData=true;
 
     }, function errorCallback(response) {
         alert(JSON.stringify(response))
@@ -241,6 +243,7 @@ angular.module('starter.controllers', [])
             template: 'Unable to get data',
         });
         console.log(response.data);
+		gotData=true;
     });
 
 
@@ -255,6 +258,16 @@ angular.module('starter.controllers', [])
         Query1ExtraInfo.setPerson(per);
         $state.go('app.extraInfo');
     };
+	
+	$timeout(function() {
+          if (!gotData) {
+            $ionicPopup.show({
+                title: 'Don\'t worry',
+                template: 'The query is still processing',
+				 buttons: [ { text: '<b>Ok</b>' }]
+            });
+          }
+        }, 3000);
 
 
 })
