@@ -367,10 +367,14 @@ angular.module('starter.controllers', [])
         //url: '/Queries/SameOccupationCouples',
     }).then(function successCallback(response) {
         console.log('success');
+        console.log('');
+        
+		console.log(JSON.stringify(response));
+		console.log('');
         $scope.persons = [];
         for (var r in response.data) {
             var person = response.data[r];
-            console.log('url is ' + person.photoLink);
+            //console.log('url is ' + person.photoLink);
             if (person.photoLink == "No Photo") {
                 person.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
@@ -379,11 +383,13 @@ angular.module('starter.controllers', [])
 			photoUrl = "url('" + person.photoLink + "')";
             person.photoLink = photoUrl;
 
+			
+			
             $scope.persons.push(person);
             console.log(person.name);
-            console.log(person.birthPlace);
-            console.log('the spouse of '+ person.name+' is ' + person.SpouseName);
-            console.log(person.photoLink);
+            console.log('the spouse of '+ person.name+' is ' + response.data[r].spouseName);
+            console.log('occupation is '+ person.occupation);
+            //console.log(person.photoLink);
         }
         $scope.loading = false;
 		gotData=true;
