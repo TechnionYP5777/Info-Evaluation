@@ -4,9 +4,13 @@ import org.apache.jena.query.ParameterizedSparqlString;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.ResultSetFactory;
 import org.apache.jena.query.ResultSetRewindable;
+
+
 import java.util.Map;
+
 import java.util.HashMap;
 import infoeval.main.WikiData.QueryTypes;
+
 
 /**
  * 
@@ -35,6 +39,7 @@ public class Extractor {
 		 * the query limits the number of results to 10,000, and the OFFSET
 		 * means that we take every 10,000th entry
 		 */
+		
 		basicInfoQuery = new ParameterizedSparqlString(" PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
 				+ " PREFIX  dbo: <http://dbpedia.org/ontology/>" + " PREFIX  dbp: <http://dbpedia.org/property/>"
 				+ " SELECT DISTINCT " + " ?pname (SAMPLE (?photoLink) as ?photo) (SAMPLE (?occupation) as ?occup)"
@@ -66,6 +71,7 @@ public class Extractor {
 	}
 
 	public Extractor(int wikiPageID) {
+	
 		basicInfoByWikiPageID = new ParameterizedSparqlString(
 				" PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
 						+ " PREFIX  dbo:  <http://dbpedia.org/ontology/>"

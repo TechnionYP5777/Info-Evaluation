@@ -74,4 +74,11 @@ public class AnalyzeParagraphTest {
 				.contains(" His parents married in a Manhattan Presbyterian church in 1936");
 
 	}
+	@Test
+	public void Test5() throws Exception {
+		AnalyzeParagraph analyze = new AnalyzeParagraph();
+		analyze.LoadIEClassifiers();
+		analyze.LoadNLPClassifiers();
+	
+	}
 }
