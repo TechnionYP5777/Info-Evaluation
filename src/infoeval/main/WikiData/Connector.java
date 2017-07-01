@@ -40,13 +40,6 @@ public class Connector {
 	}
 
 	public void initializeConnectionPool() throws IOException {
-	//	InputStream is = this.getClass().getResourceAsStream("database.properties");
-	///	Properties props = new Properties();
-	//	props.load(is);
-	//	is.close();
-	//	url = props.getProperty("spring.datasource.tomcat.url");
-	//	username = props.getProperty("spring.datasource.tomcat.username");
-	//	password = props.getProperty("spring.datasource.tomcat.password");
 		url = "jdbc:mysql://104.168.147.218/infoeval";
 		username = "ieftw";
 		password = "Ie!xuJR";

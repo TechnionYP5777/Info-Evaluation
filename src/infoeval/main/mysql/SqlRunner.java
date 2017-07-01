@@ -67,7 +67,6 @@ public class SqlRunner {
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
 		} else {
 			serialized_id = (int) id_result.get(0).row.get(0).getKey();
-			// id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
 			@SuppressWarnings("unchecked")
 			ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(conn, serialized_id);
 			rows.addAll(rows2);

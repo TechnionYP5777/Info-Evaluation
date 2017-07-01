@@ -39,20 +39,6 @@ public class AnalyzeParagraph {
 	LinkedList<String> awardsInformation;
 	final StanfordCoreNLP pipeLine;
 
-	// public AnalyzeParagraph(Elements Paragraphs) throws IOException {
-	// this.Paragraphs = new Elements();
-	// this.Paragraphs = Paragraphs;
-	// this.dynamicParagraphs = new Elements();
-	// this.arrestsParagraphs = new Elements();
-	// this.awardsParagraphs = new Elements();
-	// this.dynamicInformation= new LinkedList<String>();
-	// this.arrestsInformation=new LinkedList<String>();
-	// this.awardsInformation=new LinkedList<String>();
-	// final Properties props = new Properties();
-	// props.put("annotators", "tokenize,ssplit, pos ,parse,lemma");
-	// this.pipeLine = new StanfordCoreNLP(props);
-	// }
-
 	public AnalyzeParagraph() throws IOException {
 		this.Paragraphs = new Elements();
 		this.dynamicParagraphs = new Elements();
