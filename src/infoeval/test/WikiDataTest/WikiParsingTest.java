@@ -14,16 +14,17 @@ import org.junit.Test;
 
 import infoeval.main.WikiData.WikiParsing;
 
-
 public class WikiParsingTest {
 	@Test
 	public void test1() throws Exception {
-		assert new WikiParsing("https://en.wikipedia.org/wiki/Shia_LaBeouf").Parse("arrested").contains("In February 2005, LaBeouf was arrested by police in Los Angeles and charged with assault with a deadly weapon after threatening his neighbor by driving into his car.");
+		assert new WikiParsing("https://en.wikipedia.org/wiki/Shia_LaBeouf").Parse("arrested").contains(
+				"In February 2005, LaBeouf was arrested by police in Los Angeles and charged with assault with a deadly weapon after threatening his neighbor by driving into his car.");
 	}
 
 	@Test
 	public void test2() throws IOException {
-		assert new WikiParsing("https://en.wikipedia.org/wiki/Justin_Timberlake").Parse("awarded").contains("In February 2008, Timberlake was awarded two Grammy Awards.");
+		assert new WikiParsing("https://en.wikipedia.org/wiki/Justin_Timberlake").Parse("awarded")
+				.contains("In February 2008, Timberlake was awarded two Grammy Awards.");
 
 	}
 
@@ -63,6 +64,7 @@ public class WikiParsingTest {
 		assert wp.getNames().isEmpty();
 
 	}
+
 	@Test
 	public void test7() throws IOException {
 		WikiParsing wp = new WikiParsing("https://en.wikipedia.org/wiki/Slash");
@@ -71,29 +73,32 @@ public class WikiParsingTest {
 		assert wp.isConflictedName();
 
 	}
+
 	@Test
 	public void test8() throws IOException {
 		WikiParsing wp = new WikiParsing("https://en.wikipedia.org/wiki/Slash");
 		wp.Parse("married");
 		wp.CheckAmbiguities();
-		assert wp.getNames().size()==28;
+		assert wp.getNames().size() == 28;
 
 	}
+
 	@Test
 	public void test9() throws IOException {
 		WikiParsing wp = new WikiParsing("https://en.wikipedia.org/wiki/Agüero");
 		wp.Parse("refer");
 		wp.CheckAmbiguities();
-		assert wp.getNames().size()==13;
+		assert wp.getNames().size() == 13;
 
 	}
+
 	@Test
 	public void test10() throws IOException {
 		WikiParsing wp = new WikiParsing("https://en.wikipedia.org/wiki/Agnieszka");
 		wp.Parse("refer");
 		wp.CheckAmbiguities();
-		assert wp.getNames().size()==26;
+		assert wp.getNames().size() == 26;
 
 	}
-	
+
 }

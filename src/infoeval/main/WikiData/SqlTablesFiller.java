@@ -99,7 +99,7 @@ public class SqlTablesFiller {
 			throws ClassNotFoundException, SQLException, IOException, ParseException {
 
 		QuerySolution solution = r.nextSolution();
-		
+
 		RDFNode spName = solution.get("sname");
 		RDFNode name = solution.get("pname");
 		String personalName = name == null || !name.isLiteral() ? "No Name" : name.asLiteral().getString() + "",
@@ -141,7 +141,7 @@ public class SqlTablesFiller {
 			else if (dPlace.isLiteral())
 				deathPlace = (dPlace.asLiteral() + "").split("@")[0];
 		deathPlace = deathPlace.replaceAll("_", " ");
-		
+
 		RDFNode occupation = solution.get("occup");
 		String occup = "No Occupation";
 		if (occupation != null)
@@ -151,17 +151,17 @@ public class SqlTablesFiller {
 			else if (occupation.isLiteral())
 				occup = (occupation.asLiteral() + "").split("@")[0];
 		occup = occup.replaceAll("_", " ");
-	
+
 		if (occup.contains(personalName)) {
 			RDFNode occupationTitle = solution.get("occupTitle");
 			occup = "No Occupation";
-			if (occupationTitle!=null &&occupationTitle.isLiteral()) {
-				
+			if (occupationTitle != null && occupationTitle.isLiteral()) {
+
 				occup = (occupationTitle.asLiteral() + "").split("@")[0];
 				occup = occup.replaceAll("_", " ");
 			}
 		}
-		
+
 		RDFNode spOcuup = solution.get("spOccu");
 		String spouseOccupation = "No Spouse Occupation";
 		if (spOcuup != null)

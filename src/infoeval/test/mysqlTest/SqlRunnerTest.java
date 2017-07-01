@@ -11,7 +11,6 @@ import org.junit.BeforeClass;
 import org.jsoup.Jsoup;
 import org.junit.AfterClass;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 
 /**

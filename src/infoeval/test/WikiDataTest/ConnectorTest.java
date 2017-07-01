@@ -28,7 +28,7 @@ public class ConnectorTest {
 		assert conn.getConnection() != null;
 		Row row = conn.runQuery("SELECT photoLink FROM basic_info LIMIT 1").get(0);
 		Entry<Object, Class> col = row.row.get(0);
-		assertNotNull((String) col.getValue().cast(col.getKey()));
+		assertNotNull(col.getValue().cast(col.getKey()));
 		int res = conn.runUpdate("INSERT INTO WikiID VALUES('osher','1234')");
 		assert res == 1;
 		res = conn.runUpdate("DELETE FROM WikiID WHERE name LIKE 'osher'");
@@ -45,7 +45,7 @@ public class ConnectorTest {
 		Row row = conn.runQuery("SELECT photoLink FROM basic_info WHERE name LIKE CONCAT('%',?,'%') LIMIT 1", inp)
 				.get(0);
 		Entry<Object, Class> col = row.row.get(0);
-		assertNotNull((String) col.getValue().cast(col.getKey()));
+		assertNotNull(col.getValue().cast(col.getKey()));
 		inp = new Object[] { "osher", "1234" };
 		int res = conn.runUpdate("INSERT INTO WikiID VALUES(?,?)", inp);
 		assert res == 1;

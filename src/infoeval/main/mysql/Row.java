@@ -21,9 +21,9 @@ import java.util.Map.Entry;
  */
 @SuppressWarnings({ "serial", "rawtypes" })
 public class Row implements Serializable {
-	
+
 	public List<Entry<Object, Class>> row;
-	
+
 	public static Map<String, Class> TYPE;
 
 	static {
@@ -67,7 +67,7 @@ public class Row implements Serializable {
 			else
 				this.add(castedData);
 		} catch (NullPointerException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 			throw e;
 		}
 	}

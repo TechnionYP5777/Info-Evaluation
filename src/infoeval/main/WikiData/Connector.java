@@ -3,15 +3,12 @@ package infoeval.main.WikiData;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Properties;
-
 import infoeval.main.mysql.Row;
 
 /**
@@ -40,13 +37,6 @@ public class Connector {
 	}
 
 	public void initializeConnectionPool() throws IOException {
-	//	InputStream is = this.getClass().getResourceAsStream("database.properties");
-	///	Properties props = new Properties();
-	//	props.load(is);
-	//	is.close();
-	//	url = props.getProperty("spring.datasource.tomcat.url");
-	//	username = props.getProperty("spring.datasource.tomcat.username");
-	//	password = props.getProperty("spring.datasource.tomcat.password");
 		url = "jdbc:mysql://104.168.147.218/infoeval";
 		username = "ieftw";
 		password = "Ie!xuJR";

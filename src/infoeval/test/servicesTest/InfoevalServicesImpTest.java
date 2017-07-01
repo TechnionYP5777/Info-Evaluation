@@ -2,53 +2,44 @@ package infoeval.test.servicesTest;
 
 import infoeval.main.mysql.SqlRunner;
 import infoeval.main.mysql.TableEntry;
-import infoeval.main.services.Application;
 import infoeval.main.services.InfoevalServiceImp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import static org.hamcrest.Matchers.*;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import static org.mockito.Mockito.*;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.http.*;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import static org.mockito.Mockito.*;
+import static org.hamcrest.CoreMatchers.is;
 
 /**
  * @author osherh
  * @since 22/6/17
  */
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = Application.class)
-@WebAppConfiguration
 public class InfoevalServicesImpTest {
 
-	@InjectMocks
-	private InfoevalServiceImp infoevalServicesImp;
-
 	@Mock
-	private SqlRunner runner;
+	private SqlRunner sqlRunner;
+
+	@InjectMocks
+	private InfoevalServiceImp infoevalServiesImp;
 
 	private MockMvc mockMvc;
 
 	@Before
-	public void init() {
+	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		mockMvc = MockMvcBuilders.standaloneSetup(infoevalServicesImp).build();
+		mockMvc = MockMvcBuilders.standaloneSetup(infoevalServiesImp).build();
 	}
 
-//	@Ignore
 	@Test
 	public void getBornInPlaceYearTest() throws Exception {
 		ArrayList<TableEntry> people = new ArrayList<TableEntry>();
@@ -63,29 +54,17 @@ public class InfoevalServicesImpTest {
 				"deathCity2");
 		people.add(te1);
 		people.add(te2);
-		when(runner.getBornInPlaceBeforeYear("Casablanca", "1954")).thenReturn(people);
+		when(sqlRunner.getBornInPlaceBeforeYear("Casablanca", "1954")).thenReturn(people);
 
 		mockMvc.perform(get("/Queries/Query2").param("place", "Casablanca").param("year", "1954"))
-				// .accept(MediaType.APPLICATION_JSON)))
 				.andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-				.andExpect(jsonPath("$", hasSize(2))).andExpect(jsonPath("$[0].birthPlace", is("birthPlace1")))
+				.andExpect(jsonPath("$[0].birthPlace", is("birthPlace1")))
 				.andExpect(jsonPath("$[0].occupation", is("occupation1")))
 				.andExpect(jsonPath("$[1].photoLink", is("photoLink2"))).andExpect(jsonPath("$[1].name", is("name2")));
-		verify(infoevalServicesImp, times(1)).getBornInPlaceYear("Casablanca", "1954");
-		verifyNoMoreInteractions(infoevalServicesImp);
+		verify(sqlRunner, times(1)).getBornInPlaceBeforeYear("Casablanca", "1954");
+		verifyNoMoreInteractions(sqlRunner);
 	}
 
-	/*
-	 * MvcResult result = mockMvc.perform(get("/Queries/Query2")
-	 * .param("place","Casablanca") .param("year","1954")
-	 * .accept(MediaType.APPLICATION_JSON)) .andReturn();
-	 * 
-	 * String content = result.getResponse().getContentAsString();
-	 * 
-	 * System.out.println(content);
-	 */
-
-	@Ignore
 	@Test
 	public void differentDeathPlaceTest() throws Exception {
 		ArrayList<TableEntry> people = new ArrayList<TableEntry>();
@@ -100,16 +79,15 @@ public class InfoevalServicesImpTest {
 				"deathCity2");
 		people.add(te1);
 		people.add(te2);
-		when(runner.getDifferentDeathPlace()).thenReturn(people);
+		when(sqlRunner.getDifferentDeathPlace()).thenReturn(people);
 
 		mockMvc.perform(get("/Queries/Query1")).andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-				.andExpect(jsonPath("$", hasSize(2))).andExpect(jsonPath("$[0].birthPlace", is("birthPlace1")))
+				.andExpect(jsonPath("$[0].birthPlace", is("birthPlace1")))
 				.andExpect(jsonPath("$[0].photoLink", is("photoLink1")))
 				.andExpect(jsonPath("$[1].occupation", is("occupation2")))
 				.andExpect(jsonPath("$[1].name", is("name2")));
-		verify(infoevalServicesImp, times(1)).differentDeathPlace();
-		verifyNoMoreInteractions(infoevalServicesImp);
+		verify(sqlRunner, times(1)).getDifferentDeathPlace();
+		verifyNoMoreInteractions(sqlRunner);
 	}
-
 }

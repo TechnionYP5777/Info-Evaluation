@@ -57,8 +57,9 @@ public class ExtractorTest {
 		assertNull(deathDate);
 		assertEquals(te.getOccupation(), "No Occupation");
 		assertEquals(te.getSpouseName(), "No Spouse");
-		assertEquals(te.getSpouseOccupation(),"No Spouse Occupation");
-		assertEquals(te.getPhotoLink(),"http://commons.wikimedia.org/wiki/Special:FilePath/Michael_Jackson_in_1988.jpg?width=300");
+		assertEquals(te.getSpouseOccupation(), "No Spouse Occupation");
+		assertEquals(te.getPhotoLink(),
+				"http://commons.wikimedia.org/wiki/Special:FilePath/Michael_Jackson_in_1988.jpg?width=300");
 
 	}
 

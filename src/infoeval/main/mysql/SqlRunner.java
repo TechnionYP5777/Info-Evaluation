@@ -47,7 +47,7 @@ public class SqlRunner {
 		try {
 			conn.close();
 		} catch (SQLException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
 
@@ -67,7 +67,6 @@ public class SqlRunner {
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
 		} else {
 			serialized_id = (int) id_result.get(0).row.get(0).getKey();
-			// id_result.get(0).row.get(0).getValue().cast(id_result.get(0).row.get(0).getKey());
 			@SuppressWarnings("unchecked")
 			ArrayList<Row> rows2 = (ArrayList<Row>) resultsSer.deSerializeQueryResults(conn, serialized_id);
 			rows.addAll(rows2);
@@ -93,14 +92,14 @@ public class SqlRunner {
 				String last = name.split(",")[0];
 				String first = name.split(",")[1].substring(1);
 				String newName = first + " " + last;
-				
+
 				res.add(new TableEntry(wikiURL + wikiPageID, newName, birthPlace, "", birthDate, sqlDate, "", "", "",
-						photoLink, "",birthExpanded,""));
+						photoLink, "", birthExpanded, ""));
 			} else {
 				res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, "", birthDate, sqlDate, "", "", "",
-						photoLink, "",birthExpanded,""));
+						photoLink, "", birthExpanded, ""));
 			}
-			
+
 		}
 		return res;
 	}
@@ -117,7 +116,6 @@ public class SqlRunner {
 					+ "AND BirthPlace<>DeathPlace) AS filtered_info " + "LEFT JOIN WikiID\n "
 					+ "ON WikiID.name = filtered_info.name " + "LIMIT " + LIMIT_NUM;
 
-			
 			rows = conn.runQuery(birthDeathPlace);
 			String query_identifier = "getDifferentDeathPlace()";
 			serialized_id = resultsSer.serializeQueryResults(conn, query_identifier, rows);
@@ -129,7 +127,7 @@ public class SqlRunner {
 			rows.addAll(rows2);
 		}
 		ArrayList<TableEntry> res = new ArrayList<TableEntry>();
-		
+
 		for (Row row : rows) {
 
 			String name = (String) row.row.get(0).getValue().cast(row.row.get(0).getKey());
@@ -147,15 +145,15 @@ public class SqlRunner {
 				String last = name.split(",")[0];
 				String first = name.split(",")[1].substring(1);
 				String newName = first + " " + last;
-			
+
 				res.add(new TableEntry(wikiURL + wikiPageID, newName, birthPlace, deathPlace, sqlDate, sqlDate, "", "",
-						"", photoLink, "",birthExpanded,deathExpanded));
+						"", photoLink, "", birthExpanded, deathExpanded));
 			} else {
 				res.add(new TableEntry(wikiURL + wikiPageID, name, birthPlace, deathPlace, sqlDate, sqlDate, "", "", "",
-						photoLink, "",birthExpanded,deathExpanded));
-			
+						photoLink, "", birthExpanded, deathExpanded));
+
 			}
-			
+
 		}
 		return res;
 	}
@@ -195,13 +193,13 @@ public class SqlRunner {
 				String last = name.split(",")[0];
 				String first = name.split(",")[1].substring(1);
 				String newName = first + " " + last;
-			
+
 				res.add(new TableEntry("", newName, "", "", sqlDate, sqlDate, occupation, spouseName, spouseOoccupation,
-						"", "","",""));
+						"", "", "", ""));
 			} else {
 				res.add(new TableEntry("", name, "", "", sqlDate, sqlDate, occupation, spouseName, spouseOoccupation,
-						"", "","",""));
-				
+						"", "", "", ""));
+
 			}
 		}
 		return res;
@@ -244,12 +242,13 @@ public class SqlRunner {
 				String last = name.split(",")[0];
 				String first = name.split(",")[1].substring(1);
 				String newName = first + " " + last;
-				
-				res.add(new TableEntry("", newName, birthPlace, "", sqlDate, sqlDate, "", spouseName, "", "", "","",""));
+
+				res.add(new TableEntry("", newName, birthPlace, "", sqlDate, sqlDate, "", spouseName, "", "", "", "",
+						""));
 			} else {
-				res.add(new TableEntry("", name, birthPlace, "", sqlDate, sqlDate, "", spouseName, "", "", "","",""));
+				res.add(new TableEntry("", name, birthPlace, "", sqlDate, sqlDate, "", spouseName, "", "", "", "", ""));
 			}
-		
+
 		}
 		return res;
 	}
@@ -289,13 +288,13 @@ public class SqlRunner {
 				String last = name.split(",")[0];
 				String first = name.split(",")[1].substring(1);
 				String newName = first + " " + last;
-				
+
 				res.add(new TableEntry(wikiURL + wikiPageID, newName, "", "", birthDate, deathDate, occupation, "", "",
-						photoLink, "","",""));
+						photoLink, "", "", ""));
 			} else {
 				res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, deathDate, occupation, "", "",
-						photoLink, "","",""));
-			
+						photoLink, "", "", ""));
+
 			}
 		}
 		return res;
@@ -339,10 +338,10 @@ public class SqlRunner {
 				String first = name.split(",")[1].substring(1);
 				String newName = first + " " + last;
 				res.add(new TableEntry(wikiURL + wikiPageID, newName, "", "", birthDate, deathDate, occupation, "", "",
-						photoLink, "","",""));
+						photoLink, "", "", ""));
 			} else {
 				res.add(new TableEntry(wikiURL + wikiPageID, name, "", "", birthDate, deathDate, occupation, "", "",
-						photoLink, "","",""));
+						photoLink, "", "", ""));
 			}
 		}
 		return res;
@@ -458,8 +457,8 @@ public class SqlRunner {
 		// res_row.row.get(9).getValue().cast(res_row.row.get(9).getKey());
 
 		TableEntry te = new TableEntry(wikiURL + wikiPageID, name, birthPlace, deathPlace, birthDate, deathDate,
-				occupation, spouseName, spouseOccupation, photoLink, overviewStr,"","");
-		
+				occupation, spouseName, spouseOccupation, photoLink, overviewStr, "", "");
+
 		return te;
 	}
 

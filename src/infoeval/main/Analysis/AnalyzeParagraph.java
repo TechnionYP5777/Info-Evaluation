@@ -39,20 +39,6 @@ public class AnalyzeParagraph {
 	LinkedList<String> awardsInformation;
 	final StanfordCoreNLP pipeLine;
 
-	// public AnalyzeParagraph(Elements Paragraphs) throws IOException {
-	// this.Paragraphs = new Elements();
-	// this.Paragraphs = Paragraphs;
-	// this.dynamicParagraphs = new Elements();
-	// this.arrestsParagraphs = new Elements();
-	// this.awardsParagraphs = new Elements();
-	// this.dynamicInformation= new LinkedList<String>();
-	// this.arrestsInformation=new LinkedList<String>();
-	// this.awardsInformation=new LinkedList<String>();
-	// final Properties props = new Properties();
-	// props.put("annotators", "tokenize,ssplit, pos ,parse,lemma");
-	// this.pipeLine = new StanfordCoreNLP(props);
-	// }
-
 	public AnalyzeParagraph() throws IOException {
 		this.Paragraphs = new Elements();
 		this.dynamicParagraphs = new Elements();
@@ -193,7 +179,7 @@ public class AnalyzeParagraph {
 	}
 
 	public void ArrestsQuery() {
-		//System.out.println("Started analyzing arrests query");
+		// System.out.println("Started analyzing arrests query");
 		for (final Element paragraph : this.arrestsParagraphs)
 			for (String sent : paragraph.text().split("\\.")) {
 				if (!sent.contains("custody") && !sent.contains("arrested") && !sent.contains("jailed")
