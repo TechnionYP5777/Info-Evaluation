@@ -19,14 +19,6 @@ import infoeval.main.mysql.Row;
  * @since 20-05-2017
  */
 
-/*
- * ATTENTION ! When you want to test this class , remove the @Ignore attributes.
- * I added it since the connector tries to read from the config.xml file which
- * won't be uploaded to GitHub and it causes travisCI to fail. like moshiko did
- * in the connectorTest it's relevant here too
- * 
- * @osherh
- */
 public class SqlTablesFillerTest {
 	private final int ENTRIES_NUM = 10000;
 	static SqlTablesFiller filler;

@@ -20,15 +20,6 @@ import java.text.SimpleDateFormat;
  * @Since 12-05-2017
  *
  */
-
-/*
- * ATTENTION ! When you want to test this class , remove the @Ignore attributes.
- * I added it since the connector tries to read from the config.xml file which
- * won't be uploaded to GitHub and it causes travisCI to fail. like moshiko did
- * in the connectorTest it's relevant here too
- * 
- * @osherh
- */
 public class SqlRunnerTest {
 	static SqlRunner querun;
 
@@ -60,7 +51,6 @@ public class SqlRunnerTest {
 			String birthPlace = te.getBirthPlace();
 			assert Integer.parseInt(new SimpleDateFormat("yyyy").format(birthDate)) < 1970;
 			assert birthPlace.contains("Japan");
-
 		}
 	}
 
@@ -105,7 +95,7 @@ public class SqlRunnerTest {
 	@Test
 	public void getSpouselessBetweenYearsTest() throws Exception {
 		for (TableEntry ¢ : querun.getSpouselessBetweenYears("1900", "1980"))
-			assertEquals(¢.getSpouseName(), "No Spouse Name");
+			assertEquals(¢.getSpouseName(), "");
 	}
 
 	@Test
@@ -122,9 +112,9 @@ public class SqlRunnerTest {
 		assertEquals(te.getDeathExpandedPlace(), "Cambridge, Massachusetts");
 		assertEquals((te.getBirthDate() + ""), "1892-11-03");
 		assertEquals(te.getDeathDate() + "", "1982-02-25");
-		assertEquals(te.getOccupation(), "No Occupation");
-		assertEquals(te.getSpouseName(), "No Spouse");
-		assertEquals(te.getSpouseOccupation(), "No Spouse Occupation");
+		assertEquals(te.getOccupation(), "");
+		assertEquals(te.getSpouseName(), "");
+		assertEquals(te.getSpouseOccupation(), "");
 		assertEquals(te.getPhotoLink(), "http://commons.wikimedia.org/wiki/Special:FilePath/Zhao_Yuanren.jpg");
 		assertEquals(te.getOverview(),
 				"Yuen Ren Chao (Chinese: 趙元任; pinyin: Zhào Yuánrèn; 3 November 1892 – 25 February 1982), was a Chinese-American linguist, educator, scholar, poet, and composer, best known for his contributions to the modern study of Chinese phonology and grammar. Chao was born and raised in China, then attended university in the United States, where he earned degrees from Cornell University and Harvard University. A naturally-gifted polyglot and linguist, Chao is best known for his Mandarin Primer, one of the most widely used Mandarin Chinese textbooks in the 20th century, and his Gwoyeu Romatzyh romanization scheme, which can, unlike pinyin and other romanization systems, transcribe Mandarin Chinese pronunciation without needing diacritics to indicate words' tone.");
