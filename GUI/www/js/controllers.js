@@ -158,7 +158,7 @@ angular.module('starter.controllers', [])
             console.log(r);
             var person = response.data[r];
             console.log('url is ' + person.photoLink);
-            if (person.photoLink == "No Photo") {
+            if (person.photoLink == "") {
                 person.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
 			
@@ -232,7 +232,7 @@ angular.module('starter.controllers', [])
         for (var r in response.data) {
             var person = response.data[r];
             console.log('url is ' + person.photoLink);
-            if (person.photoLink == "No Photo") {
+            if (person.photoLink == "") {
                 person.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
             var photoUrl = person.photoLink.replace(/\'/g, "\\'").replace(/\(/g, "\\(").replace(/\)/g, "\\)").replace(/\[/g, "\\[").replace(/\]/g, "\\]");
@@ -323,7 +323,7 @@ angular.module('starter.controllers', [])
             $scope.moreInfo = response.data;
             console.log('url is ' + $scope.moreInfo.photoLink);
             console.log('birthPla$scope.personalInformation.namece is:' + $scope.moreInfo.birthPlace);
-            if ($scope.moreInfo.photoLink == "No Photo") {
+            if ($scope.moreInfo.photoLink == "") {
                 $scope.moreInfo.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
 			//$scope.personalInformation.name
@@ -385,7 +385,7 @@ angular.module('starter.controllers', [])
         for (var r in response.data) {
             var person = response.data[r];
             //console.log('url is ' + person.photoLink);
-            if (person.photoLink == "No Photo") {
+            if (person.photoLink == "") {
                 person.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
             var photoUrl = person.photoLink.replace(/\'/g, "\\'").replace(/\(/g, "\\(").replace(/\)/g, "\\)").replace(/\[/g, "\\[").replace(/\]/g, "\\]");
@@ -718,7 +718,7 @@ angular.module('starter.controllers', [])
             console.log('name is' + name);
             $scope.name = $scope.personalInformation.name;
             console.log('birthPlace is:' + $scope.personalInformation.birthPlace);
-            if ($scope.personalInformation.photoLink == "No Photo") {
+            if ($scope.personalInformation.photoLink == "") {
                 $scope.personalInformation.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
 			var photoUrl = $scope.personalInformation.photoLink.replace(/\'/g, "\\'").replace(/\(/g, "\\(").replace(/\)/g, "\\)").replace(/\[/g, "\\[").replace(/\]/g, "\\]");
@@ -830,7 +830,7 @@ angular.module('starter.controllers', [])
             console.log('name is' + name);
             $scope.name = $scope.personalInformation.name;
             console.log('birthPlace is:' + $scope.personalInformation.birthPlace);
-            if ($scope.personalInformation.photoLink == "No Photo") {
+            if ($scope.personalInformation.photoLink == "") {
                 $scope.personalInformation.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
 			gotPersonal=true;
@@ -1081,7 +1081,7 @@ angular.module('starter.controllers', [])
             console.log('url is ' + $scope.personalInformation.photoLink);
             console.log('name is' + $scope.name);
             console.log('birthPlace is:' + $scope.personalInformation.birthExpandedPlace);
-            if ($scope.personalInformation.photoLink == "No Photo") {
+            if ($scope.personalInformation.photoLink == "") {
                 $scope.personalInformation.photoLink = "http://www.freeiconspng.com/uploads/profile-icon-9.png";
             }
 			var photoUrl = $scope.personalInformation.photoLink.replace(/\'/g, "\\'").replace(/\(/g, "\\(").replace(/\)/g, "\\)").replace(/\[/g, "\\[").replace(/\]/g, "\\]");
