@@ -725,7 +725,7 @@ angular.module('starter.controllers', [])
 			$scope.personalInformation.photoLink=photoUrl;
 			/*photoUrl = "url('" + $scope.personalInformation.photoLink + "')";
             $scope.personalInformation.photoLink = photoUrl;*/
-			
+			$scope.err=true;
 
         }, function errorCallback(response) {
 			gotPersonal=true;
@@ -735,7 +735,7 @@ angular.module('starter.controllers', [])
             });
             console.log(response.data);
             $scope.loadindPersonalInfo = false;
-			$scope.err=true;
+			
         });
     }
 	
