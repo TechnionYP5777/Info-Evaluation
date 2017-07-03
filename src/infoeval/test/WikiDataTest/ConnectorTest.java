@@ -1,11 +1,18 @@
 package infoeval.test.WikiDataTest;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import static org.mockito.Mockito.when;
+import org.mockito.MockitoAnnotations;
+
 import infoeval.main.WikiData.Connector;
 import infoeval.main.mysql.Row;
 import static org.junit.Assert.assertNotNull;
 import java.sql.Connection;
 import java.util.Map.Entry;
+
+import javax.sql.DataSource;
 
 /**
  * @author Netanel
@@ -13,9 +20,19 @@ import java.util.Map.Entry;
  * @since 19-04-2017
  */
 public class ConnectorTest {
+	@Mock
+	private DataSource ds;
+	@Mock
+	private Connection connection;
+	
+	@Before
+	public void setUp(){
+		MockitoAnnotations.initMocks(this);
+	}
 
 	@Test
 	public void connectionTest() throws Exception {
+		when(ds.getConnection()).thenReturn(connection);
 		Connection connection = new Connector().getConnection();
 		assert connection != null;
 		connection.close();
@@ -25,7 +42,6 @@ public class ConnectorTest {
 	@SuppressWarnings("rawtypes")
 	public void runQueryTest() throws Exception {
 		Connector conn = new Connector();
-		assert conn.getConnection() != null;
 		Row row = conn.runQuery("SELECT photoLink FROM basic_info LIMIT 1").get(0);
 		Entry<Object, Class> col = row.row.get(0);
 		assertNotNull(col.getValue().cast(col.getKey()));

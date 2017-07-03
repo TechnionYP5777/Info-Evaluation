@@ -19,9 +19,6 @@ import infoeval.main.mysql.Row;
  */
 public class Connector {
 	private final DataSource datasource;
-	private String url;
-	private String username;
-	private String password;
 
 	public Connector() throws SQLException, ClassNotFoundException, IOException {
 		try {
@@ -32,19 +29,11 @@ public class Connector {
 		}
 	}
 
-	public void setCaching() throws SQLException, ClassNotFoundException, IOException {
-		runUpdate("SET GLOBAL query_cache_type = DEMAND");
-	}
-
 	public void initializeConnectionPool() throws IOException {
-		url = "jdbc:mysql://104.168.147.218/infoeval";
-		username = "ieftw";
-		password = "Ie!xuJR";
-
 		PoolProperties p = new PoolProperties();
-		p.setUrl(url);
-		p.setUsername(username);
-		p.setPassword(password);
+		p.setUrl("jdbc:mysql://104.168.147.218/infoeval");
+		p.setUsername("ieftw");
+		p.setPassword("Ie!xuJR");
 		p.setDriverClassName("com.mysql.jdbc.Driver");
 		// validating the Connection from the pool before returning them to the
 		// caller
@@ -54,7 +43,6 @@ public class Connector {
 		// number of ms to wait before throwing an exception if no connection is
 		// available
 		p.setMaxWait(10000);
-
 		datasource.setPoolProperties(p);
 	}
 
