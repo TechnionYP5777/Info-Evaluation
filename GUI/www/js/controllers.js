@@ -129,7 +129,7 @@ angular.module('starter.controllers', [])
                     } else if (error == 'INVALIDYEAR') {
                         var InputErrorAlert = $ionicPopup.alert({
                             title: 'Input error!',
-                            template: 'Illegal Input. Please insert a valid Year',
+                            template: 'Illegal Input. Please check the year and/or place entered',
                         });
                     }
 
