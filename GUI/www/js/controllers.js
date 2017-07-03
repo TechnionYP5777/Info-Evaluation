@@ -629,7 +629,7 @@ angular.module('starter.controllers', [])
 							//res.ambiguitiesSolved=false;
 							var InputErrorAlert = $ionicPopup.alert({
 								title: 'Input error!',
-								template: 'The name you\'re entering may have a spelling error',
+								template: 'Either this person daoesn\'t exist in Wikipedia or you are having a spelling error.',
 							});
 						});
                     }
@@ -986,7 +986,7 @@ angular.module('starter.controllers', [])
 						}, function errorCallback(response) {
 							var InputErrorAlert = $ionicPopup.alert({
 								title: 'Input error!',
-								template: 'The name you\'re entering may have a spelling error',
+								template: 'This person daoesn\'t exist in Wikipedia. Check for a spelling error',
 							});
 						});
                     }
