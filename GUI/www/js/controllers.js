@@ -106,6 +106,9 @@ angular.module('starter.controllers', [])
 
     $scope.showSecondQueryResults = function(place, year) {
         console.log('show results button was clicked-query 2');
+		console.log('place is: '+place+' year is: '+year);
+		if(!place)
+			console.log('supposedly empty');
         CheckQuery2Input.validateInput(place, year)
             .then(
                 function(response) {
