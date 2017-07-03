@@ -175,6 +175,7 @@ angular.module('starter.controllers', [])
             console.log(person.photoLink);
 
         }
+		
         $scope.loading = false;
         console.log('end of success');
 		gotData=true;
@@ -697,7 +698,7 @@ angular.module('starter.controllers', [])
         alert('Unable to get data - Person does not exist.');
 		gotDynamic=true;
         $scope.failed = true;
-        $state.go('');
+        $state.go('app.InteractiveSearch');
     });
 
     //Get the personal data of the person:
@@ -1050,6 +1051,7 @@ angular.module('starter.controllers', [])
             $scope.information.push(info);
             console.log(info);
         }
+		
         $scope.loading = false;
 		gotArrested=true;
 
