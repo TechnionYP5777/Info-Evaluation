@@ -106,6 +106,9 @@ angular.module('starter.controllers', [])
 
     $scope.showSecondQueryResults = function(place, year) {
         console.log('show results button was clicked-query 2');
+		console.log('place is: '+place+' year is: '+year);
+		if(!place)
+			console.log('supposedly empty');
         CheckQuery2Input.validateInput(place, year)
             .then(
                 function(response) {
@@ -126,7 +129,7 @@ angular.module('starter.controllers', [])
                     } else if (error == 'INVALIDYEAR') {
                         var InputErrorAlert = $ionicPopup.alert({
                             title: 'Input error!',
-                            template: 'Illegal Input. Please insert a valid Year',
+                            template: 'Illegal Input. Please check the year and/or place entered',
                         });
                     }
 
@@ -175,6 +178,7 @@ angular.module('starter.controllers', [])
             console.log(person.photoLink);
 
         }
+		
         $scope.loading = false;
         console.log('end of success');
 		gotData=true;
@@ -839,8 +843,8 @@ angular.module('starter.controllers', [])
 
         }, function errorCallback(response) {
             var FetchErrorAlert = $ionicPopup.alert({
-                title: 'Fetch error!',
-                template: 'Unable to get Extra personal Information',
+                title: 'Sorry',
+                template: 'No personal Information to show',
             });
             console.log(response.data);
 			gotPersonal=true;
@@ -1050,6 +1054,7 @@ angular.module('starter.controllers', [])
             $scope.information.push(info);
             console.log(info);
         }
+		
         $scope.loading = false;
 		gotArrested=true;
 
@@ -1092,8 +1097,8 @@ angular.module('starter.controllers', [])
 
         }, function errorCallback(response) {
             var FetchErrorAlert = $ionicPopup.alert({
-                title: 'Fetch error!',
-                template: 'Unable to get Extra personal Information',
+                title: 'Sorry',
+                template: 'No personal Information to show',
             });
             console.log(response.data);
             $scope.loadindPersonalInfo = false;

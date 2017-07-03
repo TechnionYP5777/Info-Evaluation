@@ -157,7 +157,7 @@ angular.module('starter.services', [])
         },
         validateInput: function(place, year) {
             var deferred = $q.defer();
-            if (!(year && place)) {
+            if ((!year || !place)) {
                 deferred.reject('MISSING');
             } else {
                 if (!this.isNumber(year)) {
