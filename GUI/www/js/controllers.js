@@ -697,7 +697,7 @@ angular.module('starter.controllers', [])
         alert('Unable to get data - Person does not exist.');
 		gotDynamic=true;
         $scope.failed = true;
-        $state.go('app.InteractiveSearch');
+        $state.go('');
     });
 
     //Get the personal data of the person:
