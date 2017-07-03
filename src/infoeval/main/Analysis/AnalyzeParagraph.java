@@ -128,7 +128,7 @@ public class AnalyzeParagraph {
 			// Prepare list of similar words to the query
 			LinkedList<String> keywords = new LinkedList<String>();
 			keywords.add(query);
-			name = name.trim().replaceAll(" ", "_").toLowerCase();
+			name = name.trim().replaceAll(" ", "_");
 			WikiParsing wiki = (new WikiParsing("https://en.wikipedia.org/wiki/" + name));
 
 			Annotation doc = new Annotation(query);

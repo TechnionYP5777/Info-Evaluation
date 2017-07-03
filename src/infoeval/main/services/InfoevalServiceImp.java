@@ -168,6 +168,7 @@ public class InfoevalServiceImp implements InfoevalService {
 		// Parse user's input:
 
 		String pageId = "", UpdatedName = updteName(name);
+		
 		try {
 			logger.log(Level.INFO, "Finding personal Info for:" + UpdatedName);
 			pageId = (Jsoup.connect("https://en.wikipedia.org/w/api.php?action=query&titles=" + UpdatedName
@@ -176,7 +177,7 @@ public class InfoevalServiceImp implements InfoevalService {
 			logger.log(Level.WARNING, "Problem in personal info fetching");
 			throw e;
 		}
-		return runner.getPersonalInfo(Integer.parseInt(pageId));
+		return runner.getPersonalInfoFromDBpedia(Integer.parseInt(pageId));
 	}
 
 	public static String updteName(String name) {
