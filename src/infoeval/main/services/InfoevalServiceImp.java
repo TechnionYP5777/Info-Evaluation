@@ -177,7 +177,7 @@ public class InfoevalServiceImp implements InfoevalService {
 			logger.log(Level.WARNING, "Problem in personal info fetching");
 			throw e;
 		}
-		return runner.getPersonalInfoFromDBpedia(Integer.parseInt(pageId));
+		return runner.getPersonalInfo(Integer.parseInt(pageId));
 	}
 
 	public static String updteName(String name) {
