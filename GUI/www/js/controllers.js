@@ -843,8 +843,8 @@ angular.module('starter.controllers', [])
 
         }, function errorCallback(response) {
             var FetchErrorAlert = $ionicPopup.alert({
-                title: 'Fetch error!',
-                template: 'Unable to get Extra personal Information',
+                title: 'Sorry',
+                template: 'No personal Information to show',
             });
             console.log(response.data);
 			gotPersonal=true;
@@ -1097,8 +1097,8 @@ angular.module('starter.controllers', [])
 
         }, function errorCallback(response) {
             var FetchErrorAlert = $ionicPopup.alert({
-                title: 'Fetch error!',
-                template: 'Unable to get Extra personal Information',
+                title: 'Sorry',
+                template: 'No personal Information to show',
             });
             console.log(response.data);
             $scope.loadindPersonalInfo = false;
